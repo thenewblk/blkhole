@@ -1,0 +1,9 @@
+a {
+  color: red;
+  text-decoration: none;
+  font-weight: bold;
+  &:hover {
+    transition: 3s ease-out;
+    color: black;
+  }
+}
