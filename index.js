@@ -43,14 +43,24 @@ app.use(session({ secret: 'bangarang' }));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+require('./routes/api/channel')(app, passport);
+require('./routes/api/client')(app, passport);
+require('./routes/api/project')(app, passport);
 require('./routes/api/tag')(app, passport);
+require('./routes/api/post')(app, passport);
 
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
   res.render(req.url, {
-    title: 'Home Page',
-    name: 'Alex Rock'
+    title: 'Home Page'
   });
 });
+
+// app.get('/experiential', function(req, res) {
+//   res.render(req.url, {
+//     title: 'Experiential',
+//     channel: 'experiential'
+//   });
+// });
 
 app.get('/login', function(req, res) {
   res.render(req.url, {

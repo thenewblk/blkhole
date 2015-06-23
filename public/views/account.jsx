@@ -1,17 +1,21 @@
 var React = require('react');
+var Helmet = require('react-helmet');
 
 module.exports = React.createClass({
-  componentDidMount: function() {
-    document.title = "Hoem Page";
-  },
-  displayName: 'account',
-
   render: function render() {
     return (
-      <div id='account'>
-        <h1>{this.props.name}</h1>
-        <h6>I am a React Router rendered view</h6>
-        <a href='/login'>Click to go to an unhandled route</a>
+      <div>
+        <Helmet
+              title="the new blk"
+              meta={[
+                  {"name": "description", "content": "the new blk" }
+              ]}
+              link={[
+                  {"rel": "canonical", "href": "http://thenewblk.com/"},
+                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
+              ]}
+          />
+        <h1>Home Page</h1>
       </div>
     );
   }
