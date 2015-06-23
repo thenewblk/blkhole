@@ -28536,10 +28536,21 @@ var Link = Router.Link;
 var util = require('util');
 
 module.exports = React.createClass({displayName: "exports",
+  mixins: [ Router.State ],
+
+  getHandlerKey: function () {
+    // this will all depend on your needs, but here's a typical
+    // scenario that's pretty much what the old prop did
+    var childDepth = 1; // have to know your depth
+    var childName = this.getRoutes()[childDepth].name;
+    var id = this.getParams().id;
+    var key = childName+id;
+    return key;
+  },
   render: function render() {
     return (
       React.createElement(Layout, React.__spread({},  this.props), 
-        React.createElement(Router.RouteHandler, React.__spread({},  this.props))
+        React.createElement(Router.RouteHandler, React.__spread({},  this.props, {key: this.getHandlerKey()}))
       )
     );
   }
@@ -28662,17 +28673,43 @@ var util = require('util');
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
   componentDidMount: function(){
-    (function(d) {
+    // (function(d) {
+    //   var config = {
+    //     kitId: 'fus2ruo',
+    //     scriptTimeout: 3000
+    //   },
+    //   h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    // })(document);
+    (function() {
       var config = {
         kitId: 'fus2ruo',
         scriptTimeout: 3000
-      },
-      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-    })(document);
+      };
+      var h = document.getElementsByTagName('html')[0];
+      h.className += ' wf-loading';
+      var t = setTimeout(function() {
+        h.className = h.className.replace(/(\s|^)wf-loading(\s|$)/g, ' ');
+        h.className += ' wf-inactive';
+      }, config.scriptTimeout);
+      var d = false;
+      var tk = document.createElement('script');
+      tk.src = '//use.typekit.net/' + config.kitId + '.js';
+      tk.type = 'text/javascript';
+      tk.async = 'true';
+      tk.onload = tk.onreadystatechange = function() {
+        var rs = this.readyState;
+        if (d || rs && rs != 'complete' && rs != 'loaded') return;
+        d = true;
+        clearTimeout(t);
+        try { Typekit.load(config); } catch (e) {}
+      };
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(tk, s);
+    })();
   },
   render: function render() {
     return (
-      React.createElement("html", null, 
+      React.createElement("html", {className: "wf-loading"}, 
         React.createElement("head", null, 
           React.createElement("meta", {charSet: "utf-8"}), 
           React.createElement("link", {rel: "shortcut icon", href: "/favicon.jpg"}), 

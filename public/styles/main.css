@@ -21,10 +21,16 @@ body {
   box-sizing: border-box; }
 
 h1, h2, h3, h4, h5, p {
-  margin: 0;
-  padding: 0;
-  color: white;
-  text-transform: center; }
+  opacity: 0; }
+  html.wf-active h1, html.wf-active h2, html.wf-active h3, html.wf-active h4, html.wf-active h5, html.wf-active p {
+    margin: 0;
+    padding: 0;
+    color: white;
+    text-transform: center;
+    opacity: 1;
+    transition: .2s ease-out; }
+  html.wf-loading h1, html.wf-loading h2, html.wf-loading h3, html.wf-loading h4, html.wf-loading h5, html.wf-loading p {
+    opacity: 0; }
 
 .navigator {
   width: 65px;
