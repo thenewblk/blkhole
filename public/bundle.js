@@ -5,7 +5,7 @@ var Client = require('react-engine/lib/client');
 // Include all view files. Browerify doesn't do
 // this automatically as it can only operate on
 // static require statements.
-require('./views/404.jsx');require('./views/account.jsx');require('./views/app.jsx');require('./views/channel.jsx');require('./views/layout.jsx');require('./views/login.jsx');
+require('./views/404.jsx');require('./views/app.jsx');require('./views/channel.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
 
 // boot options
 var options = {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
 });
 
 
-},{"./routes.jsx":299,"./views/404.jsx":300,"./views/account.jsx":301,"./views/app.jsx":302,"./views/channel.jsx":303,"./views/layout.jsx":304,"./views/login.jsx":305,"react-engine/lib/client":6}],2:[function(require,module,exports){
+},{"./routes.jsx":299,"./views/404.jsx":300,"./views/app.jsx":301,"./views/channel.jsx":302,"./views/home.jsx":303,"./views/layout.jsx":304,"./views/login.jsx":305,"./views/menu.jsx":306,"react-engine/lib/client":6}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -28493,7 +28493,7 @@ var DefaultRoute = Router.DefaultRoute;
 var NotFoundRoute = Router.NotFoundRoute;
 
 var App = require('./views/app.jsx');
-var Account = require('./views/account.jsx');
+var Home = require('./views/home.jsx');
 var Login = require('./views/login.jsx');
 var Channel = require('./views/channel.jsx');
 
@@ -28503,13 +28503,13 @@ var routes = module.exports = (
     React.createElement(Route, {path: "/", handler: App}, 
       React.createElement(Route, {name: "login", handler: Login}), 
       React.createElement(Route, {path: "/:channel", handler: Channel}), 
-      React.createElement(DefaultRoute, {handler: Account}), 
+      React.createElement(DefaultRoute, {handler: Home}), 
       React.createElement(NotFoundRoute, {handler: NotFound})
     )
 );
 
 
-},{"./views/404.jsx":300,"./views/account.jsx":301,"./views/app.jsx":302,"./views/channel.jsx":303,"./views/login.jsx":305,"react":295,"react-router":126}],300:[function(require,module,exports){
+},{"./views/404.jsx":300,"./views/app.jsx":301,"./views/channel.jsx":302,"./views/home.jsx":303,"./views/login.jsx":305,"react":295,"react-router":126}],300:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 
@@ -28528,35 +28528,10 @@ module.exports = React.createClass({displayName: "exports",
 
 
 },{"./layout.jsx":304,"react":295}],301:[function(require,module,exports){
-var React = require('react');
-var Helmet = require('react-helmet');
-
-module.exports = React.createClass({displayName: "exports",
-  render: function render() {
-    return (
-      React.createElement("div", null, 
-        React.createElement(Helmet, {
-              title: "the new blk", 
-              meta: [
-                  {"name": "description", "content": "the new blk" }
-              ], 
-              link: [
-                  {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
-              ]}
-          ), 
-        React.createElement("h1", null, "Home Page")
-      )
-    );
-  }
-});
-
-
-},{"react":295,"react-helmet":11}],302:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 var Router = require('react-router');
-var Link = require('react-router').Link;
+var Link = Router.Link;
 
 var util = require('util');
 
@@ -28564,11 +28539,6 @@ module.exports = React.createClass({displayName: "exports",
   render: function render() {
     return (
       React.createElement(Layout, React.__spread({},  this.props), 
-        React.createElement("div", {className: "navigator"}, 
-          React.createElement("p", null, React.createElement(Link, {to: "/"}, "Home")), 
-          React.createElement("p", null, React.createElement(Link, {to: "/experiential"}, "Experiential")), 
-          React.createElement("p", null, React.createElement(Link, {to: "/handcrafted"}, "Handcrafted"))
-        ), 
         React.createElement(Router.RouteHandler, React.__spread({},  this.props))
       )
     );
@@ -28576,7 +28546,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":304,"react":295,"react-router":126,"util":5}],303:[function(require,module,exports){
+},{"./layout.jsx":304,"react":295,"react-router":126,"util":5}],302:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -28648,27 +28618,58 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("h1", null, name), 
             React.createElement("p", null, description)
           )
-          : "Loading...", 
+          : "Loading..."
         
-
-        React.createElement("button", {onClick: self.changeTitle}, "Change")
       )
     );
   }
 });
 
 
-},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],304:[function(require,module,exports){
+},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],303:[function(require,module,exports){
+var React = require('react');
+var Helmet = require('react-helmet');
+
+module.exports = React.createClass({displayName: "exports",
+  render: function render() {
+    return (
+      React.createElement("div", null, 
+        React.createElement(Helmet, {
+              title: "the new blk", 
+              meta: [
+                  {"name": "description", "content": "the new blk" }
+              ], 
+              link: [
+                  {"rel": "canonical", "href": "http://thenewblk.com/"},
+                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
+              ]}
+          ), 
+        React.createElement("h1", null, "Home Page")
+      )
+    );
+  }
+});
+
+
+},{"react":295,"react-helmet":11}],304:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
-
+var Menu = require('./menu.jsx');
 var Helmet = require('react-helmet');
 
 var util = require('util');
 
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
-
+  componentDidMount: function(){
+    (function(d) {
+      var config = {
+        kitId: 'fus2ruo',
+        scriptTimeout: 3000
+      },
+      h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
+    })(document);
+  },
   render: function render() {
     return (
       React.createElement("html", null, 
@@ -28678,7 +28679,10 @@ module.exports = React.createClass({displayName: "exports",
           React.createElement("link", {rel: "stylesheet", href: "/styles/main.css"})
         ), 
         React.createElement("body", null, 
-          this.props.children
+          React.createElement(Menu, null), 
+          React.createElement("div", {className: "main"}, 
+            this.props.children
+          )
         ), 
         React.createElement("script", {src: "/bundle.js"})
       )
@@ -28687,7 +28691,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11,"react-router":126,"util":5}],305:[function(require,module,exports){
+},{"./menu.jsx":306,"react":295,"react-helmet":11,"react-router":126,"util":5}],305:[function(require,module,exports){
 var React = require('react');
 var util = require('util');
 
@@ -28727,4 +28731,25 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"util":5}]},{},[1]);
+},{"react":295,"util":5}],306:[function(require,module,exports){
+var React = require('react');
+var Router = require('react-router');
+var Link = Router.Link;
+
+module.exports = React.createClass({displayName: "exports",
+  render: function render() {
+    return (
+        React.createElement("div", {className: "navigator"}, 
+          React.createElement(Link, {to: "/"}, React.createElement("img", {src: "/icons/icon_BLKstar_black.svg"})), 
+          React.createElement(Link, {to: "/experiential"}, React.createElement("img", {src: "/icons/icon_experiential-1.svg"})), 
+          React.createElement(Link, {to: "/handcrafted"}, React.createElement("img", {src: "/icons/icon_handcraft-1.svg"})), 
+          React.createElement(Link, {to: "/agency"}, React.createElement("img", {src: "/icons/icon_agency-1.svg"})), 
+          React.createElement(Link, {to: "/disruption"}, React.createElement("img", {src: "/icons/icon_disruptor-1.svg"})), 
+          React.createElement(Link, {to: "/superfans"}, React.createElement("img", {src: "/icons/icon_superfan-1.svg"}))
+        )
+    );
+  }
+});
+
+
+},{"react":295,"react-router":126}]},{},[1]);

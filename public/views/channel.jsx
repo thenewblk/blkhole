@@ -71,8 +71,6 @@ module.exports = React.createClass({
           </div>
           : "Loading..."
         }
-
-        <button onClick={self.changeTitle}>Change</button>
       </div>
     );
   }
