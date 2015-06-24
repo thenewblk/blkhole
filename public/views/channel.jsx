@@ -17,25 +17,29 @@ module.exports = React.createClass({
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
         if (res) {
-          console.log('res: ' + util.inspect(res));
           self.setState({content: res.body, title: res.body.name });
         }
 
       });
   },
 
+  componentWillMount: function() {
+    var self = this;
+  },
+
   componentDidMount: function() {
     var self = this;
     self.setState({ params: self.getParams() });
-    if (self.getParams().channel){
+    if (self.props.content){
+      self.setState({content: self.props.content, title: self.props.content.name});
+    }
+    else if (self.getParams().channel){
       self.getContent();
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
     var self = this;
-
-    self.setState({params: self.getParams(), title: self.getParams().channel, content: null });
     self.getContent();
   },
 

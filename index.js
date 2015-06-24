@@ -49,18 +49,31 @@ require('./routes/api/project')(app, passport);
 require('./routes/api/tag')(app, passport);
 require('./routes/api/post')(app, passport);
 
+var Channel = require('./models/channel');
+
+app.get('/:slug', function(req, res) {
+  Channel
+    .findOne({ slug: req.params.slug })
+    .exec( function (err, channel) {
+        if (err) return console.log(err);
+        res.render(req.url, {
+          title: channel.name,
+          content: channel
+        });
+  });
+  // res.render(req.url, {
+  //   title: 'Experiential',
+  //   channel: 'experiential',
+  //   name: { first: "alex", last: "rock"}
+  // });
+});
+
 app.get('*', function(req, res) {
+  console.log('req.url: ' + req.url);
   res.render(req.url, {
     title: 'Home Page'
   });
 });
-
-// app.get('/experiential', function(req, res) {
-//   res.render(req.url, {
-//     title: 'Experiential',
-//     channel: 'experiential'
-//   });
-// });
 
 app.get('/login', function(req, res) {
   res.render(req.url, {

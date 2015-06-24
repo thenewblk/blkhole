@@ -28577,25 +28577,29 @@ module.exports = React.createClass({displayName: "exports",
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
         if (res) {
-          console.log('res: ' + util.inspect(res));
           self.setState({content: res.body, title: res.body.name });
         }
 
       });
   },
 
+  componentWillMount: function() {
+    var self = this;
+  },
+
   componentDidMount: function() {
     var self = this;
     self.setState({ params: self.getParams() });
-    if (self.getParams().channel){
+    if (self.props.content){
+      self.setState({content: self.props.content, title: self.props.content.name});
+    }
+    else if (self.getParams().channel){
       self.getContent();
     }
   },
 
   componentWillReceiveProps: function(nextProps) {
     var self = this;
-
-    self.setState({params: self.getParams(), title: self.getParams().channel, content: null });
     self.getContent();
   },
 
@@ -28673,13 +28677,6 @@ var util = require('util');
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
   componentDidMount: function(){
-    // (function(d) {
-    //   var config = {
-    //     kitId: 'fus2ruo',
-    //     scriptTimeout: 3000
-    //   },
-    //   h=d.documentElement,t=setTimeout(function(){h.className=h.className.replace(/\bwf-loading\b/g,"")+" wf-inactive";},config.scriptTimeout),tk=d.createElement("script"),f=false,s=d.getElementsByTagName("script")[0],a;h.className+=" wf-loading";tk.src='//use.typekit.net/'+config.kitId+'.js';tk.async=true;tk.onload=tk.onreadystatechange=function(){a=this.readyState;if(f||a&&a!="complete"&&a!="loaded")return;f=true;clearTimeout(t);try{Typekit.load(config)}catch(e){}};s.parentNode.insertBefore(tk,s)
-    // })(document);
     (function() {
       var config = {
         kitId: 'fus2ruo',
