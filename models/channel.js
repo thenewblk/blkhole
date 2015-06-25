@@ -13,11 +13,13 @@ var channelSchema = mongoose.Schema({
 		name    				: String,
 		slug    				: String,
     description    	: String,
+    case_studies: [],
+    icon: String
 });
 
 channelSchema.pre('save', function (next) {
   this.slug = slugify(this.name);
   next();
 });
- 
+
 module.exports = mongoose.model('Channel', channelSchema);

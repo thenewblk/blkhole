@@ -69,7 +69,6 @@ app.get('/:slug', function(req, res) {
 });
 
 app.get('*', function(req, res) {
-  console.log('req.url: ' + req.url);
   res.render(req.url, {
     title: 'Home Page'
   });

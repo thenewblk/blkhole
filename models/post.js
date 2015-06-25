@@ -2,9 +2,10 @@ var mongoose = require( 'mongoose' );
 var moment = require('moment');
 
 var postSchema = mongoose.Schema({
-    content    : String,
+    content    : {},
     updated_date : String,
     updated_at : String,
+    type : String,
     approved	 : Boolean,
     tags: [{ type: String, ref: 'Tag' }] ,
     channels: [{ type: String, ref: 'Channel' }] ,

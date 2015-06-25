@@ -8,7 +8,7 @@ var util = require('util');
 module.exports = React.createClass({
   mixins: [ Router.State ],
   getInitialState: function(){
-    return {params: {}, title: 'things'};
+    return {params: {}, title: '', view_description: true};
   },
 
   getContent: function(){
@@ -17,17 +17,16 @@ module.exports = React.createClass({
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name });
+          self.setState({content: res.body, title: res.body.name, view_description: true });
         }
-
       });
   },
 
-  componentWillMount: function() {
-    var self = this;
-  },
+  // componentWillMount: function() {
+  //   var self = this;
+  // },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
     var self = this;
     self.setState({ params: self.getParams() });
     if (self.props.content){
@@ -43,8 +42,13 @@ module.exports = React.createClass({
     self.getContent();
   },
 
-  changeTitle: function(){
-    this.setState({title: "New Title"});
+  consoleLog: function(){
+    console.log("this.state: " + util.inspect(this.state));
+    console.log("this.props: " + util.inspect(this.props));
+  },
+
+  toggleDescription: function(){
+    this.setState({view_description: !this.state.view_description});
   },
 
   render: function render() {
@@ -53,9 +57,30 @@ module.exports = React.createClass({
     if  (self.state.content) {
       var name = self.state.content.name;
       var description = self.state.content.description;
+      var icon = self.state.content.icon;
+      var projects = self.state.content.case_studies.map(function(project, index){
+        var tmp_styles = {
+          backgroundImage: 'url('+project.featured_image+')'
+        }
+        var tmp_number = index+1;
+        return (
+           <div className={"project project_"+tmp_number} style={tmp_styles}>
+             <div className="project_content">
+               <h1 className="project_name">{project.name}</h1>
+             </div>
+           </div>
+         )
+      });
     }
+
+    if (self.state.view_description){
+      var project_view = "featured_projects show";
+    } else {
+      var project_view = "featured_projects hide";
+    }
+
     return (
-      <div>
+      <div className="channel">
         <Helmet
               title={title}
               meta={[
@@ -70,8 +95,15 @@ module.exports = React.createClass({
           />
         { self.state.content ?
           <div className="content">
-            <h1>{name}</h1>
-            <p>{description}</p>
+            <div className={project_view}>
+              {projects.reverse()}
+              <div className="channel_info">
+                <h1 className="channel_name">{name}</h1>
+                <div className="channel_description">{description}</div>
+                <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>
+                <img className="channel_icon" onClick={self.toggleDescription} src={icon} />
+              </div>
+            </div>
           </div>
           : "Loading..."
         }
