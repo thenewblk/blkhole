@@ -166,6 +166,8 @@ h1, h2, h3, h4, h5, p {
   max-width: 100%;
   margin: 50px auto;
   padding: 0 15px; }
+  .post .break {
+    margin: 15px 0; }
   .post.text {
     width: 600px;
     padding: 0 15px;
@@ -175,6 +177,9 @@ h1, h2, h3, h4, h5, p {
     width: 500px;
     padding: 0 15px;
     text-align: center; }
+    .post.pullquote p {
+      color: black;
+      line-height: 1.5; }
   .post.image {
     width: 1000px;
     padding: 0 15px; }

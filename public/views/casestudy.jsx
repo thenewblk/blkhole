@@ -70,12 +70,16 @@ module.exports = React.createClass({
         if (thing.type == "pullquote") {
           if (thing.image) {
             return (
-              <div className="post pullquote"><img src={thing.image} /></div>
+              <div className="post pullquote">
+                <img className="break" src={self.state.content.content.break} />
+                <img src={thing.image} />
+                <img className="break" src={self.state.content.content.break} />
+              </div>
             )
           }
           if (thing.content) {
             return (
-              <div className="post pullquote">{thing.content}</div>
+              <div className="post pullquote"><img className="break" src={self.state.content.content.break} /><p>{thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
             )
           }
         }
@@ -99,12 +103,12 @@ module.exports = React.createClass({
             if (little_thing.type == "pullquote") {
               if (little_thing.image) {
                 return (
-                  <div className="post pullquote"><img src={little_thing.image} /></div>
+                  <div className="post pullquote"><img className="break" src={self.state.content.content.break} /><img src={little_thing.image} /><img className="break" src={self.state.content.content.break} /></div>
                 )
               }
               if (little_thing.content) {
                 return (
-                  <div className="post pullquote">{little_thing.content}</div>
+                  <div className="post pullquote"><img className="break" src={self.state.content.content.break} /><p>{little_thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
                 )
               }
             }

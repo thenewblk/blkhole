@@ -28623,12 +28623,16 @@ module.exports = React.createClass({displayName: "exports",
         if (thing.type == "pullquote") {
           if (thing.image) {
             return (
-              React.createElement("div", {className: "post pullquote"}, React.createElement("img", {src: thing.image}))
+              React.createElement("div", {className: "post pullquote"}, 
+                React.createElement("img", {className: "break", src: self.state.content.content.break}), 
+                React.createElement("img", {src: thing.image}), 
+                React.createElement("img", {className: "break", src: self.state.content.content.break})
+              )
             )
           }
           if (thing.content) {
             return (
-              React.createElement("div", {className: "post pullquote"}, thing.content)
+              React.createElement("div", {className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("p", null, thing.content), React.createElement("img", {className: "break", src: self.state.content.content.break}))
             )
           }
         }
@@ -28652,12 +28656,12 @@ module.exports = React.createClass({displayName: "exports",
             if (little_thing.type == "pullquote") {
               if (little_thing.image) {
                 return (
-                  React.createElement("div", {className: "post pullquote"}, React.createElement("img", {src: little_thing.image}))
+                  React.createElement("div", {className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("img", {src: little_thing.image}), React.createElement("img", {className: "break", src: self.state.content.content.break}))
                 )
               }
               if (little_thing.content) {
                 return (
-                  React.createElement("div", {className: "post pullquote"}, little_thing.content)
+                  React.createElement("div", {className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("p", null, little_thing.content), React.createElement("img", {className: "break", src: self.state.content.content.break}))
                 )
               }
             }
