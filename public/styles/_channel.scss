@@ -1,0 +1,120 @@
+.channel {
+  height: 100%;
+  position: relative;
+}
+
+.featured_projects {
+  height: 100%;
+  .project_1, .project_2, .project_3 {
+    display: inline-block;
+    float: right;
+  }
+  .project{
+    background-size: cover;
+    background-position: center;
+    .project_content {
+      display: table;
+      width: 100%;
+      height: 100%;
+      transition: 0.15s ease-out;
+      .project_name {
+        display: table-cell;
+        vertical-align: middle;
+        text-align: center;
+        opacity: 0;
+      }
+    }
+    &:hover {
+      .project_content{
+        background: rgba(0,0,0,0.5);
+      }
+      .project_name {
+        opacity: 1;
+      }
+    }
+  }
+  .project_1 {
+    width: 56%;
+    height: 50%;
+    background-color: red;
+  }
+  .project_2 {
+    width: 56%;
+    height: 50%;
+    background-color: green;
+  }
+  .project_3 {
+    width: 44%;
+    height: 100%;
+    background-color: blue;
+  }
+}
+
+.channel_info {
+  background: white;
+  position: absolute;
+  bottom: 3%;
+  width: 94%;
+  height: 94%;
+  right: 3%;
+  padding: 30px;
+  transition: 0.15s ease-out;
+  .channel_name {
+    color: black;
+    text-transform: uppercase;
+  }
+  .channel_icon {
+    display: none;
+    height: 50px;
+    width: 50px;
+    opacity: 0;
+    transition: 0.25s ease-out;
+  }
+  .featured_projects.hide & {
+    height: 50px;
+    width: 50px;
+    padding: 0;
+    .channel_icon {
+      display: block;
+      position: relative;
+      z-index: 1;
+      height: 50px;
+      margin: auto;
+      opacity: 1;
+      cursor: pointer;
+    }
+    .channel_name, .channel_description {
+      display: none;
+    }
+    .view_channel {
+      height: 50px;
+      width: 50px;
+      background: white;
+      transform: rotate(45deg);
+      border: none;
+      overflow: hidden;
+      color: transparent;
+      bottom: 0;
+      right: 0;
+    }
+    &:hover {
+      background: #333;
+      .view_channel { background:#333; }
+    }
+  }
+  .view_channel {
+    border: 1px dotted #333;
+    padding: 20px;
+    text-transform: uppercase;
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+    cursor: pointer;
+    transition: 0.15s ease-out;
+    &:hover {
+      border: 1px solid #333;
+      background: #333;
+      color: white;
+    }
+  }
+}

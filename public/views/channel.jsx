@@ -2,6 +2,7 @@ var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
+var Link = Router.Link;
 
 var util = require('util');
 
@@ -13,6 +14,7 @@ module.exports = React.createClass({
 
   getContent: function(){
     var self = this;
+    console.log("self.getParams().channel: " + self.getParams().channel);
     request
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
@@ -28,8 +30,9 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var self = this;
+    self.consoleLog();
     self.setState({ params: self.getParams() });
-    if (self.props.content){
+    if (self.props.content && self.props.content.type == "channel"){
       self.setState({content: self.props.content, title: self.props.content.name});
     }
     else if (self.getParams().channel){
@@ -63,13 +66,25 @@ module.exports = React.createClass({
           backgroundImage: 'url('+project.featured_image+')'
         }
         var tmp_number = index+1;
-        return (
-           <div className={"project project_"+tmp_number} style={tmp_styles}>
-             <div className="project_content">
-               <h1 className="project_name">{project.name}</h1>
+        if (project.url) {
+          return (
+             <div className={"project project_"+tmp_number} style={tmp_styles}>
+               <Link to={project.url}>
+                 <div className="project_content">
+                   <h1 className="project_name">{project.name}</h1>
+                 </div>
+               </Link>
              </div>
-           </div>
-         )
+           )
+        } else {
+          return (
+            <div className={"project project_"+tmp_number} style={tmp_styles}>
+              <div className="project_content">
+                <h1 className="project_name">{project.name}</h1>
+              </div>
+            </div>
+          )
+        }
       });
     }
 

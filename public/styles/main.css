@@ -14,8 +14,7 @@ body {
   margin: 0;
   min-width: 100%;
   height: 100%;
-  padding-left: 65px;
-  background: black; }
+  padding-left: 65px; }
 
 * {
   box-sizing: border-box; }
@@ -32,6 +31,10 @@ h1, h2, h3, h4, h5, p {
   html.wf-loading h1, html.wf-loading h2, html.wf-loading h3, html.wf-loading h4, html.wf-loading h5, html.wf-loading p {
     opacity: 0; }
 
+.content {
+  height: 100%;
+  position: relative; }
+
 .navigator {
   width: 65px;
   height: 100%;
@@ -44,7 +47,7 @@ h1, h2, h3, h4, h5, p {
 .main {
   height: 100%; }
 
-.channel, .content {
+.channel {
   height: 100%;
   position: relative; }
 
@@ -142,3 +145,53 @@ h1, h2, h3, h4, h5, p {
       border: 1px solid #333;
       background: #333;
       color: white; }
+
+.case_study, .top {
+  height: 100%; }
+
+.top {
+  background-size: cover;
+  background-position: center;
+  border-bottom: 5px solid white; }
+  .top .case_study_name {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 75px;
+    line-height: 60px; }
+
+.post {
+  max-width: 100%;
+  margin: 50px auto;
+  padding: 0 15px; }
+  .post.text {
+    width: 600px;
+    padding: 0 15px;
+    text-align: center;
+    line-height: 2; }
+  .post.pullquote {
+    width: 500px;
+    padding: 0 15px;
+    text-align: center; }
+  .post.image {
+    width: 1000px;
+    padding: 0 15px; }
+  .post.logo img {
+    display: table;
+    width: 50%;
+    margin: auto; }
+  .post.two {
+    width: 1000px;
+    padding: 0 15px;
+    margin: 0 auto; }
+    .post.two .post {
+      margin: 0 auto; }
+    .post.two .thing_1, .post.two .thing_2 {
+      width: 50%;
+      display: inline-block;
+      vertical-align: middle; }
+
+img {
+  max-width: 100%; }

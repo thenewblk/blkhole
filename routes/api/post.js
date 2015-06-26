@@ -10,7 +10,7 @@ module.exports = function(app) {
 		var project = req.body.project;
 		var approved = req.body.approved;
 
-		Text.create({ content: content, tags: tags, client: client, project: project, channels: channels, approved: approved }, function (err, text) {
+		Post.create({ content: content, tags: tags, client: client, project: project, channels: channels, approved: approved }, function (err, text) {
 		  if (err) return console.log(err);
 		  	res.send(text);
 		});
@@ -18,7 +18,7 @@ module.exports = function(app) {
 
 	// Display texts
 	app.get('/api/post/', function(req, res) {
-		Text
+		Post
 			.find({})
 			.exec( function (err, texts) {
 			  	if (err) return console.log(err);
@@ -27,9 +27,9 @@ module.exports = function(app) {
 	});
 
 	// Display text
-	app.get('/api/post/:id', function(req, res) {
-		Text
-			.findOne({ _id: req.params.id })
+	app.get('/api/post/:slug', function(req, res) {
+		Post
+			.findOne({ slug: req.params.slug })
 			.exec( function (err, text) {
 			  	if (err) return console.log(err);
 				res.send(text);
@@ -37,9 +37,9 @@ module.exports = function(app) {
 	});
 
 	// Delete text
-	app.delete('/api/post/:id/delete', function(req, res) {
-		Text
-			.findOne({ _id: req.params.id })
+	app.delete('/api/post/:slug/delete', function(req, res) {
+		Post
+			.findOne({ slug: req.params.slug })
 			.remove( function (err, text) {
 			  	if (err) return console.log(err);
 				res.send(true);
@@ -66,7 +66,7 @@ module.exports = function(app) {
 		tmp_text.project = req.body.project;
 		tmp_text.approved = req.body.approved;
 
-		Text
+		Post
 			.findOne({ _id: req.params.id })
 			.exec(function (err, text) {
 			  	if (err) return console.log(err);

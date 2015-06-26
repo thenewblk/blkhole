@@ -50,15 +50,33 @@ require('./routes/api/tag')(app, passport);
 require('./routes/api/post')(app, passport);
 
 var Channel = require('./models/channel');
+var Post = require('./models/post');
 
-app.get('/:slug', function(req, res) {
+app.get('/channel/:channel', function(req, res) {
   Channel
-    .findOne({ slug: req.params.slug })
+    .findOne({ slug: req.params.channel })
     .exec( function (err, channel) {
         if (err) return console.log(err);
         res.render(req.url, {
           title: channel.name,
           content: channel
+        });
+  });
+  // res.render(req.url, {
+  //   title: 'Experiential',
+  //   channel: 'experiential',
+  //   name: { first: "alex", last: "rock"}
+  // });
+});
+
+app.get('/post/:post', function(req, res) {
+  Post
+    .findOne({ slug: req.params.post })
+    .exec( function (err, post) {
+        if (err) return console.log(err);
+        res.render(req.url, {
+          title: post.name,
+          content: post
         });
   });
   // res.render(req.url, {

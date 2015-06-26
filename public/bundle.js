@@ -5,7 +5,7 @@ var Client = require('react-engine/lib/client');
 // Include all view files. Browerify doesn't do
 // this automatically as it can only operate on
 // static require statements.
-require('./views/404.jsx');require('./views/app.jsx');require('./views/channel.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
+require('./views/404.jsx');require('./views/app.jsx');require('./views/casestudy.jsx');require('./views/channel.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
 
 // boot options
 var options = {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
 });
 
 
-},{"./routes.jsx":299,"./views/404.jsx":300,"./views/app.jsx":301,"./views/channel.jsx":302,"./views/home.jsx":303,"./views/layout.jsx":304,"./views/login.jsx":305,"./views/menu.jsx":306,"react-engine/lib/client":6}],2:[function(require,module,exports){
+},{"./routes.jsx":299,"./views/404.jsx":300,"./views/app.jsx":301,"./views/casestudy.jsx":302,"./views/channel.jsx":303,"./views/home.jsx":304,"./views/layout.jsx":305,"./views/login.jsx":306,"./views/menu.jsx":307,"react-engine/lib/client":6}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -28496,20 +28496,22 @@ var App = require('./views/app.jsx');
 var Home = require('./views/home.jsx');
 var Login = require('./views/login.jsx');
 var Channel = require('./views/channel.jsx');
+var CaseStudy = require('./views/casestudy.jsx');
 
 var NotFound = require('./views/404.jsx');
 
 var routes = module.exports = (
     React.createElement(Route, {path: "/", handler: App}, 
       React.createElement(Route, {name: "login", handler: Login}), 
-      React.createElement(Route, {path: "/:channel", handler: Channel}), 
+      React.createElement(Route, {path: "/channel/:channel", handler: Channel}), 
+      React.createElement(Route, {path: "/post/:casestudy", handler: CaseStudy}), 
       React.createElement(DefaultRoute, {handler: Home}), 
       React.createElement(NotFoundRoute, {handler: NotFound})
     )
 );
 
 
-},{"./views/404.jsx":300,"./views/app.jsx":301,"./views/channel.jsx":302,"./views/home.jsx":303,"./views/login.jsx":305,"react":295,"react-router":126}],300:[function(require,module,exports){
+},{"./views/404.jsx":300,"./views/app.jsx":301,"./views/casestudy.jsx":302,"./views/channel.jsx":303,"./views/home.jsx":304,"./views/login.jsx":306,"react":295,"react-router":126}],300:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 
@@ -28527,7 +28529,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":304,"react":295}],301:[function(require,module,exports){
+},{"./layout.jsx":305,"react":295}],301:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 var Router = require('react-router');
@@ -28548,11 +28550,174 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":304,"react":295,"react-router":126,"util":5}],302:[function(require,module,exports){
+},{"./layout.jsx":305,"react":295,"react-router":126,"util":5}],302:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
+
+var util = require('util');
+
+module.exports = React.createClass({displayName: "exports",
+  mixins: [ Router.State ],
+  getInitialState: function(){
+    return {params: {}, title: ''};
+  },
+
+  getContent: function(){
+    var self = this;
+    request
+      .get('/api/post/'+self.getParams().casestudy)
+      .end(function(err, res){
+        if (res) {
+          self.setState({content: res.body, title: res.body.name });
+        }
+      });
+  },
+
+  // componentWillMount: function() {
+  //   var self = this;
+  // },
+
+  componentWillMount: function() {
+    var self = this;
+    console.log('self.getParams().casestudy: ' + self.getParams().casestudy);
+    self.consoleLog();
+    self.setState({ params: self.getParams() });
+    if (self.props.content && self.props.content.type == "case-study"){
+      self.setState({content: self.props.content, title: self.props.content.name});
+    }
+    else if (self.getParams().casestudy){
+      self.getContent();
+    }
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    var self = this;
+    self.getContent();
+  },
+
+  consoleLog: function(){
+    console.log("this.state: " + util.inspect(this.state));
+    console.log("this.props: " + util.inspect(this.props));
+  },
+
+  toggleDescription: function(){
+    this.setState({view_description: !this.state.view_description});
+  },
+
+  render: function render() {
+    var self = this;
+    var title = self.state.title;
+    if  (self.state.content) {
+      var name = self.state.content.name;
+      var top_image = {
+        backgroundImage: 'url(' + self.state.content.content.top_image + ')'
+      }
+      var things = self.state.content.content.things.map(function(thing, index){
+        if (thing.type == "text") {
+          return (
+            React.createElement("div", {className: "post text"}, thing.content)
+          )
+        }
+        if (thing.type == "pullquote") {
+          if (thing.image) {
+            return (
+              React.createElement("div", {className: "post pullquote"}, React.createElement("img", {src: thing.image}))
+            )
+          }
+          if (thing.content) {
+            return (
+              React.createElement("div", {className: "post pullquote"}, thing.content)
+            )
+          }
+        }
+        if (thing.type == "image") {
+          return (
+            React.createElement("div", {className: "post image"}, React.createElement("img", {src: thing.url}))
+          )
+        }
+        if (thing.type == "logo") {
+          return (
+            React.createElement("div", {className: "post logo"}, React.createElement("img", {src: thing.url}))
+          )
+        }
+        if (thing.type == "two") {
+          var little_things = thing.content.map(function(little_thing, index){
+            if (little_thing.type == "text") {
+              return (
+                React.createElement("div", {className: "post text"}, little_thing.content)
+              )
+            }
+            if (little_thing.type == "pullquote") {
+              if (little_thing.image) {
+                return (
+                  React.createElement("div", {className: "post pullquote"}, React.createElement("img", {src: little_thing.image}))
+                )
+              }
+              if (little_thing.content) {
+                return (
+                  React.createElement("div", {className: "post pullquote"}, little_thing.content)
+                )
+              }
+            }
+            if (little_thing.type == "image") {
+              return (
+                React.createElement("div", {className: "post image"}, React.createElement("img", {src: little_thing.url}))
+              )
+            }
+            if (little_thing.type == "logo") {
+              return (
+                React.createElement("div", {className: "post logo"}, React.createElement("img", {src: little_thing.url}))
+              )
+            }
+
+          });
+          return (
+            React.createElement("div", {className: "post two"}, 
+              React.createElement("div", {className: "thing_1"}, little_things[0]), 
+              React.createElement("div", {className: "thing_2"}, little_things[1])
+            )
+          )
+        }
+      });
+    }
+
+    return (
+      React.createElement("div", {className: "case_study"}, 
+        React.createElement(Helmet, {
+              title: title, 
+              meta: [
+                  {"name": "description", "content": title },
+                  {"property": "og:type", "content": "article"}
+              ], 
+              link: [
+                  {"rel": "canonical", "href": "http://mysite.com/example"},
+                  {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
+                  {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
+              ]}
+          ), 
+         self.state.content ?
+          React.createElement("div", {className: "content"}, 
+            React.createElement("div", {className: "top", style: top_image}, 
+              React.createElement("h1", {className: "case_study_name"}, name)
+            ), 
+            things
+          )
+          : "Loading..."
+        
+      )
+    );
+  }
+});
+
+
+},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],303:[function(require,module,exports){
+var React = require('react');
+var Router = require('react-router');
+var Helmet = require('react-helmet');
+var request = require('superagent');
+var Link = Router.Link;
 
 var util = require('util');
 
@@ -28564,6 +28729,7 @@ module.exports = React.createClass({displayName: "exports",
 
   getContent: function(){
     var self = this;
+    console.log("self.getParams().channel: " + self.getParams().channel);
     request
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
@@ -28579,8 +28745,9 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
+    self.consoleLog();
     self.setState({ params: self.getParams() });
-    if (self.props.content){
+    if (self.props.content && self.props.content.type == "channel"){
       self.setState({content: self.props.content, title: self.props.content.name});
     }
     else if (self.getParams().channel){
@@ -28614,13 +28781,25 @@ module.exports = React.createClass({displayName: "exports",
           backgroundImage: 'url('+project.featured_image+')'
         }
         var tmp_number = index+1;
-        return (
-           React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
-             React.createElement("div", {className: "project_content"}, 
-               React.createElement("h1", {className: "project_name"}, project.name)
+        if (project.url) {
+          return (
+             React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
+               React.createElement(Link, {to: project.url}, 
+                 React.createElement("div", {className: "project_content"}, 
+                   React.createElement("h1", {className: "project_name"}, project.name)
+                 )
+               )
              )
            )
-         )
+        } else {
+          return (
+            React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
+              React.createElement("div", {className: "project_content"}, 
+                React.createElement("h1", {className: "project_name"}, project.name)
+              )
+            )
+          )
+        }
       });
     }
 
@@ -28664,7 +28843,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],303:[function(require,module,exports){
+},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],304:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
 
@@ -28689,7 +28868,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11}],304:[function(require,module,exports){
+},{"react":295,"react-helmet":11}],305:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
@@ -28748,7 +28927,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./menu.jsx":306,"react":295,"react-helmet":11,"react-router":126,"util":5}],305:[function(require,module,exports){
+},{"./menu.jsx":307,"react":295,"react-helmet":11,"react-router":126,"util":5}],306:[function(require,module,exports){
 var React = require('react');
 var util = require('util');
 
@@ -28788,7 +28967,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"util":5}],306:[function(require,module,exports){
+},{"react":295,"util":5}],307:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Link = Router.Link;
@@ -28798,11 +28977,11 @@ module.exports = React.createClass({displayName: "exports",
     return (
         React.createElement("div", {className: "navigator"}, 
           React.createElement(Link, {to: "/"}, React.createElement("img", {src: "/icons/icon_BLKstar_black.svg"})), 
-          React.createElement(Link, {to: "/experiential"}, React.createElement("img", {src: "/icons/icon_experiential-1.svg"})), 
-          React.createElement(Link, {to: "/handcrafted"}, React.createElement("img", {src: "/icons/icon_handcraft-1.svg"})), 
+          React.createElement(Link, {to: "/channel/experiential"}, React.createElement("img", {src: "/icons/icon_experiential-1.svg"})), 
+          React.createElement(Link, {to: "/channel/handcrafted"}, React.createElement("img", {src: "/icons/icon_handcraft-1.svg"})), 
           React.createElement(Link, {to: "/agency"}, React.createElement("img", {src: "/icons/icon_agency-1.svg"})), 
-          React.createElement(Link, {to: "/disruption"}, React.createElement("img", {src: "/icons/icon_disruptor-1.svg"})), 
-          React.createElement(Link, {to: "/superfans"}, React.createElement("img", {src: "/icons/icon_superfan-1.svg"}))
+          React.createElement(Link, {to: "/channel/disruption"}, React.createElement("img", {src: "/icons/icon_disruptor-1.svg"})), 
+          React.createElement(Link, {to: "/channel/superfans"}, React.createElement("img", {src: "/icons/icon_superfan-1.svg"}))
         )
     );
   }

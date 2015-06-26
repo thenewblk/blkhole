@@ -7,11 +7,11 @@ module.exports = React.createClass({
     return (
         <div className="navigator">
           <Link to="/"><img src="/icons/icon_BLKstar_black.svg" /></Link>
-          <Link to="/experiential" ><img src="/icons/icon_experiential-1.svg" /></Link>
-          <Link to="/handcrafted" ><img src="/icons/icon_handcraft-1.svg" /></Link>
+          <Link to="/channel/experiential" ><img src="/icons/icon_experiential-1.svg" /></Link>
+          <Link to="/channel/handcrafted" ><img src="/icons/icon_handcraft-1.svg" /></Link>
           <Link to="/agency" ><img src="/icons/icon_agency-1.svg" /></Link>
-          <Link to="/disruption" ><img src="/icons/icon_disruptor-1.svg" /></Link>
-          <Link to="/superfans" ><img src="/icons/icon_superfan-1.svg" /></Link>
+          <Link to="/channel/disruption" ><img src="/icons/icon_disruptor-1.svg" /></Link>
+          <Link to="/channel/superfans" ><img src="/icons/icon_superfan-1.svg" /></Link>
         </div>
     );
   }

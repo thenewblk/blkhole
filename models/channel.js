@@ -12,6 +12,7 @@ function slugify(text) {
 var channelSchema = mongoose.Schema({
 		name    				: String,
 		slug    				: String,
+    type    				: String,
     description    	: String,
     case_studies: [],
     icon: String

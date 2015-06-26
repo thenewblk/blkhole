@@ -1,0 +1,43 @@
+.post {
+  max-width: 100%;
+  margin: 50px auto;
+  padding: 0 15px;
+  &.text {
+    width: 600px;
+    padding: 0 15px;
+    text-align: center;
+    line-height: 2;
+  }
+  &.pullquote {
+    width: 500px;
+    padding: 0 15px;
+    text-align: center;
+  }
+  &.image {
+    width: 1000px;
+    padding: 0 15px;
+  }
+  &.logo {
+    img {
+      display: table;
+      width: 50%;
+      margin: auto;
+    }
+  }
+  &.two {
+    width: 1000px;
+    padding: 0 15px;
+    margin: 0 auto;
+    .post {
+      margin:0 auto;
+    }
+    .thing_1, .thing_2 {
+      width: 50%;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+
+img { max-width: 100%; }
