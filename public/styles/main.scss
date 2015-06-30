@@ -54,6 +54,56 @@ h1,h2,h3,h4,h5,p {
   padding: 10px;
   left: 0;
   top: 0;
+  transition: 0.15s ease-out;
+  z-index: 1;
+  overflow: hidden;
+  .icon {
+    width: 45px;
+    height: 75px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  svg {
+    fill: #939598;
+    transition: 0.15s ease-out;
+    &:hover {
+      fill: black;
+    }
+    #two {
+      display: none;
+    }
+  }
+  .items {
+    margin: 50px 0;
+    a {
+      display: block;
+    }
+    .name {
+      display: inline-block;
+      opacity: 0;
+      text-align: center;
+      transition: 0.35s ease-in;
+      position: absolute;
+      right: -1000%;
+    }
+  }
+  &:hover, {
+    width: 250px;
+    max-width: 100%;
+    .icon {
+      width: 45px;
+    }
+    .items {
+      .name {
+        display: inline-block;
+        vertical-align: middle;
+        opacity: 1;
+        margin: 0 25px;
+        right: inherit;
+        line-height: 75px;
+      }
+    }
+  }
 }
 
 .main {

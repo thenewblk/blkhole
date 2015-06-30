@@ -42,7 +42,45 @@ h1, h2, h3, h4, h5, p {
   position: fixed;
   padding: 10px;
   left: 0;
-  top: 0; }
+  top: 0;
+  transition: 0.15s ease-out;
+  z-index: 1;
+  overflow: hidden; }
+  .navigator .icon {
+    width: 45px;
+    height: 75px;
+    display: inline-block;
+    vertical-align: middle; }
+  .navigator svg {
+    fill: #939598;
+    transition: 0.15s ease-out; }
+    .navigator svg:hover {
+      fill: black; }
+    .navigator svg #two {
+      display: none; }
+  .navigator .items {
+    margin: 50px 0; }
+    .navigator .items a {
+      display: block; }
+    .navigator .items .name {
+      display: inline-block;
+      opacity: 0;
+      text-align: center;
+      transition: 0.35s ease-in;
+      position: absolute;
+      right: -1000%; }
+  .navigator:hover {
+    width: 250px;
+    max-width: 100%; }
+    .navigator:hover .icon {
+      width: 45px; }
+    .navigator:hover .items .name {
+      display: inline-block;
+      vertical-align: middle;
+      opacity: 1;
+      margin: 0 25px;
+      right: inherit;
+      line-height: 75px; }
 
 .main {
   height: 100%; }
