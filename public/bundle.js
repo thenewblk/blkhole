@@ -30452,19 +30452,19 @@ module.exports = React.createClass({displayName: "exports",
     var SVGMorpheus = require('../scripts/svg_morpheus.js');
 
     var experiential = new SVGMorpheus('svg.morph.experiential');
-    experiential.to('one',{duration: 150, easing: 'elastic-out', rotation: 'none'});
+    experiential.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
 
     var handcrafted = new SVGMorpheus('svg.morph.handcrafted');
-    handcrafted.to('one',{duration: 150, easing: 'elastic-out', rotation: 'none'});
+    handcrafted.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
 
     var agency = new SVGMorpheus('svg.morph.agency');
-    agency.to('one',{duration: 150, easing: 'elastic-out', rotation: 'none'});
+    agency.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
 
     var disruption = new SVGMorpheus('svg.morph.disruption');
-    disruption.to('one',{duration: 150, easing: 'elastic-out', rotation: 'none'});
+    disruption.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
 
     // var superfans = new SVGMorpheus('svg.morph.superfans');
-    // superfans.to('one',{duration: 150, easing: 'elastic-out', rotation: 'none'});
+    // superfans.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
 
     this.setState({ experiential: experiential, handcrafted: handcrafted, agency: agency, disruption: disruption });
   },
@@ -30472,28 +30472,28 @@ module.exports = React.createClass({displayName: "exports",
     console.log("experientialTwo");
     if (this.state.experiential){
       console.log(" to #two");
-      this.state.experiential.to('two',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.experiential.to('two',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
   experientialOne: function(){
     console.log("experientialOne");
     if (this.state.experiential){
       console.log(" to #one");
-      this.state.experiential.to('one',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.experiential.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
   handcraftedTwo: function(){
     console.log("handcraftedTwo");
     if (this.state.handcrafted){
       console.log(" to #two");
-      this.state.handcrafted.to('two',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.handcrafted.to('two',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
   handcraftedOne: function(){
     console.log("handcraftedOne");
     if (this.state.handcrafted){
       console.log(" to #one");
-      this.state.handcrafted.to('one',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.handcrafted.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
 
@@ -30501,14 +30501,14 @@ module.exports = React.createClass({displayName: "exports",
     console.log("agencyTwo");
     if (this.state.agency){
       console.log(" to #two");
-      this.state.agency.to('two',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.agency.to('two',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
   agencyOne: function(){
     console.log("agencyOne");
     if (this.state.agency){
       console.log(" to #one");
-      this.state.agency.to('one',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.agency.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
 
@@ -30516,14 +30516,14 @@ module.exports = React.createClass({displayName: "exports",
     console.log("disruptionTwo");
     if (this.state.disruption){
       console.log(" to #two");
-      this.state.disruption.to('two',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.disruption.to('two',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
   disruptionOne: function(){
     console.log("disruptionOne");
     if (this.state.disruption){
       console.log(" to #one");
-      this.state.disruption.to('one',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.disruption.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
 
@@ -30531,14 +30531,14 @@ module.exports = React.createClass({displayName: "exports",
     console.log("superfansTwo");
     if (this.state.superfans){
       console.log(" to #two");
-      this.state.superfans.to('two',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.superfans.to('two',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
   superfansOne: function(){
     console.log("superfansOne");
     if (this.state.superfans){
       console.log(" to #one");
-      this.state.superfans.to('one',{duration: 150, easing: 'linear', rotation: 'none'});
+      this.state.superfans.to('one',{duration: 1200, easing: 'expo-out', rotation: 'none'});
     }
   },
 
