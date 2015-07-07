@@ -3,7 +3,7 @@ a {
   text-decoration: none;
   font-weight: bold; }
   a:hover {
-    transition: 3s ease-out;
+    transition: 0.15s ease-out;
     color: black; }
 
 html {
@@ -50,7 +50,8 @@ h1, h2, h3, h4, h5, p {
     width: 45px;
     height: 75px;
     display: inline-block;
-    vertical-align: middle; }
+    vertical-align: middle;
+    position: relative; }
   .navigator svg {
     fill: #939598;
     transition: 0.15s ease-out; }
@@ -81,6 +82,12 @@ h1, h2, h3, h4, h5, p {
       margin: 0 25px;
       right: inherit;
       line-height: 75px; }
+  .navigator .sprite_container {
+    overflow: hidden;
+    height: 45px; }
+    .navigator .sprite_container img {
+      max-width: inherit;
+      position: absolute; }
 
 .main {
   height: 100%; }
