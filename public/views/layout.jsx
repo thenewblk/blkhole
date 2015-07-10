@@ -7,7 +7,12 @@ var util = require('util');
 
 module.exports = React.createClass({
   mixins: [ Router.State ],
+  
   componentDidMount: function(){
+    this.typekit();
+  },
+
+  typekit: function() {
     (function() {
       var config = {
         kitId: 'fus2ruo',
@@ -35,6 +40,7 @@ module.exports = React.createClass({
       s.parentNode.insertBefore(tk, s);
     })();
   },
+
   render: function render() {
     return (
       <html className="wf-loading">

@@ -4,6 +4,8 @@ var Helmet = require('react-helmet');
 var request = require('superagent');
 var Link = Router.Link;
 
+var Sprite = require('../components/sprite.jsx');
+
 var util = require('util');
 
 module.exports = React.createClass({
@@ -14,7 +16,7 @@ module.exports = React.createClass({
 
   getContent: function(){
     var self = this;
-    console.log("self.getParams().channel: " + self.getParams().channel);
+
     request
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
@@ -30,7 +32,6 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var self = this;
-    self.consoleLog();
     self.setState({ params: self.getParams() });
     if (self.props.content && self.props.content.type == "channel"){
       self.setState({content: self.props.content, title: self.props.content.name});
@@ -113,10 +114,20 @@ module.exports = React.createClass({
             <div className={project_view}>
               {projects.reverse()}
               <div className="channel_info">
-                <h1 className="channel_name">{name}</h1>
-                <div className="channel_description">{description}</div>
-                <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>
-                <img className="channel_icon" onClick={self.toggleDescription} src={icon} />
+                <div className="channel_container">
+                  <h1 className="channel_name">{name}</h1>
+                  <div className="channel_description">{description}</div>
+                  <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>
+                  <span className="channel_icon" onClick={self.toggleDescription}>
+                    <Sprite
+                      image="/icons/experiential-icon.png"
+                      columns={9}
+                      frames={17}
+                      duration={0.5}
+                      frameW={50}
+                      frameH={50} />
+                  </span>
+                </div>
               </div>
             </div>
           </div>

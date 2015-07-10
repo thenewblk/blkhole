@@ -6,8 +6,7 @@ module.exports = React.createClass({
     document.title = "Login";
   },
   render: function render() {
-    console.log("Login props: " + util.inspect(this.props));
-    console.log("Login state: " + util.inspect(this.state));
+
     return (
       <div className='login'>
         <h1>Log In</h1>

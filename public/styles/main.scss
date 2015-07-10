@@ -31,7 +31,6 @@ h1,h2,h3,h4,h5,p {
   html.wf-active & {
     margin: 0;
     padding: 0;
-    color: white;
     text-transform: center;
     opacity: 1;
     transition: .2s ease-out;
@@ -46,23 +45,31 @@ h1,h2,h3,h4,h5,p {
   position: relative;
 }
 
+.channel_link {
+  border-bottom: #ddd solid 1px;
+  &:first-child {
+    border-top: #ddd solid 1px;
+  }
+}
+
 .navigator {
   width: 65px;
   height: 100%;
   background: white;
   position: fixed;
-  padding: 10px;
+  padding: 10px 0;
   left: 0;
   top: 0;
   transition: 0.15s ease-out;
   z-index: 1;
   overflow: hidden;
   .icon {
-    width: 45px;
-    height: 75px;
+    width: 50px;
+    margin: 10px;
     display: inline-block;
     vertical-align: middle;
     position: relative;
+    max-width: inherit;
   }
   svg {
     fill: #939598;
@@ -81,6 +88,10 @@ h1,h2,h3,h4,h5,p {
     }
     .name {
       display: inline-block;
+      line-height: 70px;
+      color: black;
+      text-transform: uppercase;
+      font-size: 14px;
       opacity: 0;
       text-align: center;
       transition: 0.35s ease-in;
@@ -91,9 +102,8 @@ h1,h2,h3,h4,h5,p {
   &:hover, {
     width: 250px;
     max-width: 100%;
-    .icon {
-      width: 45px;
-    }
+    box-shadow: 0 0 5px #ccc;
+
     .items {
       .name {
         display: inline-block;
@@ -101,17 +111,16 @@ h1,h2,h3,h4,h5,p {
         opacity: 1;
         margin: 0 25px;
         right: inherit;
-        line-height: 75px;
       }
     }
   }
-  .sprite_container {
-    overflow: hidden;
-    height: 45px;
-    img {
-      max-width: inherit;
-      position: absolute;
-    }
+}
+
+.sprite_container {
+  overflow: hidden;
+  display: inline-block;
+  img {
+    max-width: inherit;
   }
 }
 
@@ -122,3 +131,4 @@ h1,h2,h3,h4,h5,p {
 @import 'channel';
 @import 'casestudy';
 @import 'post';
+@import 'agency';

@@ -55,6 +55,7 @@ gulp.task('react', function() {
 // Watch Files For Changes
 gulp.task('watch', function() {
     gulp.watch('public/views/**/*.jsx', ['react']);
+		gulp.watch('public/components/**/*.jsx', ['react']);
 		gulp.watch('public/routes.jsx', ['react']);
     gulp.watch('public/styles/*.scss', ['sass']);
 });

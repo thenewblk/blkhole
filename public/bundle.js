@@ -5,7 +5,7 @@ var Client = require('react-engine/lib/client');
 // Include all view files. Browerify doesn't do
 // this automatically as it can only operate on
 // static require statements.
-require('./views/404.jsx');require('./views/app.jsx');require('./views/casestudy.jsx');require('./views/channel.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
+require('./views/404.jsx');require('./views/agency.jsx');require('./views/app.jsx');require('./views/casestudy.jsx');require('./views/channel.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
 
 // boot options
 var options = {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
 });
 
 
-},{"./routes.jsx":300,"./views/404.jsx":301,"./views/app.jsx":302,"./views/casestudy.jsx":303,"./views/channel.jsx":304,"./views/home.jsx":305,"./views/layout.jsx":306,"./views/login.jsx":307,"./views/menu.jsx":308,"react-engine/lib/client":6}],2:[function(require,module,exports){
+},{"./routes.jsx":300,"./views/404.jsx":301,"./views/agency.jsx":302,"./views/app.jsx":303,"./views/casestudy.jsx":304,"./views/channel.jsx":305,"./views/home.jsx":306,"./views/layout.jsx":307,"./views/login.jsx":308,"./views/menu.jsx":309,"react-engine/lib/client":6}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -28535,7 +28535,7 @@ var React = require('react');
 module.exports = React.createClass({displayName: "exports",
 
   getInitialState: function() {
-    return { animation: "start", current_frame: 0, x: 0, y: 0 }
+    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {} }
   },
 
   componentWillMount: function(){
@@ -28544,28 +28544,22 @@ module.exports = React.createClass({displayName: "exports",
 
   enter: function()	{
     this.setState({animation: "forward"});
-    // this.animate();
 
 	},
 
   out: function()	{
     this.setState({animation: "reverse"});
-    // this.animate();
-
 	},
 
   animate: function(){
     var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
 
-    interv = setInterval(function(){
+    var interv = setInterval(function(){
         if ( self.state.animation == "start") {
         }
 
-        if ( self.state.animation == "forward") {
-          if (self.state.current_frame == self.props.frames - 1 ) {
-          }
-          else {
+        if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
             var new_frame = self.state.current_frame + 1;
             var col = (new_frame % self.props.columns) +1;
             var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
@@ -28573,14 +28567,9 @@ module.exports = React.createClass({displayName: "exports",
             var x = (col - 1) * self.props.frameW * -1;
             var y = (row - 1) * self.props.frameH * -1;
             self.setState( { current_frame: new_frame, x: x, y: y } );
-
-      		}
         }
 
-        if ( self.state.animation == "reverse") {
-          if (self.state.current_frame == 0) {
-          }
-          else {
+        if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
             var new_frame = self.state.current_frame - 1;
             var col = (new_frame % self.props.columns) +1;
             var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
@@ -28588,29 +28577,32 @@ module.exports = React.createClass({displayName: "exports",
             var x = (col - 1) * self.props.frameW * -1;
             var y = (row - 1) * self.props.frameH * -1;
             self.setState( { current_frame: new_frame, x: x, y: y } );
-      		}
         }
 
     }, speed);
 
+    self.setState({interval: interv});
   },
 
   render: function() {
     var self = this;
     var image = self.props.image;
-    var width = self.props.width;
-    var height = self.props.height;
+    var width = self.props.frameW * self.props.columns;
+    var height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
+
+    var className = self.props.className + " icon sprite_container";
 
     var style = {
       transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)"
     };
+
     var size = {
       height: self.props.frameH + "px",
       width: self.props.frameW + "px",
     };
 
     return (
-      React.createElement("span", {onMouseEnter: this.enter, onMouseLeave: this.out, className: "icon sprite_container", style: size}, 
+      React.createElement("span", {onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size}, 
         React.createElement("img", {src: image, width: width, height: height, style:  style})
       )
     )
@@ -28629,6 +28621,7 @@ var App = require('./views/app.jsx');
 var Home = require('./views/home.jsx');
 var Login = require('./views/login.jsx');
 var Channel = require('./views/channel.jsx');
+var Agency = require('./views/agency.jsx');
 var CaseStudy = require('./views/casestudy.jsx');
 
 var NotFound = require('./views/404.jsx');
@@ -28636,7 +28629,8 @@ var NotFound = require('./views/404.jsx');
 var routes = module.exports = (
     React.createElement(Route, {path: "/", handler: App}, 
       React.createElement(Route, {name: "login", handler: Login}), 
-      React.createElement(Route, {path: "/channel/:channel", handler: Channel}), 
+      React.createElement(Route, {path: "/agency", handler: Agency}), 
+      React.createElement(Route, {path: ":channel", handler: Channel}), 
       React.createElement(Route, {path: "/post/:casestudy", handler: CaseStudy}), 
       React.createElement(DefaultRoute, {handler: Home}), 
       React.createElement(NotFoundRoute, {handler: NotFound})
@@ -28644,7 +28638,7 @@ var routes = module.exports = (
 );
 
 
-},{"./views/404.jsx":301,"./views/app.jsx":302,"./views/casestudy.jsx":303,"./views/channel.jsx":304,"./views/home.jsx":305,"./views/login.jsx":307,"react":295,"react-router":126}],301:[function(require,module,exports){
+},{"./views/404.jsx":301,"./views/agency.jsx":302,"./views/app.jsx":303,"./views/casestudy.jsx":304,"./views/channel.jsx":305,"./views/home.jsx":306,"./views/login.jsx":308,"react":295,"react-router":126}],301:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 
@@ -28662,7 +28656,42 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":306,"react":295}],302:[function(require,module,exports){
+},{"./layout.jsx":307,"react":295}],302:[function(require,module,exports){
+var React = require('react');
+var Helmet = require('react-helmet');
+
+module.exports = React.createClass({displayName: "exports",
+  render: function render() {
+    return (
+      React.createElement("div", null, 
+        React.createElement(Helmet, {
+              title: "Agency | the new blk", 
+              meta: [
+                  {"name": "description", "content": "the new blk" }
+              ], 
+              link: [
+                  {"rel": "canonical", "href": "http://thenewblk.com/"},
+                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
+              ]}
+          ), 
+        React.createElement("div", {className: "agency_top"}, 
+          React.createElement("div", {className: "top_copy"}, 
+            React.createElement("h3", {className: "subheader_top"}, "THE NEW BLK IS AN AD AGENCY"), 
+            React.createElement("h1", {className: "header_top"}, "THAT BUILDS POWERFUL BRAND EXPERIENCES. "), 
+            React.createElement("p", {className: "header_copy"}, "Founded in 2010 and headquartered in downtown Omaha, we work with local, regional, national and global brands. We are storytellers, brand builders, content marketers, strategic advisors, and message crafters. We work with traditional paid and earned media, but we also create our own media channels and leverage the power of social media to take the conversation direct to the audience.")
+          ), 
+          React.createElement("img", {className: "background_agency", src: "/images/agency/theoldgirl_grayscale.jpg"}), 
+          React.createElement("div", {className: "bottom_triangle white"}, 
+            React.createElement("img", {className: "icon", src: "/icons/icon_agency-1.svg"})
+          )
+        )
+      )
+    );
+  }
+});
+
+
+},{"react":295,"react-helmet":11}],303:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 var Router = require('react-router');
@@ -28683,7 +28712,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":306,"react":295,"react-router":126,"util":5}],303:[function(require,module,exports){
+},{"./layout.jsx":307,"react":295,"react-router":126,"util":5}],304:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -28714,8 +28743,7 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
-    console.log('self.getParams().casestudy: ' + self.getParams().casestudy);
-    self.consoleLog();
+    
     self.setState({ params: self.getParams() });
     if (self.props.content && self.props.content.type == "case-study"){
       self.setState({content: self.props.content, title: self.props.content.name});
@@ -28849,12 +28877,14 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],304:[function(require,module,exports){
+},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],305:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
 var Link = Router.Link;
+
+var Sprite = require('../components/sprite.jsx');
 
 var util = require('util');
 
@@ -28866,7 +28896,7 @@ module.exports = React.createClass({displayName: "exports",
 
   getContent: function(){
     var self = this;
-    console.log("self.getParams().channel: " + self.getParams().channel);
+
     request
       .get('/api/channel/'+self.getParams().channel)
       .end(function(err, res){
@@ -28882,7 +28912,6 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
-    self.consoleLog();
     self.setState({ params: self.getParams() });
     if (self.props.content && self.props.content.type == "channel"){
       self.setState({content: self.props.content, title: self.props.content.name});
@@ -28965,10 +28994,20 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: project_view}, 
               projects.reverse(), 
               React.createElement("div", {className: "channel_info"}, 
-                React.createElement("h1", {className: "channel_name"}, name), 
-                React.createElement("div", {className: "channel_description"}, description), 
-                React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
-                React.createElement("img", {className: "channel_icon", onClick: self.toggleDescription, src: icon})
+                React.createElement("div", {className: "channel_container"}, 
+                  React.createElement("h1", {className: "channel_name"}, name), 
+                  React.createElement("div", {className: "channel_description"}, description), 
+                  React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
+                  React.createElement("span", {className: "channel_icon", onClick: self.toggleDescription}, 
+                    React.createElement(Sprite, {
+                      image: "/icons/experiential-icon.png", 
+                      columns: 9, 
+                      frames: 17, 
+                      duration: 0.5, 
+                      frameW: 50, 
+                      frameH: 50})
+                  )
+                )
               )
             )
           )
@@ -28980,7 +29019,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],305:[function(require,module,exports){
+},{"../components/sprite.jsx":299,"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],306:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
 
@@ -29005,7 +29044,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11}],306:[function(require,module,exports){
+},{"react":295,"react-helmet":11}],307:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
@@ -29015,7 +29054,12 @@ var util = require('util');
 
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
+  
   componentDidMount: function(){
+    this.typekit();
+  },
+
+  typekit: function() {
     (function() {
       var config = {
         kitId: 'fus2ruo',
@@ -29043,6 +29087,7 @@ module.exports = React.createClass({displayName: "exports",
       s.parentNode.insertBefore(tk, s);
     })();
   },
+
   render: function render() {
     return (
       React.createElement("html", {className: "wf-loading"}, 
@@ -29064,7 +29109,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./menu.jsx":308,"react":295,"react-helmet":11,"react-router":126,"util":5}],307:[function(require,module,exports){
+},{"./menu.jsx":309,"react":295,"react-helmet":11,"react-router":126,"util":5}],308:[function(require,module,exports){
 var React = require('react');
 var util = require('util');
 
@@ -29073,8 +29118,7 @@ module.exports = React.createClass({displayName: "exports",
     document.title = "Login";
   },
   render: function render() {
-    console.log("Login props: " + util.inspect(this.props));
-    console.log("Login state: " + util.inspect(this.state));
+
     return (
       React.createElement("div", {className: "login"}, 
         React.createElement("h1", null, "Log In"), 
@@ -29104,14 +29148,11 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"util":5}],308:[function(require,module,exports){
+},{"react":295,"util":5}],309:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 
 var Sprite = require('../components/sprite.jsx');
-
-
-
 var Link = Router.Link;
 
 module.exports = React.createClass({displayName: "exports",
@@ -29123,48 +29164,15 @@ module.exports = React.createClass({displayName: "exports",
 
     return (
         React.createElement("div", {className: "navigator"}, 
-          React.createElement(Link, {className: "new-blk-logo", to: "/"}, React.createElement("img", {className: "icon", src: "/icons/icon_BLKstar_black.svg"})), 
+          React.createElement(Link, {className: "new-blk-logo", to: "/"}, React.createElement("img", {className: "icon", src: "/icons/icon_new-star.svg"})), 
           React.createElement("div", {className: "items"}, 
-            React.createElement(Link, {to: "/channel/experiential"}, 
-              React.createElement(Sprite, {
-                image: "/icons/superfan-icon.png", 
-                width: 450, 
-                height: 100, 
-                columns: 9, 
-                frames: 17, 
-                duration: 0.25, 
-                frameW: 50, 
-                frameH: 50}), 
-              React.createElement("span", {className: "name"}, "Experiential")
+            React.createElement(Link, {className: "channel_link", to: "/agency"}, 
+              React.createElement("img", {className: "icon", src: "/icons/icon_agency-1.svg"}), 
+              React.createElement("span", {className: "name"}, "Agency")
             ), 
-            React.createElement(Link, {to: "/channel/handcrafted"}, 
-              React.createElement(Sprite, {
-                image: "/icons/superfan-icon.png", 
-                width: 450, 
-                height: 100, 
-                columns: 9, 
-                frames: 17, 
-                duration: 0.5, 
-                frameW: 50, 
-                frameH: 50}), 
-              React.createElement("span", {className: "name"}, "Handcrafted")
-            ), 
-            React.createElement(Link, {to: "/agency"}, 
-              React.createElement(Sprite, {
-                image: "/icons/superfan-icon.png", 
-                width: 450, 
-                height: 100, 
-                columns: 9, 
-                frames: 17, 
-                duration: 0.75, 
-                frameW: 50, 
-                frameH: 50}), 
-            React.createElement("span", {className: "name"}, "Agency")), 
-            React.createElement(Link, {to: "/channel/disruption"}, 
+            React.createElement(Link, {className: "channel_link", to: "/disruption"}, 
               React.createElement(Sprite, {
                 image: "/icons/disruption-icon.png", 
-                width: 450, 
-                height: 100, 
                 columns: 9, 
                 frames: 18, 
                 duration: .5, 
@@ -29172,17 +29180,35 @@ module.exports = React.createClass({displayName: "exports",
                 frameH: 50}), 
               React.createElement("span", {className: "name"}, "DISRUPTION")
             ), 
-            React.createElement(Link, {to: "/channel/superfans"}, 
+            React.createElement(Link, {className: "channel_link", to: "/experiential"}, 
+              React.createElement(Sprite, {
+                image: "/icons/experiential-icon.png", 
+                columns: 9, 
+                frames: 17, 
+                duration: .5, 
+                frameW: 50, 
+                frameH: 50}), 
+              React.createElement("span", {className: "name"}, "Experiential")
+            ), 
+            React.createElement(Link, {className: "channel_link", to: "/superfans"}, 
               React.createElement(Sprite, {
                 image: "/icons/superfan-icon.png", 
-                width: 450, 
-                height: 100, 
                 columns: 9, 
                 frames: 17, 
                 duration: .5, 
                 frameW: 50, 
                 frameH: 50}), 
               React.createElement("span", {className: "name"}, "Superfans")
+            ), 
+            React.createElement(Link, {className: "channel_link", to: "/handcrafted"}, 
+              React.createElement(Sprite, {
+                image: "/icons/handcrafted-icon.png", 
+                columns: 8, 
+                frames: 16, 
+                duration: .5, 
+                frameW: 50, 
+                frameH: 50}), 
+              React.createElement("span", {className: "name"}, "Handcrafted")
             )
           )
         )

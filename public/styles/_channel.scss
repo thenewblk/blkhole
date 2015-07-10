@@ -50,6 +50,12 @@
   }
 }
 
+.channel_container {
+  width: 600px;
+  max-width: 100%;
+  margin: auto;
+}
+
 .channel_info {
   background: white;
   position: absolute;
@@ -60,6 +66,7 @@
   padding: 30px;
   transition: 0.15s ease-out;
   .channel_name {
+    font-size: 75px;
     color: black;
     text-transform: uppercase;
   }
@@ -69,6 +76,10 @@
     width: 50px;
     opacity: 0;
     transition: 0.25s ease-out;
+  }
+  .channel_description {
+    color: #868686;
+    line-height: 2;
   }
   .featured_projects.hide & {
     height: 50px;
