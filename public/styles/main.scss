@@ -24,6 +24,7 @@ body {
 
 * {
   box-sizing: border-box;
+
 }
 
 h1,h2,h3,h4,h5,p {
@@ -53,16 +54,18 @@ h1,h2,h3,h4,h5,p {
 }
 
 .navigator {
-  width: 65px;
+  width: 100%;
+  max-width: 65px;
   height: 100%;
   background: white;
   position: fixed;
   padding: 10px 0;
   left: 0;
   top: 0;
-  transition: 0.15s ease-out;
+  transition: 0.25s ease-out;
   z-index: 1;
   overflow: hidden;
+  transform:translate3d(0, 0, 0);
   .icon {
     width: 50px;
     margin: 10px;
@@ -70,6 +73,7 @@ h1,h2,h3,h4,h5,p {
     vertical-align: middle;
     position: relative;
     max-width: inherit;
+    transform:translate3d(0, 0, 0);
   }
   svg {
     fill: #939598;
@@ -94,14 +98,14 @@ h1,h2,h3,h4,h5,p {
       font-size: 14px;
       opacity: 0;
       text-align: center;
-      transition: 0.35s ease-in;
+      transition: 0.15s ease-in;
       position: absolute;
-      right: -1000%;
+      /* left: -1000%; */
     }
   }
-  &:hover, {
-    width: 250px;
-    max-width: 100%;
+  &:hover {
+
+    max-width: 250px;
     box-shadow: 0 0 5px #ccc;
 
     .items {
@@ -110,7 +114,7 @@ h1,h2,h3,h4,h5,p {
         vertical-align: middle;
         opacity: 1;
         margin: 0 25px;
-        right: inherit;
+        left: inherit;
       }
     }
   }

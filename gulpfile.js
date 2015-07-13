@@ -14,7 +14,9 @@ var jshint = require('gulp-jshint'),
   browserify = require('browserify'),
   reactify = require('reactify'),
 	globify = require('require-globify'),
-  source = require('vinyl-source-stream');
+  source = require('vinyl-source-stream'),
+	autoprefixer = require('gulp-autoprefixer');
+
 
 // Lint Task
 // gulp.task('lint', function() {
@@ -27,6 +29,10 @@ var jshint = require('gulp-jshint'),
 gulp.task('sass', function() {
     return gulp.src('public/styles/*.scss')
         .pipe(sass())
+				.pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
         .pipe(gulp.dest('public/styles'));
 });
 

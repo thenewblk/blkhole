@@ -28541,6 +28541,9 @@ module.exports = React.createClass({displayName: "exports",
   componentWillMount: function(){
     this.animate();
   },
+  componentWillUnmount: function(){
+    this.setState({animation: "stop"});
+  },
 
   enter: function()	{
     this.setState({animation: "forward"});
@@ -28555,7 +28558,7 @@ module.exports = React.createClass({displayName: "exports",
     var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
 
-    var interv = setInterval(function(){
+    interv = setInterval(function(){
         if ( self.state.animation == "start") {
         }
 
@@ -28578,6 +28581,9 @@ module.exports = React.createClass({displayName: "exports",
             var y = (row - 1) * self.props.frameH * -1;
             self.setState( { current_frame: new_frame, x: x, y: y } );
         }
+        if ( self.state.animation == "stop") {
+          clearInterval(interv);
+        }
 
     }, speed);
 
@@ -28589,11 +28595,15 @@ module.exports = React.createClass({displayName: "exports",
     var image = self.props.image;
     var width = self.props.frameW * self.props.columns;
     var height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
-
-    var className = self.props.className + " icon sprite_container";
+    if (self.props.className) {
+      var className = self.props.className + " icon sprite_container";
+    } else {
+      var className = "icon sprite_container";
+    }
 
     var style = {
-      transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)"
+      transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
+      WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)"
     };
 
     var size = {
