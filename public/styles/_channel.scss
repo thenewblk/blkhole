@@ -17,18 +17,23 @@
       width: 100%;
       height: 100%;
       transition: 0.15s ease-out;
-      .project_name {
+      .project_inner {
         display: table-cell;
         vertical-align: middle;
         text-align: center;
         opacity: 0;
+        color: white;
+        padding: 30px;
+      }
+      .project_name {
+        border-bottom: dotted 1px white;
       }
     }
     &:hover {
       .project_content{
         background: rgba(0,0,0,0.5);
       }
-      .project_name {
+      .project_inner {
         opacity: 1;
       }
     }

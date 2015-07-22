@@ -28641,7 +28641,7 @@ var routes = module.exports = (
       React.createElement(Route, {name: "login", handler: Login}), 
       React.createElement(Route, {path: "/agency", handler: Agency}), 
       React.createElement(Route, {path: ":channel", handler: Channel}), 
-      React.createElement(Route, {path: "/post/:casestudy", handler: CaseStudy}), 
+      React.createElement(Route, {path: "/post/:casestudy", handler: CaseStudy, key: "Thing!" }), 
       React.createElement(DefaultRoute, {handler: Home}), 
       React.createElement(NotFoundRoute, {handler: NotFound})
     )
@@ -28753,7 +28753,7 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
-    
+
     self.setState({ params: self.getParams() });
     if (self.props.content && self.props.content.type == "case-study"){
       self.setState({content: self.props.content, title: self.props.content.name});
@@ -28962,7 +28962,9 @@ module.exports = React.createClass({displayName: "exports",
              React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
                React.createElement(Link, {to: project.url}, 
                  React.createElement("div", {className: "project_content"}, 
-                   React.createElement("h1", {className: "project_name"}, project.name)
+                   React.createElement("div", {className: "project_inner"}, 
+                     React.createElement("h1", {className: "project_name"}, project.name)
+                   )
                  )
                )
              )
@@ -28971,7 +28973,9 @@ module.exports = React.createClass({displayName: "exports",
           return (
             React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
               React.createElement("div", {className: "project_content"}, 
-                React.createElement("h1", {className: "project_name"}, project.name)
+                React.createElement("div", {className: "project_inner"}, 
+                  React.createElement("h1", {className: "project_name"}, project.name)
+                )
               )
             )
           )

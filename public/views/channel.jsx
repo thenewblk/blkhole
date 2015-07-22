@@ -72,7 +72,9 @@ module.exports = React.createClass({
              <div className={"project project_"+tmp_number} style={tmp_styles}>
                <Link to={project.url}>
                  <div className="project_content">
-                   <h1 className="project_name">{project.name}</h1>
+                   <div className="project_inner">
+                     <h1 className="project_name">{project.name}</h1>
+                   </div>
                  </div>
                </Link>
              </div>
@@ -81,7 +83,9 @@ module.exports = React.createClass({
           return (
             <div className={"project project_"+tmp_number} style={tmp_styles}>
               <div className="project_content">
-                <h1 className="project_name">{project.name}</h1>
+                <div className="project_inner">
+                  <h1 className="project_name">{project.name}</h1>
+                </div>
               </div>
             </div>
           )
