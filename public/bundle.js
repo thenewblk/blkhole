@@ -28753,7 +28753,6 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
-
     self.setState({ params: self.getParams() });
     if (self.props.content && self.props.content.type == "case-study"){
       self.setState({content: self.props.content, title: self.props.content.name});
