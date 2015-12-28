@@ -15,7 +15,7 @@ var channelSchema = mongoose.Schema({
     type    				: String,
     description    	: String,
     case_studies: [],
-    icon: String
+    icon: {}
 });
 
 channelSchema.pre('save', function (next) {

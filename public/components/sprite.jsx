@@ -1,5 +1,5 @@
 var React = require('react');
-
+var util = require('util');
 module.exports = React.createClass({
 
   getInitialState: function() {
@@ -60,6 +60,7 @@ module.exports = React.createClass({
 
   render: function() {
     var self = this;
+
     var image = self.props.image;
     var width = self.props.frameW * self.props.columns;
     var height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );

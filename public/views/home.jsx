@@ -16,6 +16,7 @@ module.exports = React.createClass({
               ]}
           />
         <h1>Home Page</h1>
+
       </div>
     );
   }

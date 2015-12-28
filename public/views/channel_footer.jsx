@@ -11,17 +11,17 @@ var util = require('util');
 module.exports = React.createClass({
   mixins: [ Router.State ],
   getInitialState: function(){
-    return {params: {}, title: '', view_description: true};
+    return {params: {}, title: '', view_description: false};
   },
 
   getContent: function(){
     var self = this;
-
+    console.log
     request
-      .get('/api/channel/'+self.getParams().channel)
+      .get('/api/channel/'+self.props.channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name, view_description: true });
+          self.setState({content: res.body, title: res.body.name, view_description: false });
         }
       });
   },
@@ -33,12 +33,8 @@ module.exports = React.createClass({
   componentDidMount: function() {
     var self = this;
     self.setState({ params: self.getParams() });
-    if (self.props.content && self.props.content.type == "channel"){
-      self.setState({content: self.props.content, title: self.props.content.name});
-    }
-    else if (self.getParams().channel){
-      self.getContent();
-    }
+    self.getContent();
+
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -103,18 +99,6 @@ module.exports = React.createClass({
       });
       return (
         <div className="channel">
-          <Helmet
-                title={title}
-                meta={[
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
-                ]}
-                link={[
-                    {"rel": "canonical", "href": "http://mysite.com/example"},
-                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-                ]}
-            />
             <div className="content">
               <div className={project_view}>
                 {projects.reverse()}
@@ -144,18 +128,6 @@ module.exports = React.createClass({
     } else {
       return (
         <div className="channel">
-          <Helmet
-                title={title}
-                meta={[
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
-                ]}
-                link={[
-                    {"rel": "canonical", "href": "http://mysite.com/example"},
-                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-                ]}
-          />
           <p>"Loading..."</p>
         </div>
       );

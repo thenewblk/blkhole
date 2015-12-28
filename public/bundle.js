@@ -5,7 +5,7 @@ var Client = require('react-engine/lib/client');
 // Include all view files. Browerify doesn't do
 // this automatically as it can only operate on
 // static require statements.
-require('./views/404.jsx');require('./views/agency.jsx');require('./views/app.jsx');require('./views/casestudy.jsx');require('./views/channel.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
+require('./views/404.jsx');require('./views/agency.jsx');require('./views/app.jsx');require('./views/casestudy.jsx');require('./views/channel.jsx');require('./views/channel_footer.jsx');require('./views/home.jsx');require('./views/layout.jsx');require('./views/login.jsx');require('./views/menu.jsx');
 
 // boot options
 var options = {
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
 });
 
 
-},{"./routes.jsx":300,"./views/404.jsx":301,"./views/agency.jsx":302,"./views/app.jsx":303,"./views/casestudy.jsx":304,"./views/channel.jsx":305,"./views/home.jsx":306,"./views/layout.jsx":307,"./views/login.jsx":308,"./views/menu.jsx":309,"react-engine/lib/client":6}],2:[function(require,module,exports){
+},{"./routes.jsx":300,"./views/404.jsx":301,"./views/agency.jsx":302,"./views/app.jsx":303,"./views/casestudy.jsx":304,"./views/channel.jsx":305,"./views/channel_footer.jsx":306,"./views/home.jsx":307,"./views/layout.jsx":308,"./views/login.jsx":309,"./views/menu.jsx":310,"react-engine/lib/client":6}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -28531,7 +28531,7 @@ module.exports = function(arr, fn, initial){
 };
 },{}],299:[function(require,module,exports){
 var React = require('react');
-
+var util = require('util');
 module.exports = React.createClass({displayName: "exports",
 
   getInitialState: function() {
@@ -28592,6 +28592,7 @@ module.exports = React.createClass({displayName: "exports",
 
   render: function() {
     var self = this;
+
     var image = self.props.image;
     var width = self.props.frameW * self.props.columns;
     var height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
@@ -28620,7 +28621,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295}],300:[function(require,module,exports){
+},{"react":295,"util":5}],300:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -28648,7 +28649,7 @@ var routes = module.exports = (
 );
 
 
-},{"./views/404.jsx":301,"./views/agency.jsx":302,"./views/app.jsx":303,"./views/casestudy.jsx":304,"./views/channel.jsx":305,"./views/home.jsx":306,"./views/login.jsx":308,"react":295,"react-router":126}],301:[function(require,module,exports){
+},{"./views/404.jsx":301,"./views/agency.jsx":302,"./views/app.jsx":303,"./views/casestudy.jsx":304,"./views/channel.jsx":305,"./views/home.jsx":307,"./views/login.jsx":309,"react":295,"react-router":126}],301:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 
@@ -28666,7 +28667,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":307,"react":295}],302:[function(require,module,exports){
+},{"./layout.jsx":308,"react":295}],302:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
 
@@ -28722,13 +28723,14 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./layout.jsx":307,"react":295,"react-router":126,"util":5}],304:[function(require,module,exports){
+},{"./layout.jsx":308,"react":295,"react-router":126,"util":5}],304:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var util = require('util');
+var Channel = require('./channel_footer.jsx');
 
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
@@ -28754,12 +28756,15 @@ module.exports = React.createClass({displayName: "exports",
   componentWillMount: function() {
     var self = this;
     self.setState({ params: self.getParams() });
-    if (self.props.content && self.props.content.type == "case-study"){
-      self.setState({content: self.props.content, title: self.props.content.name});
-    }
-    else if (self.getParams().casestudy){
-      self.getContent();
-    }
+
+    // if (self.props.content && self.props.content.type == "case-study"){
+    //   self.getContent();
+    //   // self.setState({content: self.props.content, title: self.props.content.name});
+    // }
+    // else if (self.getParams().casestudy){
+    //   self.getContent();
+    // }
+    self.getContent();
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -28784,7 +28789,33 @@ module.exports = React.createClass({displayName: "exports",
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
       }
+      console.log("self.state.content.block_color: "+ self.state.content.block_color);
+      var block_style = {
+        backgroundColor: self.state.content.block_color,
+        background: "linear-gradient(135deg, transparent 30px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 30px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
+        backgroundSize: "51%",
+        backgroundRepeat: "no-repeat"
+      }
+
       var things = self.state.content.content.things.map(function(thing, index){
+        if (thing.type == "block") {
+          if (thing.style == "uppercase") {
+            return (
+              React.createElement("div", {className: "post block uppercase", style: block_style}, React.createElement("span", {className: "content"}, thing.content))
+            )
+          } else if (thing.style == "bold") {
+            return (
+              React.createElement("div", {className: "post block bold", style: block_style}, 
+                React.createElement("span", {className: "content"}, thing.content), 
+                React.createElement("span", {className: "bold-content"}, thing.bold)
+              )
+            )
+          } else {
+            return (
+              React.createElement("div", {className: "post block", style: block_style}, React.createElement("span", {className: "content"}, thing.content))
+            )
+          }
+        }
         if (thing.type == "text") {
           return (
             React.createElement("div", {className: "post text"}, thing.content)
@@ -28816,8 +28847,32 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "post logo"}, React.createElement("img", {src: thing.url}))
           )
         }
+
+        if (thing.type == "4-images") {
+          return (
+            React.createElement("div", {className: "post four-images"}, 
+              React.createElement("div", {className: "image-wrapper image-one"}, 
+                React.createElement("img", {src: thing.one})
+              ), 
+              React.createElement("div", {className: "image-wrapper image-two"}, 
+                React.createElement("img", {src: thing.two})
+              ), 
+              React.createElement("div", {className: "image-wrapper image-hree"}, 
+                React.createElement("img", {src: thing.three})
+              ), 
+              React.createElement("div", {className: "image-wrapper image-four"}, 
+                React.createElement("img", {src: thing.four})
+              )
+            )
+          )
+        }
         if (thing.type == "two") {
           var little_things = thing.content.map(function(little_thing, index){
+            if (little_thing.type == "block") {
+              return (
+                React.createElement("div", {className: "post block"}, little_thing.content)
+              )
+            }
             if (little_thing.type == "text") {
               return (
                 React.createElement("div", {className: "post text"}, little_thing.content)
@@ -28876,17 +28931,19 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "top", style: top_image}, 
               React.createElement("h1", {className: "case_study_name"}, name)
             ), 
-            things
+            things, 
+            React.createElement(Channel, {channel: self.state.content.channel})
           )
           : "Loading..."
         
+
       )
     );
   }
 });
 
 
-},{"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],305:[function(require,module,exports){
+},{"./channel_footer.jsx":306,"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],305:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -28919,7 +28976,7 @@ module.exports = React.createClass({displayName: "exports",
   //   var self = this;
   // },
 
-  componentWillMount: function() {
+  componentDidMount: function() {
     var self = this;
     self.setState({ params: self.getParams() });
     if (self.props.content && self.props.content.type == "channel"){
@@ -28947,10 +29004,18 @@ module.exports = React.createClass({displayName: "exports",
   render: function render() {
     var self = this;
     var title = self.state.title;
+    if (self.state.view_description){
+      var project_view = "featured_projects show";
+    } else {
+      var project_view = "featured_projects hide";
+    }
+
+
     if  (self.state.content) {
       var name = self.state.content.name;
       var description = self.state.content.description;
       var icon = self.state.content.icon;
+
       var projects = self.state.content.case_studies.map(function(project, index){
         var tmp_styles = {
           backgroundImage: 'url('+project.featured_image+')'
@@ -28962,7 +29027,8 @@ module.exports = React.createClass({displayName: "exports",
                React.createElement(Link, {to: project.url}, 
                  React.createElement("div", {className: "project_content"}, 
                    React.createElement("div", {className: "project_inner"}, 
-                     React.createElement("h1", {className: "project_name"}, project.name)
+                     React.createElement("h1", {className: "project_name"}, project.name), 
+                     React.createElement("p", {className: "project_tagline"}, project.tagline)
                    )
                  )
                )
@@ -28973,66 +29039,217 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
               React.createElement("div", {className: "project_content"}, 
                 React.createElement("div", {className: "project_inner"}, 
-                  React.createElement("h1", {className: "project_name"}, project.name)
+                  React.createElement("h1", {className: "project_name"}, project.name), 
+                  React.createElement("p", {className: "project_tagline"}, project.tagline)
                 )
               )
             )
           )
         }
       });
+      return (
+        React.createElement("div", {className: "channel"}, 
+          React.createElement(Helmet, {
+                title: title, 
+                meta: [
+                    {"name": "description", "content": title },
+                    {"property": "og:type", "content": "article"}
+                ], 
+                link: [
+                    {"rel": "canonical", "href": "http://mysite.com/example"},
+                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
+                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
+                ]}
+            ), 
+            React.createElement("div", {className: "content"}, 
+              React.createElement("div", {className: project_view}, 
+                projects.reverse(), 
+                React.createElement("div", {className: "channel_info"}, 
+                  React.createElement("div", {className: "channel_container"}, 
+                    React.createElement("h1", {className: "channel_name"}, name), 
+                    React.createElement("div", {className: "channel_description"}, description), 
+                    React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
+                    React.createElement("span", {className: "channel_icon", onClick: self.toggleDescription}, 
+                       icon ?
+                      React.createElement(Sprite, {
+                        image: icon.image, 
+                        columns: icon.columns, 
+                        frames: icon.frames, 
+                        duration: icon.duration, 
+                        frameW: icon.frameW, 
+                        frameH: icon.frameH}
+                      )
+                    : null
+                    )
+                  )
+                )
+              )
+            )
+        )
+      );
+    } else {
+      return (
+        React.createElement("div", {className: "channel"}, 
+          React.createElement(Helmet, {
+                title: title, 
+                meta: [
+                    {"name": "description", "content": title },
+                    {"property": "og:type", "content": "article"}
+                ], 
+                link: [
+                    {"rel": "canonical", "href": "http://mysite.com/example"},
+                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
+                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
+                ]}
+          ), 
+          React.createElement("p", null, "\"Loading...\"")
+        )
+      );
     }
+  }
+});
 
+
+},{"../components/sprite.jsx":299,"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],306:[function(require,module,exports){
+var React = require('react');
+var Router = require('react-router');
+var Helmet = require('react-helmet');
+var request = require('superagent');
+var Link = Router.Link;
+
+var Sprite = require('../components/sprite.jsx');
+
+var util = require('util');
+
+module.exports = React.createClass({displayName: "exports",
+  mixins: [ Router.State ],
+  getInitialState: function(){
+    return {params: {}, title: '', view_description: false};
+  },
+
+  getContent: function(){
+    var self = this;
+    console.log
+    request
+      .get('/api/channel/'+self.props.channel)
+      .end(function(err, res){
+        if (res) {
+          self.setState({content: res.body, title: res.body.name, view_description: false });
+        }
+      });
+  },
+
+  // componentWillMount: function() {
+  //   var self = this;
+  // },
+
+  componentDidMount: function() {
+    var self = this;
+    self.setState({ params: self.getParams() });
+    self.getContent();
+
+  },
+
+  componentWillReceiveProps: function(nextProps) {
+    var self = this;
+    self.getContent();
+  },
+
+  consoleLog: function(){
+    console.log("this.state: " + util.inspect(this.state));
+    console.log("this.props: " + util.inspect(this.props));
+  },
+
+  toggleDescription: function(){
+    this.setState({view_description: !this.state.view_description});
+  },
+
+  render: function render() {
+    var self = this;
+    var title = self.state.title;
     if (self.state.view_description){
       var project_view = "featured_projects show";
     } else {
       var project_view = "featured_projects hide";
     }
 
-    return (
-      React.createElement("div", {className: "channel"}, 
-        React.createElement(Helmet, {
-              title: title, 
-              meta: [
-                  {"name": "description", "content": title },
-                  {"property": "og:type", "content": "article"}
-              ], 
-              link: [
-                  {"rel": "canonical", "href": "http://mysite.com/example"},
-                  {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                  {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-              ]}
-          ), 
-         self.state.content ?
-          React.createElement("div", {className: "content"}, 
-            React.createElement("div", {className: project_view}, 
-              projects.reverse(), 
-              React.createElement("div", {className: "channel_info"}, 
-                React.createElement("div", {className: "channel_container"}, 
-                  React.createElement("h1", {className: "channel_name"}, name), 
-                  React.createElement("div", {className: "channel_description"}, description), 
-                  React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
-                  React.createElement("span", {className: "channel_icon", onClick: self.toggleDescription}, 
-                    React.createElement(Sprite, {
-                      image: "/icons/experiential-icon.png", 
-                      columns: 9, 
-                      frames: 17, 
-                      duration: 0.5, 
-                      frameW: 50, 
-                      frameH: 50})
-                  )
+
+    if  (self.state.content) {
+      var name = self.state.content.name;
+      var description = self.state.content.description;
+      var icon = self.state.content.icon;
+
+      var projects = self.state.content.case_studies.map(function(project, index){
+        var tmp_styles = {
+          backgroundImage: 'url('+project.featured_image+')'
+        }
+        var tmp_number = index+1;
+        if (project.url) {
+          return (
+             React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
+               React.createElement(Link, {to: project.url}, 
+                 React.createElement("div", {className: "project_content"}, 
+                   React.createElement("div", {className: "project_inner"}, 
+                     React.createElement("h1", {className: "project_name"}, project.name), 
+                     React.createElement("p", {className: "project_tagline"}, project.tagline)
+                   )
+                 )
+               )
+             )
+           )
+        } else {
+          return (
+            React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
+              React.createElement("div", {className: "project_content"}, 
+                React.createElement("div", {className: "project_inner"}, 
+                  React.createElement("h1", {className: "project_name"}, project.name), 
+                  React.createElement("p", {className: "project_tagline"}, project.tagline)
                 )
               )
             )
           )
-          : "Loading..."
-        
-      )
-    );
+        }
+      });
+      return (
+        React.createElement("div", {className: "channel"}, 
+            React.createElement("div", {className: "content"}, 
+              React.createElement("div", {className: project_view}, 
+                projects.reverse(), 
+                React.createElement("div", {className: "channel_info"}, 
+                  React.createElement("div", {className: "channel_container"}, 
+                    React.createElement("h1", {className: "channel_name"}, name), 
+                    React.createElement("div", {className: "channel_description"}, description), 
+                    React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
+                    React.createElement("span", {className: "channel_icon", onClick: self.toggleDescription}, 
+                       icon ?
+                      React.createElement(Sprite, {
+                        image: icon.image, 
+                        columns: icon.columns, 
+                        frames: icon.frames, 
+                        duration: icon.duration, 
+                        frameW: icon.frameW, 
+                        frameH: icon.frameH}
+                      )
+                    : null
+                    )
+                  )
+                )
+              )
+            )
+        )
+      );
+    } else {
+      return (
+        React.createElement("div", {className: "channel"}, 
+          React.createElement("p", null, "\"Loading...\"")
+        )
+      );
+    }
   }
 });
 
 
-},{"../components/sprite.jsx":299,"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],306:[function(require,module,exports){
+},{"../components/sprite.jsx":299,"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],307:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
 
@@ -29051,13 +29268,14 @@ module.exports = React.createClass({displayName: "exports",
               ]}
           ), 
         React.createElement("h1", null, "Home Page")
+
       )
     );
   }
 });
 
 
-},{"react":295,"react-helmet":11}],307:[function(require,module,exports){
+},{"react":295,"react-helmet":11}],308:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
@@ -29122,7 +29340,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"./menu.jsx":309,"react":295,"react-helmet":11,"react-router":126,"util":5}],308:[function(require,module,exports){
+},{"./menu.jsx":310,"react":295,"react-helmet":11,"react-router":126,"util":5}],309:[function(require,module,exports){
 var React = require('react');
 var util = require('util');
 
@@ -29161,7 +29379,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"util":5}],309:[function(require,module,exports){
+},{"react":295,"util":5}],310:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 
@@ -29218,7 +29436,7 @@ module.exports = React.createClass({displayName: "exports",
                 image: "/icons/handcrafted-icon.png", 
                 columns: 8, 
                 frames: 16, 
-                duration: .5, 
+                duration: .6, 
                 frameW: 50, 
                 frameH: 50}), 
               React.createElement("span", {className: "name"}, "Handcrafted")
