@@ -90,7 +90,8 @@ module.exports = React.createClass({
           </div>
 
           <div className="control">
-            <p><input className="simple_input" type="number" name="duration" value={duration_control} onChange={this.handleDuration} /> Duration (in milliseconds):</p>2
+            <p><input className="simple_input" type="number" name="duration" value={duration_control} onChange={this.handleDuration} /> Duration (in milliseconds):</p>
+            <input type="range" name="duration" min="0" max="10000" value={duration_control} onChange={this.handleDuration} />
           </div>
 
           <div className="control">

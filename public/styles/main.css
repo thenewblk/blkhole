@@ -389,10 +389,11 @@ img {
   font-size: 50px; }
 
 .simple_input {
-  width: 40px;
+  width: 75px;
   border: none;
   background: transparent;
-  font-size: 15px; }
+  font-size: 15px;
+  text-align: right; }
 
 .controls {
   background: rgba(0, 0, 0, 0.8);
@@ -401,6 +402,8 @@ img {
   color: white; }
   .controls .simple_input {
     color: white; }
+  .controls input[type=range] {
+    width: 100%; }
 
 .centered {
   text-align: center; }
