@@ -1,0 +1,28 @@
+.simple_input {
+  width: 40px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+}
+
+
+.controls {
+  background: rgba(0,0,0,0.8);
+  margin: 15px;
+  padding: 15px;
+  color: white;
+  .simple_input {
+    color: white;
+  }
+}
+
+.centered {
+  text-align: center;
+}
+.home {
+  padding-top: 50px;
+}
+.home_sprite {
+  display: table;
+  margin: 50px auto;
+}

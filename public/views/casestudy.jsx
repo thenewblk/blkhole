@@ -60,13 +60,14 @@ module.exports = React.createClass({
     var title = self.state.title;
     if  (self.state.content) {
       var name = self.state.content.name;
+      var project_tags = self.state.content.project_tags;
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
       }
       console.log("self.state.content.block_color: "+ self.state.content.block_color);
       var block_style = {
         backgroundColor: self.state.content.block_color,
-        background: "linear-gradient(135deg, transparent 30px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 30px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
+        background: "linear-gradient(135deg, transparent 50px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 50px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
         backgroundSize: "51%",
         backgroundRepeat: "no-repeat"
       }
@@ -205,6 +206,11 @@ module.exports = React.createClass({
             <div className="top" style={top_image}>
               <h1 className="case_study_name">{name}</h1>
             </div>
+            <div className="post block " style={block_style}>
+              <span className="content left_label">{self.state.content.top_block.project_tags}</span>
+              <span className="content">{self.state.content.top_block.content}</span>
+            </div>
+            <iframe width="560" height="315" color="white" src="https://www.youtube.com/embed/t4Y7-kXWMWs" frameborder="0" allowfullscreen></iframe>
             {things}
             <Channel channel={self.state.content.channel} />
           </div>

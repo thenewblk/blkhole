@@ -5,9 +5,19 @@ var Helmet = require('react-helmet');
 
 var util = require('util');
 
+function slugify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/\//g, '-')
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+
 module.exports = React.createClass({
   mixins: [ Router.State ],
-  
+
   componentDidMount: function(){
     this.typekit();
   },
@@ -42,6 +52,14 @@ module.exports = React.createClass({
   },
 
   render: function render() {
+    var self = this;
+
+    if (self.getPathname() == "/") {
+      var path = "home";
+    } else {
+      var path = slugify(self.getPathname());
+    }
+
     return (
       <html className="wf-loading">
         <head>
@@ -49,7 +67,7 @@ module.exports = React.createClass({
           <link rel="shortcut icon" href="/favicon.jpg" />
           <link rel="stylesheet" href="/styles/main.css" />
         </head>
-        <body>
+        <body className={path}>
           <Menu />
           <div className="main">
             {this.props.children}

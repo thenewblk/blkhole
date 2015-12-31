@@ -41,7 +41,7 @@ module.exports = React.createClass({
             </Link>
             <Link className="channel_link" to="/superfans" >
               <Sprite
-                image="/icons/superfan-icon.png"
+                image="/icons/superfan-icon.svg"
                 columns={9}
                 frames={17}
                 duration={.5}

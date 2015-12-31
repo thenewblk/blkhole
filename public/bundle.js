@@ -28614,7 +28614,7 @@ module.exports = React.createClass({displayName: "exports",
 
     return (
       React.createElement("span", {onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size}, 
-        React.createElement("img", {src: image, width: width, height: height, style:  style})
+        React.createElement("img", {src: image, width: width, height: height, style:  style })
       )
     )
   }
@@ -28786,13 +28786,14 @@ module.exports = React.createClass({displayName: "exports",
     var title = self.state.title;
     if  (self.state.content) {
       var name = self.state.content.name;
+      var project_tags = self.state.content.project_tags;
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
       }
       console.log("self.state.content.block_color: "+ self.state.content.block_color);
       var block_style = {
         backgroundColor: self.state.content.block_color,
-        background: "linear-gradient(135deg, transparent 30px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 30px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
+        background: "linear-gradient(135deg, transparent 50px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 50px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
         backgroundSize: "51%",
         backgroundRepeat: "no-repeat"
       }
@@ -28931,6 +28932,11 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "top", style: top_image}, 
               React.createElement("h1", {className: "case_study_name"}, name)
             ), 
+            React.createElement("div", {className: "post block ", style: block_style}, 
+              React.createElement("span", {className: "content left_label"}, self.state.content.top_block.project_tags), 
+              React.createElement("span", {className: "content"}, self.state.content.top_block.content)
+            ), 
+            React.createElement("iframe", {width: "560", height: "315", color: "white", src: "https://www.youtube.com/embed/t4Y7-kXWMWs", frameborder: "0", allowfullscreen: true}), 
             things, 
             React.createElement(Channel, {channel: self.state.content.channel})
           )
@@ -29252,9 +29258,58 @@ module.exports = React.createClass({displayName: "exports",
 },{"../components/sprite.jsx":299,"react":295,"react-helmet":11,"react-router":126,"superagent":296,"util":5}],307:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
+var Sprite = require('../components/sprite.jsx');
 
 module.exports = React.createClass({displayName: "exports",
+  getInitialState: function(){
+    return {
+      image: "/icons/disruption-icon.png",
+      columns: 9,
+      frames: 18,
+      duration: .5,
+      frameW: 50,
+      frameH: 50,
+    };
+  },
+
+  handleColumns: function(event) {
+    this.setState({columns: event.target.value});
+  },
+
+  handleFrames: function(event) {
+    this.setState({frames: event.target.value});
+  },
+
+  handleDuration: function(event) {
+    var value = parseInt(event.target.value)
+    var seconds = value / 1000;
+
+    console.log("handleDuration[value]: " + value);
+    console.log("handleDuration[seconds]: " + seconds);
+
+    this.setState({duration: seconds});
+
+  },
+
+  handleFrameW: function(event) {
+    this.setState({frameW: event.target.value});
+  },
+
+  handleFrameH: function(event) {
+    this.setState({frameH: event.target.value});
+  },
+
   render: function render() {
+    var self = this;
+
+    var image = self.state.image,
+        columns = self.state.columns,
+        frames = self.state.frames,
+        duration = self.state.duration,
+        duration_control = self.state.duration * 1000,
+        frameW = self.state.frameW,
+        frameH = self.state.frameH;
+
     return (
       React.createElement("div", null, 
         React.createElement(Helmet, {
@@ -29267,7 +29322,46 @@ module.exports = React.createClass({displayName: "exports",
                   {"rel": "shortcut icon", "href": "/favicon.jpg"}
               ]}
           ), 
-        React.createElement("h1", null, "Home Page")
+
+        React.createElement("h3", {className: "centered"}, "Go ahead and play with some Spritesheet animations: "), 
+
+        React.createElement("div", {className: "home_sprite"}, 
+          React.createElement(Sprite, {
+            image: image, 
+            columns: columns, 
+            frames: frames, 
+            speed: (duration* 1000)/ frames, 
+            duration: duration, 
+            frameW: frameW, 
+            frameH: frameH})
+        ), 
+        React.createElement("div", {className: "controls"}, 
+
+          React.createElement("div", {className: "control"}, 
+            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "columns", value: columns, onChange: this.handleColumns}), " Columns:"), 
+            React.createElement("input", {type: "range", name: "columns", min: "0", max: "100", value: columns, onChange: this.handleColumns})
+          ), 
+
+          React.createElement("div", {className: "control"}, 
+            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "frames", value: frames, onChange: this.handleFrames}), " Frames:"), 
+            React.createElement("input", {type: "range", name: "frames", min: "0", max: "100", value: frames, onChange: this.handleFrames})
+          ), 
+
+          React.createElement("div", {className: "control"}, 
+            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "duration", value: duration_control, onChange: this.handleDuration}), " Duration (in milliseconds):"), "2"
+          ), 
+
+          React.createElement("div", {className: "control"}, 
+            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "frameW", value: frameW, onChange: this.handleFrameW}), " Frame Width (in pixels):"), 
+            React.createElement("input", {type: "range", name: "frameW", min: "0", max: "100", value: frameW, onChange: this.handleFrameW})
+          ), 
+
+          React.createElement("div", {className: "control"}, 
+            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "frameH", value: frameH, onChange: this.handleFrameH}), " Frame Height (in pixels):"), 
+            React.createElement("input", {type: "range", name: "frameH", min: "0", max: "100", value: frameH, onChange: this.handleFrameH})
+          )
+
+        )
 
       )
     );
@@ -29275,7 +29369,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":295,"react-helmet":11}],308:[function(require,module,exports){
+},{"../components/sprite.jsx":299,"react":295,"react-helmet":11}],308:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
@@ -29283,9 +29377,19 @@ var Helmet = require('react-helmet');
 
 var util = require('util');
 
+function slugify(text) {
+  return text.toString().toLowerCase()
+    .replace(/\s+/g, '-')           // Replace spaces with -
+    .replace(/\//g, '-')
+    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+    .replace(/^-+/, '')             // Trim - from start of text
+    .replace(/-+$/, '');            // Trim - from end of text
+}
+
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
-  
+
   componentDidMount: function(){
     this.typekit();
   },
@@ -29320,6 +29424,14 @@ module.exports = React.createClass({displayName: "exports",
   },
 
   render: function render() {
+    var self = this;
+
+    if (self.getPathname() == "/") {
+      var path = "home";
+    } else {
+      var path = slugify(self.getPathname());
+    }
+
     return (
       React.createElement("html", {className: "wf-loading"}, 
         React.createElement("head", null, 
@@ -29327,7 +29439,7 @@ module.exports = React.createClass({displayName: "exports",
           React.createElement("link", {rel: "shortcut icon", href: "/favicon.jpg"}), 
           React.createElement("link", {rel: "stylesheet", href: "/styles/main.css"})
         ), 
-        React.createElement("body", null, 
+        React.createElement("body", {className: path}, 
           React.createElement(Menu, null), 
           React.createElement("div", {className: "main"}, 
             this.props.children
@@ -29423,7 +29535,7 @@ module.exports = React.createClass({displayName: "exports",
             ), 
             React.createElement(Link, {className: "channel_link", to: "/superfans"}, 
               React.createElement(Sprite, {
-                image: "/icons/superfan-icon.png", 
+                image: "/icons/superfan-icon.svg", 
                 columns: 9, 
                 frames: 17, 
                 duration: .5, 

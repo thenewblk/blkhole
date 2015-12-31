@@ -1,8 +1,57 @@
 var React = require('react');
 var Helmet = require('react-helmet');
+var Sprite = require('../components/sprite.jsx');
 
 module.exports = React.createClass({
+  getInitialState: function(){
+    return {
+      image: "/icons/disruption-icon.png",
+      columns: 9,
+      frames: 18,
+      duration: .5,
+      frameW: 50,
+      frameH: 50,
+    };
+  },
+
+  handleColumns: function(event) {
+    this.setState({columns: event.target.value});
+  },
+
+  handleFrames: function(event) {
+    this.setState({frames: event.target.value});
+  },
+
+  handleDuration: function(event) {
+    var value = parseInt(event.target.value)
+    var seconds = value / 1000;
+
+    console.log("handleDuration[value]: " + value);
+    console.log("handleDuration[seconds]: " + seconds);
+
+    this.setState({duration: seconds});
+
+  },
+
+  handleFrameW: function(event) {
+    this.setState({frameW: event.target.value});
+  },
+
+  handleFrameH: function(event) {
+    this.setState({frameH: event.target.value});
+  },
+
   render: function render() {
+    var self = this;
+
+    var image = self.state.image,
+        columns = self.state.columns,
+        frames = self.state.frames,
+        duration = self.state.duration,
+        duration_control = self.state.duration * 1000,
+        frameW = self.state.frameW,
+        frameH = self.state.frameH;
+
     return (
       <div>
         <Helmet
@@ -15,7 +64,46 @@ module.exports = React.createClass({
                   {"rel": "shortcut icon", "href": "/favicon.jpg"}
               ]}
           />
-        <h1>Home Page</h1>
+
+        <h3 className="centered">Go ahead and play with some Spritesheet animations: </h3>
+
+        <div className="home_sprite">
+          <Sprite
+            image={image}
+            columns={columns}
+            frames={frames}
+            speed={(duration* 1000)/ frames}
+            duration={duration}
+            frameW={frameW}
+            frameH={frameH} />
+        </div>
+        <div className="controls">
+
+          <div className="control">
+            <p><input className="simple_input" type="number" name="columns" value={columns} onChange={this.handleColumns} /> Columns:</p>
+            <input type="range" name="columns" min="0" max="100" value={columns} onChange={this.handleColumns} />
+          </div>
+
+          <div className="control">
+            <p><input className="simple_input" type="number" name="frames" value={frames} onChange={this.handleFrames} /> Frames:</p>
+            <input type="range" name="frames" min="0" max="100" value={frames} onChange={this.handleFrames} />
+          </div>
+
+          <div className="control">
+            <p><input className="simple_input" type="number" name="duration" value={duration_control} onChange={this.handleDuration} /> Duration (in milliseconds):</p>2
+          </div>
+
+          <div className="control">
+            <p><input className="simple_input" type="number" name="frameW" value={frameW} onChange={this.handleFrameW} /> Frame Width (in pixels):</p>
+            <input type="range" name="frameW" min="0" max="100" value={frameW} onChange={this.handleFrameW} />
+          </div>
+
+          <div className="control">
+            <p><input className="simple_input" type="number" name="frameH" value={frameH} onChange={this.handleFrameH} /> Frame Height (in pixels):</p>
+            <input type="range" name="frameH" min="0" max="100" value={frameH} onChange={this.handleFrameH} />
+          </div>
+
+        </div>
 
       </div>
     );

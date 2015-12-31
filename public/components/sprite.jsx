@@ -82,7 +82,7 @@ module.exports = React.createClass({
 
     return (
       <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
-        <img src={image} width={width} height={height} style={ style} />
+        <img src={image} width={width} height={height} style={ style } />
       </span>
     )
   }

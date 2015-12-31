@@ -1,5 +1,5 @@
 {
-  "name": "newblk-with-react-engine",
+  "name": "blkhole",
   "main": "index.js",
   "scripts": {
     "start": "npm run browserify && node index.js",
