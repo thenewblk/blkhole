@@ -5,9 +5,9 @@ var Sprite = require('../components/sprite.jsx');
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      image: "/icons/disruption-icon.png",
+      image: "/icons/superfan-icon.svg",
       columns: 9,
-      frames: 18,
+      frames: 17,
       duration: .5,
       frameW: 50,
       frameH: 50,
@@ -25,10 +25,6 @@ module.exports = React.createClass({
   handleDuration: function(event) {
     var value = parseInt(event.target.value)
     var seconds = value / 1000;
-
-    console.log("handleDuration[value]: " + value);
-    console.log("handleDuration[seconds]: " + seconds);
-
     this.setState({duration: seconds});
 
   },

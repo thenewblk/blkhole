@@ -30,7 +30,7 @@ module.exports = React.createClass({
               <span className="name">DISRUPTION</span>
             </Link>
             <Link className="channel_link" to="/experiential"  >
-              <Sprite
+              <Sprite 
                 image="/icons/experiential-icon.png"
                 columns={9}
                 frames={17}

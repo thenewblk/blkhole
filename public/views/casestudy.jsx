@@ -123,6 +123,17 @@ module.exports = React.createClass({
           )
         }
 
+        if (thing.type == "logos") {
+          var logos = thing.content.map(function(small_logo, index){
+            return (
+              <span className="small_logo"><img src={small_logo} /></span>
+            )
+          });
+          return (
+            <div className="post logos">{logos}</div>
+          )
+        }
+
         if (thing.type == "4-images") {
           return (
             <div className="post four-images">
@@ -210,7 +221,6 @@ module.exports = React.createClass({
               <span className="content left_label">{self.state.content.top_block.project_tags}</span>
               <span className="content">{self.state.content.top_block.content}</span>
             </div>
-            <iframe width="560" height="315" color="white" src="https://www.youtube.com/embed/t4Y7-kXWMWs" frameborder="0" allowfullscreen></iframe>
             {things}
             <Channel channel={self.state.content.channel} />
           </div>

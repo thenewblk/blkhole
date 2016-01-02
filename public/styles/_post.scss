@@ -1,6 +1,6 @@
 .post {
   max-width: 100%;
-  margin: 50px auto;
+  margin: 50px 0;
   .break {
     margin: 15px 0;
   }
@@ -17,7 +17,7 @@
     color: white;
     .content {
       display: inline-block;
-      width: 600px;
+      width: 750px;
       max-width: 100%;
       line-height: 1.5;
       &.left_label {
@@ -33,6 +33,7 @@
       font-style: italic;
       .content {
         width: 750px;
+        max-width: 100%;
       }
     }
     &.bold {
@@ -42,6 +43,7 @@
       font-style: italic;
       .content, .bold-content {
         width: 750px;
+        max-width: 100%;
         display: block;
       }
       .bold-content {
@@ -54,11 +56,10 @@
   &.text {
     width: 750px;
     max-width: 100%;
-    padding: 0 15px;
+    padding: 15% 15px;
     text-align: left;
     line-height: 2;
-    margin-left: 7%;
-    height: 69%;
+    padding-left: 7%;
     display: flex;
     align-items: center;
   }
@@ -87,6 +88,21 @@
       display: table;
       width: 50%;
       margin: auto;
+    }
+  }
+
+  &.logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .small_logo {
+      height: 100px;
+      display: inline-block;
+      margin: 15px 5%;
+      img {
+        height: 100%;
+        display: block;
+      }
     }
   }
   &.two {

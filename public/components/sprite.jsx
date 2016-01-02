@@ -1,50 +1,41 @@
 var React = require('react');
 var util = require('util');
+var Isvg = require('react-inlinesvg');
 
-var SetIntervalMixin = {
-  componentWillMount: function() {
-    this.intervals = [];
-  },
-  setInterval: function() {
-    this.intervals.push(setInterval.apply(null, arguments));
-  },
-  componentWillUnmount: function() {
-    this.intervals.forEach(clearInterval);
-  }
-};
-
-
-var timer = {
-    running: false,
-    iv: 5000,
-    timeout: false,
-    cb : function(){},
-    start : function(cb,iv){
-        var elm = this;
-        clearInterval(this.timeout);
-        this.running = true;
-        if(cb) this.cb = cb;
-        if(iv) this.iv = iv;
-        this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
-    },
-    execute : function(e){
-        if(!e.running) return false;
-        e.cb();
-        e.start();
-    },
-    stop : function(){
-        this.running = false;
-    },
-    set_interval : function(iv){
-        clearInterval(this.timeout);
-        this.start(false, iv);
-    }
-};
+function getFilePathExtension(path) {
+	var filename = path.split('\\').pop().split('/').pop();
+	return filename.substr(( Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
+}
 
 module.exports = React.createClass({
-  mixins: [SetIntervalMixin],
   getInitialState: function() {
-    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {} }
+		var timer = {
+		    running: false,
+		    iv: 5000,
+		    timeout: false,
+		    cb : function(){},
+		    start : function(cb,iv){
+		        var elm = this;
+		        clearInterval(this.timeout);
+		        this.running = true;
+		        if(cb) this.cb = cb;
+		        if(iv) this.iv = iv;
+		        this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
+		    },
+		    execute : function(e){
+		        if(!e.running) return false;
+		        e.cb();
+		        e.start();
+		    },
+		    stop : function(){
+		        this.running = false;
+		    },
+		    set_interval : function(iv){
+		        clearInterval(this.timeout);
+		        this.start(false, iv);
+		    }
+		};
+    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: timer }
   },
 
   componentWillMount: function(){
@@ -62,7 +53,6 @@ module.exports = React.createClass({
   out: function()	{
     this.setState({animation: "reverse"});
 	},
-
 
 
   animate: function(){
@@ -103,7 +93,7 @@ module.exports = React.createClass({
     interval = speed; // initial condition
 
 
-    timer.start(function(){
+    self.state.timer.start(function(){
       if ( self.state.animation == "start") {
       }
 
@@ -144,7 +134,10 @@ module.exports = React.createClass({
 
     var style = {
       transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
-      WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)"
+      WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
+      width: width,
+      height: height,
+      position: "absolute"
     };
 
     var size = {
@@ -154,11 +147,31 @@ module.exports = React.createClass({
     if (self.props.duration && self.props.frames) {
       self.animate();
     }
+		if (image){
+			if ((getFilePathExtension(image) === "svg")){
+	      return (
+	        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
 
-    return (
-      <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
-        <img src={image} width={width} height={height} style={ style } />
-      </span>
-    )
-  }
+	          <span className="svg_icon_wrapper" style={ style } >
+	            <Isvg src={image} className="isvg">
+	              Here's some optional content for browsers that don't support XHR or inline
+	              SVGs. You can use other React components here too. Here, I'll show you.
+
+	            </Isvg>
+	          </span>
+	        </span>
+	      )
+	    } else {
+	      return (
+	        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
+	          <img src={image} width={width} height={ height } style={ style } />
+	        </span>
+	      )
+	    }
+		} else {
+				return (
+					<h2>fuck you</h2>
+				)
+			}
+	  }
 });

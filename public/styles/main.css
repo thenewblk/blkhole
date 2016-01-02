@@ -105,9 +105,14 @@ h1, h2, h3, h4, h5, p {
 
 .sprite_container {
   overflow: hidden;
-  display: inline-block; }
+  display: inline-block;
+  position: relative; }
   .sprite_container img {
     max-width: inherit; }
+  .sprite_container svg g {
+    transition: 0.15s ease-out; }
+  .sprite_container:hover svg g {
+    fill: black; }
 
 .main {
   height: 100%; }
@@ -271,7 +276,7 @@ h1, h2, h3, h4, h5, p {
 
 .post {
   max-width: 100%;
-  margin: 50px auto; }
+  margin: 50px 0; }
   .post .break {
     margin: 15px 0; }
   .post.block {
@@ -283,7 +288,7 @@ h1, h2, h3, h4, h5, p {
     color: white; }
     .post.block .content {
       display: inline-block;
-      width: 600px;
+      width: 750px;
       max-width: 100%;
       line-height: 1.5; }
       .post.block .content.left_label {
@@ -296,7 +301,8 @@ h1, h2, h3, h4, h5, p {
       font-size: 30px;
       font-style: italic; }
       .post.block.uppercase .content {
-        width: 750px; }
+        width: 750px;
+        max-width: 100%; }
     .post.block.bold {
       text-transform: uppercase;
       font-weight: 100;
@@ -304,6 +310,7 @@ h1, h2, h3, h4, h5, p {
       font-style: italic; }
       .post.block.bold .content, .post.block.bold .bold-content {
         width: 750px;
+        max-width: 100%;
         display: block; }
       .post.block.bold .bold-content {
         font-weight: bold;
@@ -312,11 +319,10 @@ h1, h2, h3, h4, h5, p {
   .post.text {
     width: 750px;
     max-width: 100%;
-    padding: 0 15px;
+    padding: 15% 15px;
     text-align: left;
     line-height: 2;
-    margin-left: 7%;
-    height: 69%;
+    padding-left: 7%;
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -346,6 +352,23 @@ h1, h2, h3, h4, h5, p {
     display: table;
     width: 50%;
     margin: auto; }
+  .post.logos {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
+    .post.logos .small_logo {
+      height: 100px;
+      display: inline-block;
+      margin: 15px 5%; }
+      .post.logos .small_logo img {
+        height: 100%;
+        display: block; }
   .post.two {
     width: 1000px;
     padding: 0 15px;
