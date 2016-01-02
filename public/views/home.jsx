@@ -5,7 +5,7 @@ var Sprite = require('../components/sprite.jsx');
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      image: "/icons/superfan-icon.svg",
+      image: "/icons/handcrafted-sprite-01.svg",
       columns: 9,
       frames: 17,
       duration: .5,

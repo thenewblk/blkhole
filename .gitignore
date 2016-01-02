@@ -36,7 +36,7 @@ npm-debug.log
 .env
 Procfile
 .git.bfg-report
-*/video/*
+​*/video/*​
 
 /public/css/main.css
 /public/js/index.js
@@ -44,3 +44,4 @@ Procfile
 dump.rdp
 
 .DS_Store
+/public/bundle.js

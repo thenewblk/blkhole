@@ -16,7 +16,13 @@ module.exports = React.createClass({
           <Link className="new-blk-logo" to="/"><img className="icon" src="/icons/icon_new-star.svg" /></Link>
           <div className="items">
             <Link className="channel_link" to="/agency">
-              <img className="icon" src="/icons/icon_agency-1.svg" />
+              <Sprite
+                image="/icons/agency_icon_sprite-01.svg"
+                columns={9}
+                frames={9}
+                duration={.25}
+                frameW={50}
+                frameH={50} />
               <span className="name">Agency</span>
             </Link>
             <Link className="channel_link" to="/disruption" >
@@ -30,8 +36,8 @@ module.exports = React.createClass({
               <span className="name">DISRUPTION</span>
             </Link>
             <Link className="channel_link" to="/experiential"  >
-              <Sprite 
-                image="/icons/experiential-icon.png"
+              <Sprite
+                image="/icons/experiential-sprite-01.svg"
                 columns={9}
                 frames={17}
                 duration={.5}
@@ -41,7 +47,7 @@ module.exports = React.createClass({
             </Link>
             <Link className="channel_link" to="/superfans" >
               <Sprite
-                image="/icons/superfan-icon.svg"
+                image="/icons/superfan-sprite-01.svg"
                 columns={9}
                 frames={17}
                 duration={.5}
@@ -51,10 +57,10 @@ module.exports = React.createClass({
             </Link>
             <Link className="channel_link" to="/handcrafted" >
               <Sprite
-                image="/icons/handcrafted-icon.png"
+                image="/icons/handcrafted-sprite-01.svg"
                 columns={8}
                 frames={16}
-                duration={.6}
+                duration={.4}
                 frameW={50}
                 frameH={50} />
               <span className="name">Handcrafted</span>
