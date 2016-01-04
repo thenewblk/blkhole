@@ -61,7 +61,7 @@ module.exports = React.createClass({
     }
 
 
-    if  (self.state.content) {
+    if (self.state.content) {
       var name = self.state.content.name;
       var description = self.state.content.description;
       var icon = self.state.content.icon;
@@ -73,7 +73,7 @@ module.exports = React.createClass({
         var tmp_number = index+1;
         if (project.url) {
           return (
-             <div className={"project project_"+tmp_number} style={tmp_styles}>
+             <div key={index} className={"project project_"+tmp_number} style={tmp_styles}>
                <Link to={project.url}>
                  <div className="project_content">
                    <div className="project_inner">
@@ -86,7 +86,7 @@ module.exports = React.createClass({
            )
         } else {
           return (
-            <div className={"project project_"+tmp_number} style={tmp_styles}>
+            <div key={index} className={"project project_"+tmp_number} style={tmp_styles}>
               <div className="project_content">
                 <div className="project_inner">
                   <h1 className="project_name">{project.name}</h1>

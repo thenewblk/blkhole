@@ -28490,6 +28490,78 @@ var request = require('superagent');
 var util = require('util');
 var Channel = require('./channel_footer.jsx');
 
+var VideoGallery = React.createClass({displayName: "VideoGallery",
+  getInitialState: function(){
+    return {currentVideo: "", moreOver: false};
+  },
+  setCurrentVideo: function(video){
+    this.setState({currentVideo: video})
+  },
+
+  moreOver: function(){
+    this.setState({moreOver: true})
+  },
+
+  moreLeave: function(){
+    this.setState({moreOver: false})
+  },
+
+  render: function render() {
+    var self = this;
+    var thing = self.props.thing;
+    var description = thing.description;
+    var backgroundImage = thing.backgroundImage;
+
+    var wrapper_styles = {
+      backgroundColor: self.props.blockColor,
+      backgroundImage: "url(" + backgroundImage + ")"
+    }
+
+    var videos = thing.videos.map(function(video, index){
+      var image = video.image;
+      var url = video.url;
+      var title = video.title;
+      var series = video.series;
+      return (
+        React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self,url)}, 
+          React.createElement("span", {className: "description"}, 
+            React.createElement("h4", {className: "video_small_title"}, title), 
+            React.createElement("p", {className: "video_small_series"}, series)
+          )
+        )
+      )
+    });
+
+    var currentVideo = self.state.currentVideo;
+    var moreOver = self.state.moreOver;
+
+    return (
+      React.createElement("div", {className: currentVideo ? "post videos video_open" : "post videos"}, 
+        currentVideo ?
+          React.createElement("div", {className: "iframe-video-container"}, 
+            React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}), 
+            moreOver ? React.createElement("div", {className: "more_overlay"}) : null
+          )
+
+        :
+          React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
+            React.createElement("div", {className: "main_video_container"}, 
+              React.createElement("p", null, description)
+            )
+          ), 
+        
+        React.createElement("div", {className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver}, 
+          videos
+        ), 
+        React.createElement("span", {className: "video_more", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave}, 
+          React.createElement("span", {className: "video_more_text"}, "more")
+        )
+      )
+    )
+  }
+});
+
+
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
   getInitialState: function(){
@@ -28548,7 +28620,7 @@ module.exports = React.createClass({displayName: "exports",
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
       }
-      console.log("self.state.content.block_color: "+ self.state.content.block_color);
+
       var block_style = {
         backgroundColor: self.state.content.block_color,
         background: "linear-gradient(135deg, transparent 50px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 50px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
@@ -28560,30 +28632,30 @@ module.exports = React.createClass({displayName: "exports",
         if (thing.type == "block") {
           if (thing.style == "uppercase") {
             return (
-              React.createElement("div", {className: "post block uppercase", style: block_style}, React.createElement("span", {className: "content"}, thing.content))
+              React.createElement("div", {key: index, className: "post block uppercase", style: block_style}, React.createElement("span", {className: "content"}, thing.content))
             )
           } else if (thing.style == "bold") {
             return (
-              React.createElement("div", {className: "post block bold", style: block_style}, 
+              React.createElement("div", {key: index, className: "post block bold", style: block_style}, 
                 React.createElement("span", {className: "content"}, thing.content), 
                 React.createElement("span", {className: "bold-content"}, thing.bold)
               )
             )
           } else {
             return (
-              React.createElement("div", {className: "post block", style: block_style}, React.createElement("span", {className: "content"}, thing.content))
+              React.createElement("div", {key: index, className: "post block", style: block_style}, React.createElement("span", {className: "content"}, thing.content))
             )
           }
         }
         if (thing.type == "text") {
           return (
-            React.createElement("div", {className: "post text"}, thing.content)
+            React.createElement("div", {key: index, className: "post text"}, thing.content)
           )
         }
         if (thing.type == "pullquote") {
           if (thing.image) {
             return (
-              React.createElement("div", {className: "post pullquote"}, 
+              React.createElement("div", {key: index, className: "post pullquote"}, 
                 React.createElement("img", {className: "break", src: self.state.content.content.break}), 
                 React.createElement("img", {src: thing.image}), 
                 React.createElement("img", {className: "break", src: self.state.content.content.break})
@@ -28592,35 +28664,35 @@ module.exports = React.createClass({displayName: "exports",
           }
           if (thing.content) {
             return (
-              React.createElement("div", {className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("p", null, thing.content), React.createElement("img", {className: "break", src: self.state.content.content.break}))
+              React.createElement("div", {key: index, className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("p", null, thing.content), React.createElement("img", {className: "break", src: self.state.content.content.break}))
             )
           }
         }
         if (thing.type == "image") {
           return (
-            React.createElement("div", {className: "post image"}, React.createElement("img", {src: thing.url}))
+            React.createElement("div", {key: index, className: "post image"}, React.createElement("img", {src: thing.url}))
           )
         }
         if (thing.type == "logo") {
           return (
-            React.createElement("div", {className: "post logo"}, React.createElement("img", {src: thing.url}))
+            React.createElement("div", {key: index, className: "post logo"}, React.createElement("img", {src: thing.url}))
           )
         }
 
         if (thing.type == "logos") {
           var logos = thing.content.map(function(small_logo, index){
             return (
-              React.createElement("span", {className: "small_logo"}, React.createElement("img", {src: small_logo}))
+              React.createElement("span", {key: index, className: "small_logo"}, React.createElement("img", {src: small_logo}))
             )
           });
           return (
-            React.createElement("div", {className: "post logos"}, logos)
+            React.createElement("div", {key: index, className: "post logos"}, logos)
           )
         }
 
         if (thing.type == "4-images") {
           return (
-            React.createElement("div", {className: "post four-images"}, 
+            React.createElement("div", {key: index, className: "post four-images"}, 
               React.createElement("div", {className: "image-wrapper image-one"}, 
                 React.createElement("img", {src: thing.one})
               ), 
@@ -28636,49 +28708,22 @@ module.exports = React.createClass({displayName: "exports",
             )
           )
         }
-        if (thing.type == "two") {
-          var little_things = thing.content.map(function(little_thing, index){
-            if (little_thing.type == "block") {
-              return (
-                React.createElement("div", {className: "post block"}, little_thing.content)
-              )
-            }
-            if (little_thing.type == "text") {
-              return (
-                React.createElement("div", {className: "post text"}, little_thing.content)
-              )
-            }
-            if (little_thing.type == "pullquote") {
-              if (little_thing.image) {
-                return (
-                  React.createElement("div", {className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("img", {src: little_thing.image}), React.createElement("img", {className: "break", src: self.state.content.content.break}))
-                )
-              }
-              if (little_thing.content) {
-                return (
-                  React.createElement("div", {className: "post pullquote"}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("p", null, little_thing.content), React.createElement("img", {className: "break", src: self.state.content.content.break}))
-                )
-              }
-            }
-            if (little_thing.type == "image") {
-              return (
-                React.createElement("div", {className: "post image"}, React.createElement("img", {src: little_thing.url}))
-              )
-            }
-            if (little_thing.type == "logo") {
-              return (
-                React.createElement("div", {className: "post logo"}, React.createElement("img", {src: little_thing.url}))
-              )
-            }
 
-          });
+        if (thing.type == "video") {
+
           return (
-            React.createElement("div", {className: "post two"}, 
-              React.createElement("div", {className: "thing_1"}, little_things[0]), 
-              React.createElement("div", {className: "thing_2"}, little_things[1])
+            React.createElement("div", {key: index, className: "post video"}
+
             )
           )
         }
+
+        if (thing.type == "videos") {
+          return (
+            React.createElement(VideoGallery, {key: index, thing: thing, blockColor: self.state.content.block_color})
+          )
+        }
+
       });
     }
 
@@ -28948,7 +28993,7 @@ module.exports = React.createClass({displayName: "exports",
     }
 
 
-    if  (self.state.content) {
+    if (self.state.content) {
       var name = self.state.content.name;
       var description = self.state.content.description;
       var icon = self.state.content.icon;
@@ -28960,7 +29005,7 @@ module.exports = React.createClass({displayName: "exports",
         var tmp_number = index+1;
         if (project.url) {
           return (
-             React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
+             React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
                React.createElement(Link, {to: project.url}, 
                  React.createElement("div", {className: "project_content"}, 
                    React.createElement("div", {className: "project_inner"}, 
@@ -28973,7 +29018,7 @@ module.exports = React.createClass({displayName: "exports",
            )
         } else {
           return (
-            React.createElement("div", {className: "project project_"+tmp_number, style: tmp_styles}, 
+            React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
               React.createElement("div", {className: "project_content"}, 
                 React.createElement("div", {className: "project_inner"}, 
                   React.createElement("h1", {className: "project_name"}, project.name), 
@@ -29263,6 +29308,8 @@ var Router = require('react-router');
 var Sprite = require('../components/sprite.jsx');
 var Link = Router.Link;
 
+var Isvg = require('react-inlinesvg');
+
 module.exports = React.createClass({displayName: "exports",
   getInitialState: function(){
     return { };
@@ -29272,7 +29319,7 @@ module.exports = React.createClass({displayName: "exports",
 
     return (
         React.createElement("div", {className: "navigator"}, 
-          React.createElement(Link, {className: "new-blk-logo", to: "/"}, React.createElement("img", {className: "icon", src: "/icons/icon_new-star.svg"})), 
+          React.createElement(Link, {className: "new-blk-logo", to: "/"}, React.createElement(Isvg, {uniquifyIDs: false, className: "newblk_logo", src: "/images/blk_logo.svg"})), 
           React.createElement("div", {className: "items"}, 
             React.createElement(Link, {className: "channel_link", to: "/agency"}, 
               React.createElement(Sprite, {
@@ -29298,7 +29345,7 @@ module.exports = React.createClass({displayName: "exports",
               React.createElement(Sprite, {
                 image: "/icons/experiential-sprite-01.svg", 
                 columns: 9, 
-                frames: 17, 
+                frames: 15, 
                 duration: .5, 
                 frameW: 50, 
                 frameH: 50}), 
@@ -29331,4 +29378,4 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"../components/sprite.jsx":304,"react":300,"react-router":128}]},{},[1]);
+},{"../components/sprite.jsx":304,"react":300,"react-inlinesvg":89,"react-router":128}]},{},[1]);

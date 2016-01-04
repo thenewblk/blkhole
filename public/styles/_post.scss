@@ -129,6 +129,108 @@
       }
     }
   }
+
+  &.videos {
+    padding-bottom: 56%;
+    &.video_open {
+      padding-bottom: 0;
+      .video_sidebar {
+        right: -275px;
+        &.over, &:hover {
+          right: 0;
+        }
+      }
+    }
+    position: relative;
+    .main_video_wrapper {
+      background-size: cover;
+      background-position: center;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 15px 300px 15px 25px;
+    }
+    .video_sidebar {
+      transition: 0.15s ease-out;
+      position: absolute;
+      top: 0;
+      right: 0;
+      background: white;
+      height: 100%;
+      width: 275px;
+      z-index: 2;
+      .video_small {
+        background-size: cover;
+        background-position: center;
+        display: block;
+        height: 100px;
+        position: relative;
+        border: 0px solid white;
+        transition: 0.15s ease-out;
+        cursor: pointer;
+        .description {
+          color: white;
+          text-align: right;
+          position: absolute;
+          right: 0;
+          width: 100%;
+          padding: 15px;
+          z-index: -1;
+          transition: 0.15s ease-out;
+        }
+        &:hover {
+          border: 5px solid white;
+          .description {
+            top: -5px;
+            right: 100%;
+          }
+        }
+      }
+    }
+    .iframe-video-container {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      iframe, object, embed {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .more_overlay {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background: black;
+        opacity: 0.8;
+        top: 0;
+        left: 0;
+      }
+    }
+  }
+  .video_more {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    top: 50px;
+    right: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-transform: uppercase;
+    border: 2px white solid;
+    line-height: 1;
+    transform: rotate(45deg);
+    .video_more_text {
+      transform: rotate(-45deg);
+    }
+  }
+
 }
 
 

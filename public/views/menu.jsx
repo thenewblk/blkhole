@@ -4,6 +4,8 @@ var Router = require('react-router');
 var Sprite = require('../components/sprite.jsx');
 var Link = Router.Link;
 
+var Isvg = require('react-inlinesvg');
+
 module.exports = React.createClass({
   getInitialState: function(){
     return { };
@@ -13,7 +15,7 @@ module.exports = React.createClass({
 
     return (
         <div className="navigator">
-          <Link className="new-blk-logo" to="/"><img className="icon" src="/icons/icon_new-star.svg" /></Link>
+          <Link className="new-blk-logo" to="/"><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
           <div className="items">
             <Link className="channel_link" to="/agency">
               <Sprite
@@ -39,7 +41,7 @@ module.exports = React.createClass({
               <Sprite
                 image="/icons/experiential-sprite-01.svg"
                 columns={9}
-                frames={17}
+                frames={15}
                 duration={.5}
                 frameW={50}
                 frameH={50} />

@@ -6,6 +6,78 @@ var request = require('superagent');
 var util = require('util');
 var Channel = require('./channel_footer.jsx');
 
+var VideoGallery = React.createClass({
+  getInitialState: function(){
+    return {currentVideo: "", moreOver: false};
+  },
+  setCurrentVideo: function(video){
+    this.setState({currentVideo: video})
+  },
+
+  moreOver: function(){
+    this.setState({moreOver: true})
+  },
+
+  moreLeave: function(){
+    this.setState({moreOver: false})
+  },
+
+  render: function render() {
+    var self = this;
+    var thing = self.props.thing;
+    var description = thing.description;
+    var backgroundImage = thing.backgroundImage;
+
+    var wrapper_styles = {
+      backgroundColor: self.props.blockColor,
+      backgroundImage: "url(" + backgroundImage + ")"
+    }
+
+    var videos = thing.videos.map(function(video, index){
+      var image = video.image;
+      var url = video.url;
+      var title = video.title;
+      var series = video.series;
+      return (
+        <span key={index} className="video_small" style={{backgroundImage: "url("+image+")"}} onClick={self.setCurrentVideo.bind(self,url)}>
+          <span className="description">
+            <h4 className="video_small_title">{title}</h4>
+            <p className="video_small_series">{series}</p>
+          </span>
+        </span>
+      )
+    });
+
+    var currentVideo = self.state.currentVideo;
+    var moreOver = self.state.moreOver;
+
+    return (
+      <div className={currentVideo ? "post videos video_open" : "post videos" }>
+        {currentVideo ?
+          <div className="iframe-video-container">
+            <iframe src={currentVideo+"?autoplay=1"} frameBorder="0" width="560" height="315"></iframe>
+            {moreOver ? <div className="more_overlay"></div> : null }
+          </div>
+
+        :
+          <div className="main_video_wrapper" style={wrapper_styles}>
+            <div className="main_video_container">
+              <p>{description}</p>
+            </div>
+          </div>
+        }
+        <div className={moreOver ? "video_sidebar over" : "video_sidebar" } onMouseEnter={self.moreOver} onMouseLeave={self.moreLeave} onMouseOver={self.moreOver}>
+          {videos}
+        </div>
+        <span className="video_more" onMouseEnter={self.moreOver} onMouseLeave={self.moreLeave}>
+          <span className="video_more_text">more</span>
+        </span>
+      </div>
+    )
+  }
+});
+
+
 module.exports = React.createClass({
   mixins: [ Router.State ],
   getInitialState: function(){
@@ -64,7 +136,7 @@ module.exports = React.createClass({
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
       }
-      console.log("self.state.content.block_color: "+ self.state.content.block_color);
+
       var block_style = {
         backgroundColor: self.state.content.block_color,
         background: "linear-gradient(135deg, transparent 50px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 50px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
@@ -76,30 +148,30 @@ module.exports = React.createClass({
         if (thing.type == "block") {
           if (thing.style == "uppercase") {
             return (
-              <div className="post block uppercase" style={block_style}><span className="content">{thing.content}</span></div>
+              <div key={index} className="post block uppercase" style={block_style}><span className="content">{thing.content}</span></div>
             )
           } else if (thing.style == "bold") {
             return (
-              <div className="post block bold" style={block_style}>
+              <div key={index} className="post block bold" style={block_style}>
                 <span className="content">{thing.content}</span>
                 <span className="bold-content">{thing.bold}</span>
               </div>
             )
           } else {
             return (
-              <div className="post block" style={block_style}><span className="content">{thing.content}</span></div>
+              <div key={index} className="post block" style={block_style}><span className="content">{thing.content}</span></div>
             )
           }
         }
         if (thing.type == "text") {
           return (
-            <div className="post text">{thing.content}</div>
+            <div key={index} className="post text">{thing.content}</div>
           )
         }
         if (thing.type == "pullquote") {
           if (thing.image) {
             return (
-              <div className="post pullquote">
+              <div key={index} className="post pullquote">
                 <img className="break" src={self.state.content.content.break} />
                 <img src={thing.image} />
                 <img className="break" src={self.state.content.content.break} />
@@ -108,35 +180,35 @@ module.exports = React.createClass({
           }
           if (thing.content) {
             return (
-              <div className="post pullquote"><img className="break" src={self.state.content.content.break} /><p>{thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
+              <div key={index} className="post pullquote"><img className="break" src={self.state.content.content.break} /><p>{thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
             )
           }
         }
         if (thing.type == "image") {
           return (
-            <div className="post image"><img src={thing.url} /></div>
+            <div key={index} className="post image"><img src={thing.url} /></div>
           )
         }
         if (thing.type == "logo") {
           return (
-            <div className="post logo"><img src={thing.url} /></div>
+            <div key={index} className="post logo"><img src={thing.url} /></div>
           )
         }
 
         if (thing.type == "logos") {
           var logos = thing.content.map(function(small_logo, index){
             return (
-              <span className="small_logo"><img src={small_logo} /></span>
+              <span key={index} className="small_logo"><img src={small_logo} /></span>
             )
           });
           return (
-            <div className="post logos">{logos}</div>
+            <div key={index} className="post logos">{logos}</div>
           )
         }
 
         if (thing.type == "4-images") {
           return (
-            <div className="post four-images">
+            <div key={index} className="post four-images">
               <div className="image-wrapper image-one">
                 <img src={thing.one} />
               </div>
@@ -152,49 +224,22 @@ module.exports = React.createClass({
             </div>
           )
         }
-        if (thing.type == "two") {
-          var little_things = thing.content.map(function(little_thing, index){
-            if (little_thing.type == "block") {
-              return (
-                <div className="post block">{little_thing.content}</div>
-              )
-            }
-            if (little_thing.type == "text") {
-              return (
-                <div className="post text">{little_thing.content}</div>
-              )
-            }
-            if (little_thing.type == "pullquote") {
-              if (little_thing.image) {
-                return (
-                  <div className="post pullquote"><img className="break" src={self.state.content.content.break} /><img src={little_thing.image} /><img className="break" src={self.state.content.content.break} /></div>
-                )
-              }
-              if (little_thing.content) {
-                return (
-                  <div className="post pullquote"><img className="break" src={self.state.content.content.break} /><p>{little_thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
-                )
-              }
-            }
-            if (little_thing.type == "image") {
-              return (
-                <div className="post image"><img src={little_thing.url} /></div>
-              )
-            }
-            if (little_thing.type == "logo") {
-              return (
-                <div className="post logo"><img src={little_thing.url} /></div>
-              )
-            }
 
-          });
+        if (thing.type == "video") {
+
           return (
-            <div className="post two">
-              <div className="thing_1">{little_things[0]}</div>
-              <div className="thing_2">{little_things[1]}</div>
+            <div key={index} className="post video" >
+
             </div>
           )
         }
+
+        if (thing.type == "videos") {
+          return (
+            <VideoGallery key={index} thing={thing} blockColor={self.state.content.block_color}/>
+          )
+        }
+
       });
     }
 

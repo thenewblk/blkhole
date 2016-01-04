@@ -72,6 +72,20 @@ h1,h2,h3,h4,h5,p {
   z-index: 1;
   overflow: hidden;
   transform:translate3d(0, 0, 0);
+
+  .newblk_logo {
+    margin: 10px;
+    display: inline-block;
+    svg {
+      fill: black;
+      #blk {
+        transition: 0.15s ease-out;
+        opacity: 0;
+        transform: translate(200px);
+      }
+    }
+  }
+
   .icon {
     width: 50px;
     margin: 10px;
@@ -92,7 +106,7 @@ h1,h2,h3,h4,h5,p {
     }
   }
   .items {
-    margin: 50px 0;
+    margin-top: 15px;
     a {
       display: block;
     }
@@ -123,6 +137,15 @@ h1,h2,h3,h4,h5,p {
         left: inherit;
       }
     }
+
+    .newblk_logo {
+      svg {
+        #blk {
+          opacity: 1;
+          transform: translate(0px);
+        }
+      }
+    }
   }
 }
 
@@ -133,11 +156,11 @@ h1,h2,h3,h4,h5,p {
   img {
     max-width: inherit;
   }
-  svg g {
+  svg {
     transition: 0.15s ease-out;
   }
   &:hover {
-    svg g {
+    svg {
       fill: black;
     }
   }
