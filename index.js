@@ -39,7 +39,11 @@ app.set('view', renderer.expressView);
 app.use(express.static(__dirname + '/public'));
 
 // set the session and passport
-app.use(session({ secret: 'bangarang' }));
+app.use(session({
+  secret: 'bangarang',
+  resave: false,
+  saveUninitialized: true
+}));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 

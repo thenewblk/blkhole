@@ -3,6 +3,9 @@ var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
 
+var Draggable = require('react-draggable');
+var Isvg = require('react-inlinesvg');
+
 var util = require('util');
 var Channel = require('./channel_footer.jsx');
 
@@ -44,6 +47,7 @@ var VideoGallery = React.createClass({
             <h4 className="video_small_title">{title}</h4>
             <p className="video_small_series">{series}</p>
           </span>
+          <span className="small_over"></span>
         </span>
       )
     });
@@ -77,6 +81,134 @@ var VideoGallery = React.createClass({
   }
 });
 
+var Dragger = React.createClass({
+  getInitialState: function(){
+    return { position: {top: 500, left: 250} };
+  },
+
+  handleStart: function (event, ui) {
+    this.setState( { position: ui.position } );
+  },
+
+  handleDrag: function (event, ui) {
+    this.setState( { position: ui.position } );
+  },
+
+  handleStop: function (event, ui) {
+    this.setState( { position: ui.position } );
+  },
+  render: function render() {
+    var self = this;
+    var bottom = self.props.bottom,
+        top = self.props.top,
+        left = self.state.position.left;
+
+    return (
+      <div className="post dragger">
+        <div className="dragger_images">
+          <Draggable
+              axis="x"
+              start={{x: 250, y: 500}}
+              bounds="parent"
+              moveOnStartChange={false}
+              zIndex={100}
+              onStart={self.handleStart}
+              onDrag={self.handleDrag}
+              onStop={self.handleStop}>
+                <span className="handle">
+                  <Isvg src="/icons/new/slide.svg" />
+                </span>
+          </Draggable>
+          <div className="bottom_image" style={{backgroundImage: "url("+bottom+")"}}></div>
+          <div className="top_image" style={{backgroundImage: "url("+top+")", width: left+1+"px"}}></div>
+
+        </div>
+
+      </div>
+    )
+  }
+})
+
+var Mouser = React.createClass({
+  getInitialState: function(){
+    // return { position: {top: 500, left: 250} };
+    return { over: false, left: 250 };
+  },
+  //
+  // handleStart: function (event, ui) {
+  //   this.setState( { position: ui.position } );
+  // },
+  //
+  // handleDrag: function (event, ui) {
+  //   this.setState( { position: ui.position } );
+  // },
+  //
+  // handleStop: function (event, ui) {
+  //   this.setState( { position: ui.position } );
+  // },
+
+  mouseEnter: function () {
+    // console.log("mouseOver: " + util.inspect(event));
+    this.setState({over: true})
+  },
+
+  mouseLeave: function () {
+    // console.log("mouseOver: " + util.inspect(event));
+    this.setState({over: false})
+  },
+
+  onMouseMove: function(event){
+
+    var window_width = window.innerWidth + 65,
+        screenX = event.screenX ,
+        screenY = event.screenY,
+        diff = ( window_width - 500 ) / 2,
+        left = screenX - diff;
+
+    this.setState({left: left, screenX: (screenX - 68), screenY: (screenY - 150)});
+
+  },
+
+  // componentDidMount: function () {
+  //   console.log("componentDidMount");
+  //   document.addEventListener('mousemove', this.onMouseMove)
+  // },
+
+  componentDidUpdate: function (props, state) {
+    if (this.state.over) {
+      document.addEventListener('mousemove', this.onMouseMove)
+      document.addEventListener('mouseup', this.onMouseUp)
+    } else if (!this.state.over) {
+      document.removeEventListener('mousemove', this.onMouseMove)
+      document.removeEventListener('mouseup', this.onMouseUp)
+    }
+  },
+
+  render: function render() {
+    var self = this;
+    var bottom = self.props.bottom,
+        top = self.props.top,
+        left = self.state.left,
+        screenX = self.state.screenX,
+        screenY = self.state.screenY,
+        over = self.state.over;
+
+    return (
+      <div className={ over ? "post mouser" : "post mouser over" }>
+        <div className="dragger_images">
+
+          <div className="bottom_image" style={{backgroundImage: "url("+bottom+")"}}></div>
+          <div className="top_image" style={{backgroundImage: "url("+top+")", width: left+"px"}}></div>
+          <div className="mouse_overlay" onMouseEnter={self.mouseEnter} onMouseLeave={self.mouseLeave} ></div>
+        </div>
+
+        <span className="handle" style={{top: screenY, left: screenX }}>
+          <Isvg src="/icons/new/slide.svg" />
+        </span>
+      </div>
+    )
+  }
+})
 
 module.exports = React.createClass({
   mixins: [ Router.State ],
@@ -237,6 +369,14 @@ module.exports = React.createClass({
         if (thing.type == "videos") {
           return (
             <VideoGallery key={index} thing={thing} blockColor={self.state.content.block_color}/>
+          )
+        }
+
+        if ( thing.type == "dragger" ) {
+          var top = thing.top,
+              bottom = thing.bottom;
+          return (
+            <Mouser bottom={bottom} top={top} />
           )
         }
 
