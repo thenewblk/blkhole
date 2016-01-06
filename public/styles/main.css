@@ -14,7 +14,7 @@ body {
   margin: 0;
   min-width: 100%;
   height: 100%;
-  padding-left: 65px;
+  padding-left: 70px;
   background: #ececec; }
 
 * {
@@ -43,14 +43,9 @@ h1, h2, h3, h4, h5, p {
   height: 100%;
   position: relative; }
 
-.channel_link {
-  border-bottom: #ddd solid 1px; }
-  .channel_link:first-child {
-    border-top: #ddd solid 1px; }
-
 .navigator {
   width: 100%;
-  max-width: 65px;
+  max-width: 70px;
   height: 100%;
   background: white;
   position: fixed;
@@ -74,7 +69,7 @@ h1, h2, h3, h4, h5, p {
         transform: translate(200px); }
   .navigator .icon {
     width: 50px;
-    margin: 10px;
+    margin: 5px 10px;
     display: inline-block;
     vertical-align: middle;
     position: relative;
@@ -110,7 +105,7 @@ h1, h2, h3, h4, h5, p {
       display: inline-block;
       vertical-align: middle;
       opacity: 1;
-      margin: 0 25px;
+      margin: 0 25px 0 10px;
       left: inherit; }
     .navigator:hover .newblk_logo svg #blk {
       opacity: 1;
@@ -290,9 +285,11 @@ h1, h2, h3, h4, h5, p {
 
 .post {
   max-width: 100%;
-  margin: 50px 0; }
+  margin: 15px 0; }
   .post .break {
     margin: 15px 0; }
+  .post.black {
+    background: black; }
   .post.block {
     background-color: black;
     background: linear-gradient(135deg, transparent 50px, black 0) top left, linear-gradient(0deg, transparent 0, black 0) top right, linear-gradient(315deg, transparent 50px, black 0) bottom right, linear-gradient(0deg, transparent 0, black 0) bottom left;
@@ -411,6 +408,7 @@ h1, h2, h3, h4, h5, p {
         display: block; }
   .post.videos {
     padding-bottom: 56%;
+    overflow: hidden;
     position: relative; }
     .post.videos.video_open {
       padding-bottom: 0; }
@@ -516,33 +514,34 @@ h1, h2, h3, h4, h5, p {
         opacity: 0.8;
         top: 0;
         left: 0; }
-  .post .video_more {
-    position: absolute;
-    height: 50px;
-    width: 50px;
-    top: 50px;
-    right: 30px;
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    color: white;
-    text-transform: uppercase;
-    border: 2px white solid;
-    line-height: 1;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg); }
-    .post .video_more .video_more_text {
-      -webkit-transform: rotate(-45deg);
-      transform: rotate(-45deg); }
+    .post.videos .video_more {
+      position: absolute;
+      height: 50px;
+      width: 50px;
+      top: 50px;
+      right: 30px;
+      display: -webkit-flex;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-align-items: center;
+      -ms-flex-align: center;
+      align-items: center;
+      -webkit-justify-content: center;
+      -ms-flex-pack: center;
+      justify-content: center;
+      color: white;
+      text-transform: uppercase;
+      border: 2px white solid;
+      line-height: 1;
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg); }
+      .post.videos .video_more .video_more_text {
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg); }
   .post.dragger {
     position: relative;
-    min-height: 500px; }
+    min-height: 500px;
+    margin: 50px 0; }
     .post.dragger .dragger_images {
       margin: auto;
       position: relative;
@@ -558,18 +557,18 @@ h1, h2, h3, h4, h5, p {
     .post.dragger .top_image {
       width: 50%;
       background-color: #ececec;
-      border-right: white 2px solid; }
+      border-right: black 2px solid; }
     .post.dragger .handle {
       display: inline-block;
       color: white;
-      margin-left: -67px;
-      margin-top: -43px;
+      margin-left: -32px;
+      margin-top: -38px;
       position: relative;
-      background: #ececec;
       z-index: 1; }
   .post.mouser {
     position: relative;
-    min-height: 500px; }
+    min-height: 500px;
+    margin: 50px 0; }
     .post.mouser .dragger_images {
       margin: auto;
       position: relative;
@@ -586,7 +585,9 @@ h1, h2, h3, h4, h5, p {
     .post.mouser .top_image {
       width: 50%;
       background-color: #ececec;
-      border-right: white 3px solid; }
+      border-left: black 3px solid;
+      right: 0;
+      background-position: right; }
     .post.mouser .handle {
       display: table;
       color: white;

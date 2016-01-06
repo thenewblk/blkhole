@@ -1,8 +1,11 @@
 .post {
   max-width: 100%;
-  margin: 50px 0;
+  margin: 15px 0;
   .break {
     margin: 15px 0;
+  }
+  &.black {
+    background: black;
   }
   &.block {
     background-color: black;
@@ -53,6 +56,7 @@
       }
     }
   }
+
   &.text {
     width: 750px;
     max-width: 100%;
@@ -63,11 +67,13 @@
     display: flex;
     align-items: center;
   }
+
   &.logo {
     display: flex;
     align-items: center;
     padding: 15%;
   }
+
   &.pullquote {
     width: 500px;
     padding: 0 15px;
@@ -77,12 +83,14 @@
       line-height: 1.5;
     }
   }
+
   &.image {
     width: 100%;
     img {
       width: 100%;
     }
   }
+
   &.logo {
     img {
       display: table;
@@ -105,6 +113,7 @@
       }
     }
   }
+
   &.two {
     width: 1000px;
     padding: 0 15px;
@@ -118,6 +127,7 @@
       vertical-align: middle;
     }
   }
+
   &.four-images {
     display: flex;
     flex-direction: row;
@@ -132,6 +142,9 @@
 
   &.videos {
     padding-bottom: 56%;
+    overflow: hidden;
+    position: relative;
+
     &.video_open {
       padding-bottom: 0;
       .video_sidebar {
@@ -168,7 +181,7 @@
         }
       }
     }
-    position: relative;
+
     .main_video_wrapper {
       background-size: cover;
       background-position: center;
@@ -261,28 +274,32 @@
         left: 0;
       }
     }
-  }
-  .video_more {
-    position: absolute;
-    height: 50px;
-    width: 50px;
-    top: 50px;
-    right: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-transform: uppercase;
-    border: 2px white solid;
-    line-height: 1;
-    transform: rotate(45deg);
-    .video_more_text {
-      transform: rotate(-45deg);
+
+    .video_more {
+      position: absolute;
+      height: 50px;
+      width: 50px;
+      top: 50px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      text-transform: uppercase;
+      border: 2px white solid;
+      line-height: 1;
+      transform: rotate(45deg);
+      .video_more_text {
+        transform: rotate(-45deg);
+      }
     }
+
   }
+
   &.dragger {
     position: relative;
     min-height: 500px;
+    margin: 50px 0;
     .dragger_images {
       margin: auto;
       position: relative;
@@ -300,64 +317,67 @@
     .top_image {
       width: 50%;
       background-color: #ececec;
-      border-right: white 2px solid;
+      border-right: black 2px solid;
     }
     .handle {
       display: inline-block;
       color: white;
-      margin-left: -67px;
-      margin-top: -43px;
+      margin-left: -32px;
+      margin-top: -38px;
       position: relative;
-      background: #ececec;
       z-index: 1;
     }
   }
-    &.mouser {
-      position: relative;
-      min-height: 500px;
 
-      .dragger_images {
-        margin: auto;
-        position: relative;
-        width: 500px;
-        height: 500px;
-        cursor: none;
-      }
-      .bottom_image, .top_image {
-        background-size: cover;
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        background-repeat: no-repeat;
-        top: 0;
-      }
-      .top_image {
-        width: 50%;
-        background-color: #ececec;
-        border-right: white 3px solid;
-      }
-      .handle {
-        display: table;
-        color: white;
-        position: fixed;
-        z-index: 1;
-      }
-      .mouse_overlay {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        top: 0;
-        left: 0;
-        z-index: 100;
-        cursor: none;
-      }
-      &.over {
-        .handle { display: none; }
-      }
+  &.mouser {
+    position: relative;
+    min-height: 500px;
+    margin: 50px 0;
+    .dragger_images {
+      margin: auto;
+      position: relative;
+      width: 500px;
+      height: 500px;
+      cursor: none;
+    }
+    .bottom_image, .top_image {
+      background-size: cover;
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      background-repeat: no-repeat;
+      top: 0;
+    }
+    .top_image {
+      width: 50%;
+      background-color: #ececec;
+      border-left: black 3px solid;
+      right: 0;
+      background-position: right;
+    }
+    .handle {
+      display: table;
+      color: white;
+      position: fixed;
+      z-index: 1;
+    }
+    .mouse_overlay {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      top: 0;
+      left: 0;
+      z-index: 100;
+      // cursor: url(/icons/new/slide.svg#cursor) 32 19, none;
+      cursor: none;
+    }
+    &.over {
+      .handle { display: none; }
+    }
 
 
   }
-}
 
+}
 
 img { max-width: 100%; }

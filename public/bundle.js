@@ -29356,8 +29356,8 @@ var VideoGallery = React.createClass({displayName: "VideoGallery",
   getInitialState: function(){
     return {currentVideo: "", moreOver: false};
   },
-  setCurrentVideo: function(video){
-    this.setState({currentVideo: video})
+  setCurrentVideo: function(video, type){
+    this.setState({currentVideo: video, type: type})
   },
 
   moreOver: function(){
@@ -29383,9 +29383,10 @@ var VideoGallery = React.createClass({displayName: "VideoGallery",
       var image = video.image;
       var url = video.url;
       var title = video.title;
+      var type = video.type;
       var series = video.series;
       return (
-        React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self,url)}, 
+        React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self, url, type)}, 
           React.createElement("span", {className: "description"}, 
             React.createElement("h4", {className: "video_small_title"}, title), 
             React.createElement("p", {className: "video_small_series"}, series)
@@ -29396,13 +29397,17 @@ var VideoGallery = React.createClass({displayName: "VideoGallery",
     });
 
     var currentVideo = self.state.currentVideo;
+    var type = self.state.type;
     var moreOver = self.state.moreOver;
 
     return (
       React.createElement("div", {className: currentVideo ? "post videos video_open" : "post videos"}, 
         currentVideo ?
           React.createElement("div", {className: "iframe-video-container"}, 
-            React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}), 
+            type == "vimeo" ? React.createElement("iframe", {src: currentVideo+"&autoplay=1", width: "853", height: "480", frameBorder: "0", webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true}) : null, 
+            type == "youtube" ? React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}) : null, 
+
+
             moreOver ? React.createElement("div", {className: "more_overlay"}) : null
           )
 
@@ -29477,18 +29482,6 @@ var Mouser = React.createClass({displayName: "Mouser",
     // return { position: {top: 500, left: 250} };
     return { over: false, left: 250 };
   },
-  //
-  // handleStart: function (event, ui) {
-  //   this.setState( { position: ui.position } );
-  // },
-  //
-  // handleDrag: function (event, ui) {
-  //   this.setState( { position: ui.position } );
-  // },
-  //
-  // handleStop: function (event, ui) {
-  //   this.setState( { position: ui.position } );
-  // },
 
   mouseEnter: function () {
     // console.log("mouseOver: " + util.inspect(event));
@@ -29502,13 +29495,13 @@ var Mouser = React.createClass({displayName: "Mouser",
 
   onMouseMove: function(event){
 
-    var window_width = window.innerWidth + 65,
+    var window_width = window.innerWidth + 70,
         screenX = event.screenX ,
         screenY = event.screenY,
         diff = ( window_width - 500 ) / 2,
-        left = screenX - diff;
+        left = 500 - (screenX - diff);
 
-    this.setState({left: left, screenX: (screenX - 68), screenY: (screenY - 150)});
+    this.setState({left: left, screenX: (screenX - 31), screenY: (screenY - 125)});
 
   },
 
@@ -29665,8 +29658,9 @@ module.exports = React.createClass({displayName: "exports",
           )
         }
         if (thing.type == "logo") {
+          var style = thing.style;
           return (
-            React.createElement("div", {key: index, className: "post logo"}, React.createElement("img", {src: thing.url}))
+            React.createElement("div", {key: index, className:  style ? "post logo " + style : "post logo"}, React.createElement("img", {src: thing.url}))
           )
         }
 
@@ -29715,11 +29709,19 @@ module.exports = React.createClass({displayName: "exports",
           )
         }
 
-        if ( thing.type == "dragger" ) {
+        if ( thing.type == "mouser" ) {
           var top = thing.top,
               bottom = thing.bottom;
           return (
             React.createElement(Mouser, {bottom: bottom, top: top})
+          )
+        }
+
+        if ( thing.type == "dragger" ) {
+          var top = thing.top,
+              bottom = thing.bottom;
+          return (
+            React.createElement(Dragger, {bottom: bottom, top: top})
           )
         }
 
