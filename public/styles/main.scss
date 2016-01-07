@@ -95,6 +95,10 @@ h1,h2,h3,h4,h5,p {
     position: relative;
     max-width: inherit;
     transform:translate3d(0, 0, 0);
+    transition: 0.15s ease-out;
+    &:hover {
+      transform: scale(1.15);
+    }
   }
   svg {
     fill: #939598;

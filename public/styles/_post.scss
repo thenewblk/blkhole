@@ -405,7 +405,7 @@
       background-position: right;
     }
     .handle {
-      display: table;
+      display: none;
       color: white;
       position: fixed;
       z-index: 1;
@@ -417,8 +417,8 @@
       top: 0;
       left: 0;
       z-index: 100;
-      // cursor: url(/icons/new/slide.svg#cursor) 32 19, none;
-      cursor: none;
+      cursor: url(/icons/new/slide.svg#cursor) 31 19, none;
+      // cursor: none;
     }
     &.over {
       .handle { display: none; }

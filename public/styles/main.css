@@ -76,7 +76,11 @@ h1, h2, h3, h4, h5, p {
     position: relative;
     max-width: inherit;
     -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0); }
+    transform: translate3d(0, 0, 0);
+    transition: 0.15s ease-out; }
+    .navigator .icon:hover {
+      -webkit-transform: scale(1.15);
+      transform: scale(1.15); }
   .navigator svg {
     fill: #939598;
     transition: 0.15s ease-out; }
@@ -628,7 +632,7 @@ h1, h2, h3, h4, h5, p {
       right: 0;
       background-position: right; }
     .post.mouser .handle {
-      display: table;
+      display: none;
       color: white;
       position: fixed;
       z-index: 1; }
@@ -639,7 +643,7 @@ h1, h2, h3, h4, h5, p {
       top: 0;
       left: 0;
       z-index: 100;
-      cursor: none; }
+      cursor: url(/icons/new/slide.svg#cursor) 31 19, none; }
     .post.mouser.over .handle {
       display: none; }
   .post.doublewide {
@@ -720,4 +724,5 @@ img {
 
 .home_sprite {
   display: table;
-  margin: 50px auto; }
+  margin: 50px auto;
+  transition: 0.15s ease-out; }

@@ -29555,12 +29555,12 @@ var Mouser = React.createClass({displayName: "Mouser",
   onMouseMove: function(event){
 
     var window_width = window.innerWidth + 70,
-        screenX = event.screenX ,
-        screenY = event.screenY,
+        screenX = event.clientX ,
+        screenY = event.clientY,
         diff = ( window_width - 500 ) / 2,
         left = 500 - (screenX - diff);
 
-    this.setState({left: left, screenX: (screenX - 31), screenY: (screenY - 125)});
+    this.setState({left: left, screenX: (screenX - 31), screenY: (screenY)});
 
   },
 
