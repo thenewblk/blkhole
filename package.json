@@ -5,7 +5,8 @@
     "node": "0.10.35"
   },
   "scripts": {
-    "start": "npm run browserify && node index.js",
+    "start": "node index.js",
+    "build": "npm run browserify && node index.js",
     "browserify": "browserify -t reactify -t require-globify public/index.js -o public/bundle.js"
   },
   "dependencies": {
