@@ -1,11 +1,11 @@
 <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" width="64.229" height="38" viewBox="0 0 64.229 38">
   <defs>
     <style>
-      .cls-1 {
+      .diamond {
         fill: #010101;
       }
 
-      .cls-2 {
+      .carrots {
         fill: none;
         stroke: #1d1d1b;
         stroke-linecap: round;
@@ -15,9 +15,9 @@
     </style>
   </defs>
   <title>slide-01</title>
-  <g id="cursor"> 
-    <polygon class="cls-1" points="50.928 19 32.051 38 13.174 19 32.051 0 50.928 19"/>
-    <polyline class="cls-2" points="50.648 7.459 62.114 19 50.648 30.541"/>
-    <polyline class="cls-2" points="13.58 30.541 2.114 19 13.58 7.459"/>
+  <g id="cursor">
+    <polygon class="diamond" points="50.928 19 32.051 38 13.174 19 32.051 0 50.928 19"/>
+    <polyline class="carrots" points="50.648 7.459 62.114 19 50.648 30.541"/>
+    <polyline class="carrots" points="13.58 30.541 2.114 19 13.58 7.459"/>
   </g>
 </svg>

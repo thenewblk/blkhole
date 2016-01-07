@@ -30,6 +30,7 @@ body {
 
 h1,h2,h3,h4,h5,p {
   opacity: 0;
+  line-height: 1.5;
   html.wf-active & {
     margin: 0;
     padding: 0;
@@ -77,7 +78,7 @@ h1,h2,h3,h4,h5,p {
     margin: 10px;
     display: inline-block;
     svg {
-      fill: black;
+      fill: #333;
       #blk {
         transition: 0.15s ease-out;
         opacity: 0;
@@ -99,7 +100,7 @@ h1,h2,h3,h4,h5,p {
     fill: #939598;
     transition: 0.15s ease-out;
     &:hover {
-      fill: black;
+      fill: #333;
     }
     #two {
       display: none;
@@ -161,13 +162,17 @@ h1,h2,h3,h4,h5,p {
   }
   &:hover {
     svg {
-      fill: black;
+      fill: #333;
     }
   }
 }
 
 .main {
   height: 100%;
+}
+
+.lost {
+  display: none!important;
 }
 
 @import 'channel';

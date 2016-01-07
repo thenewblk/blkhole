@@ -54,6 +54,15 @@ module.exports = React.createClass({
     this.setState({animation: "reverse"});
 	},
 
+	enterLoop: function()	{
+		this.setState({animation: "startloop"});
+
+	},
+
+	outLoop: function()	{
+		this.setState({animation: "stoploop"});
+	},
+
 
   animate: function(){
     var self = this;
@@ -100,7 +109,7 @@ module.exports = React.createClass({
       if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
 
           var new_frame = self.state.current_frame + 1;
-          var col = (new_frame % self.props.columns) +1;
+          var col = (new_frame % self.props.columns) + 1;
           var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
 
           var x = (col - 1) * self.props.frameW * -1;
@@ -110,22 +119,45 @@ module.exports = React.createClass({
 
       if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
           var new_frame = self.state.current_frame - 1;
-          var col = (new_frame % self.props.columns) +1;
+          var col = (new_frame % self.props.columns) + 1;
           var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
 
           var x = (col - 1) * self.props.frameW * -1;
           var y = (row - 1) * self.props.frameH * -1;
           self.setState( { current_frame: new_frame, x: x, y: y } );
       }
+
+			if (( self.state.animation == "startloop")) {
+				if (self.state.current_frame == self.props.frames - 1 ) {
+					self.setState( { current_frame: 0, x: 0, y: 0 } );
+				} else {
+					var new_frame = self.state.current_frame + 1;
+					var col = (new_frame % self.props.columns) + 1;
+					var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+
+					var x = (col - 1) * self.props.frameW * -1;
+					var y = (row - 1) * self.props.frameH * -1;
+					self.setState( { current_frame: new_frame, x: x, y: y } );
+				}
+			}
+
+			if (( self.state.animation == "stoploop")) {
+				self.setState( { current_frame: 0, x: 0, y: 0 } );
+			}
+
+
     } , speed );
   },
 
   render: function() {
     var self = this;
 
-    var image = self.props.image;
-    var width = self.props.frameW * self.props.columns;
-    var height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
+    var image = self.props.image,
+				width = self.props.frameW * self.props.columns,
+				loop = self.props.loop,
+				hover = self.props.hover,
+				height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
+
     if (self.props.className) {
       var className = self.props.className + " icon sprite_container";
     } else {
@@ -148,26 +180,53 @@ module.exports = React.createClass({
       self.animate();
     }
 		if (image){
-			if ((getFilePathExtension(image) === "svg")){
-	      return (
-	        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
 
-	          <span className="svg_icon_wrapper" style={ style } >
-	            <Isvg src={image} className="isvg">
-	              Here's some optional content for browsers that don't support XHR or inline
-	              SVGs. You can use other React components here too. Here, I'll show you.
+			if (hover){
+				if ((getFilePathExtension(image) === "svg")){
+		      return (
+		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
 
-	            </Isvg>
-	          </span>
-	        </span>
-	      )
-	    } else {
-	      return (
-	        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
-	          <img src={image} width={width} height={ height } style={ style } />
-	        </span>
-	      )
-	    }
+		          <span className="svg_icon_wrapper" style={ style } >
+		            <Isvg src={image} className="isvg">
+		              Here's some optional content for browsers that don't support XHR or inline
+		              SVGs. You can use other React components here too. Here, I'll show you.
+
+		            </Isvg>
+		          </span>
+		        </span>
+		      )
+		    } else {
+		      return (
+		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
+		          <img src={image} width={width} height={ height } style={ style } />
+		        </span>
+		      )
+		    }
+			}
+
+			if (loop){
+				if ((getFilePathExtension(image) === "svg")){
+					return (
+						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
+
+							<span className="svg_icon_wrapper loop" style={ style } >
+								<Isvg src={image} className="isvg">
+									Here's some optional content for browsers that don't support XHR or inline
+									SVGs. You can use other React components here too. Here, I'll show you.
+
+								</Isvg>
+							</span>
+						</span>
+					)
+				} else {
+					return (
+						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
+							<img src={image} width={width} height={ height } style={ style } />
+						</span>
+					)
+				}
+			}
+
 		} else {
 				return (
 					<h2>fuck you</h2>

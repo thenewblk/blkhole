@@ -2,15 +2,19 @@ var React = require('react');
 var Helmet = require('react-helmet');
 var Sprite = require('../components/sprite.jsx');
 
+var util = require('util');
+
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      image: "/icons/handcrafted-sprite-01.svg",
-      columns: 9,
-      frames: 17,
+      image: "/icons/blk-2.svg",
+      columns: 11,
+      frames: 22,
       duration: .5,
-      frameW: 50,
-      frameH: 50,
+      frameW: 250,
+      frameH: 200,
+      hover: false,
+      loop: true
     };
   },
 
@@ -37,6 +41,10 @@ module.exports = React.createClass({
     this.setState({frameH: event.target.value});
   },
 
+  handleHover: function() {
+    this.setState({hover: !this.state.hover, loop: !this.state.loop});
+  },
+
   render: function render() {
     var self = this;
 
@@ -46,7 +54,9 @@ module.exports = React.createClass({
         duration = self.state.duration,
         duration_control = self.state.duration * 1000,
         frameW = self.state.frameW,
-        frameH = self.state.frameH;
+        frameH = self.state.frameH,
+        hover = self.state.hover,
+        loop = self.state.loop;
 
     return (
       <div>
@@ -71,7 +81,9 @@ module.exports = React.createClass({
             speed={(duration* 1000)/ frames}
             duration={duration}
             frameW={frameW}
-            frameH={frameH} />
+            frameH={frameH}
+            hover={hover}
+            loop={loop} />
         </div>
         <div className="controls">
 
@@ -100,6 +112,12 @@ module.exports = React.createClass({
             <input type="range" name="frameH" min="0" max="100" value={frameH} onChange={this.handleFrameH} />
           </div>
 
+          <div className="control">
+            <p>
+              { hover ?  <button onClick={this.handleHover} className="hover hoverloop_button">Hover</button> : null }
+              { loop ? <button onClick={this.handleHover} className="loop hoverloop_button">Loop</button> : null }
+            </p>
+          </div>
         </div>
 
       </div>

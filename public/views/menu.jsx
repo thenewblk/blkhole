@@ -24,17 +24,19 @@ module.exports = React.createClass({
                 frames={9}
                 duration={.25}
                 frameW={50}
-                frameH={50} />
+                frameH={50}
+                hover={true} />
               <span className="name">Agency</span>
             </Link>
-            <Link className="channel_link" to="/disruption" >
+            <Link className="channel_link lost" to="/disruption" >
               <Sprite
                 image="/icons/disruption-icon.png"
                 columns={9}
                 frames={18}
                 duration={.5}
                 frameW={50}
-                frameH={50} />
+                frameH={50}
+                loop={true} />
               <span className="name">DISRUPTION</span>
             </Link>
             <Link className="channel_link" to="/experiential"  >
@@ -44,17 +46,19 @@ module.exports = React.createClass({
                 frames={15}
                 duration={.5}
                 frameW={50}
-                frameH={50} />
+                frameH={50}
+                hover={true} />
               <span className="name">Experiential</span>
             </Link>
-            <Link className="channel_link" to="/superfans" >
+            <Link className="channel_link lost" to="/superfans" >
               <Sprite
                 image="/icons/superfan-sprite-01.svg"
                 columns={9}
                 frames={17}
                 duration={.5}
                 frameW={50}
-                frameH={50} />
+                frameH={50}
+                hover={true}/>
               <span className="name">Superfans</span>
             </Link>
             <Link className="channel_link" to="/handcrafted" >
@@ -64,7 +68,8 @@ module.exports = React.createClass({
                 frames={16}
                 duration={.4}
                 frameW={50}
-                frameH={50} />
+                frameH={50}
+                hover={true} />
               <span className="name">Handcrafted</span>
             </Link>
           </div>

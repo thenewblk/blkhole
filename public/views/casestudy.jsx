@@ -162,6 +162,12 @@ var Mouser = React.createClass({
 
   },
 
+  onMouseUp: function (e) {
+  // this.setState({dragging: false})
+    e.stopPropagation()
+    e.preventDefault()
+  },
+
   // componentDidMount: function () {
   //   console.log("componentDidMount");
   //   document.addEventListener('mousemove', this.onMouseMove)
@@ -169,12 +175,27 @@ var Mouser = React.createClass({
 
   componentDidUpdate: function (props, state) {
     if (this.state.over) {
-      document.addEventListener('mousemove', this.onMouseMove)
-      document.addEventListener('mouseup', this.onMouseUp)
+      document.addEventListener('mousemove', this.onMouseMove);
+      // document.addEventListener('resize', this.onMouseMove);
+      // document.addEventListener('scroll', this.onMouseMove);
+      document.addEventListener('mouseup', this.onMouseUp);
     } else if (!this.state.over) {
-      document.removeEventListener('mousemove', this.onMouseMove)
-      document.removeEventListener('mouseup', this.onMouseUp)
+      document.removeEventListener('mousemove', this.onMouseMove);
+      // document.removeEventListener('resize', this.onMouseMove);
+      // document.removeEventListener('scroll', this.onMouseMove);
+      document.removeEventListener('mouseup', this.onMouseUp);
     }
+  },
+
+  componentDidMount: function() {
+    document.addEventListener('resize', this.onMouseMove);
+    document.addEventListener('scroll', this.onMouseMove);
+  },
+
+
+  componentDidUnmount: function() {
+    document.removeEventListener('resize', this.onMouseMove);
+    document.removeEventListener('scroll', this.onMouseMove);
   },
 
   render: function render() {
@@ -270,33 +291,49 @@ module.exports = React.createClass({
       }
 
       var things = self.state.content.content.things.map(function(thing, index){
+
         if (thing.type == "block") {
-          if (thing.style == "uppercase") {
+          var words = thing.content.map(function(word, index){
             return (
-              <div key={index} className="post block uppercase" style={block_style}><span className="content">{thing.content}</span></div>
+              <span key={index} className={ "content " + word.style }>{word.content}</span>
             )
-          } else if (thing.style == "bold") {
-            return (
-              <div key={index} className="post block bold" style={block_style}>
-                <span className="content">{thing.content}</span>
-                <span className="bold-content">{thing.bold}</span>
-              </div>
-            )
-          } else {
-            return (
-              <div key={index} className="post block" style={block_style}><span className="content">{thing.content}</span></div>
-            )
-          }
+          });
+          return (
+            <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}>
+              {words}
+            </div>
+          )
+          // if (thing.style == "uppercase") {
+          //   return (
+          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}><span className="content">{thing.content}</span></div>
+          //   )
+          // } else if (thing.style == "bold") {
+          //   return (
+          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}>
+          //       <span className="content">{thing.content}</span>
+          //       <span className="bold-content">{thing.bold}</span>
+          //     </div>
+          //   )
+          // } else {
+          //   return (
+          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}><span className="content">{thing.content}</span></div>
+          //   )
+          // }
         }
+
         if (thing.type == "text") {
           return (
-            <div key={index} className="post text">{thing.content}</div>
+            <div key={index} className={"post " + thing.type + " " + thing.style }>
+              {thing.headline ? <h2 className="headline">{thing.headline}</h2> : null}
+              {thing.content}
+            </div>
           )
         }
+
         if (thing.type == "pullquote") {
           if (thing.image) {
             return (
-              <div key={index} className="post pullquote">
+              <div key={index} className={"post " + thing.type + " " + thing.style }>
                 <img className="break" src={self.state.content.content.break} />
                 <img src={thing.image} />
                 <img className="break" src={self.state.content.content.break} />
@@ -305,19 +342,21 @@ module.exports = React.createClass({
           }
           if (thing.content) {
             return (
-              <div key={index} className="post pullquote"><img className="break" src={self.state.content.content.break} /><p>{thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
+              <div key={index} className={"post " + thing.type + " " + thing.style }><img className="break" src={self.state.content.content.break} /><p>{thing.content}</p><img className="break" src={self.state.content.content.break} /></div>
             )
           }
         }
+
         if (thing.type == "image") {
           return (
-            <div key={index} className="post image"><img src={thing.url} /></div>
+            <div key={index} className={"post " + thing.type + " " + thing.style }><img src={thing.url} /></div>
           )
         }
+
         if (thing.type == "logo") {
           var style = thing.style;
           return (
-            <div key={index} className={ style ? "post logo " + style : "post logo" } ><img src={thing.url} /></div>
+            <div key={index} className={"post " + thing.type + " " + thing.style } ><img src={thing.url} /></div>
           )
         }
 
@@ -328,25 +367,19 @@ module.exports = React.createClass({
             )
           });
           return (
-            <div key={index} className="post logos">{logos}</div>
+            <div key={index} className={"post " + thing.type + " " + thing.style }>{logos}</div>
           )
         }
 
-        if (thing.type == "4-images") {
+        if (thing.type == "images") {
+          var images = thing.images.map(function(image, index){
+            return (
+              <div key={index} className="image-wrapper"><img src={image} /></div>
+            )
+          });
           return (
-            <div key={index} className="post four-images">
-              <div className="image-wrapper image-one">
-                <img src={thing.one} />
-              </div>
-              <div className="image-wrapper image-two">
-                <img src={thing.two} />
-              </div>
-              <div className="image-wrapper image-hree">
-                <img src={thing.three} />
-              </div>
-              <div className="image-wrapper image-four">
-                <img src={thing.four} />
-              </div>
+            <div key={index} className={"post " + thing.type + " " + thing.style }>
+              {images}
             </div>
           )
         }
@@ -354,7 +387,7 @@ module.exports = React.createClass({
         if (thing.type == "video") {
 
           return (
-            <div key={index} className="post video" >
+            <div key={index} className={"post " + thing.type + " " + thing.style } >
 
             </div>
           )
@@ -382,6 +415,43 @@ module.exports = React.createClass({
           )
         }
 
+        if ( thing.type == "doublewide" ) {
+          if (thing.arrangement == "image-left"){
+            return (
+              <div className={"post " + thing.type + " " + thing.style }>
+                <div className="image">
+                  <img src={thing.image} />
+                </div>
+                <p className="text">
+                  { thing.vargas ? <img className="vargas-signature" src={thing.vargas} /> : null }
+                  {thing.content}
+                </p>
+              </div>
+            )
+
+          } else if (thing.arrangement == "text-left"){
+            return (
+              <div className={"post " + thing.type + " " + thing.style }>
+                <p className="text">
+                  { thing.vargas ? <img className="vargas-signature" src={thing.vargas} /> : null }
+                  {thing.content}
+                </p>
+                <div className="image">
+                  <img src={thing.image} />
+                </div>
+              </div>
+            )
+
+          } else {
+            return (
+              <div className={"post " + thing.type + " " + thing.style }>
+                <p>Which arrangement?</p>
+              </div>
+            )
+
+          }
+        }
+
       });
     }
 
@@ -404,7 +474,7 @@ module.exports = React.createClass({
             <div className="top" style={top_image}>
               <h1 className="case_study_name">{name}</h1>
             </div>
-            <div className="post block " style={block_style}>
+            <div className="post block top_block" style={block_style}>
               <span className="content left_label">{self.state.content.top_block.project_tags}</span>
               <span className="content">{self.state.content.top_block.content}</span>
             </div>

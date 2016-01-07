@@ -1,12 +1,20 @@
 .post {
   max-width: 100%;
-  margin: 15px 0;
+  margin: 15px 0 0;
   .break {
     margin: 15px 0;
   }
   &.black {
     background: black;
+    color: white;
+    margin-top: 0;
   }
+
+  &.white {
+    background: white;
+    margin-top: 0;
+  }
+
   &.block {
     background-color: black;
     background:
@@ -23,11 +31,6 @@
       width: 750px;
       max-width: 100%;
       line-height: 1.5;
-      &.left_label {
-        float: left;
-        width: 33%;
-        font-weight: bold;
-      }
     }
     &.uppercase {
       text-transform: uppercase;
@@ -44,15 +47,30 @@
       font-weight: 100;
       font-size: 30px;
       font-style: italic;
-      .content, .bold-content {
+      .content, .bold {
         width: 750px;
         max-width: 100%;
         display: block;
       }
-      .bold-content {
+      .bold {
         font-weight: bold;
         font-style: normal;
         font-size: 60px;
+      }
+    }
+    &.top_block {
+      .content {
+        width: 650px;
+        &.left_label {
+          float: left;
+          width: 33%;
+          font-weight: bold;
+        }
+      }
+    }
+    &.wide {
+      .content {
+        width: 100%;
       }
     }
   }
@@ -65,7 +83,11 @@
     line-height: 2;
     padding-left: 7%;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    .headline {
+      text-align: left;
+      text-transform: uppercase;
+    }
   }
 
   &.logo {
@@ -88,6 +110,15 @@
     width: 100%;
     img {
       width: 100%;
+      display: block;
+    }
+    &.padded {
+      padding: 15px 30px;
+      margin: 0;
+    }
+    &.more-padded {
+      padding: 7%;
+      margin: 0;
     }
   }
 
@@ -128,14 +159,26 @@
     }
   }
 
-  &.four-images {
+  &.images {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     .image-wrapper {
       flex: 1 50%;
       img {
-        display:block;
+        display: table;
+        margin: auto;
+      }
+    }
+    &.three-up {
+      .image-wrapper {
+        flex: 1 33%;
+      }
+    }
+    &.padded {
+      padding: 30px 15px;
+      .image-wrapper {
+        padding: 0 15px;
       }
     }
   }
@@ -191,6 +234,7 @@
       align-items: center;
       color: white;
       padding: 15px 300px 15px 25px;
+      background-blend-mode: multiply;
     }
     .video_sidebar {
       transition: 0.15s ease-out;
@@ -200,11 +244,16 @@
       height: 100%;
       width: 275px;
       z-index: 2;
+      overflow: scroll;
+      &:hover {
+        padding-left: 275px;
+        width: 550px;
+      }
       .video_small {
         background-size: cover;
         background-position: center;
         display: block;
-        height: 100px;
+        height: 150px;
         position: relative;
         border: 0px solid white;
         transition: 0.15s ease-out;
@@ -376,6 +425,52 @@
     }
 
 
+  }
+
+  &.doublewide {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &.no-padding {
+      margin: -15px 0;
+    }
+    .image, .text {
+      flex: 1;
+      img {
+        display:block;
+      }
+    }
+    .image {
+      max-width: 40%;
+    }
+    .text {
+      padding: 15px 7%;
+    }
+
+    &.logo-small {
+      .image, .text {
+        padding: 7%;
+        max-width: none;
+        flex: 1 50%;
+      }
+    }
+
+    .vargas-signature {
+      width: 69%;
+      display: table;
+      margin: 20px auto;
+    }
+
+
+  }
+
+  &.top-post {
+    padding-bottom: 15px;
+  }
+
+  &.bottom-post {
+    padding-top: 15px;
+    padding-bottom: 15%;
   }
 
 }

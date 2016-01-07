@@ -93,6 +93,11 @@
     width: 50px;
     opacity: 0;
     transition: 0.25s ease-out;
+    &:hover {
+      svg {
+        fill: white;
+      }
+    }
   }
   .channel_description {
     color: #868686;

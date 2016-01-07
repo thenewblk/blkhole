@@ -116,6 +116,7 @@ module.exports = React.createClass({
                         duration={icon.duration}
                         frameW={icon.frameW}
                         frameH={icon.frameH}
+                        hover={true}
                       />
                     : null }
                     </span>

@@ -21,7 +21,8 @@ body {
   box-sizing: border-box; }
 
 h1, h2, h3, h4, h5, p {
-  opacity: 0; }
+  opacity: 0;
+  line-height: 1.5; }
   html.wf-active h1, html.wf-active h2, html.wf-active h3, html.wf-active h4, html.wf-active h5, html.wf-active p {
     margin: 0;
     padding: 0;
@@ -61,7 +62,7 @@ h1, h2, h3, h4, h5, p {
     margin: 10px;
     display: inline-block; }
     .navigator .newblk_logo svg {
-      fill: black; }
+      fill: #333; }
       .navigator .newblk_logo svg #blk {
         transition: 0.15s ease-out;
         opacity: 0;
@@ -80,7 +81,7 @@ h1, h2, h3, h4, h5, p {
     fill: #939598;
     transition: 0.15s ease-out; }
     .navigator svg:hover {
-      fill: black; }
+      fill: #333; }
     .navigator svg #two {
       display: none; }
   .navigator .items {
@@ -121,10 +122,13 @@ h1, h2, h3, h4, h5, p {
   .sprite_container svg {
     transition: 0.15s ease-out; }
   .sprite_container:hover svg {
-    fill: black; }
+    fill: #333; }
 
 .main {
   height: 100%; }
+
+.lost {
+  display: none !important; }
 
 .channel {
   height: 100%;
@@ -216,6 +220,8 @@ h1, h2, h3, h4, h5, p {
     width: 50px;
     opacity: 0;
     transition: 0.25s ease-out; }
+    .channel_info .channel_icon:hover svg {
+      fill: white; }
   .channel_info .channel_description {
     color: #868686;
     line-height: 2; }
@@ -285,11 +291,16 @@ h1, h2, h3, h4, h5, p {
 
 .post {
   max-width: 100%;
-  margin: 15px 0; }
+  margin: 15px 0 0; }
   .post .break {
     margin: 15px 0; }
   .post.black {
-    background: black; }
+    background: black;
+    color: white;
+    margin-top: 0; }
+  .post.white {
+    background: white;
+    margin-top: 0; }
   .post.block {
     background-color: black;
     background: linear-gradient(135deg, transparent 50px, black 0) top left, linear-gradient(0deg, transparent 0, black 0) top right, linear-gradient(315deg, transparent 50px, black 0) bottom right, linear-gradient(0deg, transparent 0, black 0) bottom left;
@@ -302,10 +313,6 @@ h1, h2, h3, h4, h5, p {
       width: 750px;
       max-width: 100%;
       line-height: 1.5; }
-      .post.block .content.left_label {
-        float: left;
-        width: 33%;
-        font-weight: bold; }
     .post.block.uppercase {
       text-transform: uppercase;
       font-weight: 100;
@@ -319,14 +326,22 @@ h1, h2, h3, h4, h5, p {
       font-weight: 100;
       font-size: 30px;
       font-style: italic; }
-      .post.block.bold .content, .post.block.bold .bold-content {
+      .post.block.bold .content, .post.block.bold .bold {
         width: 750px;
         max-width: 100%;
         display: block; }
-      .post.block.bold .bold-content {
+      .post.block.bold .bold {
         font-weight: bold;
         font-style: normal;
         font-size: 60px; }
+    .post.block.top_block .content {
+      width: 650px; }
+      .post.block.top_block .content.left_label {
+        float: left;
+        width: 33%;
+        font-weight: bold; }
+    .post.block.wide .content {
+      width: 100%; }
   .post.text {
     width: 750px;
     max-width: 100%;
@@ -337,9 +352,12 @@ h1, h2, h3, h4, h5, p {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center; }
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column; }
+    .post.text .headline {
+      text-align: left;
+      text-transform: uppercase; }
   .post.logo {
     display: -webkit-flex;
     display: -ms-flexbox;
@@ -358,7 +376,14 @@ h1, h2, h3, h4, h5, p {
   .post.image {
     width: 100%; }
     .post.image img {
-      width: 100%; }
+      width: 100%;
+      display: block; }
+    .post.image.padded {
+      padding: 15px 30px;
+      margin: 0; }
+    .post.image.more-padded {
+      padding: 7%;
+      margin: 0; }
   .post.logo img {
     display: table;
     width: 50%;
@@ -390,7 +415,7 @@ h1, h2, h3, h4, h5, p {
       width: 50%;
       display: inline-block;
       vertical-align: middle; }
-  .post.four-images {
+  .post.images {
     display: -webkit-flex;
     display: -ms-flexbox;
     display: flex;
@@ -400,12 +425,21 @@ h1, h2, h3, h4, h5, p {
     -webkit-flex-wrap: wrap;
     -ms-flex-wrap: wrap;
     flex-wrap: wrap; }
-    .post.four-images .image-wrapper {
+    .post.images .image-wrapper {
       -webkit-flex: 1 50%;
       -ms-flex: 1 50%;
       flex: 1 50%; }
-      .post.four-images .image-wrapper img {
-        display: block; }
+      .post.images .image-wrapper img {
+        display: table;
+        margin: auto; }
+    .post.images.three-up .image-wrapper {
+      -webkit-flex: 1 33%;
+      -ms-flex: 1 33%;
+      flex: 1 33%; }
+    .post.images.padded {
+      padding: 30px 15px; }
+      .post.images.padded .image-wrapper {
+        padding: 0 15px; }
   .post.videos {
     padding-bottom: 56%;
     overflow: hidden;
@@ -447,7 +481,8 @@ h1, h2, h3, h4, h5, p {
       -ms-flex-align: center;
       align-items: center;
       color: white;
-      padding: 15px 300px 15px 25px; }
+      padding: 15px 300px 15px 25px;
+      background-blend-mode: multiply; }
     .post.videos .video_sidebar {
       transition: 0.15s ease-out;
       position: absolute;
@@ -455,12 +490,16 @@ h1, h2, h3, h4, h5, p {
       right: 0;
       height: 100%;
       width: 275px;
-      z-index: 2; }
+      z-index: 2;
+      overflow: scroll; }
+      .post.videos .video_sidebar:hover {
+        padding-left: 275px;
+        width: 550px; }
       .post.videos .video_sidebar .video_small {
         background-size: cover;
         background-position: center;
         display: block;
-        height: 100px;
+        height: 150px;
         position: relative;
         border: 0px solid white;
         transition: 0.15s ease-out;
@@ -603,6 +642,43 @@ h1, h2, h3, h4, h5, p {
       cursor: none; }
     .post.mouser.over .handle {
       display: none; }
+  .post.doublewide {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center; }
+    .post.doublewide.no-padding {
+      margin: -15px 0; }
+    .post.doublewide .image, .post.doublewide .text {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+      .post.doublewide .image img, .post.doublewide .text img {
+        display: block; }
+    .post.doublewide .image {
+      max-width: 40%; }
+    .post.doublewide .text {
+      padding: 15px 7%; }
+    .post.doublewide.logo-small .image, .post.doublewide.logo-small .text {
+      padding: 7%;
+      max-width: none;
+      -webkit-flex: 1 50%;
+      -ms-flex: 1 50%;
+      flex: 1 50%; }
+    .post.doublewide .vargas-signature {
+      width: 69%;
+      display: table;
+      margin: 20px auto; }
+  .post.top-post {
+    padding-bottom: 15px; }
+  .post.bottom-post {
+    padding-top: 15px;
+    padding-bottom: 15%; }
 
 img {
   max-width: 100%; }
