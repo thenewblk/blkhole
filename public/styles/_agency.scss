@@ -1,17 +1,230 @@
 .agency_top {
-  .top_copy {
-    position: absolute;
-    width: 60%;
-    padding: 30px;
-    right: 50px;
-  }
+  height: 100%;
+  overflow: hidden;
   .subheader_top {
-    font-weight: 100;
+    font-size: 75px;
+    text-align: center;
   }
   .header_top {
     font-size: 50px;
   }
   .header_copy {
-    
+
   }
+}
+
+.agency {
+  height: 100%;
+}
+
+.theoldgirl {
+  height: 100%;
+  padding: 50px;
+  background-image: url(/images/agency/theoldgirl_grayscale.jpg);
+  background-position: top;
+  background-size: cover;
+}
+
+.block {
+  display: flex;
+  .content {
+    width: 650px;
+  }
+  .left_label {
+    float: left;
+    width: 33%;
+    font-size: 20px;
+  }
+}
+
+.needle {
+  background-color: black;
+  background:
+    linear-gradient(135deg, transparent 50px, black 0) top left,
+    linear-gradient(0deg, transparent 0, black 0) top right,
+    linear-gradient(315deg, transparent 50px, black 0) bottom right,
+    linear-gradient(0deg, transparent 0, black 0) bottom left;
+  background-size: 51%!important;
+  background-repeat: no-repeat!important;
+  padding: 100px 7%;
+  color: white;
+
+  .needle_headline {
+    text-transform: uppercase;
+    font-size: 75px;
+    margin: 0;
+    line-height: 1;
+  }
+}
+
+.block {
+  margin: 50px 0;
+}
+
+.services {
+  padding: 50px;
+}
+
+img.full {
+  width: 100%;
+  display: block;
+}
+
+.service_list {
+  display: flex;
+  flex-direction: row;
+  padding: 0 50px;
+  .service_type {
+    flex: 1;
+  }
+  .service_title {
+    text-transform: uppercase;
+  }
+  .service {
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      height: 8px;
+      width: 8px;
+      background: transparent;
+      top: 8px;
+      transition:0.15s ease-out;
+      transition:
+        0.1s ease-out left,
+        0.15s ease-out background,
+        0.2s ease-out transform;
+      left: 0;
+      transform: rotate(3600deg);
+    }
+    &:hover {
+      cursor: pointer;
+      &:before {
+        background: black;
+        transform: rotate(-45deg);
+        left: -30px;
+
+      }
+    }
+  }
+}
+
+.services {
+  height: 100%;
+  position: relative;
+}
+
+.diamond {
+  display: inline-block;
+  position: relative;
+  height: 8px;
+  width: 8px;
+  background: gray;
+  transform: rotate(-45deg);
+  top: -2px;
+  margin: 0 7px;
+}
+
+.service_detail {
+  position: absolute;
+  top: 50px;
+  left: 100%;
+  right: -100%;
+  background: white;
+  bottom: 50px;
+  z-index: 1;
+  transition: 0.25s ease-out;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  .service_detail_wrapper {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    border: 3px solid black;
+    border-right: none;
+  }
+
+  &.open {
+    left: 50px;
+    right: 0;
+  }
+  .area {
+    text-transform: capitalize;
+    color: gray;
+  }
+  .name {
+    font-size: 75px;
+    line-height: 1;
+    margin: 0;
+  }
+
+  .close {
+    cursor: pointer;
+    position: relative;
+    .isvg {
+      z-index: 2;
+      position: absolute;
+      top: -50px;
+      left: -50px;
+      svg {
+        background: white;
+      }
+    }
+    &:after {
+      content: '';
+      height: 300px;
+      width: 300px;
+      background: #ececec;
+      position: absolute;
+      border: 3px solid black;
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+      top: -230px;
+      left: -230px;
+      z-index: 1;
+    }
+  }
+
+  .top_detail {
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    padding: 15% 7%;
+    .left,.right {
+      flex: 1;
+    }
+  }
+  .next_service, .prev_service {
+    opacity: 0;
+    &.here {
+      opacity: 1;
+      transition: 0.15s ease-out;
+    }
+    cursor: pointer;
+    color: gray;
+    transition: 0.15s ease-out;
+    span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    svg {
+      transition: 0.15s ease-out;
+      fill: gray;
+    }
+    .service_name {
+      margin: 0 10px;
+    }
+    &:hover {
+      color: black;
+      svg {
+        fill: black;
+      }
+    }
+  }
+  .next_service {
+    float: right;
+  }
+
 }

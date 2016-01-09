@@ -20,8 +20,45 @@ body {
 * {
   box-sizing: border-box; }
 
+h1, h2, h3, h4, h5 {
+  font-family: 'Conduit ITC W01 Bold';
+  font-weight: normal; }
+  h1.bold, h2.bold, h3.bold, h4.bold, h5.bold {
+    font-family: 'Conduit ITC W01 Bold';
+    font-weight: normal; }
+
+body, p, span {
+  font-family: 'Museo Sans W01_300';
+  line-height: 1.4; }
+  body.italic, p.italic, span.italic {
+    font-family: 'MuseoSansW01-300Italic'; }
+    body.italic span, p.italic span, span.italic span {
+      font-family: 'MuseoSansW01-300Italic'; }
+  body.bold, p.bold, span.bold {
+    font-family: 'Museo Sans W01_900'; }
+    body.bold span, p.bold span, span.bold span {
+      font-family: 'Museo Sans W01_900'; }
+  body.bold.italic, p.bold.italic, span.bold.italic {
+    font-family: 'MuseoSansW01-900Italic'; }
+    body.bold.italic span, p.bold.italic span, span.bold.italic span {
+      font-family: 'MuseoSansW01-900Italic'; }
+
+.uppercase {
+  text-transform: uppercase; }
+
+.post.block .content.uppercase {
+  font-family: 'MuseoSansW01-300Italic';
+  text-transform: uppercase;
+  font-size: 30px;
+  font-style: italic; }
+
+.post.block .content.bold {
+  font-weight: normal !important;
+  font-size: 60px;
+  text-transform: uppercase; }
+
 h1, h2, h3, h4, h5, p {
-  opacity: 0;
+  opacity: 1;
   line-height: 1.5; }
   html.wf-active h1, html.wf-active h2, html.wf-active h3, html.wf-active h4, html.wf-active h5, html.wf-active p {
     margin: 0;
@@ -104,8 +141,7 @@ h1, h2, h3, h4, h5, p {
       position: absolute;
       /* left: -1000%; */ }
   .navigator:hover {
-    max-width: 250px;
-    box-shadow: 0 0 5px #ccc; }
+    max-width: 250px; }
     .navigator:hover .items .name {
       display: inline-block;
       vertical-align: middle;
@@ -317,27 +353,6 @@ h1, h2, h3, h4, h5, p {
       width: 750px;
       max-width: 100%;
       line-height: 1.5; }
-    .post.block.uppercase {
-      text-transform: uppercase;
-      font-weight: 100;
-      font-size: 30px;
-      font-style: italic; }
-      .post.block.uppercase .content {
-        width: 750px;
-        max-width: 100%; }
-    .post.block.bold {
-      text-transform: uppercase;
-      font-weight: 100;
-      font-size: 30px;
-      font-style: italic; }
-      .post.block.bold .content, .post.block.bold .bold {
-        width: 750px;
-        max-width: 100%;
-        display: block; }
-      .post.block.bold .bold {
-        font-weight: bold;
-        font-style: normal;
-        font-size: 60px; }
     .post.block.top_block .content {
       width: 650px; }
       .post.block.top_block .content.left_label {
@@ -687,17 +702,207 @@ h1, h2, h3, h4, h5, p {
 img {
   max-width: 100%; }
 
-.agency_top .top_copy {
+.agency_top {
+  height: 100%;
+  overflow: hidden; }
+  .agency_top .subheader_top {
+    font-size: 75px;
+    text-align: center; }
+  .agency_top .header_top {
+    font-size: 50px; }
+
+.agency {
+  height: 100%; }
+
+.theoldgirl {
+  height: 100%;
+  padding: 50px;
+  background-image: url(/images/agency/theoldgirl_grayscale.jpg);
+  background-position: top;
+  background-size: cover; }
+
+.block {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .block .content {
+    width: 650px; }
+  .block .left_label {
+    float: left;
+    width: 33%;
+    font-size: 20px; }
+
+.needle {
+  background-color: black;
+  background: linear-gradient(135deg, transparent 50px, black 0) top left, linear-gradient(0deg, transparent 0, black 0) top right, linear-gradient(315deg, transparent 50px, black 0) bottom right, linear-gradient(0deg, transparent 0, black 0) bottom left;
+  background-size: 51% !important;
+  background-repeat: no-repeat !important;
+  padding: 100px 7%;
+  color: white; }
+  .needle .needle_headline {
+    text-transform: uppercase;
+    font-size: 75px;
+    margin: 0;
+    line-height: 1; }
+
+.block {
+  margin: 50px 0; }
+
+.services {
+  padding: 50px; }
+
+img.full {
+  width: 100%;
+  display: block; }
+
+.service_list {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  padding: 0 50px; }
+  .service_list .service_type {
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1; }
+  .service_list .service_title {
+    text-transform: uppercase; }
+  .service_list .service {
+    position: relative; }
+    .service_list .service:before {
+      content: '';
+      position: absolute;
+      height: 8px;
+      width: 8px;
+      background: transparent;
+      top: 8px;
+      transition: 0.15s ease-out;
+      transition: 0.1s ease-out left, 0.15s ease-out background, 0.2s ease-out -webkit-transform;
+      transition: 0.1s ease-out left, 0.15s ease-out background, 0.2s ease-out transform;
+      left: 0;
+      -webkit-transform: rotate(3600deg);
+      transform: rotate(3600deg); }
+    .service_list .service:hover {
+      cursor: pointer; }
+      .service_list .service:hover:before {
+        background: black;
+        -webkit-transform: rotate(-45deg);
+        transform: rotate(-45deg);
+        left: -30px; }
+
+.services {
+  height: 100%;
+  position: relative; }
+
+.diamond {
+  display: inline-block;
+  position: relative;
+  height: 8px;
+  width: 8px;
+  background: gray;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+  top: -2px;
+  margin: 0 7px; }
+
+.service_detail {
   position: absolute;
-  width: 60%;
-  padding: 30px;
-  right: 50px; }
-
-.agency_top .subheader_top {
-  font-weight: 100; }
-
-.agency_top .header_top {
-  font-size: 50px; }
+  top: 50px;
+  left: 100%;
+  right: -100%;
+  background: white;
+  bottom: 50px;
+  z-index: 1;
+  transition: 0.25s ease-out;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  overflow: hidden; }
+  .service_detail .service_detail_wrapper {
+    height: 100%;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    padding: 50px;
+    border: 3px solid black;
+    border-right: none; }
+  .service_detail.open {
+    left: 50px;
+    right: 0; }
+  .service_detail .area {
+    text-transform: capitalize;
+    color: gray; }
+  .service_detail .name {
+    font-size: 75px;
+    line-height: 1;
+    margin: 0; }
+  .service_detail .close {
+    cursor: pointer;
+    position: relative; }
+    .service_detail .close .isvg {
+      z-index: 2;
+      position: absolute;
+      top: -50px;
+      left: -50px; }
+      .service_detail .close .isvg svg {
+        background: white; }
+    .service_detail .close:after {
+      content: '';
+      height: 300px;
+      width: 300px;
+      background: #ececec;
+      position: absolute;
+      border: 3px solid black;
+      -webkit-transform: rotate(45deg);
+      transform: rotate(45deg);
+      top: -230px;
+      left: -230px;
+      z-index: 1; }
+  .service_detail .top_detail {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    padding: 15% 7%; }
+    .service_detail .top_detail .left, .service_detail .top_detail .right {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1; }
+  .service_detail .next_service, .service_detail .prev_service {
+    opacity: 0;
+    cursor: pointer;
+    color: gray;
+    transition: 0.15s ease-out; }
+    .service_detail .next_service.here, .service_detail .prev_service.here {
+      opacity: 1;
+      transition: 0.15s ease-out; }
+    .service_detail .next_service span, .service_detail .prev_service span {
+      display: inline-block;
+      vertical-align: middle; }
+    .service_detail .next_service svg, .service_detail .prev_service svg {
+      transition: 0.15s ease-out;
+      fill: gray; }
+    .service_detail .next_service .service_name, .service_detail .prev_service .service_name {
+      margin: 0 10px; }
+    .service_detail .next_service:hover, .service_detail .prev_service:hover {
+      color: black; }
+      .service_detail .next_service:hover svg, .service_detail .prev_service:hover svg {
+        fill: black; }
+  .service_detail .next_service {
+    float: right; }
 
 .simple_input {
   width: 75px;

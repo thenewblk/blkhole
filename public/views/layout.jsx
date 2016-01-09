@@ -19,7 +19,7 @@ module.exports = React.createClass({
   mixins: [ Router.State ],
 
   componentDidMount: function(){
-    this.typekit();
+    // this.typekit();
   },
 
   typekit: function() {
@@ -61,10 +61,11 @@ module.exports = React.createClass({
     }
 
     return (
-      <html className="wf-loading">
+      <html className="">
         <head>
           <meta charSet='utf-8' />
           <link rel="shortcut icon" href="/favicon.jpg" />
+          <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"/>
           <link rel="stylesheet" href="/styles/main.css" />
         </head>
         <body className={path}>
