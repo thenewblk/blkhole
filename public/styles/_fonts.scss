@@ -71,15 +71,15 @@ body, p, span {
     }
   }
   &.bold {
-    font-family:'Museo Sans W01_900';
+    font-family:'Museo Sans W01_700';
     span {
-      font-family:'Museo Sans W01_900';
+      font-family:'Museo Sans W01_700';
     }
   }
   &.bold.italic {
-    font-family:'MuseoSansW01-900Italic';
+    font-family:'MuseoSansW01-700Italic';
     span {
-      font-family:'MuseoSansW01-900Italic';
+      font-family:'MuseoSansW01-700Italic';
     }
   }
 }

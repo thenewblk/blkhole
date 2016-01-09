@@ -1,4 +1,5 @@
-
+@import 'fonts';
+@import 'colors';
 
 a {
   color: black;
@@ -20,15 +21,13 @@ body {
   min-width: 100%;
   height: 100%;
   padding-left: 70px;
-  background: #ececec;
+  background: $lightgray;
 }
 
 * {
   box-sizing: border-box;
 
 }
-
-@import 'fonts';
 
 h1,h2,h3,h4,h5,p {
   opacity: 1;
@@ -75,12 +74,12 @@ h1,h2,h3,h4,h5,p {
   z-index: 1;
   overflow: hidden;
   transform:translate3d(0, 0, 0);
-
+  z-index: 111;
   .newblk_logo {
     margin: 10px;
     display: inline-block;
     svg {
-      fill: #333;
+      fill: $black;
       #blk {
         transition: 0.15s ease-out;
         opacity: 0;
@@ -106,7 +105,7 @@ h1,h2,h3,h4,h5,p {
     fill: #939598;
     transition: 0.15s ease-out;
     &:hover {
-      fill: #333;
+      fill: $black;
     }
     #two {
       display: none;
@@ -154,7 +153,33 @@ h1,h2,h3,h4,h5,p {
       }
     }
   }
+
 }
+
+.navigator_overlay {
+  opacity: 0;
+  transition: 0.15s ease-out;
+}
+
+.navigator:hover + .navigator_overlay {
+  position: fixed;
+  width: 100%;
+  background: $black;
+  height: 100%;
+  opacity: 0.1;
+  z-index: 110;
+}
+
+.main {
+  transition: 0.15s ease-out;
+  filter: contrast(1) grayscale(0) blur(0);
+}
+
+.navigator:hover + .main {
+  filter: contrast(6) grayscale(1) blur(5px);
+}
+
+
 
 .sprite_container {
   overflow: hidden;
@@ -168,7 +193,7 @@ h1,h2,h3,h4,h5,p {
   }
   &:hover {
     svg {
-      fill: #333;
+      fill: $black;
     }
   }
 }

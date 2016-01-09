@@ -5,7 +5,7 @@
     margin: 15px 0;
   }
   &.black {
-    background: black;
+    background: $black;
     color: white;
     margin-top: 0;
   }
@@ -16,12 +16,12 @@
   }
 
   &.block {
-    background-color: black;
+    background-color: $black;
     background:
-      linear-gradient(135deg, transparent 50px, black 0) top left,
-      linear-gradient(0deg, transparent 0, black 0) top right,
-      linear-gradient(315deg, transparent 50px, black 0) bottom right,
-      linear-gradient(0deg, transparent 0, black 0) bottom left;
+      linear-gradient(135deg, transparent 50px, $black 0) top left,
+      linear-gradient(0deg, transparent 0, $black 0) top right,
+      linear-gradient(315deg, transparent 50px, $black 0) bottom right,
+      linear-gradient(0deg, transparent 0, $black 0) bottom left;
     background-size: 51%!important;
     background-repeat: no-repeat!important;
     padding: 100px 7%;
@@ -101,7 +101,7 @@
     padding: 0 15px;
     text-align: center;
     p {
-      color: black;
+      color: $black;
       line-height: 1.5;
     }
   }
@@ -200,7 +200,7 @@
         .video_small {
           .small_over {
             display: block;;
-            background: black;
+            background: $black;
             position: absolute;
             height: 100%;
             width: 100%;
@@ -212,7 +212,7 @@
           &:hover {
             .small_over {
               display: block;;
-              background: black;
+              background: $black;
               position: absolute;
               height: 100%;
               width: 100%;
@@ -276,7 +276,7 @@
           .video_open & {
             .small_over {
               display: block;;
-              background: black;
+              background: $black;
               position: absolute;
               height: 100%;
               width: 100%;
@@ -290,7 +290,7 @@
         .video_open & {
           .small_over {
             display: block;;
-            background: black;
+            background: $black;
             position: absolute;
             height: 100%;
             width: 100%;
@@ -317,7 +317,7 @@
         position: absolute;
         height: 100%;
         width: 100%;
-        background: black;
+        background: $black;
         opacity: 0.8;
         top: 0;
         left: 0;
@@ -365,8 +365,8 @@
     }
     .top_image {
       width: 50%;
-      background-color: #ececec;
-      border-right: black 2px solid;
+      background-color: $lightgray;
+      border-right: $black 2px solid;
     }
     .handle {
       display: inline-block;
@@ -400,7 +400,7 @@
     .top_image {
       width: 50%;
       background-color: #ececec;
-      border-left: black 3px solid;
+      border-left: $black 3px solid;
       right: 0;
       background-position: right;
     }

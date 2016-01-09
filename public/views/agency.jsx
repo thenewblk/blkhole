@@ -4,6 +4,8 @@ var Helmet = require('react-helmet');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 
+var Sprite = require('../components/sprite.jsx');
+
 var services = [
   {
     id: 0,
@@ -198,7 +200,39 @@ module.exports = React.createClass({
           <h1 className="needle_headline" onClick={this.skateboard}>MOVE THE NEEDLE</h1>
           <div className="block">
             <span className="left_label"></span>
-            <span className="content">The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</span>
+            <span className="content">
+              <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
+              <div className="home_sprite">
+                <Sprite
+                  image="/icons/agency/fontenelle.svg"
+                  columns={13}
+                  frames={13}
+                  duration={.5}
+                  frameW={125}
+                  frameH={225}
+                  hover={true} />
+              </div>
+              <div className="home_sprite">
+                <Sprite
+                  image="/icons/agency/maha.svg"
+                  columns={11}
+                  frames={22}
+                  duration={.5}
+                  frameW={250}
+                  frameH={250}
+                  hover={true} />
+              </div>
+              <div className="home_sprite">
+                <Sprite
+                  image="/icons/agency/uno.svg"
+                  columns={9}
+                  frames={18}
+                  duration={.5}
+                  frameW={300}
+                  frameH={200}
+                  hover={true} />
+              </div>
+            </span>
           </div>
         </div>
         <div className="services">

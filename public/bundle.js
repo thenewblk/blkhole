@@ -29070,6 +29070,12 @@ function getFilePathExtension(path) {
 
 module.exports = React.createClass({displayName: "exports",
   getInitialState: function() {
+
+    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
+  },
+
+
+	componentWillMount: function(){
 		var timer = {
 		    running: false,
 		    iv: 5000,
@@ -29096,13 +29102,13 @@ module.exports = React.createClass({displayName: "exports",
 		        this.start(false, iv);
 		    }
 		};
-    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: timer }
-  },
-
-  componentWillMount: function(){
+		this.setState({timer: timer})
+	},
+  componentDidMount: function(){
     this.animate();
   },
   componentWillUnmount: function(){
+		this.state.timer.stop();
     this.setState({animation: "stop"});
   },
 
@@ -29350,6 +29356,8 @@ var Helmet = require('react-helmet');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 
+var Sprite = require('../components/sprite.jsx');
+
 var services = [
   {
     id: 0,
@@ -29544,7 +29552,39 @@ module.exports = React.createClass({displayName: "exports",
           React.createElement("h1", {className: "needle_headline", onClick: this.skateboard}, "MOVE THE NEEDLE"), 
           React.createElement("div", {className: "block"}, 
             React.createElement("span", {className: "left_label"}), 
-            React.createElement("span", {className: "content"}, "The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.")
+            React.createElement("span", {className: "content"}, 
+              React.createElement("p", null, "The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now."), 
+              React.createElement("div", {className: "home_sprite"}, 
+                React.createElement(Sprite, {
+                  image: "/icons/agency/fontenelle.svg", 
+                  columns: 13, 
+                  frames: 13, 
+                  duration: .5, 
+                  frameW: 125, 
+                  frameH: 225, 
+                  hover: true})
+              ), 
+              React.createElement("div", {className: "home_sprite"}, 
+                React.createElement(Sprite, {
+                  image: "/icons/agency/maha.svg", 
+                  columns: 11, 
+                  frames: 22, 
+                  duration: .5, 
+                  frameW: 250, 
+                  frameH: 250, 
+                  hover: true})
+              ), 
+              React.createElement("div", {className: "home_sprite"}, 
+                React.createElement(Sprite, {
+                  image: "/icons/agency/uno.svg", 
+                  columns: 9, 
+                  frames: 18, 
+                  duration: .5, 
+                  frameW: 300, 
+                  frameH: 200, 
+                  hover: true})
+              )
+            )
           )
         ), 
         React.createElement("div", {className: "services"}, 
@@ -29644,7 +29684,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"react":305,"react-helmet":15,"react-inlinesvg":94,"util":5}],313:[function(require,module,exports){
+},{"../components/sprite.jsx":309,"react":305,"react-helmet":15,"react-inlinesvg":94,"util":5}],313:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 var Router = require('react-router');
@@ -30751,7 +30791,7 @@ module.exports = React.createClass({displayName: "exports",
                 hover: true}), 
               React.createElement("span", {className: "name"}, "Agency")
             ), 
-            React.createElement(Link, {className: "channel_link lost", to: "/disruption"}, 
+            React.createElement(Link, {className: "channel_link", to: "/disruption"}, 
               React.createElement(Sprite, {
                 image: "/icons/disruption-icon.png", 
                 columns: 9, 
@@ -30773,7 +30813,7 @@ module.exports = React.createClass({displayName: "exports",
                 hover: true}), 
               React.createElement("span", {className: "name"}, "Experiential")
             ), 
-            React.createElement(Link, {className: "channel_link lost", to: "/superfans"}, 
+            React.createElement(Link, {className: "channel_link", to: "/superfans"}, 
               React.createElement(Sprite, {
                 image: "/icons/superfan-sprite-01.svg", 
                 columns: 9, 

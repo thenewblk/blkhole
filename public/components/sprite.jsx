@@ -9,6 +9,12 @@ function getFilePathExtension(path) {
 
 module.exports = React.createClass({
   getInitialState: function() {
+
+    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
+  },
+
+
+	componentWillMount: function(){
 		var timer = {
 		    running: false,
 		    iv: 5000,
@@ -35,13 +41,13 @@ module.exports = React.createClass({
 		        this.start(false, iv);
 		    }
 		};
-    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: timer }
-  },
-
-  componentWillMount: function(){
+		this.setState({timer: timer})
+	},
+  componentDidMount: function(){
     this.animate();
   },
   componentWillUnmount: function(){
+		this.state.timer.stop();
     this.setState({animation: "stop"});
   },
 
