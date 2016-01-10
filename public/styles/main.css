@@ -726,7 +726,13 @@ img {
 
 .agency_top {
   height: 100%;
-  overflow: hidden; }
+  overflow: hidden;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column; }
   .agency_top .subheader_top {
     font-size: 75px;
     text-align: center; }
@@ -741,7 +747,79 @@ img {
   padding: 50px;
   background-image: url(/images/agency/theoldgirl_grayscale.jpg);
   background-position: top;
-  background-size: cover; }
+  background-size: cover;
+  position: relative;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .theoldgirl .block {
+    margin-top: 50px;
+    width: 100%; }
+
+.border-wrap {
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  position: absolute;
+  margin: 50px;
+  right: 0;
+  bottom: 0;
+  display: block;
+  margin-left: 0; }
+  .border-wrap .border-lines {
+    position: absolute;
+    border: 3px solid black;
+    top: 0;
+    left: 0;
+    border-left: none;
+    right: 0;
+    bottom: 0; }
+  .border-wrap .top_line {
+    width: 100%;
+    height: 3px;
+    background: black;
+    position: absolute;
+    top: 0px;
+    left: 0; }
+  .border-wrap .bottom_line {
+    width: 100%;
+    height: 3px;
+    background: black;
+    position: absolute;
+    bottom: 0;
+    right: 110px; }
+  .border-wrap .right_line {
+    height: 100%;
+    width: 3px;
+    background: black;
+    position: absolute;
+    bottom: 110px;
+    right: 0; }
+  .border-wrap .left_line {
+    height: 100%;
+    width: 3px;
+    background: black;
+    position: absolute;
+    top: 110px;
+    left: 0; }
+  .border-wrap .bottom_right_corner {
+    width: 3px;
+    height: 300px;
+    background: black;
+    position: absolute;
+    bottom: -50px;
+    right: 10px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); }
+  .border-wrap .top_left_corner {
+    width: 3px;
+    height: 300px;
+    background: black;
+    position: absolute;
+    top: -50px;
+    left: 10px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg); }
 
 .block {
   display: -webkit-flex;
@@ -755,8 +833,10 @@ img {
     font-size: 20px; }
 
 .needle {
+  margin: 50px 0;
+  margin-right: 50px;
   background-color: black;
-  background: linear-gradient(135deg, transparent 50px, black 0) top left, linear-gradient(0deg, transparent 0, black 0) top right, linear-gradient(315deg, transparent 50px, black 0) bottom right, linear-gradient(0deg, transparent 0, black 0) bottom left;
+  background: linear-gradient(135deg, transparent 75px, black 0) top left, linear-gradient(0deg, transparent 0, black 0) top right, linear-gradient(315deg, transparent 75px, black 0) bottom right, linear-gradient(0deg, transparent 0, black 0) bottom left;
   background-size: 51% !important;
   background-repeat: no-repeat !important;
   padding: 100px 7%;
@@ -766,13 +846,64 @@ img {
     font-size: 75px;
     margin: 0;
     line-height: 1; }
+  .needle .needle_section {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-items: flex-end;
+    -ms-flex-align: end;
+    align-items: flex-end; }
+    .needle .needle_section .copy {
+      -webkit-flex: 1;
+      -ms-flex: 1;
+      flex: 1;
+      padding: 0 10%; }
 
 .block {
-  margin: 50px 0; }
+  margin: 25px 0 50px; }
 
 img.full {
   width: 100%;
   display: block; }
+
+.white {
+  color: white; }
+
+.image-container {
+  position: relative; }
+
+.block {
+  padding: 25px 7% 50px;
+  margin: 0; }
+
+.bottom_thing {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin: 50px;
+  padding-top: 50px;
+  padding-bottom: 10px;
+  margin-bottom: 0;
+  margin-left: 0;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex; }
+  .bottom_thing .border-wrap {
+    margin: 0;
+    margin-right: 50px; }
+    .bottom_thing .border-wrap .right_line {
+      top: 0; }
+  .bottom_thing .content .uppercase {
+    font-size: 30px;
+    line-height: 1.2;
+    margin: 0; }
+  .bottom_thing .content .bold {
+    font-size: 50px;
+    line-height: 1.2;
+    margin: 0; }
 
 .service_list {
   display: -webkit-flex;
@@ -824,6 +955,17 @@ img.full {
   -ms-flex-pack: center;
   justify-content: center;
   overflow: hidden; }
+
+.clients {
+  position: relative; }
+  .clients .block {
+    margin: 0;
+    padding: 25px 7% 50px; }
+  .clients .border-wrap {
+    margin: 0;
+    margin-right: 50px; }
+    .clients .border-wrap .right_line {
+      top: 0; }
 
 .diamond {
   display: inline-block;
@@ -936,6 +1078,34 @@ img.full {
         fill: black; }
   .service_detail .next_service {
     float: right; }
+
+p.italic.weliveit {
+  font-size: 35px;
+  font-family: 'MuseoSansW01-100Italic'; }
+
+.woman-image {
+  position: relative;
+  overflow: hidden; }
+  .woman-image .border-wrap.upper {
+    bottom: 100%;
+    top: auto;
+    height: 1000%; }
+    .woman-image .border-wrap.upper .right_line {
+      bottom: 110px;
+      top: auto; }
+  .woman-image .border-wrap.lower {
+    top: -3px; }
+    .woman-image .border-wrap.lower .top_line {
+      right: 110px;
+      left: 110px;
+      width: auto; }
+
+.audience {
+  position: relative; }
+  .audience .border-wrap {
+    margin: 0; }
+    .audience .border-wrap .left_line {
+      top: 0; }
 
 .simple_input {
   width: 75px;

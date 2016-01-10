@@ -13,6 +13,11 @@ module.exports = React.createClass({
     return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
   },
 
+	getDefaultProps: function() {
+
+		return { hover: true, loop: false, play: false }
+	},
+
 
 	componentWillMount: function(){
 		var timer = {
@@ -68,7 +73,6 @@ module.exports = React.createClass({
 	outLoop: function()	{
 		this.setState({animation: "stoploop"});
 	},
-
 
   animate: function(){
     var self = this;
@@ -147,6 +151,17 @@ module.exports = React.createClass({
 				}
 			}
 
+			if (( self.props.play) && (self.state.current_frame != self.props.frames - 1 ) ) {
+
+          var new_frame = self.state.current_frame + 1;
+          var col = (new_frame % self.props.columns) + 1;
+          var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+
+          var x = (col - 1) * self.props.frameW * -1;
+          var y = (row - 1) * self.props.frameH * -1;
+          self.setState( { current_frame: new_frame, x: x, y: y } );
+      }
+
 			if (( self.state.animation == "stoploop")) {
 				self.setState( { current_frame: 0, x: 0, y: 0 } );
 			}
@@ -160,8 +175,9 @@ module.exports = React.createClass({
 
     var image = self.props.image,
 				width = self.props.frameW * self.props.columns,
-				loop = self.props.loop,
 				hover = self.props.hover,
+				loop = self.props.loop,
+				play = self.props.play,
 				height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
 
     if (self.props.className) {
@@ -231,6 +247,29 @@ module.exports = React.createClass({
 						</span>
 					)
 				}
+			}
+
+			if (play){
+				if ((getFilePathExtension(image) === "svg")){
+		      return (
+		        <span className={className} style={size} >
+
+		          <span className="svg_icon_wrapper play" style={ style } >
+		            <Isvg src={image} className="isvg">
+		              Here's some optional content for browsers that don't support XHR or inline
+		              SVGs. You can use other React components here too. Here, I'll show you.
+
+		            </Isvg>
+		          </span>
+		        </span>
+		      )
+		    } else {
+		      return (
+		        <span className={className} style={size} >
+		          <img src={image} width={width} height={ height } style={ style } />
+		        </span>
+		      )
+		    }
 			}
 
 		} else {
