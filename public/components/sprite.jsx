@@ -9,12 +9,10 @@ function getFilePathExtension(path) {
 
 module.exports = React.createClass({
   getInitialState: function() {
-
     return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
   },
 
 	getDefaultProps: function() {
-
 		return { hover: true, loop: false, play: false }
 	},
 
@@ -48,13 +46,15 @@ module.exports = React.createClass({
 		};
 		this.setState({timer: timer})
 	},
+
   componentDidMount: function(){
     this.animate();
   },
-  componentWillUnmount: function(){
-		this.state.timer.stop();
-    this.setState({animation: "stop"});
-  },
+
+  // componentWillUnmount: function(){
+	// 	this.state.timer.stop();
+  //   this.setState({animation: "stop"});
+  // },
 
   enter: function()	{
     this.setState({animation: "forward"});
@@ -67,11 +67,15 @@ module.exports = React.createClass({
 
 	enterLoop: function()	{
 		this.setState({animation: "startloop"});
-
 	},
 
 	outLoop: function()	{
 		this.setState({animation: "stoploop"});
+	},
+
+	play: function()	{
+		console.log("play clicked");
+		this.setState({animation: "play"});
 	},
 
   animate: function(){
@@ -151,15 +155,18 @@ module.exports = React.createClass({
 				}
 			}
 
-			if (( self.props.play) && (self.state.current_frame != self.props.frames - 1 ) ) {
+			if ((self.state.animation == "play") ) {
+				if (self.state.current_frame == self.props.frames - 1 ) {
+					self.setState( { animation: "start" } );
+				} else {
+					var new_frame = self.state.current_frame + 1;
+					var col = (new_frame % self.props.columns) + 1;
+					var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
 
-          var new_frame = self.state.current_frame + 1;
-          var col = (new_frame % self.props.columns) + 1;
-          var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-
-          var x = (col - 1) * self.props.frameW * -1;
-          var y = (row - 1) * self.props.frameH * -1;
-          self.setState( { current_frame: new_frame, x: x, y: y } );
+					var x = (col - 1) * self.props.frameW * -1;
+					var y = (row - 1) * self.props.frameH * -1;
+					self.setState( { current_frame: new_frame, x: x, y: y } );
+				}
       }
 
 			if (( self.state.animation == "stoploop")) {
@@ -201,8 +208,11 @@ module.exports = React.createClass({
     if (self.props.duration && self.props.frames) {
       self.animate();
     }
-		if (image){
 
+
+
+
+		if (image){
 			if (hover){
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
@@ -224,9 +234,7 @@ module.exports = React.createClass({
 		        </span>
 		      )
 		    }
-			}
-
-			if (loop){
+			} else if (loop){
 				if ((getFilePathExtension(image) === "svg")){
 					return (
 						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
@@ -247,9 +255,7 @@ module.exports = React.createClass({
 						</span>
 					)
 				}
-			}
-
-			if (play){
+			} else {
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
 		        <span className={className} style={size} >

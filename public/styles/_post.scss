@@ -1,6 +1,6 @@
 .post {
   max-width: 100%;
-  margin: 15px 0 0;
+  margin: 0;
   .break {
     margin: 15px 0;
   }
@@ -59,6 +59,9 @@
     //   }
     // }
     &.top_block {
+      flex-direction: row;
+      margin-top: 45px;
+      margin-right: 50px;
       .content {
         width: 650px;
         &.left_label {

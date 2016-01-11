@@ -115,6 +115,7 @@
 
 .block {
   display: flex;
+  flex-direction: column;
   .content {
     width: 650px;
   }

@@ -109,6 +109,7 @@ module.exports = React.createClass({
   getInitialState: function(){
     return {
       service: null,
+      play_uno: false,
       services:  [
         {
           id: 0,
@@ -207,6 +208,7 @@ module.exports = React.createClass({
           words: "Let’s face it, this is a broad category. When we talk about mobile, we’re talking about a lot of things. The first thing that comes to mind is responsive design, which means designing and building web sites so the user experience is great on a range of screen sizes, from desktop to tablet to smartphone. Numerous sources place mobile usage at over 60% of all web traffic. Google Analytics on our clients’ sites show similar numbers.  Our web design process typically starts with the question: how will this work on mobile? We talk to a lot of companies looking for mobile app development, but more often than not what they really need is an excellent mobile-friendly website. The mobile marketing mix also includes all the other ways you can interact with a brand through your phone – text alerts, geo-targeted promotional offers, and the various social apps such as Instagram, Twitter, Foursquare and Facebook, among others. As more and more of our time spent online continues to shift to the small screen of mobile, mobile marketing becomes less of a subgenre but rather the definitive digital experience."
         }
       ]
+
     }
   },
   skateboard: function(){
@@ -226,10 +228,16 @@ module.exports = React.createClass({
     this.setState({service: null});
   },
 
+  playUno: function() {
+    console.log("playUno");
+    this.setState({play_uno: true});
+  },
+
   render: function render() {
     var self = this;
     var service = self.state.service,
         services = self.state.services,
+        play_uno = self.state.play_uno,
         branding = services.filter(function(service){
           return service.area == "branding";
         }).map(function(service){
@@ -320,8 +328,7 @@ module.exports = React.createClass({
                   duration={.5}
                   frameW={125}
                   frameH={225}
-                  hover={false}
-                  play={true} />
+                  hover={true} />
               </div>
               <div className="needle_section">
                 <div className="copy white" >
@@ -334,8 +341,7 @@ module.exports = React.createClass({
                   duration={.5}
                   frameW={250}
                   frameH={250}
-                  hover={false}
-                  play={true} />
+                  hover={true} />
               </div>
               <div className="needle_section">
                 <div className="copy white" >
@@ -348,8 +354,8 @@ module.exports = React.createClass({
                   duration={.5}
                   frameW={300}
                   frameH={200}
-                  hover={false}
-                  play={true} />
+                  hover={true}
+                  onClick={self.playUno} />
               </div>
           </div>
         </div>
