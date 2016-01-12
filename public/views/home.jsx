@@ -1,65 +1,32 @@
 var React = require('react');
+var Router = require('react-router');
 var Helmet = require('react-helmet');
+
 var Sprite = require('../components/sprite.jsx');
+var Link = Router.Link;
 
 var util = require('util');
 
 module.exports = React.createClass({
   getInitialState: function(){
-    return {
-      image: "/icons/blk-2.svg",
-      columns: 11,
-      frames: 22,
-      duration: .5,
-      frameW: 250,
-      frameH: 200,
-      hover: false,
-      loop: true
-    };
+    return {};
   },
-
-  handleColumns: function(event) {
-    this.setState({columns: event.target.value});
+  setHandcrafted: function(){
+    this.setState({video: "/video/handcrafted.mp4"})
   },
-
-  handleFrames: function(event) {
-    this.setState({frames: event.target.value});
+  setExperiential: function(){
+    this.setState({video: "/video/experiential.mp4"})
   },
-
-  handleDuration: function(event) {
-    var value = parseInt(event.target.value)
-    var seconds = value / 1000;
-    this.setState({duration: seconds});
-
-  },
-
-  handleFrameW: function(event) {
-    this.setState({frameW: event.target.value});
-  },
-
-  handleFrameH: function(event) {
-    this.setState({frameH: event.target.value});
-  },
-
-  handleHover: function() {
-    this.setState({hover: !this.state.hover, loop: !this.state.loop});
+  resetVideo: function(){
+    this.setState({video: null})
   },
 
   render: function render() {
-    var self = this;
-
-    var image = self.state.image,
-        columns = self.state.columns,
-        frames = self.state.frames,
-        duration = self.state.duration,
-        duration_control = self.state.duration * 1000,
-        frameW = self.state.frameW,
-        frameH = self.state.frameH,
-        hover = self.state.hover,
-        loop = self.state.loop;
+    var self = this,
+        video = self.state.video;
 
     return (
-      <div>
+      <div className="home_page">
         <Helmet
               title="the new blk"
               meta={[
@@ -70,57 +37,71 @@ module.exports = React.createClass({
                   {"rel": "shortcut icon", "href": "/favicon.jpg"}
               ]}
           />
-
-        <h3 className="centered">Go ahead and play with some Spritesheet animations: </h3>
-
-        <div className="home_sprite">
-          <Sprite
-            image={image}
-            columns={columns}
-            frames={frames}
-            speed={(duration* 1000)/ frames}
-            duration={duration}
-            frameW={frameW}
-            frameH={frameH}
-            hover={hover}
-            loop={loop} />
-        </div>
-        <div className="controls">
-
-          <div className="control">
-            <p><input className="simple_input" type="number" name="columns" value={columns} onChange={this.handleColumns} /> Columns:</p>
-            <input type="range" name="columns" min="0" max="100" value={columns} onChange={this.handleColumns} />
-          </div>
-
-          <div className="control">
-            <p><input className="simple_input" type="number" name="frames" value={frames} onChange={this.handleFrames} /> Frames:</p>
-            <input type="range" name="frames" min="0" max="100" value={frames} onChange={this.handleFrames} />
-          </div>
-
-          <div className="control">
-            <p><input className="simple_input" type="number" name="duration" value={duration_control} onChange={this.handleDuration} /> Duration (in milliseconds):</p>
-            <input type="range" name="duration" min="0" max="10000" value={duration_control} onChange={this.handleDuration} />
-          </div>
-
-          <div className="control">
-            <p><input className="simple_input" type="number" name="frameW" value={frameW} onChange={this.handleFrameW} /> Frame Width (in pixels):</p>
-            <input type="range" name="frameW" min="0" max="100" value={frameW} onChange={this.handleFrameW} />
-          </div>
-
-          <div className="control">
-            <p><input className="simple_input" type="number" name="frameH" value={frameH} onChange={this.handleFrameH} /> Frame Height (in pixels):</p>
-            <input type="range" name="frameH" min="0" max="100" value={frameH} onChange={this.handleFrameH} />
-          </div>
-
-          <div className="control">
-            <p>
-              { hover ?  <button onClick={this.handleHover} className="hover hoverloop_button">Hover</button> : null }
-              { loop ? <button onClick={this.handleHover} className="loop hoverloop_button">Loop</button> : null }
-            </p>
-          </div>
-        </div>
-
+      <div className="diamond_grid">
+        <Link className="square" to="/agency">
+          <span className="diamond_wrapper">
+            <Sprite
+              image="/icons/agency_icon_sprite-01.svg"
+              columns={9}
+              frames={9}
+              duration={.25}
+              frameW={50}
+              frameH={50}
+              hover={true} />
+            <span className="name">Agency</span>
+          </span>
+        </Link>
+        <Link className="square" to="/experiential" onMouseOver={self.setExperiential} onMouseOut={self.resetVideo} >
+          <span className="diamond_wrapper">
+            <Sprite
+              image="/icons/experiential-sprite-01.svg"
+              columns={9}
+              frames={15}
+              duration={.5}
+              frameW={50}
+              frameH={50}
+              hover={true} />
+            <span className="name">Experiential</span>
+          </span>
+        </Link>
+        <Link className="square" to="/handcrafted" onMouseOver={self.setHandcrafted} onMouseOut={self.resetVideo} >
+          <span className="diamond_wrapper">
+            <Sprite
+              image="/icons/handcrafted-sprite-01.svg"
+              columns={8}
+              frames={16}
+              duration={.4}
+              frameW={50}
+              frameH={50}
+              hover={true} />
+            <span className="name">Handcrafted</span>
+          </span>
+        </Link>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
+        <div className="square"></div>
       </div>
+      {video ?
+        <div className="video-container has_video" key={video}>
+          <video id="video-background" autoPlay muted="muted" loop>
+            <source src={video} type="video/mp4" />
+          </video>
+        </div>
+      : <div className="video-container" key="blank" ></div>
+      }
+
+    </div>
     );
   }
 });

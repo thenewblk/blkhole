@@ -6,7 +6,7 @@ var Isvg = require('react-inlinesvg');
 
 var Sprite = require('../components/sprite.jsx');
 
-var Waypoint = require('react-waypoint');
+// var Waypoint = require('react-waypoint');
 
 var ScrollBlocker = require('react-scroll-components/ScrollBlocker');
 var ScrollListenerMixin = require('react-scroll-components/ScrollListenerMixin');
