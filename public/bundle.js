@@ -31136,19 +31136,33 @@ module.exports = React.createClass({displayName: "exports",
   getInitialState: function(){
     return {};
   },
+  setAgency: function(){
+    this.setState({title: "your agency", words: "We only know one way: All in."})
+  },
   setHandcrafted: function(){
-    this.setState({video: "/video/handcrafted.mp4"})
+    this.setState({title: "handcrafted", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build."})
+  },
+  handcraftedLoaded: function(){
+    console.log("handcraftedLoaded");
   },
   setExperiential: function(){
-    this.setState({video: "/video/experiential.mp4"})
+    this.setState({title: "experiential", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting."})
   },
   resetVideo: function(){
-    this.setState({video: null})
+    this.setState({title: null, video: null, words: null})
+  },
+  componenetDidMount: function(){
+    var self = this;
+    var handcrafted = document.createElement('video');
+    handcrafted.src = "/video/handcrafted.mp4"
+    handcrafted.loadeddata = self.handcraftedLoaded();
   },
 
   render: function render() {
     var self = this,
-        video = self.state.video;
+        video = self.state.video,
+        words = self.state.words,
+        title = self.state.title
 
     return (
       React.createElement("div", {className: "home_page"}, 
@@ -31162,9 +31176,10 @@ module.exports = React.createClass({displayName: "exports",
                   {"rel": "shortcut icon", "href": "/favicon.jpg"}
               ]}
           ), 
-      React.createElement("div", {className: "diamond_grid"}, 
+        React.createElement("div", {className: "diamond_grid_3"}, 
+        React.createElement("div", {className: "square"}), 
         React.createElement(Link, {className: "square", to: "/agency"}, 
-          React.createElement("span", {className: "diamond_wrapper"}, 
+          React.createElement("span", {className: "diamond_wrapper", onMouseOver: self.setAgency, onMouseOut: self.resetVideo}, 
             React.createElement(Sprite, {
               image: "/icons/agency_icon_sprite-01.svg", 
               columns: 9, 
@@ -31176,6 +31191,7 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("span", {className: "name"}, "Agency")
           )
         ), 
+        React.createElement("div", {className: "square"}), 
         React.createElement(Link, {className: "square", to: "/experiential", onMouseOver: self.setExperiential, onMouseOut: self.resetVideo}, 
           React.createElement("span", {className: "diamond_wrapper"}, 
             React.createElement(Sprite, {
@@ -31215,16 +31231,46 @@ module.exports = React.createClass({displayName: "exports",
         React.createElement("div", {className: "square"}), 
         React.createElement("div", {className: "square"}), 
         React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
+        React.createElement("div", {className: "square"}), 
         React.createElement("div", {className: "square"})
       ), 
-      video ?
-        React.createElement("div", {className: "video-container has_video", key: video}, 
-          React.createElement("video", {id: "video-background", autoPlay: true, muted: "muted", loop: true}, 
-            React.createElement("source", {src: video, type: "video/mp4"})
-          )
+      React.createElement("div", {className: "wearethenewblkllc"}, 
+        React.createElement("p", {className: "uppercase italic theme"},  title ? title + " is" : "We are"), 
+        React.createElement("h2", {className: "bold uppercase newblk"}, "The New BLK"), 
+        React.createElement("p", {className: "italic words"}, words ? words : "an ad agency, creative think tank, and content production studio.")
+      ), 
+      React.createElement("div", {className: "home_overlay"}), 
+      React.createElement("div", {className: "video-container " + video}, 
+        React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+          React.createElement("source", {src: "/video/experiential_new.mp4", type: "video/mp4"})
+        ), 
+        React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+          React.createElement("source", {src: "/video/handcrafted_new.mp4", type: "video/mp4"})
         )
-      : React.createElement("div", {className: "video-container", key: "blank"})
-      
+      )
+
 
     )
     );

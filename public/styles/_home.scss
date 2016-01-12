@@ -1,27 +1,45 @@
-.diamond_grid{
-  width: 600px;
+@function sqrt($r) {
+  $x0: 1;
+  $x1: $x0;
+
+  @for $i from 1 through 10 {
+    $x1: $x0 - ($x0 * $x0 - abs($r)) / (2 * $x0);
+    $x0: $x1;
+  }
+
+  @return $x1;
+}
+
+.diamond_grid {
+  width: 1142px;
   height: 100%;
   padding-top: 1px;
   overflow: hidden;
   position: relative;
-  z-index: 11;
+  z-index: 3;
+  margin-left: -163px;
   .square {
-    height: 200px;
-    width: 200px;
+    height: 233px;
+    width: 233px;
     display: inline-block;
-    border: 2px solid rgba(255,255,255,0.6);
+    border: 2px solid rgba(255,255,255,0.155);
     transform: rotate(45deg);
-    margin: 40px 40px;
+    margin: 46.6px;
     transition: 0.15s ease-out;
     float: left;
-    &:nth-child(3n) {
-      margin-left: 180px;
-      margin-top: -100px;
-      margin-bottom: -100px;
+    &:nth-child(4n) {
+      margin-left: 209.7px;
+      margin-top: -116.5px;
+      margin-bottom: -116.5px;
       border: 2px solid rgba(255,255,255,0);
-      &:hover {
-        border: 2px solid rgba(255,255,255,1);
-      }
+
+    }
+    &:nth-child(5n) {
+      margin-left: 535.9px;
+      margin-top: -116.5px;
+      margin-bottom: -116.5px;
+      border: 2px solid rgba(255,255,255,0);
+
     }
     .diamond_wrapper {
       color: white;
@@ -49,6 +67,148 @@
     &:hover {
       border: 2px solid rgba(255,255,255,1);
     }
+    &:nth-child(4n) {
+      &:hover {
+        border: 2px solid rgba(255,255,255,1);
+      }
+    }
+    &:nth-child(5n) {
+      &:hover {
+        border: 2px solid rgba(255,255,255,1);
+      }
+    }
+  }
+}
+
+.diamond_grid_2 {
+  display: flex;
+  justify-content: space-around;
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  .square {
+    flex: 0 0 25%;
+    background: white;
+    transform: rotate(45deg);
+    .diamond_wrapper {
+      transform: rotate(-45deg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 25%;
+    }
+    &::before {
+      content:'';
+      float:left;
+      padding-top:100%;
+    }
+  }
+}
+
+$third: (( 50vw / 3vw ) / sqrt(2));
+
+$diamond_size: 11.5vw;
+$left_factor: 10.4vw;
+$border_width: 0.1vw;
+$diamond_margin: (($diamond_size - ( 2 * $border_width)) * (sqrt(2) - 1)) / 2;
+
+$diamond_width: sqrt(2) * $diamond_size;
+$half_diamond: $diamond_width / 2;
+$diamond_width_border: sqrt(2) * ($diamond_size + ( 2 * $border_width ));
+$half_diamond_border: $diamond_width_border / 2;
+
+$fourn_top_bottom: $diamond_size / 2;
+
+// $fourn_left: $diamond_size * 0.9;
+$fourn_left: $left_factor;
+$fiven_left: 26.6vw;
+
+.diamond_grid_3 {
+  height: 100%;
+  padding-top: 1px;
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+  flex: 1;
+  margin-left: -$half_diamond;
+  .square {
+    height: $diamond_size;
+    width: $diamond_size;
+    display: inline-block;
+    border: $border_width solid rgba(255,255,255,0.155);
+    // border: $border_width solid rgba(255,255,255,0);
+    transform: rotate(45deg);
+    margin: $diamond_margin;
+    transition: 0.15s ease-out;
+    float: left;
+    // &:nth-child(4n) {
+    //   margin-left: 209.7px;
+    //   margin-top: -116.5px;
+    //   margin-bottom: -116.5px;
+    //   border: 2px solid rgba(255,255,255,0);
+    //
+    // }
+    // &:nth-child(5n) {
+    //   margin-left: 535.9px;
+    //   margin-top: -116.5px;
+    //   margin-bottom: -116.5px;
+    //   border: 2px solid rgba(255,255,255,0);
+    //
+    // }
+    &:nth-child(4n) {
+      margin-left: $fourn_left;
+      margin-top: -$fourn_top_bottom;
+      margin-bottom: -$fourn_top_bottom;
+      border: $border_width solid rgba(255,255,255,0);
+
+    }
+    &:nth-child(5n) {
+      margin-left: $fiven_left;
+      margin-top: -$fourn_top_bottom;
+      margin-bottom: -$fourn_top_bottom;
+      border: $border_width solid rgba(255,255,255,0);
+
+    }
+    .diamond_wrapper {
+      color: white;
+      transform: rotate(-45deg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      width: 100%;
+      fill: white;
+      .sprite_container  {
+        svg {
+          fill: rgba(255,255,255,0.6);
+        }
+        &:hover {
+          svg {
+            fill: white;
+          }
+        }
+      }
+    }
+  }
+  a.square {
+    // border: $border_width solid rgba(255,255,255,0.155);
+    &:hover {
+      border: $border_width solid rgba(255,255,255,1);
+    }
+    &:nth-child(4n) {
+      // border: $border_width solid rgba(255,255,255,0.155);
+      &:hover {
+        border: $border_width solid rgba(255,255,255,1);
+      }
+    }
+    &:nth-child(5n) {
+      // border: $border_width solid rgba(255,255,255,0.155);
+      &:hover {
+        border: $border_width solid rgba(255,255,255,1);
+      }
+    }
   }
 }
 
@@ -58,6 +218,7 @@
   background-position: center;
   filter: grayscale(1);
   height: 100%;
+  display: flex;
 }
 
 .home {
@@ -70,6 +231,52 @@
 
     }
   }
+  .main {
+    filter: blur(0px) contrast(1) !important;
+  }
+}
+
+.wearethenewblkllc {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-top: $diamond_size - 1;
+  margin-left: -$diamond_size + 1;
+  color: white;
+  z-index: 3;
+  h2, p {
+    line-height: 1;
+    margin: 0;
+  }
+  p {
+    font-size: 35px;
+    font-family:'MuseoSansW01-100Italic';
+  }
+  h2 {
+    font-size: 50px;
+  }
+  .theme {
+    font-size: $diamond_size / 6;
+  }
+  .newblk {
+    font-size: $diamond_size / 1.6;
+  }
+  .words {
+    line-height: 1.3;
+    font-size: $diamond_size / 7;
+  }
+}
+
+.home_overlay {
+  height: 100%;
+  position: fixed;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 2;
+  background: black;
+  opacity: 0.54321;
 }
 
 .video-container {
@@ -77,14 +284,13 @@
     position: fixed;
     overflow: hidden;
     top: 0;
+    left: 0;
     width: 100%;
     z-index: 1;
-    opacity: 0;
-    transition: 5s ease-out;
-    &.has_video {
-      opacity: 1;
-    }
+
     video {
+      transition: .5s ease-out;
+      opacity: 0;
       position: absolute;
       background: transparent;
       bottom: 50%;
@@ -96,5 +302,16 @@
       height: auto;
       overflow: hidden;
       display: block;
+    }
+
+    &.experiential {
+      video.experiential {
+        opacity: 1;
+      }
+    }
+    &.handcrafted {
+      video.handcrafted {
+        opacity: 1;
+      }
     }
 }
