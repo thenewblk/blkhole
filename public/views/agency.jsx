@@ -6,6 +6,11 @@ var Isvg = require('react-inlinesvg');
 
 var Sprite = require('../components/sprite.jsx');
 
+var Waypoint = require('react-waypoint');
+
+var ScrollBlocker = require('react-scroll-components/ScrollBlocker');
+var ScrollListenerMixin = require('react-scroll-components/ScrollListenerMixin');
+
 var services = [
   {
     id: 0,
@@ -104,6 +109,203 @@ var services = [
     words: "Let’s face it, this is a broad category. When we talk about mobile, we’re talking about a lot of things. The first thing that comes to mind is responsive design, which means designing and building web sites so the user experience is great on a range of screen sizes, from desktop to tablet to smartphone. Numerous sources place mobile usage at over 60% of all web traffic. Google Analytics on our clients’ sites show similar numbers.  Our web design process typically starts with the question: how will this work on mobile? We talk to a lot of companies looking for mobile app development, but more often than not what they really need is an excellent mobile-friendly website. The mobile marketing mix also includes all the other ways you can interact with a brand through your phone – text alerts, geo-targeted promotional offers, and the various social apps such as Instagram, Twitter, Foursquare and Facebook, among others. As more and more of our time spent online continues to shift to the small screen of mobile, mobile marketing becomes less of a subgenre but rather the definitive digital experience."
   }
 ];
+
+var Needles = React.createClass({
+  getInitialState: function(){
+    return {
+      current_needle: 0,
+      needles: [
+        {
+          copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
+          sprite: {
+            image: "/icons/agency/fontenelle.svg",
+            columns: 13,
+            frames: 13,
+            duration: .5,
+            frameW: 125,
+            frameH: 225
+          }
+        },
+        {
+          copy: "Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to 2015 that’s the actual increase in average daily attendance, as crazy as it looks. It’s more than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.",
+          sprite: {
+            image: "/icons/agency/maha.svg",
+            columns: 11,
+            frames: 22,
+            duration: .5,
+            frameW: 250,
+            frameH: 250
+          }
+        },
+        {
+          copy: "More tickets sold for UNO Athletics in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the 'Call Me Maverick' campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.",
+          sprite: {
+            image: "/icons/agency/uno.svg",
+            columns: 9,
+            frames: 18,
+            duration: .5,
+            frameW: 300,
+            frameH: 200
+          }
+        }
+      ]
+    }
+  },
+  nextNeedle: function(){
+    var self = this;
+    var current_needle = self.state.current_needle;
+    var needles = self.state.needles;
+    if (current_needle < (needles.length -1)) {
+      self.setState({current_needle: current_needle + 1})
+    }
+  },
+  prevNeedle: function(){
+    var self = this;
+    var current_needle = self.state.current_needle;
+    if (current_needle > 0) {
+      self.setState({current_needle: current_needle - 1})
+    }
+  },
+
+  moveNeedle: function(index){
+    var self = this;
+    var current_needle = self.state.current_needle;
+    var needles = self.state.needles;
+    if ((index >= 0) && (index < (needles.length )) ) {
+      self.setState({current_needle: index})
+    }
+  },
+  render: function render() {
+    var self = this;
+
+    var current_needle = self.state.current_needle;
+    var needles  = self.state.needles.map(function(needle, index){
+        return (
+          <div className="needle_section" key={index}>
+            <Sprite
+              className="needle_sprite"
+              image={needle.sprite.image}
+              columns={needle.sprite.columns}
+              frames={needle.sprite.frames}
+              duration={needle.sprite.duration}
+              frameW={needle.sprite.frameW}
+              frameH={needle.sprite.frameH}
+              hover={false} />
+            <div className="copy white_text" >
+              <p>{needle.copy}</p>
+            </div>
+          </div>
+        )
+    });
+    var next_needle, prev_needle = false;
+
+    if (current_needle < (needles.length -1)) {
+      next_needle = true;
+    }
+    if (current_needle > 0) {
+      prev_needle = true;
+    }
+
+    var needle_indicators = self.state.needles.map(function(needle, index){
+      return (
+        <span key={index} onClick={self.moveNeedle.bind(self, index)} className={ index == current_needle ? "needle_diamond active" : "needle_diamond"} ><span className="needle_diamond_inner"></span></span>
+      )
+    });
+
+    return (
+      <div className="needles">
+        <div className={"needles_info thing_" + current_needle}>
+          <div className="needles_info_wrapper">
+            {needle_indicators}
+          </div>
+        </div>
+        <div className="needles_container">
+          <div className={"needles_wrapper thing_" + current_needle} >
+            {needles}
+          </div>
+        </div>
+        <div className="bottom_detail">
+          { next_needle ? <span className="next_needle here" onClick={self.nextNeedle}><Isvg src="/icons/new/right-01.svg" /></span> : <span className="next_needle"><Isvg src="/icons/new/right-01.svg" /></span> }
+          { prev_needle ? <span className="prev_needle here" onClick={self.prevNeedle}><Isvg src="/icons/new/left-01.svg" /></span> : <span className="prev_needle"><Isvg src="/icons/new/left-01.svg" /></span> }
+        </div>
+
+      </div>
+    )
+  }
+});
+
+var NeedlesScroll = React.createClass({
+  mixins: [ScrollListenerMixin],
+  _needleThreeEnter: function(){
+    console.log("_needleThreeEnter");
+  },
+  _needleTwoEnter: function(){
+    console.log("_needleTwoEnter");
+  },
+  _needleOneEnter: function(){
+    console.log("_needleOneEnter");
+  },
+  _needleThreeLeave: function(){
+    console.log("_needleThreeLeave");
+  },
+  _needleTwoLeave: function(){
+    console.log("_needleTwoLeave");
+  },
+  _needleOneLeave: function(){
+    console.log("_needleOneLeave");
+  },
+  render: function render() {
+    return (
+      <div className="needles">
+        <ScrollBlocker active={this.state.isScrolling}>
+          <p>The current scroll position is {this.state.scrollTop}.<br />The document is currently {this.state.isScrolling ? '' : 'not'} scrolling.</p>
+          <div className="needle_section">
+            <div className="copy white" >
+              <p>For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.</p>
+            </div>
+            <Sprite
+              className="needle_sprite"
+              image="/icons/agency/fontenelle.svg"
+              columns={13}
+              frames={13}
+              duration={.5}
+              frameW={125}
+              frameH={225}
+              play={true} />
+          </div>
+
+          <div className="needle_section">
+            <div className="copy white" >
+              <p>Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to 2015 that’s the actual increase in average daily attendance, as crazy as it looks. It’s more than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.</p>
+            </div>
+            <Sprite
+              image="/icons/agency/maha.svg"
+              columns={11}
+              frames={22}
+              duration={.5}
+              frameW={250}
+              frameH={250}
+              hover={true} />
+          </div>
+
+          <div className="needle_section">
+            <div className="copy white">
+              <p>More tickets sold for UNO Athletics in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the "Call Me Maverick" campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.</p>
+            </div>
+            <Sprite
+              image="/icons/agency/uno.svg"
+              columns={9}
+              frames={18}
+              duration={.5}
+              frameW={300}
+              frameH={200}
+              hover={true} />
+          </div>
+        </ScrollBlocker>
+      </div>
+    )
+  }
+});
 
 module.exports = React.createClass({
   getInitialState: function(){
@@ -315,49 +517,7 @@ module.exports = React.createClass({
               <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
             </span>
           </div>
-          <div className="">
-              <div className="needle_section">
-                <div className="copy white" >
-                  <p>For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.</p>
-                </div>
-                <Sprite
-                  className="needle_sprite"
-                  image="/icons/agency/fontenelle.svg"
-                  columns={13}
-                  frames={13}
-                  duration={.5}
-                  frameW={125}
-                  frameH={225}
-                  hover={true} />
-              </div>
-              <div className="needle_section">
-                <div className="copy white" >
-                  <p>Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to 2015 that’s the actual increase in average daily attendance, as crazy as it looks. It’s more than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.</p>
-                </div>
-                <Sprite
-                  image="/icons/agency/maha.svg"
-                  columns={11}
-                  frames={22}
-                  duration={.5}
-                  frameW={250}
-                  frameH={250}
-                  hover={true} />
-              </div>
-              <div className="needle_section">
-                <div className="copy white" >
-                  <p>More tickets sold for UNO Athletics in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the "Call Me Maverick" campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.</p>
-                </div>
-                <Sprite
-                  image="/icons/agency/uno.svg"
-                  columns={9}
-                  frames={18}
-                  duration={.5}
-                  frameW={300}
-                  frameH={200}
-                  hover={true}
-                  onClick={self.playUno} />
-              </div>
-          </div>
+          <Needles />
         </div>
         <div className="services">
           <div className="block">
@@ -413,7 +573,7 @@ module.exports = React.createClass({
 
         <div className="image-container">
           <img className="full" src="/images/agency/millenial_Conny.jpg" />
-          <div className="block white bottom_thing">
+          <div className="block white_text bottom_thing">
             <span className="left_label bold">Clients</span>
             <span className="content">
               <p className="uppercase italic">OUR CLIENTS TEND TO STAND </p>
@@ -442,7 +602,7 @@ module.exports = React.createClass({
 
         <div className="image-container woman-image">
           <img className="full" src="/images/agency/millenial_woman.jpg" />
-          <div className="block white bottom_thing">
+          <div className="block white_text bottom_thing">
             <span className="left_label bold">Audience</span>
             <span className="content">
               <h3 className="uppercase">OUR PRIMARY AUDIENCE IS MILLENNIALS, WITH HEAVY CROSSOVER INTO GENERATION X.</h3>

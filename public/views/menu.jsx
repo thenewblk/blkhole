@@ -28,7 +28,7 @@ module.exports = React.createClass({
                 hover={true} />
               <span className="name">Agency</span>
             </Link>
-            <Link className="channel_link" to="/disruption" >
+            <Link className="channel_link lost" to="/disruption" >
               <Sprite
                 image="/icons/disruption-icon.png"
                 columns={9}
@@ -50,7 +50,7 @@ module.exports = React.createClass({
                 hover={true} />
               <span className="name">Experiential</span>
             </Link>
-            <Link className="channel_link" to="/superfans" >
+            <Link className="channel_link lost" to="/superfans" >
               <Sprite
                 image="/icons/superfan-sprite-01.svg"
                 columns={9}

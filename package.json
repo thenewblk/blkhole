@@ -38,6 +38,10 @@
     "jquery": "^2.1.4",
     "react-draggable": "^0.8.5",
     "react-inlinesvg": "^0.4.2",
+    "react-scroll": "^0.35.0",
+    "react-scroll-components": "^0.2.2",
+    "react-visibility-sensor": "^2.1.0",
+    "react-waypoint": "^1.0.2",
     "reactify": "^1.1.1",
     "require-globify": "^1.2.1",
     "vinyl-source-stream": "^1.1.0"

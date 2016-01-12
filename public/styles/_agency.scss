@@ -6,6 +6,10 @@
   .subheader_top {
     font-size: 75px;
     text-align: center;
+    line-height: 1;
+    margin: 0;
+    background: white;
+    padding-top: 60px;
   }
   .header_top {
     font-size: 50px;
@@ -124,6 +128,11 @@
     width: 33%;
     font-size: 20px;
   }
+
+}
+
+.agency .block {
+  flex-direction: row;
 }
 
 .needle {
@@ -139,6 +148,7 @@
   background-repeat: no-repeat!important;
   padding: 100px 7%;
   color: white;
+  overflow: hidden;
 
   .needle_headline {
     text-transform: uppercase;
@@ -147,13 +157,108 @@
     line-height: 1;
   }
 
-  .needle_section {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    .copy {
-      flex: 1;
-      padding: 0 10%;
+
+  .needles {
+    position: relative;
+    .needles_container {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      .needles_wrapper {
+        width: 300%;
+        display: flex;
+        flex-direction: row;
+        transition: 0.15s ease-out;
+        &.thing_0 {
+          margin-left: 0;
+        }
+        &.thing_1 {
+          margin-left: -100%;
+        }
+        &.thing_2 {
+          margin-left: -200%;
+        }
+      }
+      .needle_section {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        width: 100%;
+        padding: 0 50px;
+        .copy {
+          flex: 1;
+          padding: 0 10%;
+        }
+      }
+
+    }
+    .bottom_detail {
+      .next_needle {
+        position: absolute;
+        top: 50%;
+        right: -50px;
+        z-index: 11;
+        fill: white;
+      }
+      .prev_needle {
+        position: absolute;
+        top: 50%;
+        left: -50px;
+        z-index: 11;
+        fill: white;
+      }
+      .next_needle,.prev_needle {
+        opacity: 0;
+        transition: 0.15s ease-out;
+        &.here {
+          opacity: 1;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+  }
+  .needles_info {
+    height: 3px;
+    background: white;
+    margin: 50px;
+    margin-left: -50%;
+    width: 200%;
+    .needles_info_wrapper {
+      display: table;
+      margin: auto;
+      position: absolute;
+      top: -13px;
+      width: 200%;
+      text-align: center;
+    }
+    .needle_diamond {
+      transform: rotate(45deg);
+      transition: 0.15s ease-out;
+      display: inline-block;
+      line-height: 0;
+      margin: 0 30px;
+      .needle_diamond_inner {
+        height: 13px;
+        width: 13px;
+        background: white;
+        margin: 5px;
+        display: inline-block;
+      }
+      border: 3px solid transparent;
+      cursor: pointer;
+      &:hover {
+        border: 3px solid white;
+      }
+      &.active {
+        border: 3px solid white;
+        cursor: auto;
+        &:hover {
+          opacity: 1;
+        }
+      }
     }
   }
 }
@@ -167,7 +272,7 @@ img.full {
   display: block;
 }
 
-.white {
+.white_text {
   color: white;
 }
 

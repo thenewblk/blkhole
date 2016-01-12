@@ -74,7 +74,6 @@ module.exports = React.createClass({
 	},
 
 	play: function()	{
-		console.log("play clicked");
 		this.setState({animation: "play"});
 	},
 
@@ -210,8 +209,6 @@ module.exports = React.createClass({
     }
 
 
-
-
 		if (image){
 			if (hover){
 				if ((getFilePathExtension(image) === "svg")){
@@ -257,17 +254,26 @@ module.exports = React.createClass({
 				}
 			} else {
 				if ((getFilePathExtension(image) === "svg")){
+					var VisibilitySensor = require('react-visibility-sensor');
+
+					var onChange = function (isVisible) {
+				    if (isVisible){
+							self.play();
+						};
+				  };
+
 		      return (
-		        <span className={className} style={size} >
+						<VisibilitySensor onChange={onChange}>
+			        <span className={className} style={size}>
+			          <span className="svg_icon_wrapper play" style={ style } >
+			            <Isvg src={image} className="isvg">
+			              Here's some optional content for browsers that don't support XHR or inline
+			              SVGs. You can use other React components here too. Here, I'll show you.
 
-		          <span className="svg_icon_wrapper play" style={ style } >
-		            <Isvg src={image} className="isvg">
-		              Here's some optional content for browsers that don't support XHR or inline
-		              SVGs. You can use other React components here too. Here, I'll show you.
-
-		            </Isvg>
-		          </span>
-		        </span>
+			            </Isvg>
+			          </span>
+			        </span>
+						</VisibilitySensor>
 		      )
 		    } else {
 		      return (
