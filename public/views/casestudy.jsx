@@ -3,6 +3,7 @@ var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
 
+var Sprite = require('../components/sprite.jsx');
 var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
@@ -13,8 +14,21 @@ var Mouser = require("../components/mouser.jsx");
 var Dragger = require("../components/dragger.jsx");
 var VideoGallery = require("../components/video_gallery.jsx");
 
+var SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.forEach(clearInterval);
+  }
+};
+
+
 module.exports = React.createClass({
-  mixins: [ Router.State ],
+  mixins: [ Router.State, SetIntervalMixin ],
   getInitialState: function(){
     return {params: {}, title: ''};
   },
@@ -36,7 +50,8 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var self = this;
-    self.setState({ params: self.getParams() });
+    console.log("componentWillMount: " + util.inspect(self.getParams()));
+    self.setState({ params: self.getParams(), content: null });
 
     // if (self.props.content && self.props.content.type == "case-study"){
     //   self.getContent();
@@ -45,12 +60,18 @@ module.exports = React.createClass({
     // else if (self.getParams().casestudy){
     //   self.getContent();
     // }
-    self.getContent();
+    self.setInterval(function() { self.getContent(); }, 500);
   },
 
   componentWillReceiveProps: function(nextProps) {
+    console.log("componentWillReceiveProps");
     var self = this;
-    self.getContent();
+    self.setState({ params: self.getParams(), content: null });
+    self.setInterval(function() { self.getContent(); }, 5000);
+  },
+
+  componentDidMount: function() {
+    console.log("componentDidMount");
   },
 
   consoleLog: function(){
@@ -65,7 +86,9 @@ module.exports = React.createClass({
   render: function render() {
     var self = this;
     var title = self.state.title;
-    if  (self.state.content) {
+    var content = self.state.content;
+    var casestudy = self.state.params.casestudy;
+    if  (content) {
       var name = self.state.content.name;
       var project_tags = self.state.content.project_tags;
       var top_image = {
@@ -243,23 +266,22 @@ module.exports = React.createClass({
 
       });
     }
-
-    return (
-      <div className="case_study">
-        <Helmet
-              title={title}
-              meta={[
-                  {"name": "description", "content": title },
-                  {"property": "og:type", "content": "article"}
-              ]}
-              link={[
-                  {"rel": "canonical", "href": "http://mysite.com/example"},
-                  {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                  {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-              ]}
-          />
-        { self.state.content ?
-          <div className="content">
+    if (content){
+      return (
+        <div className="case_study loaded" key={casestudy}>
+          <Helmet
+                title={title}
+                meta={[
+                    {"name": "description", "content": title },
+                    {"property": "og:type", "content": "article"}
+                ]}
+                link={[
+                    {"rel": "canonical", "href": "http://mysite.com/example"},
+                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
+                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
+                ]}
+            />
+          <div className="main_content loaded" key={casestudy}>
             <div className="top" style={top_image}>
               <h1 className="case_study_name">{name}</h1>
             </div>
@@ -270,10 +292,26 @@ module.exports = React.createClass({
             {things}
             <Channel channel={self.state.content.channel} />
           </div>
-          : "Loading..."
-        }
+        </div>
+      )
+    } else {
+      return (
 
-      </div>
-    );
+        <div className="case_study loading" key={casestudy}>
+          <div className="main_content loading" key={casestudy}></div>
+          <div className="case_study_loader">
+            <Sprite
+              image="/icons/blk-2.svg"
+              columns={11}
+              frames={22}
+              duration={0.5}
+              frameW={250}
+              frameH={200}
+              hover={false}
+              loop={true} />
+          </div>
+        </div>
+      )
+    }
   }
 });

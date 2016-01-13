@@ -77,6 +77,10 @@ module.exports = React.createClass({
 		this.setState({animation: "play"});
 	},
 
+	reset: function()	{
+		this.setState({animation: "stoploop"});
+	},
+
   animate: function(){
     var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
@@ -259,6 +263,8 @@ module.exports = React.createClass({
 					var onChange = function (isVisible) {
 				    if (isVisible){
 							self.play();
+						} else {
+							self.reset();
 						};
 				  };
 

@@ -4,7 +4,21 @@ var Sprite = require('../components/sprite.jsx');
 
 var util = require('util');
 
+var SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.forEach(clearInterval);
+  }
+};
+
+
 module.exports = React.createClass({
+  mixins: [ SetIntervalMixin ],
   getInitialState: function(){
     return {
       image: "/icons/blk-2.svg",

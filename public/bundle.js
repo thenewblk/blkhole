@@ -29521,6 +29521,10 @@ module.exports = React.createClass({displayName: "exports",
 		this.setState({animation: "play"});
 	},
 
+	reset: function()	{
+		this.setState({animation: "stoploop"});
+	},
+
   animate: function(){
     var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
@@ -29703,6 +29707,8 @@ module.exports = React.createClass({displayName: "exports",
 					var onChange = function (isVisible) {
 				    if (isVisible){
 							self.play();
+						} else {
+							self.reset();
 						};
 				  };
 
@@ -29746,6 +29752,7 @@ var VideoGallery = module.exports = React.createClass({displayName: "exports",
     return {currentVideo: "", moreOver: false};
   },
   setCurrentVideo: function(video, type){
+    console.log("setCurrentVideo");
     this.setState({currentVideo: video, type: type})
   },
 
@@ -29802,8 +29809,9 @@ var VideoGallery = module.exports = React.createClass({displayName: "exports",
 
         :
           React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
-            React.createElement("div", {className: "main_video_container"}, 
-              React.createElement("p", null, description)
+            React.createElement("div", {className: "main_video_container", onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}, 
+              React.createElement(Isvg, {src: "/icons/new/play_1-01.svg", className: "video_play_button"}), 
+              React.createElement("p", {className: "video_description"}, description)
             )
           ), 
         
@@ -30536,6 +30544,7 @@ var Router = require('react-router');
 var Helmet = require('react-helmet');
 var request = require('superagent');
 
+var Sprite = require('../components/sprite.jsx');
 var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
@@ -30546,8 +30555,21 @@ var Mouser = require("../components/mouser.jsx");
 var Dragger = require("../components/dragger.jsx");
 var VideoGallery = require("../components/video_gallery.jsx");
 
+var SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.forEach(clearInterval);
+  }
+};
+
+
 module.exports = React.createClass({displayName: "exports",
-  mixins: [ Router.State ],
+  mixins: [ Router.State, SetIntervalMixin ],
   getInitialState: function(){
     return {params: {}, title: ''};
   },
@@ -30569,7 +30591,8 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
-    self.setState({ params: self.getParams() });
+    console.log("componentWillMount: " + util.inspect(self.getParams()));
+    self.setState({ params: self.getParams(), content: null });
 
     // if (self.props.content && self.props.content.type == "case-study"){
     //   self.getContent();
@@ -30578,12 +30601,18 @@ module.exports = React.createClass({displayName: "exports",
     // else if (self.getParams().casestudy){
     //   self.getContent();
     // }
-    self.getContent();
+    self.setInterval(function() { self.getContent(); }, 500);
   },
 
   componentWillReceiveProps: function(nextProps) {
+    console.log("componentWillReceiveProps");
     var self = this;
-    self.getContent();
+    self.setState({ params: self.getParams(), content: null });
+    self.setInterval(function() { self.getContent(); }, 5000);
+  },
+
+  componentDidMount: function() {
+    console.log("componentDidMount");
   },
 
   consoleLog: function(){
@@ -30598,7 +30627,9 @@ module.exports = React.createClass({displayName: "exports",
   render: function render() {
     var self = this;
     var title = self.state.title;
-    if  (self.state.content) {
+    var content = self.state.content;
+    var casestudy = self.state.params.casestudy;
+    if  (content) {
       var name = self.state.content.name;
       var project_tags = self.state.content.project_tags;
       var top_image = {
@@ -30776,23 +30807,22 @@ module.exports = React.createClass({displayName: "exports",
 
       });
     }
-
-    return (
-      React.createElement("div", {className: "case_study"}, 
-        React.createElement(Helmet, {
-              title: title, 
-              meta: [
-                  {"name": "description", "content": title },
-                  {"property": "og:type", "content": "article"}
-              ], 
-              link: [
-                  {"rel": "canonical", "href": "http://mysite.com/example"},
-                  {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                  {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-              ]}
-          ), 
-         self.state.content ?
-          React.createElement("div", {className: "content"}, 
+    if (content){
+      return (
+        React.createElement("div", {className: "case_study loaded", key: casestudy}, 
+          React.createElement(Helmet, {
+                title: title, 
+                meta: [
+                    {"name": "description", "content": title },
+                    {"property": "og:type", "content": "article"}
+                ], 
+                link: [
+                    {"rel": "canonical", "href": "http://mysite.com/example"},
+                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
+                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
+                ]}
+            ), 
+          React.createElement("div", {className: "main_content loaded", key: casestudy}, 
             React.createElement("div", {className: "top", style: top_image}, 
               React.createElement("h1", {className: "case_study_name"}, name)
             ), 
@@ -30803,16 +30833,32 @@ module.exports = React.createClass({displayName: "exports",
             things, 
             React.createElement(Channel, {channel: self.state.content.channel})
           )
-          : "Loading..."
-        
-
+        )
       )
-    );
+    } else {
+      return (
+
+        React.createElement("div", {className: "case_study loading", key: casestudy}, 
+          React.createElement("div", {className: "main_content loading", key: casestudy}), 
+          React.createElement("div", {className: "case_study_loader"}, 
+            React.createElement(Sprite, {
+              image: "/icons/blk-2.svg", 
+              columns: 11, 
+              frames: 22, 
+              duration: 0.5, 
+              frameW: 250, 
+              frameH: 200, 
+              hover: false, 
+              loop: true})
+          )
+        )
+      )
+    }
   }
 });
 
 
-},{"../components/dragger.jsx":312,"../components/mouser.jsx":313,"../components/video_gallery.jsx":315,"./channel_footer.jsx":322,"react":308,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":133,"superagent":309,"util":5}],321:[function(require,module,exports){
+},{"../components/dragger.jsx":312,"../components/mouser.jsx":313,"../components/sprite.jsx":314,"../components/video_gallery.jsx":315,"./channel_footer.jsx":322,"react":308,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":133,"superagent":309,"util":5}],321:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -31490,7 +31536,21 @@ var Sprite = require('../components/sprite.jsx');
 
 var util = require('util');
 
+var SetIntervalMixin = {
+  componentWillMount: function() {
+    this.intervals = [];
+  },
+  setInterval: function() {
+    this.intervals.push(setInterval.apply(null, arguments));
+  },
+  componentWillUnmount: function() {
+    this.intervals.forEach(clearInterval);
+  }
+};
+
+
 module.exports = React.createClass({displayName: "exports",
+  mixins: [ SetIntervalMixin ],
   getInitialState: function(){
     return {
       image: "/icons/blk-2.svg",

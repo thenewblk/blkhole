@@ -59,11 +59,13 @@ h1,h2,h3,h4,h5 {
     font-family:'Conduit ITC W01 Bold';
     font-weight: normal;
   }
+  -webkit-font-smoothing: antialiased;
 }
 
 body, p, span {
   font-family:'Museo Sans W01_300';
   line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
   &.italic {
     font-family:'MuseoSansW01-300Italic';
     span {

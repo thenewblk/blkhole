@@ -6,6 +6,7 @@ var VideoGallery = module.exports = React.createClass({
     return {currentVideo: "", moreOver: false};
   },
   setCurrentVideo: function(video, type){
+    console.log("setCurrentVideo");
     this.setState({currentVideo: video, type: type})
   },
 
@@ -62,8 +63,9 @@ var VideoGallery = module.exports = React.createClass({
 
         :
           <div className="main_video_wrapper" style={wrapper_styles}>
-            <div className="main_video_container">
-              <p>{description}</p>
+            <div className="main_video_container" onClick={self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}>
+              <Isvg src="/icons/new/play_1-01.svg" className="video_play_button" />
+              <p className="video_description">{description}</p>
             </div>
           </div>
         }

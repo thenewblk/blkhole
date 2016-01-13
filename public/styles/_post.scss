@@ -232,12 +232,27 @@
       background-size: cover;
       background-position: center;
       height: 100%;
+      width: 100%;
       position: absolute;
       display: flex;
       align-items: center;
       color: white;
       padding: 15px 300px 15px 25px;
       background-blend-mode: multiply;
+
+      .main_video_container {
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        .video_play_button {
+
+        }
+        .video_description {
+          flex: 1;
+          padding: 0 15px;
+        }
+      }
+
     }
     .video_sidebar {
       transition: 0.15s ease-out;

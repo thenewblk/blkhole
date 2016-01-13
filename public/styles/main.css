@@ -1,13 +1,15 @@
 h1, h2, h3, h4, h5 {
   font-family: 'Conduit ITC W01 Bold';
-  font-weight: normal; }
+  font-weight: normal;
+  -webkit-font-smoothing: antialiased; }
   h1.bold, h2.bold, h3.bold, h4.bold, h5.bold {
     font-family: 'Conduit ITC W01 Bold';
     font-weight: normal; }
 
 body, p, span {
   font-family: 'Museo Sans W01_300';
-  line-height: 1.4; }
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased; }
   body.italic, p.italic, span.italic {
     font-family: 'MuseoSansW01-300Italic'; }
     body.italic span, p.italic span, span.italic span {
@@ -38,7 +40,7 @@ body, p, span {
 a {
   color: black;
   text-decoration: none;
-  font-weight: bold; }
+  font-weight: normal; }
   a:hover {
     transition: 0.15s ease-out;
     color: black; }
@@ -597,15 +599,49 @@ h1, h2, h3, h4, h5, p {
     width: 100%;
     text-align: left;
     text-transform: uppercase;
-    font-size: 75px;
-    line-height: 0.74;
+    font-size: 7vw;
+    line-height: 1;
     color: #ececec;
     padding-left: 7%;
     margin: 0;
+    margin-bottom: -1.2vw;
     font-style: normal; }
+
+.main_content {
+  height: 100%;
+  position: relative; }
 
 .second_street {
   color: #f27d6b; }
+
+.case_study {
+  transition: 0.5s ease-out; }
+  .case_study.loading {
+    background: black; }
+  .case_study.loaded {
+    background: transparent; }
+  .case_study .main_content {
+    opacity: 0;
+    transition: .25s ease-out; }
+    .case_study .main_content.loading {
+      opacity: 0; }
+    .case_study .main_content.loaded {
+      opacity: 1; }
+  .case_study .case_study_loader {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 70px;
+    bottom: 0;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center; }
 
 .post {
   max-width: 100%;
@@ -776,6 +812,7 @@ h1, h2, h3, h4, h5, p {
       background-size: cover;
       background-position: center;
       height: 100%;
+      width: 100%;
       position: absolute;
       display: -webkit-flex;
       display: -ms-flexbox;
@@ -786,6 +823,19 @@ h1, h2, h3, h4, h5, p {
       color: white;
       padding: 15px 300px 15px 25px;
       background-blend-mode: multiply; }
+      .post.videos .main_video_wrapper .main_video_container {
+        cursor: pointer;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-flex-direction: row;
+        -ms-flex-direction: row;
+        flex-direction: row; }
+        .post.videos .main_video_wrapper .main_video_container .video_description {
+          -webkit-flex: 1;
+          -ms-flex: 1;
+          flex: 1;
+          padding: 0 15px; }
     .post.videos .video_sidebar {
       transition: 0.15s ease-out;
       position: absolute;
