@@ -16,7 +16,6 @@ module.exports = React.createClass({
 		return { hover: true, loop: false, play: false }
 	},
 
-
 	componentWillMount: function(){
 		var timer = {
 		    running: false,
@@ -51,10 +50,10 @@ module.exports = React.createClass({
     this.animate();
   },
 
-  // componentWillUnmount: function(){
-	// 	this.state.timer.stop();
-  //   this.setState({animation: "stop"});
-  // },
+  componentWillUnmount: function(){
+		this.state.timer.stop();
+    this.setState({animation: "stop"});
+  },
 
   enter: function()	{
     this.setState({animation: "forward"});

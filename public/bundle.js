@@ -29460,7 +29460,6 @@ module.exports = React.createClass({displayName: "exports",
 		return { hover: true, loop: false, play: false }
 	},
 
-
 	componentWillMount: function(){
 		var timer = {
 		    running: false,
@@ -29495,10 +29494,10 @@ module.exports = React.createClass({displayName: "exports",
     this.animate();
   },
 
-  // componentWillUnmount: function(){
-	// 	this.state.timer.stop();
-  //   this.setState({animation: "stop"});
-  // },
+  componentWillUnmount: function(){
+		this.state.timer.stop();
+    this.setState({animation: "stop"});
+  },
 
   enter: function()	{
     this.setState({animation: "forward"});
@@ -30190,110 +30189,10 @@ module.exports = React.createClass({displayName: "exports",
     return {
       service: null,
       play_uno: false,
-      services:  [
-        {
-          id: 0,
-          area: "branding",
-          name: "ID",
-          words: "We are often tasked with naming and branding new ventures, products, and services, sometimes even new categories altogether. As many of our clients are market disruptors, we spend a lot of time crafting new brands and developing the framework for families of brands. Naming, logo, and identity projects tend to be multifaceted, blending research and marketing strategy with very detailed conceptual work. Everything from trademark searches to procuring the right domain name can come into play. Creatively, there is always a storytelling component. We start with a visual mood board and segue into a brand lexicon and archetype profile, forming the foundation for a well-crafted narrative, which we call the “brand mantra.” Each step flows into the next. Logos are complex things, often with paradoxical imperatives. They need to clearly communicate a great deal, but do so quickly; be unique and ownable, but also familiar and relatable; feel contemporary and forward-thinking, but allow for evolution over time. These projects are always iterative, as we go from pencil sketches to black and white mockups to refined marks with color and type treatment options to brand style guides at the end. "
-        },
-        {
-          id: 1,
-          area: "branding",
-          name: "Packaging",
-          words: "Our senior creative team comes from a heavy consumer packaged goods background. Plus, we’re suckers for good packaging as much as the next person. So, packaging is near and dear to our hearts. With our clients competing on increasingly crowded shelves, we’re always looking at what will help their brands jump out, while still tying back to their overall brand stories. These projects extend beyond the exterior package to also include what’s inside the box as well as supporting materials at point-of-sale, which can often play a larger role in the purchase decision than the package itself. "
-        },
-        {
-          id: 2,
-          area: "branding",
-          name: "Strategy",
-          words: "When we’re hired as agency-of-record, a big part of what we do every day is provide strategic counsel, acting as a sounding board for new initiatives and having a key seat at the board room table when it comes to strategic planning. While this typically starts with marketing communications, these conversations have a way of dipping into a whole host of topics, from product development to sales to customer service. Even though we are perhaps better known for our creative chops, we have also been brought in for purely strategic assignments, in some cases helping turn around under-performing brands and other times assessing and assisting internal creative teams in their initiatives. "
-        },
-        {
-          id: 3,
-          area: "content",
-          name: "Viral",
-          words: "“Let’s make a video that goes viral” is a brilliant strategy that brings to mind the old Steve Martin bit about how to become a millionaire: “First, get a million dollars.” That said, there is a bag of tricks we can use to give our content the best opportunity to catch fire. It starts with a killer creative concept and a willingness to take some risks. But, it also includes a viral seeding strategy, getting our content in front of as many influential consumers as possible, the type of people who make a lot of noise online. At The New BLK, we handle the video production from concept to execution, as well as the marketing of that content through word-of-mouth, paid, and earned media. "
-        },
-        {
-          id: 4,
-          area: "content",
-          name: "Narrative",
-          words: "We love videos as a storytelling medium, for their immediacy, their visual impact, and the emotional connection they can forge with an audience. We’re not alone in this. Harvard Business Review did a fascinating study on the chemical reactions that happen in the brain, specifically the release of oxytocin, when watching a video and how that leads to an increased desire to help others, even to make charitable donations. Our in-house video production team tells stories in a variety of formats. Currently trending at The New BLK are unscripted episodic series, brand mantra scripted narrative videos, and fundraising videos for nonprofits. "
-        },
-        {
-          id: 5,
-          area: "content",
-          name: "Broadcast",
-          words: "No matter how much you hear about cord-cutting and the death of traditional broadcast media, TV and radio are thriving in this golden era of content. Likewise, TV and radio advertising play a vital role in many of our clients’ marketing campaigns. Working as a hybrid ad agency and production company, we produce award-winning 30s and 60s TV and radio spots very efficiently and effectively, keeping production values high and production costs low. Working with our outside media buyer partner, we get great reach with our spots and maximize exposure for our clients. "
-        },
-        {
-          id: 6,
-          area: "content",
-          name: "Publishing",
-          words: "When we talk about content, we’re often talking about video. But, not always. The Internet is still a great place for the written word and not all pictures have to be of the moving variety. To wit, we’ve worked hand in hand with clients to develop a more comprehensive online publishing platform–consulting on strategy, editorial direction, staffing, and logistics. All kinds of cool things have come into play in the publishing arena, from Instagram feeds to blogs, podcasts, and online forums and other community-building tools. We even helped one client launch a whole online magazine as a spinoff brand to support its entree into a new industry. "
-        },
-        {
-          id: 7,
-          area: "experiential",
-          name: "Influencers",
-          words: "A key ingredient to many a successful experiential campaign is convincing the cool kids to get behind it. You want the people who chatter the most to embrace what you’re doing, make it  their own, and keep the conversation going. It comes down to really understanding your core audience and then finding the right movers and shakers within that audience. We’ve worked alongside clients and other agencies to develop influencer outreach strategies and to execute them with the right boots on the ground. We have recruited and managed successful on-the-ground street teams for a number of clients, including Airbnb, Wells Blue Bunny, Ballot Hero, and UNO Athletics. "
-        },
-        {
-          id: 8,
-          area: "experiential",
-          name: "Events",
-          words: "We’ve produced over a hundred events, from mobile pop-ups to large-scale stadium crowds and a wide range in between. Sometimes, we are concepting, planning, and managing our own events for clients and other times we are connecting with existing events. We get involved from pre-event hype to in-event experience to post-event followup, understanding that every step along the way is a critical touchpoint where the audience intersects the brand. Seamless product integration, where the brand is adding value and not getting in the way, is a critical component in all cases. Too often event marketing ends when the event concludes. To us, for an event to be successful it has to have long enough legs to live on and segue organically into the next touchpoint. "
-        },
-        {
-          id: 9,
-          area: "experiential",
-          name: "Promotions",
-          words: "Every successful experiential campaign needs a great hook and oftentimes that means a promotional component that reads quickly, has an obvious appeal to the core audience, and speaks to the brand essence. This usually takes the form of a well-crafted game, contest, sweeps, or some combination of those elements. We typically work as a blended team with our clients’ internal departments as well as outside agencies and legal counsel to handle all of the detailed logistics of a promotional campaign.  "
-        },
-        {
-          id: 10,
-          area: "experiential",
-          name: "Sponsorships",
-          words: "Putting your name and logo on a sign at an event still has some value. But, to us, that’s barely scratching the surface of what a sponsorship can be. The best sponsorships feel more like true partnerships, when the sponsor brand and the event brand overlap in target audience, personality, voice, and core values. Sponsors today should get off the sidelines and into the game, should demand an opportunity to create a meaningful interaction with the audience. We’ve spent many years in the “co-marketing” trenches and love looking for opportunities to bring brands together, especially when it means bringing one of our clients together with another. We work closely with several event brands, including Maha Music Festival, to create unique, ownable brand experiences for their sponsors. "
-        },
-        {
-          id: 11,
-          area: "digital",
-          name: "Social",
-          words: "Social media today is in a similar spot to where web site development and digital advertising was in the late 90s and early 2000s. Every brand knows they need to get in on the action. We’ve gotten over that hump. But, there’s still a lot of grappling with overall strategy, the why behind what we’re doing. Without enough clear roadmaps or best practices, there’s a great deal of confusion about the how piece as well. We work with our clients to develop social media strategies tailored to their specific business objectives, technical requirements, and audience dynamics. Collaboration is a core value at The New BLK and there are few better examples of how that comes into play than social media. Whether we take the lead on managing your social properties or simply provide support and counsel, your social media initiative will necessitate a team effort, meaning a blended team of agency and client."
-        },
-        {
-          id: 12,
-          area: "digital",
-          name: "Campaigns",
-          words: "Every campaign we work on involves a major digital component. After all, it is 2016. Sometimes, the campaign is entirely digital, especially with clients that have a brand experience that takes place primarily online. In any scenario, our digital campaigns are a lot like offline campaigns in that they start with clear, measurable objectives and critical insights about your audience and dovetail into a dynamic creative concept that has enough legs to sustain an ongoing campaign. Our campaigns typically consist of a mix of SEO, SEM, display, rich media, sponsored content, pre-roll and in-programming advertising."
-        },
-        {
-          id: 13,
-          area: "digital",
-          name: "Development",
-          words: "Front-end user experience and development and back-end coding are part of The New BLK bag of tricks. Our team has worked on developing everything from large-scale enterprise e-commerce web sites to online communities to robust mobile apps. But, our chosen focus in the development arena is working on components that will increase the impact of a campaign, from engagement to conversion. That often means designing and building campaign microsites, but it can also mean developing specific tools and apps."
-        },
-        {
-          id: 14,
-          area: "digital",
-          name: "Email",
-          words: "Not nearly as sexy as whatever’s trending in social and mobile, email is still the workhorse of any self-respecting digital campaign. Some say email marketing is dead, killed off by spammers who went to the well one too many times. Um, they’re wrong. Pound for pound, email kicks everyone’s ass. We’ve seen it time and again, across a wide swath of industries. Well written, well designed emails, with a compelling reason to engage can be ridiculously effective at a relatively low cost. We work with clients to setup their email marketing operations, from list management to template design to editorial planning to back-end analytics. "
-        },
-        {
-          id: 15,
-          area: "digital",
-          name: "Mobile",
-          words: "Let’s face it, this is a broad category. When we talk about mobile, we’re talking about a lot of things. The first thing that comes to mind is responsive design, which means designing and building web sites so the user experience is great on a range of screen sizes, from desktop to tablet to smartphone. Numerous sources place mobile usage at over 60% of all web traffic. Google Analytics on our clients’ sites show similar numbers.  Our web design process typically starts with the question: how will this work on mobile? We talk to a lot of companies looking for mobile app development, but more often than not what they really need is an excellent mobile-friendly website. The mobile marketing mix also includes all the other ways you can interact with a brand through your phone – text alerts, geo-targeted promotional offers, and the various social apps such as Instagram, Twitter, Foursquare and Facebook, among others. As more and more of our time spent online continues to shift to the small screen of mobile, mobile marketing becomes less of a subgenre but rather the definitive digital experience."
-        }
-      ]
-
+      services: services
     }
   },
-  skateboard: function(){
-    alert("wrecked!")
-  },
+
   openService: function(value){
     var self = this;
     var service = self.state.services.filter(function(thing){
@@ -30306,11 +30205,6 @@ module.exports = React.createClass({displayName: "exports",
 
   closeService: function(){
     this.setState({service: null});
-  },
-
-  playUno: function() {
-    console.log("playUno");
-    this.setState({play_uno: true});
   },
 
   render: function render() {
@@ -30388,7 +30282,7 @@ module.exports = React.createClass({displayName: "exports",
           )
         ), 
         React.createElement("div", {className: "needle"}, 
-          React.createElement("h1", {className: "needle_headline", onClick: this.skateboard}, "MOVE THE NEEDLE"), 
+          React.createElement("h1", {className: "needle_headline"}, "MOVE THE NEEDLE"), 
           React.createElement("div", {className: "block"}, 
             React.createElement("span", {className: "left_label"}), 
             React.createElement("span", {className: "content"}, 
@@ -30403,7 +30297,6 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("span", {className: "content"}, "As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience. ", React.createElement("br", null), "Our four core, overlapping service areas are:")
           ), 
            service ?
-
               React.createElement("div", {className: "service_detail open"}, 
                 React.createElement("div", {className: "service_detail_wrapper"}, 
                   React.createElement("span", {className: "close", onClick: self.closeService}, React.createElement(Isvg, {src: "/icons/new/close-01.svg"})), 
@@ -30417,8 +30310,22 @@ module.exports = React.createClass({displayName: "exports",
                     )
                   ), 
                   React.createElement("div", {className: "bottom_detail"}, 
-                     next_service ? React.createElement("span", {className: "next_service here", onClick: self.openService.bind(self,next_service.name)}, React.createElement("span", {className: "service_name bold"}, next_service.name), " ", React.createElement(Isvg, {src: "/icons/new/right-01.svg"})) : React.createElement("span", {className: "next_service"}, React.createElement(Isvg, {src: "/icons/new/right-01.svg"})), 
-                     prev_service ? React.createElement("span", {className: "prev_service here", onClick: self.openService.bind(self,prev_service.name)}, React.createElement(Isvg, {src: "/icons/new/left-01.svg"}), " ", React.createElement("span", {className: "service_name bold"}, prev_service.name)) : React.createElement("span", {className: "prev_service"}, React.createElement(Isvg, {src: "/icons/new/left-01.svg"}))
+                     next_service ?
+                      React.createElement("span", {className: "next_service here", onClick: self.openService.bind(self,next_service.name)}, 
+                        React.createElement("span", {className: "service_name bold"}, next_service.name), 
+                        React.createElement(Isvg, {src: "/icons/new/right-01.svg"})
+                      )
+                    :
+                      React.createElement("span", {className: "next_service"}, React.createElement(Isvg, {src: "/icons/new/right-01.svg"})), 
+                    
+                     prev_service ?
+                      React.createElement("span", {className: "prev_service here", onClick: self.openService.bind(self,prev_service.name)}, 
+                        React.createElement(Isvg, {src: "/icons/new/left-01.svg"}), 
+                        React.createElement("span", {className: "service_name bold"}, prev_service.name)
+                      )
+                    :
+                      React.createElement("span", {className: "prev_service"}, React.createElement(Isvg, {src: "/icons/new/left-01.svg"}))
+                    
                   )
                 )
               )
@@ -30591,7 +30498,6 @@ module.exports = React.createClass({displayName: "exports",
 
   componentWillMount: function() {
     var self = this;
-    console.log("componentWillMount: " + util.inspect(self.getParams()));
     self.setState({ params: self.getParams(), content: null });
 
     // if (self.props.content && self.props.content.type == "case-study"){
@@ -30605,15 +30511,12 @@ module.exports = React.createClass({displayName: "exports",
   },
 
   componentWillReceiveProps: function(nextProps) {
-    console.log("componentWillReceiveProps");
     var self = this;
     self.setState({ params: self.getParams(), content: null });
     self.setInterval(function() { self.getContent(); }, 5000);
   },
 
-  componentDidMount: function() {
-    console.log("componentDidMount");
-  },
+  componentDidMount: function() {},
 
   consoleLog: function(){
     console.log("this.state: " + util.inspect(this.state));
@@ -30656,22 +30559,6 @@ module.exports = React.createClass({displayName: "exports",
               words
             )
           )
-          // if (thing.style == "uppercase") {
-          //   return (
-          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}><span className="content">{thing.content}</span></div>
-          //   )
-          // } else if (thing.style == "bold") {
-          //   return (
-          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}>
-          //       <span className="content">{thing.content}</span>
-          //       <span className="bold-content">{thing.bold}</span>
-          //     </div>
-          //   )
-          // } else {
-          //   return (
-          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}><span className="content">{thing.content}</span></div>
-          //   )
-          // }
         }
 
         if (thing.type == "text") {
@@ -30756,7 +30643,7 @@ module.exports = React.createClass({displayName: "exports",
           var top = thing.top,
               bottom = thing.bottom;
           return (
-            React.createElement(Mouser, {bottom: bottom, top: top})
+            React.createElement(Mouser, {key: index, bottom: bottom, top: top})
           )
         }
 
@@ -30764,14 +30651,14 @@ module.exports = React.createClass({displayName: "exports",
           var top = thing.top,
               bottom = thing.bottom;
           return (
-            React.createElement(Dragger, {bottom: bottom, top: top})
+            React.createElement(Dragger, {key: index, bottom: bottom, top: top})
           )
         }
 
         if ( thing.type == "doublewide" ) {
           if (thing.arrangement == "image-left"){
             return (
-              React.createElement("div", {className: "post " + thing.type + " " + thing.style}, 
+              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
                 React.createElement("div", {className: "image"}, 
                   React.createElement("img", {src: thing.image})
                 ), 
@@ -30784,7 +30671,7 @@ module.exports = React.createClass({displayName: "exports",
 
           } else if (thing.arrangement == "text-left"){
             return (
-              React.createElement("div", {className: "post " + thing.type + " " + thing.style}, 
+              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
                 React.createElement("p", {className: "text"}, 
                    thing.vargas ? React.createElement("img", {className: "vargas-signature", src: thing.vargas}) : null, 
                   thing.content
@@ -30797,7 +30684,7 @@ module.exports = React.createClass({displayName: "exports",
 
           } else {
             return (
-              React.createElement("div", {className: "post " + thing.type + " " + thing.style}, 
+              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
                 React.createElement("p", null, "Which arrangement?")
               )
             )
@@ -31310,10 +31197,10 @@ module.exports = React.createClass({displayName: "exports",
       React.createElement("div", {className: "home_overlay"}), 
       React.createElement("div", {className: "video-container " + video}, 
         React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/experiential_new.mp4", type: "video/mp4"})
+          React.createElement("source", {src: "/video/experiential.webm", type: "video/webm"})
         ), 
         React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/handcrafted_new.mp4", type: "video/mp4"})
+          React.createElement("source", {src: "/video/handcrafted.webm", type: "video/webm"})
         )
       )
 

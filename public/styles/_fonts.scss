@@ -73,14 +73,18 @@ body, p, span {
     }
   }
   &.bold {
+    font-weight: normal !important;
     font-family:'Museo Sans W01_700';
     span {
+      font-weight: normal !important;
       font-family:'Museo Sans W01_700';
     }
   }
   &.bold.italic {
+    font-weight: normal !important;
     font-family:'MuseoSansW01-700Italic';
     span {
+      font-weight: normal !important;
       font-family:'MuseoSansW01-700Italic';
     }
   }

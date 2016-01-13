@@ -50,7 +50,6 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var self = this;
-    console.log("componentWillMount: " + util.inspect(self.getParams()));
     self.setState({ params: self.getParams(), content: null });
 
     // if (self.props.content && self.props.content.type == "case-study"){
@@ -64,15 +63,12 @@ module.exports = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    console.log("componentWillReceiveProps");
     var self = this;
     self.setState({ params: self.getParams(), content: null });
     self.setInterval(function() { self.getContent(); }, 5000);
   },
 
-  componentDidMount: function() {
-    console.log("componentDidMount");
-  },
+  componentDidMount: function() {},
 
   consoleLog: function(){
     console.log("this.state: " + util.inspect(this.state));
@@ -115,22 +111,6 @@ module.exports = React.createClass({
               {words}
             </div>
           )
-          // if (thing.style == "uppercase") {
-          //   return (
-          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}><span className="content">{thing.content}</span></div>
-          //   )
-          // } else if (thing.style == "bold") {
-          //   return (
-          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}>
-          //       <span className="content">{thing.content}</span>
-          //       <span className="bold-content">{thing.bold}</span>
-          //     </div>
-          //   )
-          // } else {
-          //   return (
-          //     <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}><span className="content">{thing.content}</span></div>
-          //   )
-          // }
         }
 
         if (thing.type == "text") {
@@ -215,7 +195,7 @@ module.exports = React.createClass({
           var top = thing.top,
               bottom = thing.bottom;
           return (
-            <Mouser bottom={bottom} top={top} />
+            <Mouser key={index} bottom={bottom} top={top} />
           )
         }
 
@@ -223,14 +203,14 @@ module.exports = React.createClass({
           var top = thing.top,
               bottom = thing.bottom;
           return (
-            <Dragger bottom={bottom} top={top} />
+            <Dragger key={index} bottom={bottom} top={top} />
           )
         }
 
         if ( thing.type == "doublewide" ) {
           if (thing.arrangement == "image-left"){
             return (
-              <div className={"post " + thing.type + " " + thing.style }>
+              <div key={index} className={"post " + thing.type + " " + thing.style }>
                 <div className="image">
                   <img src={thing.image} />
                 </div>
@@ -243,7 +223,7 @@ module.exports = React.createClass({
 
           } else if (thing.arrangement == "text-left"){
             return (
-              <div className={"post " + thing.type + " " + thing.style }>
+              <div key={index} className={"post " + thing.type + " " + thing.style }>
                 <p className="text">
                   { thing.vargas ? <img className="vargas-signature" src={thing.vargas} /> : null }
                   {thing.content}
@@ -256,7 +236,7 @@ module.exports = React.createClass({
 
           } else {
             return (
-              <div className={"post " + thing.type + " " + thing.style }>
+              <div key={index} className={"post " + thing.type + " " + thing.style }>
                 <p>Which arrangement?</p>
               </div>
             )
