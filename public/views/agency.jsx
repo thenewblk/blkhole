@@ -141,8 +141,8 @@ var Needles = React.createClass({
           copy: "More tickets sold for UNO Athletics in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the 'Call Me Maverick' campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.",
           sprite: {
             image: "/icons/agency/uno.svg",
-            columns: 9,
-            frames: 18,
+            columns: 11,
+            frames: 44,
             duration: .5,
             frameW: 300,
             frameH: 200
@@ -208,7 +208,7 @@ var Needles = React.createClass({
 
     var needle_indicators = self.state.needles.map(function(needle, index){
       return (
-        <span key={index} onClick={self.moveNeedle.bind(self, index)} className={ index == current_needle ? "needle_diamond active" : "needle_diamond"} ><span className="needle_diamond_inner"></span></span>
+        <span key={index} onClick={self.moveNeedle.bind(self, index)} className={ index == current_needle ? "needle_diamond active" : "needle_diamond"} ></span>
       )
     });
 
