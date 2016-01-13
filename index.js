@@ -91,11 +91,15 @@ app.get('/post/:post', function(req, res) {
 });
 
 app.get('*', function(req, res) {
-  res.render(req.url);
+  res.render(req.url, {
+    title: 'Home Page'
+  });
 });
 
 app.get('/login', function(req, res) {
-  res.render(req.url);
+  res.render(req.url, {
+    title: 'Login Page',
+  });
 });
 
 // 404 template
