@@ -217,8 +217,9 @@ $fiven_left: 26.6vw;
   background-size: cover;
   background-position: center;
   filter: grayscale(1);
-  height: 100%;
   display: flex;
+  height: 100vh;
+  overflow: hidden;
 }
 
 .home {

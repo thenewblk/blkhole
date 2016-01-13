@@ -19,10 +19,11 @@ var VideoGallery = module.exports = React.createClass({
   },
 
   render: function render() {
-    var self = this;
-    var thing = self.props.thing;
-    var description = thing.description;
-    var backgroundImage = thing.backgroundImage;
+    var self = this,
+    thing = self.props.thing,
+    description = thing.description,
+    backgroundImage = thing.backgroundImage,
+    style = thing.style;
 
     var wrapper_styles = {
       backgroundColor: self.props.blockColor,
@@ -30,11 +31,11 @@ var VideoGallery = module.exports = React.createClass({
     }
 
     var videos = thing.videos.map(function(video, index){
-      var image = video.image;
-      var url = video.url;
-      var title = video.title;
-      var type = video.type;
-      var series = video.series;
+      var image = video.image,
+          url = video.url,
+          title = video.title,
+          type = video.type,
+          series = video.series;
       return (
         <span key={index} className="video_small" style={{backgroundImage: "url("+image+")"}} onClick={self.setCurrentVideo.bind(self, url, type)}>
           <span className="description">
@@ -51,7 +52,7 @@ var VideoGallery = module.exports = React.createClass({
     var moreOver = self.state.moreOver;
 
     return (
-      <div className={currentVideo ? "post videos video_open" : "post videos" }>
+      <div className={currentVideo ? "post videos video_open " + style : "post videos " + style }>
         {currentVideo ?
           <div className="iframe-video-container">
             {type == "vimeo" ? <iframe src={currentVideo+"&autoplay=1"}  width="853" height="480" frameBorder="0" webkitAllowfullscreen mozAllowfullscreen allowfullscreen></iframe> : null }

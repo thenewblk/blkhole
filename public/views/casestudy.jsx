@@ -67,7 +67,7 @@ module.exports = React.createClass({
   componentWillReceiveProps: function(nextProps) {
     var self = this;
     self.setState({ params: self.getParams(), content: null });
-    self.setTimeout(function() { self.getContent(); }, 5000);
+    self.setTimeout(function() { self.getContent(); }, 500);
   },
 
   componentDidMount: function() {},
@@ -258,9 +258,7 @@ module.exports = React.createClass({
                     {"property": "og:type", "content": "article"}
                 ]}
                 link={[
-                    {"rel": "canonical", "href": "http://mysite.com/example"},
-                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
+                  {"rel": "icon", "href": "/favicon.ico"}
                 ]}
             />
           <div className="main_content loaded" key={casestudy}>

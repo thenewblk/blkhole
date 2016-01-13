@@ -42,13 +42,12 @@ module.exports = React.createClass({
     return (
       <div className="home_page">
         <Helmet
-              title="the new blk"
+              title="The New BLK"
               meta={[
                   {"name": "description", "content": "the new blk" }
               ]}
               link={[
-                  {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
+                  {"rel": "canonical", "href": "http://thenewblk.com/"}
               ]}
           />
         <div className="diamond_grid_3">

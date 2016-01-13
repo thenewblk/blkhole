@@ -81,7 +81,7 @@ module.exports = React.createClass({
               ]}
               link={[
                   {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
+                  {"rel": "icon", "href": "/favicon.ico"}
               ]}
           />
 

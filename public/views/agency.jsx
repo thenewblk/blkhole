@@ -378,13 +378,13 @@ module.exports = React.createClass({
     return (
       <div className="agency">
         <Helmet
-              title="Agency | the new blk"
+              title="Agency | The New BLK"
               meta={[
                   {"name": "description", "content": "the new blk" }
               ]}
               link={[
                   {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "shortcut icon", "href": "/favicon.jpg"}
+                  {"rel": "icon", "href": "/favicon.ico"}
               ]}
           />
         <div className="agency_top">

@@ -28,7 +28,7 @@ var jshint = require('gulp-jshint'),
 // Compile Our Sass
 gulp.task('sass', function() {
     return gulp.src('public/styles/*.scss')
-        .pipe(sass())
+        .pipe(sass({outputStyle: 'compressed'}))
 				.pipe(autoprefixer({
             browsers: ['last 2 versions'],
             cascade: false

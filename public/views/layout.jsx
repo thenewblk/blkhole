@@ -1,6 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
+var Footer = require('./footer.jsx');
 var Helmet = require('react-helmet');
 
 var util = require('util');
@@ -64,7 +65,7 @@ module.exports = React.createClass({
       <html className="">
         <head>
           <meta charSet='utf-8' />
-          <link rel="shortcut icon" href="/favicon.jpg" />
+          <link rel="icon" href="/favicon.ico" />
           <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"/>
           <link rel="stylesheet" href="/styles/main.css" />
         </head>
@@ -72,7 +73,9 @@ module.exports = React.createClass({
           <Menu />
           <div className="main">
             {this.props.children}
+            <Footer />
           </div>
+
         </body>
         <script src='/bundle.js'></script>
       </html>

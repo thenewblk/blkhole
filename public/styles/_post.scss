@@ -1,12 +1,17 @@
 .post {
   max-width: 100%;
   margin: 0;
+  margin-top: 25px;
+
   .break {
     margin: 15px 0;
   }
   &.black {
     background: $black;
     color: white;
+  }
+
+  &.no_margin {
     margin-top: 0;
   }
 

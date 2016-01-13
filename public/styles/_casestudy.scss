@@ -1,5 +1,6 @@
-.case_study, .top {
-  height: 100%;
+.case_study .top {
+  position: relative;
+  height: 100vh;
 }
 
 .top {
@@ -17,13 +18,12 @@
     color: #ececec;
     padding-left: 7%;
     margin: 0;
-    margin-bottom: -1.2vw;
+    margin-bottom: -1.5vw;
     font-style: normal;
   }
 }
 
 .main_content {
-    height: 100%;
     position: relative;
 }
 
@@ -32,8 +32,10 @@
 }
 
 .case_study {
-  transition: 0.5s ease-out;
+  transition: 1s ease-out;
+  min-height: 100vh;
   &.loading {
+
     background: black;
   }
   &.loaded {
