@@ -31197,10 +31197,10 @@ module.exports = React.createClass({displayName: "exports",
       React.createElement("div", {className: "home_overlay"}), 
       React.createElement("div", {className: "video-container " + video}, 
         React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/experiential.webm", type: "video/webm"})
+          React.createElement("source", {src: "/video/Experiential.webm", type: "video/webm"})
         ), 
         React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/handcrafted.webm", type: "video/webm"})
+          React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"})
         )
       )
 

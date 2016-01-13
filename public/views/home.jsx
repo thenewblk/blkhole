@@ -139,10 +139,10 @@ module.exports = React.createClass({
       <div className="home_overlay"></div>
       <div className={"video-container " + video}>
         <video  className="experiential" poster="/images/transparent.png" autoPlay muted="muted" loop>
-          <source src="/video/experiential.webm" type="video/webm" />
+          <source src="/video/Experiential.webm" type="video/webm" />
         </video>
         <video className="handcrafted" poster="/images/transparent.png" autoPlay muted="muted" loop>
-          <source src="/video/handcrafted.webm" type="video/webm" />
+          <source src="/video/Handcrafted.webm" type="video/webm" />
         </video>
       </div>
 
