@@ -18,16 +18,17 @@
     "node-jsx": "^0.12.4",
     "passport": "^0.2.2",
     "react": "^0.13.3",
+    "react-draggable": "^0.8.5",
     "react-engine": "^1.6.0",
     "react-helmet": "^1.0.1",
+    "react-inlinesvg": "^0.4.2",
     "react-router": "^0.13.3",
+    "react-scroll-components": "^0.2.2",
+    "react-timer-mixin": "^0.13.3",
+    "react-visibility-sensor": "^2.1.0",
     "reactify": "^1.1.0",
     "require-globify": "^1.1.0",
-    "superagent": "^1.2.0",
-    "react-draggable": "^0.8.5",
-    "react-inlinesvg": "^0.4.2",
-    "react-visibility-sensor": "^2.1.0",
-    "react-scroll-components": "^0.2.2"
+    "superagent": "^1.2.0"
   },
   "devDependencies": {
     "browserify": "^9.0.8",

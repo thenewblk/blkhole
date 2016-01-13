@@ -26,9 +26,11 @@ var SetIntervalMixin = {
   }
 };
 
+var TimerMixin = require('react-timer-mixin');
+
 
 module.exports = React.createClass({
-  mixins: [ Router.State, SetIntervalMixin ],
+  mixins: [ Router.State, TimerMixin ],
   getInitialState: function(){
     return {params: {}, title: ''};
   },
@@ -59,13 +61,13 @@ module.exports = React.createClass({
     // else if (self.getParams().casestudy){
     //   self.getContent();
     // }
-    self.setInterval(function() { self.getContent(); }, 500);
+    self.setTimeout(function() { self.getContent(); }, 500);
   },
 
   componentWillReceiveProps: function(nextProps) {
     var self = this;
     self.setState({ params: self.getParams(), content: null });
-    self.setInterval(function() { self.getContent(); }, 5000);
+    self.setTimeout(function() { self.getContent(); }, 5000);
   },
 
   componentDidMount: function() {},
