@@ -29875,14 +29875,27 @@ var VideoGallery = module.exports = React.createClass({displayName: "exports",
           url = video.url,
           title = video.title,
           type = video.type,
+          video_files = video.video,
           series = video.series;
+
+      if (video_files) {
+        var webm = video_files.webm,
+            mp4 = video_files.mp4;
+      }
       return (
         React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self, url, type)}, 
           React.createElement("span", {className: "description"}, 
             React.createElement("h4", {className: "video_small_title"}, title), 
             React.createElement("p", {className: "video_small_series"}, series)
           ), 
-          React.createElement("span", {className: "small_over"})
+          React.createElement("span", {className: "small_over"}, 
+             (webm) ?
+              React.createElement("video", {poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+                React.createElement("source", {src: webm, type: "video/webm"})
+              )
+              : null
+            
+          )
         )
       )
     });

@@ -35,14 +35,27 @@ var VideoGallery = module.exports = React.createClass({
           url = video.url,
           title = video.title,
           type = video.type,
+          video_files = video.video,
           series = video.series;
+
+      if (video_files) {
+        var webm = video_files.webm,
+            mp4 = video_files.mp4;
+      }
       return (
         <span key={index} className="video_small" style={{backgroundImage: "url("+image+")"}} onClick={self.setCurrentVideo.bind(self, url, type)}>
           <span className="description">
             <h4 className="video_small_title">{title}</h4>
             <p className="video_small_series">{series}</p>
           </span>
-          <span className="small_over"></span>
+          <span className="small_over">
+            { (webm) ?
+              <video poster="/images/transparent.png" autoPlay muted="muted" loop>
+                <source src={webm} type="video/webm" />
+              </video>
+              : null
+            }
+          </span>
         </span>
       )
     });
