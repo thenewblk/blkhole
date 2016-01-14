@@ -49,9 +49,10 @@ var VideoGallery = module.exports = React.createClass({
             <p className="video_small_series">{series}</p>
           </span>
           <span className="small_over">
-            { (webm) ?
+            { (webm || mp4) ?
               <video poster="/images/transparent.png" autoPlay muted="muted" loop>
-                <source src={webm} type="video/webm" />
+                  { webm ? <source src={webm} type="video/webm" /> : null }
+                  { mp4 ? <source src={mp4} type="video/mp4" /> : null }
               </video>
               : null
             }

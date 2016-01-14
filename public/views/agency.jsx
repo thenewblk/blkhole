@@ -181,17 +181,19 @@ var Needles = React.createClass({
     var current_needle = self.state.current_needle;
     var needles  = self.state.needles.map(function(needle, index){
         return (
-          <div className="needle_section" key={index}>
-            <Sprite
-              className="needle_sprite"
-              image={needle.sprite.image}
-              columns={needle.sprite.columns}
-              frames={needle.sprite.frames}
-              duration={needle.sprite.duration}
-              frameW={needle.sprite.frameW}
-              frameH={needle.sprite.frameH}
-              hover={false} />
-            <div className="copy white_text" >
+          <div className="needle_section block" key={index}>
+            <span className="left_label">
+              <Sprite
+                className="needle_sprite"
+                image={needle.sprite.image}
+                columns={needle.sprite.columns}
+                frames={needle.sprite.frames}
+                duration={needle.sprite.duration}
+                frameW={needle.sprite.frameW}
+                frameH={needle.sprite.frameH}
+                hover={false} />
+            </span>
+            <div className="copy white_text content" >
               <p>{needle.copy}</p>
             </div>
           </div>
@@ -417,7 +419,10 @@ module.exports = React.createClass({
         <div className="services">
           <div className="block">
             <span className="left_label bold">Services</span>
-            <span className="content">As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience. <br />Our four core, overlapping service areas are:</span>
+            <span className="content">
+              <p>As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience.</p>
+              <p className="italic">Our four core, overlapping service areas are:</p>
+            </span>
           </div>
           { service ?
               <div className="service_detail open">

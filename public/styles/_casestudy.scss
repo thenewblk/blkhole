@@ -1,6 +1,7 @@
 .case_study .top {
   position: relative;
   height: 100vh;
+  background-color: black;
 }
 
 .top {
@@ -36,7 +37,7 @@
   min-height: 100vh;
   &.loading {
 
-    background: black;
+    // background: black;
   }
   &.loaded {
     background: transparent;
@@ -53,6 +54,7 @@
   }
   .case_study_loader {
     position: absolute;
+    background: black;
     top: 0;
     right: 0;
     left: 70px;

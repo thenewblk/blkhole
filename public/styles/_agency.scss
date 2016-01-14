@@ -5,7 +5,7 @@
   flex-direction: column;
   .subheader_top {
     font-size: 75px;
-    text-align: center;
+    text-align: left;
     line-height: 1;
     margin: 0;
     background: white;
@@ -119,12 +119,17 @@
     display: flex;
     flex-direction: column;
     .content {
-      width: 650px;
+      width: 675px;
+      font-size: 17px;
+      line-height: 1.6;
+      p {
+        margin-top: 0;
+      }
     }
     .left_label {
       float: left;
       width: 33%;
-      font-size: 20px;
+      font-size: 17px;
     }
 
   }
@@ -150,12 +155,12 @@
     }
     .content {
       .uppercase {
-        font-size: 30px;
+        font-size: 40px;
         line-height: 1.2;
         margin: 0;
       }
       .bold {
-        font-size: 50px;
+        font-size: 65px;
         line-height: 1.2;
         margin: 0;
       }
@@ -220,7 +225,6 @@
         padding: 0 50px;
         .copy {
           flex: 1;
-          padding: 0 10%;
         }
       }
 
@@ -458,6 +462,13 @@ img.full {
         background: white;
         width: 30px;
         height: 30px;
+        transition: 0.15s ease-out;
+        fill: $gray;
+      }
+      &:hover {
+        svg {
+          fill: black;
+        }
       }
     }
     &:after {

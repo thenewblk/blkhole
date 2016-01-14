@@ -11,17 +11,22 @@ var util = require('util');
 module.exports = React.createClass({
   mixins: [ Router.State ],
   getInitialState: function(){
-    return {params: {}, title: '', view_description: true};
+    return {params: {}, title: ''};
+  },
+
+  getDefaultProps: function(){
+    var self = this;
+    return { view_description: true };
   },
 
   getContent: function(){
     var self = this;
-
+    var channel = self.props.channel || self.getParams().channel;
     request
-      .get('/api/channel/'+self.getParams().channel)
+      .get('/api/channel/'+channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name, view_description: true });
+          self.setState({content: res.body, title: res.body.name });
         }
       });
   },
@@ -32,7 +37,8 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     var self = this;
-    self.setState({ params: self.getParams() });
+    console.log("componentDidMount[view_description]: " + self.props.view_description);
+    self.setState({ params: self.getParams(), view_description: self.props.view_description });
     self.getContent();
     // if (self.props.content && self.props.content.type == "channel"){
     //   self.setState({content: self.props.content, title: self.props.content.name});
@@ -60,7 +66,8 @@ module.exports = React.createClass({
   render: function render() {
     var self = this;
     var title = self.state.title;
-    if (self.state.view_description){
+
+    if (self.state.view_description == true){
       var project_view = "featured_projects show";
     } else {
       var project_view = "featured_projects hide";
@@ -72,7 +79,15 @@ module.exports = React.createClass({
       var description = self.state.content.description;
       var icon = self.state.content.icon;
 
+      var video_files = self.state.content.video;
+
+      if (video_files) {
+        var webm = video_files.webm,
+            mp4 = video_files.mp4;
+      }
+
       var projects = self.state.content.case_studies.map(function(project, index){
+        var project_color = project.color;
         var tmp_styles = {
           backgroundImage: 'url('+project.featured_image+')'
         }
@@ -82,10 +97,12 @@ module.exports = React.createClass({
              <div key={index} className={"project project_"+tmp_number} style={tmp_styles}>
                <Link to={project.url}>
                  <div className="project_content">
+
                    <div className="project_inner">
                      <h1 className="project_name">{project.name}</h1>
                      <p className="project_tagline">{project.tagline}</p>
                    </div>
+                   <div className="project_overlay" style={{background: project_color}}></div>
                  </div>
                </Link>
              </div>
@@ -122,23 +139,38 @@ module.exports = React.createClass({
                 {projects.reverse()}
                 <div className="channel_info">
                   <div className="channel_container">
-                    <h1 className="channel_name">{name}</h1>
-                    <div className="channel_description">{description}</div>
-                    <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>
-                    <span className="channel_icon" key={name} id={name} onClick={self.toggleDescription}>
-                      { icon ?
-                      <Sprite
-                        image={icon.image}
-                        columns={icon.columns}
-                        frames={icon.frames}
-                        duration={icon.duration}
-                        frameW={icon.frameW}
-                        frameH={icon.frameH}
-                        hover={true}
-                      />
-                    : null }
+                    <span className="channel_words">
+                      <h1 className="channel_name">{name}</h1>
+                      <div className="channel_description">{description}</div>
+                    </span>
+                    <span className="channel_button">
+                      <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>
+                      <span className="channel_icon" key={name} id={name} onClick={self.toggleDescription}>
+                        { icon ?
+                        <Sprite
+                          image={icon.image}
+                          columns={icon.columns}
+                          frames={icon.frames}
+                          duration={icon.duration}
+                          frameW={icon.frameW}
+                          frameH={icon.frameH}
+                          hover={true}
+                        />
+                      : null }
+                      </span>
                     </span>
                   </div>
+                  <div className="channel_overlay"></div>
+
+                    { (webm || mp4) ?
+                      <div className="video-container" key={title}>
+                        <video className="visible" poster="/images/transparent.png" autoPlay muted="muted" loop>
+                            { webm ? <source src={webm} type="video/webm" /> : null }
+                            { mp4 ? <source src={mp4} type="video/mp4" /> : null }
+                        </video>
+                      </div>
+                      : null
+                    }
                 </div>
               </div>
             </div>

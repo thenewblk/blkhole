@@ -8,7 +8,7 @@ var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
 var util = require('util');
-var Channel = require('./channel_footer.jsx');
+var Channel = require('./channel.jsx');
 
 var Mouser = require("../components/mouser.jsx");
 var Dragger = require("../components/dragger.jsx");
@@ -270,7 +270,7 @@ module.exports = React.createClass({
               <span className="content">{self.state.content.top_block.content}</span>
             </div>
             {things}
-            <Channel channel={self.state.content.channel} />
+            <Channel channel={self.state.content.channel} view_description={false} />
           </div>
         </div>
       )

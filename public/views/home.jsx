@@ -12,7 +12,7 @@ module.exports = React.createClass({
     return {};
   },
   setAgency: function(){
-    this.setState({title: "your agency", words: "We only know one way: All in."})
+    this.setState({title: "your agency", video: "agency", words: "We only know one way: All in."})
   },
   setHandcrafted: function(){
     this.setState({title: "handcrafted", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build."})
@@ -142,6 +142,9 @@ module.exports = React.createClass({
         </video>
         <video className="handcrafted" poster="/images/transparent.png" autoPlay muted="muted" loop>
           <source src="/video/Handcrafted.webm" type="video/webm" />
+        </video>
+        <video className="agency" poster="/images/transparent.png" autoPlay muted="muted" loop>
+          <source src="/video/agency_v2.webm" type="video/webm" />
         </video>
       </div>
 

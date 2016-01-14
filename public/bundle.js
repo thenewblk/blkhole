@@ -29889,9 +29889,10 @@ var VideoGallery = module.exports = React.createClass({displayName: "exports",
             React.createElement("p", {className: "video_small_series"}, series)
           ), 
           React.createElement("span", {className: "small_over"}, 
-             (webm) ?
+             (webm || mp4) ?
               React.createElement("video", {poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-                React.createElement("source", {src: webm, type: "video/webm"})
+                   webm ? React.createElement("source", {src: webm, type: "video/webm"}) : null, 
+                   mp4 ? React.createElement("source", {src: mp4, type: "video/mp4"}) : null
               )
               : null
             
@@ -30167,17 +30168,19 @@ var Needles = React.createClass({displayName: "Needles",
     var current_needle = self.state.current_needle;
     var needles  = self.state.needles.map(function(needle, index){
         return (
-          React.createElement("div", {className: "needle_section", key: index}, 
-            React.createElement(Sprite, {
-              className: "needle_sprite", 
-              image: needle.sprite.image, 
-              columns: needle.sprite.columns, 
-              frames: needle.sprite.frames, 
-              duration: needle.sprite.duration, 
-              frameW: needle.sprite.frameW, 
-              frameH: needle.sprite.frameH, 
-              hover: false}), 
-            React.createElement("div", {className: "copy white_text"}, 
+          React.createElement("div", {className: "needle_section block", key: index}, 
+            React.createElement("span", {className: "left_label"}, 
+              React.createElement(Sprite, {
+                className: "needle_sprite", 
+                image: needle.sprite.image, 
+                columns: needle.sprite.columns, 
+                frames: needle.sprite.frames, 
+                duration: needle.sprite.duration, 
+                frameW: needle.sprite.frameW, 
+                frameH: needle.sprite.frameH, 
+                hover: false})
+            ), 
+            React.createElement("div", {className: "copy white_text content"}, 
               React.createElement("p", null, needle.copy)
             )
           )
@@ -30403,7 +30406,10 @@ module.exports = React.createClass({displayName: "exports",
         React.createElement("div", {className: "services"}, 
           React.createElement("div", {className: "block"}, 
             React.createElement("span", {className: "left_label bold"}, "Services"), 
-            React.createElement("span", {className: "content"}, "As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience. ", React.createElement("br", null), "Our four core, overlapping service areas are:")
+            React.createElement("span", {className: "content"}, 
+              React.createElement("p", null, "As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience."), 
+              React.createElement("p", {className: "italic"}, "Our four core, overlapping service areas are:")
+            )
           ), 
            service ?
               React.createElement("div", {className: "service_detail open"}, 
@@ -30565,7 +30571,7 @@ var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
 var util = require('util');
-var Channel = require('./channel_footer.jsx');
+var Channel = require('./channel.jsx');
 
 var Mouser = require("../components/mouser.jsx");
 var Dragger = require("../components/dragger.jsx");
@@ -30827,7 +30833,7 @@ module.exports = React.createClass({displayName: "exports",
               React.createElement("span", {className: "content"}, self.state.content.top_block.content)
             ), 
             things, 
-            React.createElement(Channel, {channel: self.state.content.channel})
+            React.createElement(Channel, {channel: self.state.content.channel, view_description: false})
           )
         )
       )
@@ -30854,7 +30860,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"../components/dragger.jsx":313,"../components/mouser.jsx":314,"../components/sprite.jsx":315,"../components/video_gallery.jsx":316,"./channel_footer.jsx":323,"react":309,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":133,"react-timer-mixin":153,"superagent":310,"util":5}],322:[function(require,module,exports){
+},{"../components/dragger.jsx":313,"../components/mouser.jsx":314,"../components/sprite.jsx":315,"../components/video_gallery.jsx":316,"./channel.jsx":322,"react":309,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":133,"react-timer-mixin":153,"superagent":310,"util":5}],322:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -30868,17 +30874,22 @@ var util = require('util');
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
   getInitialState: function(){
-    return {params: {}, title: '', view_description: true};
+    return {params: {}, title: ''};
+  },
+
+  getDefaultProps: function(){
+    var self = this;
+    return { view_description: true };
   },
 
   getContent: function(){
     var self = this;
-
+    var channel = self.props.channel || self.getParams().channel;
     request
-      .get('/api/channel/'+self.getParams().channel)
+      .get('/api/channel/'+channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name, view_description: true });
+          self.setState({content: res.body, title: res.body.name });
         }
       });
   },
@@ -30889,7 +30900,8 @@ module.exports = React.createClass({displayName: "exports",
 
   componentDidMount: function() {
     var self = this;
-    self.setState({ params: self.getParams() });
+    console.log("componentDidMount[view_description]: " + self.props.view_description);
+    self.setState({ params: self.getParams(), view_description: self.props.view_description });
     self.getContent();
     // if (self.props.content && self.props.content.type == "channel"){
     //   self.setState({content: self.props.content, title: self.props.content.name});
@@ -30917,7 +30929,8 @@ module.exports = React.createClass({displayName: "exports",
   render: function render() {
     var self = this;
     var title = self.state.title;
-    if (self.state.view_description){
+
+    if (self.state.view_description == true){
       var project_view = "featured_projects show";
     } else {
       var project_view = "featured_projects hide";
@@ -30929,7 +30942,15 @@ module.exports = React.createClass({displayName: "exports",
       var description = self.state.content.description;
       var icon = self.state.content.icon;
 
+      var video_files = self.state.content.video;
+
+      if (video_files) {
+        var webm = video_files.webm,
+            mp4 = video_files.mp4;
+      }
+
       var projects = self.state.content.case_studies.map(function(project, index){
+        var project_color = project.color;
         var tmp_styles = {
           backgroundImage: 'url('+project.featured_image+')'
         }
@@ -30939,10 +30960,12 @@ module.exports = React.createClass({displayName: "exports",
              React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
                React.createElement(Link, {to: project.url}, 
                  React.createElement("div", {className: "project_content"}, 
+
                    React.createElement("div", {className: "project_inner"}, 
                      React.createElement("h1", {className: "project_name"}, project.name), 
                      React.createElement("p", {className: "project_tagline"}, project.tagline)
-                   )
+                   ), 
+                   React.createElement("div", {className: "project_overlay", style: {background: project_color}})
                  )
                )
              )
@@ -30979,23 +31002,38 @@ module.exports = React.createClass({displayName: "exports",
                 projects.reverse(), 
                 React.createElement("div", {className: "channel_info"}, 
                   React.createElement("div", {className: "channel_container"}, 
-                    React.createElement("h1", {className: "channel_name"}, name), 
-                    React.createElement("div", {className: "channel_description"}, description), 
-                    React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
-                    React.createElement("span", {className: "channel_icon", key: name, id: name, onClick: self.toggleDescription}, 
-                       icon ?
-                      React.createElement(Sprite, {
-                        image: icon.image, 
-                        columns: icon.columns, 
-                        frames: icon.frames, 
-                        duration: icon.duration, 
-                        frameW: icon.frameW, 
-                        frameH: icon.frameH, 
-                        hover: true}
+                    React.createElement("span", {className: "channel_words"}, 
+                      React.createElement("h1", {className: "channel_name"}, name), 
+                      React.createElement("div", {className: "channel_description"}, description)
+                    ), 
+                    React.createElement("span", {className: "channel_button"}, 
+                      React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
+                      React.createElement("span", {className: "channel_icon", key: name, id: name, onClick: self.toggleDescription}, 
+                         icon ?
+                        React.createElement(Sprite, {
+                          image: icon.image, 
+                          columns: icon.columns, 
+                          frames: icon.frames, 
+                          duration: icon.duration, 
+                          frameW: icon.frameW, 
+                          frameH: icon.frameH, 
+                          hover: true}
+                        )
+                      : null
                       )
-                    : null
                     )
-                  )
+                  ), 
+                  React.createElement("div", {className: "channel_overlay"}), 
+
+                     (webm || mp4) ?
+                      React.createElement("div", {className: "video-container", key: title}, 
+                        React.createElement("video", {className: "visible", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+                             webm ? React.createElement("source", {src: webm, type: "video/webm"}) : null, 
+                             mp4 ? React.createElement("source", {src: mp4, type: "video/mp4"}) : null
+                        )
+                      )
+                      : null
+                    
                 )
               )
             )
@@ -31214,7 +31252,7 @@ module.exports = React.createClass({displayName: "exports",
     return {};
   },
   setAgency: function(){
-    this.setState({title: "your agency", words: "We only know one way: All in."})
+    this.setState({title: "your agency", video: "agency", words: "We only know one way: All in."})
   },
   setHandcrafted: function(){
     this.setState({title: "handcrafted", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build."})
@@ -31344,6 +31382,9 @@ module.exports = React.createClass({displayName: "exports",
         ), 
         React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
           React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"})
+        ), 
+        React.createElement("video", {className: "agency", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+          React.createElement("source", {src: "/video/agency_v2.webm", type: "video/webm"})
         )
       )
 

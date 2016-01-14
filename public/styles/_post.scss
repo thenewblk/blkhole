@@ -84,7 +84,8 @@
   }
 
   &.text {
-    width: 750px;
+    width: 65vw;
+    font-size: 1.3vw;
     max-width: 100%;
     padding: 15% 15px;
     text-align: left;
@@ -453,6 +454,7 @@
     }
     .text {
       padding: 15px 7%;
+      font-size: 1.3vw;
     }
 
     &.logo-small {

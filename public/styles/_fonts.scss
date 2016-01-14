@@ -64,7 +64,8 @@ h1,h2,h3,h4,h5 {
 
 body, p, span {
   font-family:'Museo Sans W01_300';
-  line-height: 1.4;
+  font-size: 17px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   &.italic {
     font-family:'MuseoSansW01-300Italic';

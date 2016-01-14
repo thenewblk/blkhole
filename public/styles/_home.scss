@@ -303,8 +303,10 @@ $fiven_left: 26.6vw;
       height: auto;
       overflow: hidden;
       display: block;
+      &.visible {
+        opacity:1;
+      }
     }
-
     &.experiential {
       video.experiential {
         opacity: 1;
@@ -312,6 +314,11 @@ $fiven_left: 26.6vw;
     }
     &.handcrafted {
       video.handcrafted {
+        opacity: 1;
+      }
+    }
+    &.agency {
+      video.agency {
         opacity: 1;
       }
     }
