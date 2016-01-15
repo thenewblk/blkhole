@@ -64,8 +64,8 @@ h1,h2,h3,h4,h5 {
 
 body, p, span {
   font-family:'Museo Sans W01_300';
-  font-size: 17px;
-  line-height: 1.6;
+  font-size: 18px;
+  line-height: 2;
   -webkit-font-smoothing: antialiased;
   &.italic {
     font-family:'MuseoSansW01-300Italic';
@@ -93,21 +93,4 @@ body, p, span {
 
 .uppercase {
   text-transform: uppercase;
-}
-
-
-
-.post.block {
-  .content.uppercase {
-    font-family:'MuseoSansW01-300Italic';
-    text-transform: uppercase;
-    font-size: 30px;
-    font-style: italic;
-
-  }
-  .content.bold {
-    font-weight: normal !important;
-    font-size: 60px;
-    text-transform: uppercase;
-  }
 }

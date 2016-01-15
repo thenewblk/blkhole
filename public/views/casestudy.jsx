@@ -110,7 +110,9 @@ module.exports = React.createClass({
           });
           return (
             <div key={index} className={"post " + thing.type + " " + thing.style } style={block_style}>
-              {words}
+              <div className="block_wrapper">
+                {words}
+              </div>
             </div>
           )
         }
@@ -118,8 +120,13 @@ module.exports = React.createClass({
         if (thing.type == "text") {
           return (
             <div key={index} className={"post " + thing.type + " " + thing.style }>
-              {thing.headline ? <h2 className="headline">{thing.headline}</h2> : null}
-              {thing.content}
+              <div className="block_wrapper">
+                <span className="left_label"></span>
+                <span className="content">
+                  {thing.headline ? <h2 className="headline">{thing.headline}</h2> : null}
+                  {thing.content}
+                </span>
+              </div>
             </div>
           )
         }
@@ -263,11 +270,13 @@ module.exports = React.createClass({
             />
           <div className="main_content loaded" key={casestudy}>
             <div className="top" style={top_image}>
-              <h1 className="case_study_name">{name}</h1>
+              <span className="case_study_name"><Isvg src="/icons/new/down-01.svg" /><h1 className="heading">{name}</h1></span>
             </div>
             <div className="post block top_block" style={block_style}>
-              <span className="content left_label">{self.state.content.top_block.project_tags}</span>
-              <span className="content">{self.state.content.top_block.content}</span>
+              <div className="block_wrapper">
+                <span className="left_label">{self.state.content.top_block.project_tags}</span>
+                <span className="content">{self.state.content.top_block.content}</span>
+              </div>
             </div>
             {things}
             <Channel channel={self.state.content.channel} view_description={false} />
@@ -280,15 +289,7 @@ module.exports = React.createClass({
         <div className="case_study loading" key={casestudy}>
           <div className="main_content loading" key={casestudy}></div>
           <div className="case_study_loader">
-            <Sprite
-              image="/icons/blk-2.svg"
-              columns={11}
-              frames={22}
-              duration={0.5}
-              frameW={250}
-              frameH={200}
-              hover={false}
-              loop={true} />
+            loading...
           </div>
         </div>
       )

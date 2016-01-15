@@ -139,12 +139,15 @@ module.exports = React.createClass({
       <div className={"video-container " + video}>
         <video  className="experiential" poster="/images/transparent.png" autoPlay muted="muted" loop>
           <source src="/video/Experiential.webm" type="video/webm" />
+          <source src="/video/experiential.mp4" type="video/mp4" />
         </video>
         <video className="handcrafted" poster="/images/transparent.png" autoPlay muted="muted" loop>
           <source src="/video/Handcrafted.webm" type="video/webm" />
+          <source src="/video/handcrafted.mp4" type="video/mp4" />
         </video>
         <video className="agency" poster="/images/transparent.png" autoPlay muted="muted" loop>
           <source src="/video/agency_v2.webm" type="video/webm" />
+          <source src="/video/agency.mp4" type="video/mp4" />
         </video>
       </div>
 

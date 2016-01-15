@@ -26,7 +26,7 @@ module.exports = React.createClass({
       .get('/api/channel/'+channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name });
+          self.setState({content: res.body, title: res.body.name, view_description: self.props.view_description });
         }
       });
   },

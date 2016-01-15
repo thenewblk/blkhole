@@ -29466,7 +29466,7 @@ var Mouser = module.exports = React.createClass({displayName: "exports",
     var window_width = window.innerWidth + 70,
         screenX = event.clientX ,
         screenY = event.clientY,
-        diff = ( window_width - 500 ) / 2,
+        diff = ( window_width - 500 ) / 3,
         left = 500 - (screenX - diff);
 
     this.setState({left: left, screenX: (screenX - 31), screenY: (screenY)});
@@ -29520,15 +29520,20 @@ var Mouser = module.exports = React.createClass({displayName: "exports",
 
     return (
       React.createElement("div", {className:  over ? "post mouser" : "post mouser over"}, 
-        React.createElement("div", {className: "dragger_images"}, 
+        React.createElement("div", {className: "block_wrapper"}, 
+          React.createElement("span", {className: "left_label"}), 
+          React.createElement("span", {className: "content"}, 
+            React.createElement("div", {className: "dragger_images"}, 
 
-          React.createElement("div", {className: "bottom_image", style: {backgroundImage: "url("+bottom+")"}}), 
-          React.createElement("div", {className: "top_image", style: {backgroundImage: "url("+top+")", width: left+"px"}}), 
-          React.createElement("div", {className: "mouse_overlay", onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave})
-        ), 
+              React.createElement("div", {className: "bottom_image", style: {backgroundImage: "url("+bottom+")"}}), 
+              React.createElement("div", {className: "top_image", style: {backgroundImage: "url("+top+")", width: left+"px"}}), 
+              React.createElement("div", {className: "mouse_overlay", onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave})
+            ), 
 
-        React.createElement("span", {className: "handle", style: {top: screenY, left: screenX}}, 
-          React.createElement(Isvg, {src: "/icons/new/slide.svg"})
+            React.createElement("span", {className: "handle", style: {top: screenY, left: screenX}}, 
+              React.createElement(Isvg, {src: "/icons/new/slide.svg"})
+            )
+          )
         )
       )
     )
@@ -30673,7 +30678,9 @@ module.exports = React.createClass({displayName: "exports",
           });
           return (
             React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style, style: block_style}, 
-              words
+              React.createElement("div", {className: "block_wrapper"}, 
+                words
+              )
             )
           )
         }
@@ -30681,8 +30688,13 @@ module.exports = React.createClass({displayName: "exports",
         if (thing.type == "text") {
           return (
             React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-              thing.headline ? React.createElement("h2", {className: "headline"}, thing.headline) : null, 
-              thing.content
+              React.createElement("div", {className: "block_wrapper"}, 
+                React.createElement("span", {className: "left_label"}), 
+                React.createElement("span", {className: "content"}, 
+                  thing.headline ? React.createElement("h2", {className: "headline"}, thing.headline) : null, 
+                  thing.content
+                )
+              )
             )
           )
         }
@@ -30826,11 +30838,13 @@ module.exports = React.createClass({displayName: "exports",
             ), 
           React.createElement("div", {className: "main_content loaded", key: casestudy}, 
             React.createElement("div", {className: "top", style: top_image}, 
-              React.createElement("h1", {className: "case_study_name"}, name)
+              React.createElement("span", {className: "case_study_name"}, React.createElement(Isvg, {src: "/icons/new/down-01.svg"}), React.createElement("h1", {className: "heading"}, name))
             ), 
             React.createElement("div", {className: "post block top_block", style: block_style}, 
-              React.createElement("span", {className: "content left_label"}, self.state.content.top_block.project_tags), 
-              React.createElement("span", {className: "content"}, self.state.content.top_block.content)
+              React.createElement("div", {className: "block_wrapper"}, 
+                React.createElement("span", {className: "left_label"}, self.state.content.top_block.project_tags), 
+                React.createElement("span", {className: "content"}, self.state.content.top_block.content)
+              )
             ), 
             things, 
             React.createElement(Channel, {channel: self.state.content.channel, view_description: false})
@@ -30843,15 +30857,7 @@ module.exports = React.createClass({displayName: "exports",
         React.createElement("div", {className: "case_study loading", key: casestudy}, 
           React.createElement("div", {className: "main_content loading", key: casestudy}), 
           React.createElement("div", {className: "case_study_loader"}, 
-            React.createElement(Sprite, {
-              image: "/icons/blk-2.svg", 
-              columns: 11, 
-              frames: 22, 
-              duration: 0.5, 
-              frameW: 250, 
-              frameH: 200, 
-              hover: false, 
-              loop: true})
+            "loading..."
           )
         )
       )
@@ -30889,7 +30895,7 @@ module.exports = React.createClass({displayName: "exports",
       .get('/api/channel/'+channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name });
+          self.setState({content: res.body, title: res.body.name, view_description: self.props.view_description });
         }
       });
   },
@@ -31378,13 +31384,16 @@ module.exports = React.createClass({displayName: "exports",
       React.createElement("div", {className: "home_overlay"}), 
       React.createElement("div", {className: "video-container " + video}, 
         React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/Experiential.webm", type: "video/webm"})
+          React.createElement("source", {src: "/video/Experiential.webm", type: "video/webm"}), 
+          React.createElement("source", {src: "/video/experiential.mp4", type: "video/mp4"})
         ), 
         React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"})
+          React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"}), 
+          React.createElement("source", {src: "/video/handcrafted.mp4", type: "video/mp4"})
         ), 
         React.createElement("video", {className: "agency", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/agency_v2.webm", type: "video/webm"})
+          React.createElement("source", {src: "/video/agency_v2.webm", type: "video/webm"}), 
+          React.createElement("source", {src: "/video/agency.mp4", type: "video/mp4"})
         )
       )
 
@@ -31463,6 +31472,7 @@ module.exports = React.createClass({displayName: "exports",
       React.createElement("html", {className: ""}, 
         React.createElement("head", null, 
           React.createElement("meta", {charSet: "utf-8"}), 
+          React.createElement("meta", {name: "viewport", content: "width=device-width, initial-scale=1.0"}), 
           React.createElement("link", {rel: "icon", href: "/favicon.ico"}), 
           React.createElement("link", {type: "text/css", rel: "stylesheet", href: "http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"}), 
           React.createElement("link", {rel: "stylesheet", href: "/styles/main.css"})
