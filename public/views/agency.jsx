@@ -116,18 +116,8 @@ var Needles = React.createClass({
       current_needle: 0,
       needles: [
         {
-          copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
-          sprite: {
-            image: "/icons/agency/fontenelle.svg",
-            columns: 13,
-            frames: 13,
-            duration: .5,
-            frameW: 125,
-            frameH: 225
-          }
-        },
-        {
-          copy: "Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to 2015 that’s the actual increase in average daily attendance, as crazy as it looks. It’s more than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.",
+          headline: "SOLD OUT",
+          copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup headlined by Modest Mouse and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
           sprite: {
             image: "/icons/agency/maha.svg",
             columns: 11,
@@ -138,7 +128,8 @@ var Needles = React.createClass({
           }
         },
         {
-          copy: "More tickets sold for UNO Athletics in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the 'Call Me Maverick' campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.",
+          headline: "Filling an Arena",
+          copy: "Ticket sales for UNO Athletics grew by 89% in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the 'Call Me Maverick' campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.",
           sprite: {
             image: "/icons/agency/uno.svg",
             columns: 11,
@@ -146,6 +137,18 @@ var Needles = React.createClass({
             duration: .5,
             frameW: 300,
             frameH: 200
+          }
+        },
+        {
+          headline: "Growing a Forest",
+          copy: "Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to the present, 262% is the actual increase in average daily attendance, as crazy as it looks. More than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.",
+          sprite: {
+            image: "/icons/agency/fontenelle.svg",
+            columns: 13,
+            frames: 13,
+            duration: .5,
+            frameW: 125,
+            frameH: 225
           }
         }
       ]
@@ -182,19 +185,22 @@ var Needles = React.createClass({
     var needles  = self.state.needles.map(function(needle, index){
         return (
           <div className="needle_section block" key={index}>
-            <span className="left_label">
-              <Sprite
-                className="needle_sprite"
-                image={needle.sprite.image}
-                columns={needle.sprite.columns}
-                frames={needle.sprite.frames}
-                duration={needle.sprite.duration}
-                frameW={needle.sprite.frameW}
-                frameH={needle.sprite.frameH}
-                hover={false} />
-            </span>
-            <div className="copy white_text content" >
-              <p>{needle.copy}</p>
+            <div className="block_wrapper">
+              <span className="left_label">
+                <Sprite
+                  className="needle_sprite"
+                  image={needle.sprite.image}
+                  columns={needle.sprite.columns}
+                  frames={needle.sprite.frames}
+                  duration={needle.sprite.duration}
+                  frameW={needle.sprite.frameW}
+                  frameH={needle.sprite.frameH}
+                  hover={false} />
+              </span>
+              <div className="copy white_text content" >
+                <h2 className="headline">{needle.headline}</h2>
+                <p>{needle.copy}</p>
+              </div>
             </div>
           </div>
         )
@@ -222,8 +228,10 @@ var Needles = React.createClass({
           </div>
         </div>
         <div className="needles_container">
-          <div className={"needles_wrapper thing_" + current_needle} >
-            {needles}
+          <div className="needles_container_wrapper">
+            <div className={"needles_wrapper thing_" + current_needle} >
+              {needles}
+            </div>
           </div>
         </div>
         <div className="bottom_detail">
@@ -231,79 +239,6 @@ var Needles = React.createClass({
           { prev_needle ? <span className="prev_needle here" onClick={self.prevNeedle}><Isvg src="/icons/new/left-01.svg" /></span> : <span className="prev_needle"><Isvg src="/icons/new/left-01.svg" /></span> }
         </div>
 
-      </div>
-    )
-  }
-});
-
-var NeedlesScroll = React.createClass({
-  mixins: [ScrollListenerMixin],
-  _needleThreeEnter: function(){
-    console.log("_needleThreeEnter");
-  },
-  _needleTwoEnter: function(){
-    console.log("_needleTwoEnter");
-  },
-  _needleOneEnter: function(){
-    console.log("_needleOneEnter");
-  },
-  _needleThreeLeave: function(){
-    console.log("_needleThreeLeave");
-  },
-  _needleTwoLeave: function(){
-    console.log("_needleTwoLeave");
-  },
-  _needleOneLeave: function(){
-    console.log("_needleOneLeave");
-  },
-  render: function render() {
-    return (
-      <div className="needles">
-        <ScrollBlocker active={this.state.isScrolling}>
-          <p>The current scroll position is {this.state.scrollTop}.<br />The document is currently {this.state.isScrolling ? '' : 'not'} scrolling.</p>
-          <div className="needle_section">
-            <div className="copy white" >
-              <p>For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.</p>
-            </div>
-            <Sprite
-              className="needle_sprite"
-              image="/icons/agency/fontenelle.svg"
-              columns={13}
-              frames={13}
-              duration={.5}
-              frameW={125}
-              frameH={225}
-              play={true} />
-          </div>
-
-          <div className="needle_section">
-            <div className="copy white" >
-              <p>Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to 2015 that’s the actual increase in average daily attendance, as crazy as it looks. It’s more than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.</p>
-            </div>
-            <Sprite
-              image="/icons/agency/maha.svg"
-              columns={11}
-              frames={22}
-              duration={.5}
-              frameW={250}
-              frameH={250}
-              hover={true} />
-          </div>
-
-          <div className="needle_section">
-            <div className="copy white">
-              <p>More tickets sold for UNO Athletics in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the "Call Me Maverick" campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.</p>
-            </div>
-            <Sprite
-              image="/icons/agency/uno.svg"
-              columns={9}
-              frames={18}
-              duration={.5}
-              frameW={300}
-              frameH={200}
-              hover={true} />
-          </div>
-        </ScrollBlocker>
       </div>
     )
   }
@@ -391,12 +326,14 @@ module.exports = React.createClass({
           />
         <div className="agency_top">
           <div className="top_copy">
-            <h1 className="subheader_top">WE BUILD POWERFUL EXPERIENCES</h1>
+            <h1 className="subheader_top"><div className="block_wrapper">WE BUILD POWERFUL EXPERIENCES</div></h1>
           </div>
           <div className="theoldgirl">
             <div className="block">
-              <span className="left_label bold">Story</span>
-              <span className="content">Founded in 2010 and headquartered in downtown Omaha, we work with local, regional, national and global brands. We are storytellers, brand builders, content marketers, strategic advisors, and message crafters. We work with traditional paid and earned media, but we also create our own media channels and leverage the power of social media to take the conversation direct to the audience.</span>
+              <div className="block_wrapper">
+                <span className="left_label bold">Story</span>
+                <span className="content">Founded in 2010 and headquartered in downtown Omaha, we work with local, regional, national and global brands. We are storytellers, brand builders, content marketers, strategic advisors, and message crafters. We work with traditional paid and earned media, but we also create our own media channels and leverage the power of social media to take the conversation direct to the audience.</span>
+              </div>
             </div>
             <div className="border-wrap">
               <span className="top_line"></span>
@@ -407,22 +344,26 @@ module.exports = React.createClass({
           </div>
         </div>
         <div className="needle">
-          <h1 className="needle_headline">MOVE THE NEEDLE</h1>
+          <h1 className="needle_headline"><div className="block_wrapper">MOVE THE NEEDLE</div></h1>
           <div className="block">
-            <span className="left_label"></span>
-            <span className="content">
-              <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
-            </span>
+            <div className="block_wrapper">
+              <span className="left_label"></span>
+              <span className="content">
+                <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
+              </span>
+            </div>
           </div>
           <Needles />
         </div>
         <div className="services">
           <div className="block">
-            <span className="left_label bold">Services</span>
-            <span className="content">
-              <p>As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience.</p>
-              <p className="italic">Our four core, overlapping service areas are:</p>
-            </span>
+            <div className="block_wrapper">
+              <span className="left_label bold">Services</span>
+              <span className="content">
+                <p>As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience.</p>
+                <p className="italic">Our four core, overlapping service areas are:</p>
+              </span>
+            </div>
           </div>
           { service ?
               <div className="service_detail open">
@@ -487,11 +428,13 @@ module.exports = React.createClass({
         <div className="image-container">
           <img className="full" src="/images/agency/millenial_Conny.jpg" />
           <div className="block white_text bottom_thing">
-            <span className="left_label bold">Clients</span>
-            <span className="content">
-              <p className="uppercase italic">OUR CLIENTS TEND TO STAND </p>
-              <h3 className="bold">FOR SOMETHING BIGGER.</h3>
-            </span>
+            <div className="block_wrapper">
+              <span className="left_label bold">Clients</span>
+              <span className="content">
+                <p className="uppercase italic">OUR CLIENTS TEND TO STAND </p>
+                <h3 className="bold">FOR SOMETHING BIGGER.</h3>
+              </span>
+            </div>
             <div className="border-wrap">
               <span className="top_line"></span>
               <span className="right_line"></span>
@@ -501,11 +444,13 @@ module.exports = React.createClass({
 
         <div className="clients">
           <div className="block">
-            <span className="left_label"></span>
-            <span className="content">
-              <p>No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, solving old problems in new ways to get better results.</p>
-              <p>We work heavily in industries that fit the lifestyle of our core Millennial and Generation X audience: arts & entertainment, sports, technology, food & beverage, fashion, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.</p>
-            </span>
+            <div className="block_wrapper">
+              <span className="left_label"></span>
+              <span className="content">
+                <p>No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, solving old problems in new ways to get better results.</p>
+                <p>We work heavily in industries that fit the lifestyle of our core Millennial and Generation X audience: arts & entertainment, sports, technology, food & beverage, fashion, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.</p>
+              </span>
+            </div>
           </div>
           <div className="border-wrap">
             <span className="right_line"></span>
@@ -516,10 +461,12 @@ module.exports = React.createClass({
         <div className="image-container woman-image">
           <img className="full" src="/images/agency/millenial_woman.jpg" />
           <div className="block white_text bottom_thing">
-            <span className="left_label bold">Audience</span>
-            <span className="content">
-              <h3 className="uppercase">OUR PRIMARY AUDIENCE IS MILLENNIALS, WITH HEAVY CROSSOVER INTO GENERATION X.</h3>
-            </span>
+            <div className="block_wrapper">
+              <span className="left_label bold">Audience</span>
+              <span className="content">
+                <h3 className="uppercase">OUR PRIMARY AUDIENCE IS MILLENNIALS, WITH HEAVY CROSSOVER INTO GENERATION X.</h3>
+              </span>
+            </div>
             <div className="upper border-wrap">
               <span className="right_line"></span>
               <span className="bottom_right_corner"></span>
@@ -533,13 +480,15 @@ module.exports = React.createClass({
         </div>
         <div className="audience">
           <div className="block">
-            <span className="left_label"></span>
-            <span className="content">
-              <p>These are social connectors, community builders, technologists, entrepreneurs, young professionals, activists, and do-it-yourselfers. They are the tastemakers and trendsetters that can make or break your brand.</p>
-              <p>While certainly not one-dimensional, there are some common threads that run throughout this group. Connecting with this audience takes a great deal of finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work and going about it the wrong way can actually cause irreparable damage to your brand.</p>
-              <p>It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as a native. That’s why The New BLK gets hired by big, global brands to connect with this audience.</p>
-              <p className="uppercase italic weliveit">WE LIVE IT.</p>
-            </span>
+            <div className="block_wrapper">
+              <span className="left_label"></span>
+              <span className="content">
+                <p>These are social connectors, community builders, technologists, entrepreneurs, young professionals, activists, and do-it-yourselfers. They are the tastemakers and trendsetters that can make or break your brand.</p>
+                <p>While certainly not one-dimensional, there are some common threads that run throughout this group. Connecting with this audience takes a great deal of finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work and going about it the wrong way can actually cause irreparable damage to your brand.</p>
+                <p>It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as a native. That’s why The New BLK gets hired by big, global brands to connect with this audience.</p>
+                <p className="uppercase italic weliveit">WE LIVE IT.</p>
+              </span>
+            </div>
           </div>
           <div className="border-wrap">
             <span className="left_line"></span>

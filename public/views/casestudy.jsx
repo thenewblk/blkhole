@@ -223,20 +223,22 @@ module.exports = React.createClass({
                 <div className="image">
                   <img src={thing.image} />
                 </div>
-                <p className="text">
+                <span className="text">
+                  { thing.headline ? <h2 className="headline">{thing.headline}</h2> : null}
                   { thing.vargas ? <img className="vargas-signature" src={thing.vargas} /> : null }
-                  {thing.content}
-                </p>
+                  { thing.content }
+                </span>
               </div>
             )
 
           } else if (thing.arrangement == "text-left"){
             return (
               <div key={index} className={"post " + thing.type + " " + thing.style }>
-                <p className="text">
+                <span className="text">
+                  { thing.headline ? <h2 className="headline">{thing.headline}</h2> : null}
                   { thing.vargas ? <img className="vargas-signature" src={thing.vargas} /> : null }
                   {thing.content}
-                </p>
+                </span>
                 <div className="image">
                   <img src={thing.image} />
                 </div>

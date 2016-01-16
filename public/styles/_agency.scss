@@ -119,9 +119,6 @@
     display: flex;
     flex-direction: column;
     .content {
-      width: 675px;
-      font-size: 17px;
-      line-height: 1.6;
       p {
         margin-top: 0;
       }
@@ -202,6 +199,12 @@
       position: relative;
       width: 100%;
       overflow: hidden;
+      padding: 0 7%;
+      .needles_container_wrapper {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+      }
       .needles_wrapper {
         width: 300%;
         display: flex;
@@ -222,9 +225,23 @@
         flex-direction: row;
         align-items: flex-end;
         width: 100%;
-        padding: 0 50px;
+        padding: 0;
         .copy {
           flex: 1;
+        }
+
+        .block_wrapper {
+          align-items: center;
+          .sprite_container {
+            display: table;
+            position: relative;
+            margin: auto;
+          }
+
+          .headline {
+            margin: 0;
+            font-size: 40px;
+          }
         }
       }
 
@@ -267,7 +284,7 @@
       display: table;
       margin: auto;
       position: absolute;
-      top: -14px;
+      top: -17px;
       width: 200%;
       text-align: center;
     }
@@ -380,7 +397,6 @@ img.full {
   // height: 100%;
   position: relative;
   padding: 50px;
-  padding-left: 7%;
   display: flex;
   flex-direction: column;
   justify-content: center;

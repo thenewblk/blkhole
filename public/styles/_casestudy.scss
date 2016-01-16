@@ -16,7 +16,7 @@
     text-transform: uppercase;
     line-height: 1;
     color: #ececec;
-    padding-left: 7%;
+    padding-left: 75px;
     margin: 0;
     font-style: normal;
     font-size: 3.2vw;
@@ -29,6 +29,8 @@
     .isvg svg {
       width: 3.2vw;
       height: 4.5vw;
+      margin-right: 25px;
+      fill: white;
     }
   }
 }

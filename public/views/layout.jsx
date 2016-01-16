@@ -77,6 +77,11 @@ module.exports = React.createClass({
             <Footer />
           </div>
 
+          <div className="mobile_main">
+            <h3 className="earthlings">Greetings earthlings, our mobile ship is currently under construction. Please visit our mother ship on your desktop computing machine.</h3>
+            <Footer />
+          </div>
+
         </body>
         <script src='/bundle.js'></script>
       </html>

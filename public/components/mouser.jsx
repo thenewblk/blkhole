@@ -19,13 +19,27 @@ var Mouser = module.exports = React.createClass({
 
   onMouseMove: function(event){
 
-    var window_width = window.innerWidth + 70,
+    var window_width = window.innerWidth - 130,
         screenX = event.clientX ,
         screenY = event.clientY,
-        diff = ( window_width - 500 ) / 3,
-        left = 500 - (screenX - diff);
+        margin_diff = ( window_width - 1200 ) / 2;
 
-    this.setState({left: left, screenX: (screenX - 31), screenY: (screenY)});
+        if (window_width > 1200) {
+          var inner_left = 300;
+          var left = screenX - inner_left - margin_diff - 84;
+        } else {
+          var inner_left = .25 * window_width;
+          var left = screenX - inner_left - 80;
+        }
+
+        console.log("window_width: " + window_width);
+        console.log("screenX: " + screenX);
+        console.log("screenY: " + screenY);
+        console.log("margin_diff: " + margin_diff);
+        console.log("inner_left: " + inner_left);
+        console.log("left: " + left);
+
+    this.setState({left: (500 - left), screenX: screenX, screenY: (screenY)});
 
   },
 
