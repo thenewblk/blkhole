@@ -31190,7 +31190,7 @@ module.exports = React.createClass({displayName: "exports",
         React.createElement("footer", {className: "footer"}, 
           React.createElement("div", {className: "f-wrapper"}, 
             React.createElement("div", {className: "contact"}, 
-              React.createElement("p", {className: "telly"}, "402.403.5619"), 
+              React.createElement("p", {className: "telly"}, React.createElement("a", {href: "tel:4024035619"}, "402.403.5619")), 
               React.createElement("p", {className: "info"}, "info@thenewblk.com")
             ), 
             React.createElement("div", {className: "social"}, 

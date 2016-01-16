@@ -16,7 +16,7 @@ module.exports = React.createClass({
         <footer className="footer">
           <div className="f-wrapper">
             <div className="contact">
-              <p className="telly">402.403.5619</p>
+              <p className="telly"><a href="tel:4024035619">402.403.5619</a></p>
               <p className="info">info@thenewblk.com</p>
             </div>
             <div className="social">
