@@ -4,7 +4,10 @@
 }
 
 @media (max-width: 900px) {
-  body{ background: black; }
+  body{
+    background: black;
+    padding-left: 0; 
+  }
   .navigator, .main {
     display: none;
   }
