@@ -29464,26 +29464,20 @@ var Mouser = module.exports = React.createClass({displayName: "exports",
   onMouseMove: function(event){
 
     var window_width = window.innerWidth - 130,
-        screenX = event.clientX ,
-        screenY = event.clientY,
-        margin_diff = ( window_width - 1200 ) / 2;
+        screenX = event.offsetX ,
+        clientX = event.clientX ,
+        screenY = event.offsetY;
 
-        if (window_width > 1200) {
-          var inner_left = 300;
-          var left = screenX - inner_left - margin_diff - 84;
-        } else {
-          var inner_left = .25 * window_width;
-          var left = screenX - inner_left - 80;
-        }
 
-        console.log("window_width: " + window_width);
-        console.log("screenX: " + screenX);
-        console.log("screenY: " + screenY);
-        console.log("margin_diff: " + margin_diff);
-        console.log("inner_left: " + inner_left);
-        console.log("left: " + left);
+        // console.log("window_width: " + window_width);
+        // console.log("screenX: " + screenX);
+        // console.log("clientX: " + clientX);
+        // console.log("screenY: " + screenY);
+        // console.log("margin_diff: " + margin_diff);
+        // console.log("inner_left: " + inner_left);
+        // console.log("left: " + left);
 
-    this.setState({left: (500 - left), screenX: screenX, screenY: (screenY)});
+    this.setState({left: (500 - screenX), screenX: screenX, screenY: (screenY)});
 
   },
 
