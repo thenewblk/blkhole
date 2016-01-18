@@ -1,5 +1,6 @@
 @import 'fonts';
 @import 'colors';
+@import 'home';
 
 a {
   color: black;
@@ -161,15 +162,15 @@ h1,h2,h3,h4,h5,p {
 .navigator_overlay {
   opacity: 0;
   transition: 0.15s ease-out;
-}
+  position:fixed;
 
-.navigator:hover + .navigator_overlay {
-  position: fixed;
-  width: 100%;
-  background: $black;
-  height: 100%;
-  opacity: 0.1;
-  z-index: 110;
+  .diamond_grid_3 {
+    width: 50vw;
+    transition: 0.5s ease-out;
+    .square {
+      border: $border_width solid rgba(255,255,255,0.155);
+    }
+  }
 }
 
 .main {
@@ -177,10 +178,24 @@ h1,h2,h3,h4,h5,p {
   filter: contrast(1) grayscale(0) blur(0);
 }
 
-.navigator:hover + .main {
-  filter: contrast(6) grayscale(1) blur(5px);
-}
+.menu_over {
 
+  .main {
+    filter: contrast(6) grayscale(1) blur(5px);
+  }
+  .navigator_overlay {
+    position: fixed;
+    width: 100%;
+    background: $black;
+    height: 100%;
+    opacity: 0.5;
+    z-index: 110;
+    .diamond_grid_3 {
+      display: block;
+      margin-left: 8.13173vw;
+    }
+  }
+}
 
 
 .sprite_container {
@@ -207,7 +222,7 @@ h1,h2,h3,h4,h5,p {
 .lost {
   display: none!important;
 }
-@import 'home';
+
 @import 'channel';
 @import 'casestudy';
 @import 'post';

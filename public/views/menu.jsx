@@ -14,7 +14,7 @@ module.exports = React.createClass({
   render: function render() {
 
     return (
-        <div className="navigator">
+        <div className="navigator" onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} >
           <Link className="new-blk-logo" to="/"><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
           <div className="items">
             <Link className="channel_link" to="/agency">

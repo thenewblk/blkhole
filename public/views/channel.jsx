@@ -37,7 +37,6 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     var self = this;
-    console.log("componentDidMount[view_description]: " + self.props.view_description);
     self.setState({ params: self.getParams(), view_description: self.props.view_description });
     self.getContent();
     // if (self.props.content && self.props.content.type == "channel"){
@@ -120,6 +119,13 @@ module.exports = React.createClass({
           )
         }
       });
+
+      var formatted_description = self.state.content.descriptions.map(function(copy, index){
+        return (
+          <p className="decription_copy">{copy}</p>
+        )
+      });
+
       return (
         <div className="channel">
           <Helmet
@@ -141,7 +147,7 @@ module.exports = React.createClass({
                   <div className="channel_container">
                     <span className="channel_words">
                       <h1 className="channel_name">{name}</h1>
-                      <div className="channel_description">{description}</div>
+                      <div className="channel_description">{formatted_description}</div>
                     </span>
                     <span className="channel_button">
                       <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>

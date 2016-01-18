@@ -10,6 +10,7 @@
     margin: 0;
     background: white;
     padding-top: 60px;
+    padding-right: 50px;
   }
   .header_top {
     font-size: 50px;
@@ -103,6 +104,7 @@
   .theoldgirl {
     height: 100%;
     padding: 50px;
+    padding-left: 0;
     background-image: url(/images/agency/theoldgirl_grayscale.jpg);
     background-position: top;
     background-size: cover;
@@ -113,11 +115,17 @@
       width: 100%;
     }
   }
+  .block_wrapper {
+    z-index: 1;
+    position: relative;
+  }
   .block {
-    padding: 25px 7% 50px;
+    padding: 25px 0 50px;
     margin: 0;
     display: flex;
     flex-direction: column;
+    z-index: 1;
+    position: relative;
     .content {
       p {
         margin-top: 0;
@@ -358,8 +366,9 @@ img.full {
 .service_list {
   display: flex;
   flex-direction: row;
+  justify-content: space-around;
   .service_type {
-    flex: 1;
+    // flex: 1;
   }
   .service_title {
     text-transform: uppercase;

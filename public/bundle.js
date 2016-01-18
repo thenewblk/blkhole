@@ -30116,7 +30116,7 @@ var Needles = React.createClass({displayName: "Needles",
       current_needle: 0,
       needles: [
         {
-          headline: "SOLD OUT",
+          headline: "This One Goes to 11",
           copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup headlined by Modest Mouse and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
           sprite: {
             image: "/icons/agency/maha.svg",
@@ -30332,7 +30332,7 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "block"}, 
               React.createElement("div", {className: "block_wrapper"}, 
                 React.createElement("span", {className: "left_label bold"}, "Story"), 
-                React.createElement("span", {className: "content"}, "Founded in 2010 and headquartered in downtown Omaha, we work with local, regional, national and global brands. We are storytellers, brand builders, content marketers, strategic advisors, and message crafters. We work with traditional paid and earned media, but we also create our own media channels and leverage the power of social media to take the conversation direct to the audience.")
+                React.createElement("span", {className: "content"}, "Founded in 2010 and headquartered in downtown Omaha, we work with some of the most innovative local, regional, national, and global brands. Together, we define and refine the brand experience, from story, messaging, and look and feel to ongoing engagement. We believe that our four core service areas–Branding, Content, Experiential, and Digital–are essential building blocks for a brand with a purpose, a vision, and a great story to tell.")
               )
             ), 
             React.createElement("div", {className: "border-wrap"}, 
@@ -30447,8 +30447,8 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "block_wrapper"}, 
               React.createElement("span", {className: "left_label"}), 
               React.createElement("span", {className: "content"}, 
-                React.createElement("p", null, "No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, solving old problems in new ways to get better results."), 
-                React.createElement("p", null, "We work heavily in industries that fit the lifestyle of our core Millennial and Generation X audience: arts & entertainment, sports, technology, food & beverage, fashion, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.")
+                React.createElement("p", null, "No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, and solving old problems in new ways to get better results."), 
+                React.createElement("p", null, "We focus on verticals that fit the lifestyle of our core Millennial audience, including: music & entertainment, sports, food & beverage, technology, apparel, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.")
               )
             )
           ), 
@@ -30483,9 +30483,9 @@ module.exports = React.createClass({displayName: "exports",
             React.createElement("div", {className: "block_wrapper"}, 
               React.createElement("span", {className: "left_label"}), 
               React.createElement("span", {className: "content"}, 
-                React.createElement("p", null, "These are social connectors, community builders, technologists, entrepreneurs, young professionals, activists, and do-it-yourselfers. They are the tastemakers and trendsetters that can make or break your brand."), 
-                React.createElement("p", null, "While certainly not one-dimensional, there are some common threads that run throughout this group. Connecting with this audience takes a great deal of finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work and going about it the wrong way can actually cause irreparable damage to your brand."), 
-                React.createElement("p", null, "It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as a native. That’s why The New BLK gets hired by big, global brands to connect with this audience."), 
+                React.createElement("p", null, "Creators, sharers, and curators of content as much as they are consumers, this is a savvy, hyperconnected group. Through our influencer outreach, we zero in on the segment within this audience that makes the most noise. These are the tastemakers and trendsetters that can make or break your brand."), 
+                React.createElement("p", null, "While certainly not one-dimensional, there are some common threads that run throughout this group. Engaging this audience takes finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work any more and going about it the wrong way can actually cause irreparable damage to your brand.  "), 
+                React.createElement("p", null, "It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as native. That’s why The New BLK gets hired by big, global brands to connect with this audience:"), 
                 React.createElement("p", {className: "uppercase italic weliveit"}, "WE LIVE IT.")
               )
             )
@@ -30865,7 +30865,6 @@ module.exports = React.createClass({displayName: "exports",
 
   componentDidMount: function() {
     var self = this;
-    console.log("componentDidMount[view_description]: " + self.props.view_description);
     self.setState({ params: self.getParams(), view_description: self.props.view_description });
     self.getContent();
     // if (self.props.content && self.props.content.type == "channel"){
@@ -30948,6 +30947,13 @@ module.exports = React.createClass({displayName: "exports",
           )
         }
       });
+
+      var formatted_description = self.state.content.descriptions.map(function(copy, index){
+        return (
+          React.createElement("p", {className: "decription_copy"}, copy)
+        )
+      });
+
       return (
         React.createElement("div", {className: "channel"}, 
           React.createElement(Helmet, {
@@ -30969,7 +30975,7 @@ module.exports = React.createClass({displayName: "exports",
                   React.createElement("div", {className: "channel_container"}, 
                     React.createElement("span", {className: "channel_words"}, 
                       React.createElement("h1", {className: "channel_name"}, name), 
-                      React.createElement("div", {className: "channel_description"}, description)
+                      React.createElement("div", {className: "channel_description"}, formatted_description)
                     ), 
                     React.createElement("span", {className: "channel_button"}, 
                       React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
@@ -31256,108 +31262,106 @@ module.exports = React.createClass({displayName: "exports",
               ]}
           ), 
         React.createElement("div", {className: "diamond_grid_3"}, 
-        React.createElement("div", {className: "square"}), 
-        React.createElement(Link, {className: "square", to: "/agency"}, 
-          React.createElement("span", {className: "diamond_wrapper", onMouseOver: self.setAgency, onMouseOut: self.resetVideo}, 
-            React.createElement(Sprite, {
-              image: "/icons/agency_icon_sprite-01.svg", 
-              columns: 9, 
-              frames: 9, 
-              duration: .25, 
-              frameW: 50, 
-              frameH: 50, 
-              hover: true}), 
-            React.createElement("span", {className: "name"}, "Agency")
+          React.createElement("div", {className: "square"}), 
+          React.createElement(Link, {className: "square", to: "/agency"}, 
+            React.createElement("span", {className: "diamond_wrapper", onMouseOver: self.setAgency, onMouseOut: self.resetVideo}, 
+              React.createElement(Sprite, {
+                image: "/icons/agency_icon_sprite-01.svg", 
+                columns: 9, 
+                frames: 9, 
+                duration: .25, 
+                frameW: 50, 
+                frameH: 50, 
+                hover: true}), 
+              React.createElement("span", {className: "name"}, "Agency")
+            )
+          ), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement(Link, {className: "square", to: "/experiential", onMouseOver: self.setExperiential, onMouseOut: self.resetVideo}, 
+            React.createElement("span", {className: "diamond_wrapper"}, 
+              React.createElement(Sprite, {
+                image: "/icons/experiential-sprite-01.svg", 
+                columns: 9, 
+                frames: 15, 
+                duration: .5, 
+                frameW: 50, 
+                frameH: 50, 
+                hover: true}), 
+              React.createElement("span", {className: "name"}, "Experiential")
+            )
+          ), 
+          React.createElement(Link, {className: "square", to: "/handcrafted", onMouseOver: self.setHandcrafted, onMouseOut: self.resetVideo}, 
+            React.createElement("span", {className: "diamond_wrapper"}, 
+              React.createElement(Sprite, {
+                image: "/icons/handcrafted-sprite-01.svg", 
+                columns: 8, 
+                frames: 16, 
+                duration: .4, 
+                frameW: 50, 
+                frameH: 50, 
+                hover: true}), 
+              React.createElement("span", {className: "name"}, "Handcrafted")
+            )
+          ), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"}), 
+          React.createElement("div", {className: "square"})
+        ), 
+        React.createElement("div", {className: "wearethenewblkllc"}, 
+          React.createElement("p", {className: "uppercase italic theme"},  title ? title + " is" : "We are"), 
+          React.createElement("h2", {className: "bold uppercase newblk"}, "The New BLK"), 
+          React.createElement("p", {className: "italic words"}, words ? words : "an ad agency, creative think tank, and content production studio.")
+        ), 
+        React.createElement("div", {className: "home_overlay"}), 
+        React.createElement("div", {className: "video-container " + video}, 
+          React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+            React.createElement("source", {src: "/video/Experiential.webm", type: "video/webm"}), 
+            React.createElement("source", {src: "/video/experiential.mp4", type: "video/mp4"})
+          ), 
+          React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+            React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"}), 
+            React.createElement("source", {src: "/video/handcrafted.mp4", type: "video/mp4"})
+          ), 
+          React.createElement("video", {className: "agency", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+            React.createElement("source", {src: "/video/agency_v2.webm", type: "video/webm"}), 
+            React.createElement("source", {src: "/video/agency.mp4", type: "video/mp4"})
           )
-        ), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement(Link, {className: "square", to: "/experiential", onMouseOver: self.setExperiential, onMouseOut: self.resetVideo}, 
-          React.createElement("span", {className: "diamond_wrapper"}, 
-            React.createElement(Sprite, {
-              image: "/icons/experiential-sprite-01.svg", 
-              columns: 9, 
-              frames: 15, 
-              duration: .5, 
-              frameW: 50, 
-              frameH: 50, 
-              hover: true}), 
-            React.createElement("span", {className: "name"}, "Experiential")
-          )
-        ), 
-        React.createElement(Link, {className: "square", to: "/handcrafted", onMouseOver: self.setHandcrafted, onMouseOut: self.resetVideo}, 
-          React.createElement("span", {className: "diamond_wrapper"}, 
-            React.createElement(Sprite, {
-              image: "/icons/handcrafted-sprite-01.svg", 
-              columns: 8, 
-              frames: 16, 
-              duration: .4, 
-              frameW: 50, 
-              frameH: 50, 
-              hover: true}), 
-            React.createElement("span", {className: "name"}, "Handcrafted")
-          )
-        ), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"}), 
-        React.createElement("div", {className: "square"})
-      ), 
-      React.createElement("div", {className: "wearethenewblkllc"}, 
-        React.createElement("p", {className: "uppercase italic theme"},  title ? title + " is" : "We are"), 
-        React.createElement("h2", {className: "bold uppercase newblk"}, "The New BLK"), 
-        React.createElement("p", {className: "italic words"}, words ? words : "an ad agency, creative think tank, and content production studio.")
-      ), 
-      React.createElement("div", {className: "home_overlay"}), 
-      React.createElement("div", {className: "video-container " + video}, 
-        React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/Experiential.webm", type: "video/webm"}), 
-          React.createElement("source", {src: "/video/experiential.mp4", type: "video/mp4"})
-        ), 
-        React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"}), 
-          React.createElement("source", {src: "/video/handcrafted.mp4", type: "video/mp4"})
-        ), 
-        React.createElement("video", {className: "agency", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-          React.createElement("source", {src: "/video/agency_v2.webm", type: "video/webm"}), 
-          React.createElement("source", {src: "/video/agency.mp4", type: "video/mp4"})
         )
       )
-
-
-    )
     );
   }
 });
@@ -31385,41 +31389,21 @@ function slugify(text) {
 module.exports = React.createClass({displayName: "exports",
   mixins: [ Router.State ],
 
-  componentDidMount: function(){
-    // this.typekit();
+  getInitialState: function(){
+    return { menu: "" }
   },
 
-  typekit: function() {
-    (function() {
-      var config = {
-        kitId: 'fus2ruo',
-        scriptTimeout: 3000
-      };
-      var h = document.getElementsByTagName('html')[0];
-      h.className += ' wf-loading';
-      var t = setTimeout(function() {
-        h.className = h.className.replace(/(\s|^)wf-loading(\s|$)/g, ' ');
-        h.className += ' wf-inactive';
-      }, config.scriptTimeout);
-      var d = false;
-      var tk = document.createElement('script');
-      tk.src = '//use.typekit.net/' + config.kitId + '.js';
-      tk.type = 'text/javascript';
-      tk.async = 'true';
-      tk.onload = tk.onreadystatechange = function() {
-        var rs = this.readyState;
-        if (d || rs && rs != 'complete' && rs != 'loaded') return;
-        d = true;
-        clearTimeout(t);
-        try { Typekit.load(config); } catch (e) {}
-      };
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(tk, s);
-    })();
+  menuOver: function(){
+    this.setState({menu: " menu_over"})
+  },
+
+  menuOut: function(){
+    this.setState({menu: ""});
   },
 
   render: function render() {
-    var self = this;
+    var self = this,
+        menu = self.state.menu;
 
     if (self.getPathname() == "/") {
       var path = "home";
@@ -31428,7 +31412,7 @@ module.exports = React.createClass({displayName: "exports",
     }
 
     return (
-      React.createElement("html", {className: ""}, 
+      React.createElement("html", null, 
         React.createElement("head", null, 
           React.createElement("meta", {charSet: "utf-8"}), 
           React.createElement("meta", {name: "viewport", content: "width=device-width, initial-scale=1.0"}), 
@@ -31436,8 +31420,9 @@ module.exports = React.createClass({displayName: "exports",
           React.createElement("link", {type: "text/css", rel: "stylesheet", href: "http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"}), 
           React.createElement("link", {rel: "stylesheet", href: "/styles/main.css"})
         ), 
-        React.createElement("body", {className: path}, 
-          React.createElement(Menu, null), 
+        React.createElement("body", {className: path + menu}, 
+          React.createElement(Menu, {onMouseOver: self.menuOver, onMouseOut: self.menuOut}), 
+          React.createElement("div", {className: "navigator_overlay"}), 
           React.createElement("div", {className: "main"}, 
             this.props.children, 
             React.createElement(Footer, null)
@@ -31512,7 +31497,7 @@ module.exports = React.createClass({displayName: "exports",
   render: function render() {
 
     return (
-        React.createElement("div", {className: "navigator"}, 
+        React.createElement("div", {className: "navigator", onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut}, 
           React.createElement(Link, {className: "new-blk-logo", to: "/"}, React.createElement(Isvg, {uniquifyIDs: false, className: "newblk_logo", src: "/images/blk_logo.svg"})), 
           React.createElement("div", {className: "items"}, 
             React.createElement(Link, {className: "channel_link", to: "/agency"}, 

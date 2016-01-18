@@ -116,7 +116,7 @@ var Needles = React.createClass({
       current_needle: 0,
       needles: [
         {
-          headline: "SOLD OUT",
+          headline: "This One Goes to 11",
           copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup headlined by Modest Mouse and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
           sprite: {
             image: "/icons/agency/maha.svg",
@@ -332,7 +332,7 @@ module.exports = React.createClass({
             <div className="block">
               <div className="block_wrapper">
                 <span className="left_label bold">Story</span>
-                <span className="content">Founded in 2010 and headquartered in downtown Omaha, we work with local, regional, national and global brands. We are storytellers, brand builders, content marketers, strategic advisors, and message crafters. We work with traditional paid and earned media, but we also create our own media channels and leverage the power of social media to take the conversation direct to the audience.</span>
+                <span className="content">Founded in 2010 and headquartered in downtown Omaha, we work with some of the most innovative local, regional, national, and global brands. Together, we define and refine the brand experience, from story, messaging, and look and feel to ongoing engagement. We believe that our four core service areas–Branding, Content, Experiential, and Digital–are essential building blocks for a brand with a purpose, a vision, and a great story to tell.</span>
               </div>
             </div>
             <div className="border-wrap">
@@ -447,8 +447,8 @@ module.exports = React.createClass({
             <div className="block_wrapper">
               <span className="left_label"></span>
               <span className="content">
-                <p>No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, solving old problems in new ways to get better results.</p>
-                <p>We work heavily in industries that fit the lifestyle of our core Millennial and Generation X audience: arts & entertainment, sports, technology, food & beverage, fashion, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.</p>
+                <p>No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, and solving old problems in new ways to get better results.</p>
+                <p>We focus on verticals that fit the lifestyle of our core Millennial audience, including: music & entertainment, sports, food & beverage, technology, apparel, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.</p>
               </span>
             </div>
           </div>
@@ -483,9 +483,9 @@ module.exports = React.createClass({
             <div className="block_wrapper">
               <span className="left_label"></span>
               <span className="content">
-                <p>These are social connectors, community builders, technologists, entrepreneurs, young professionals, activists, and do-it-yourselfers. They are the tastemakers and trendsetters that can make or break your brand.</p>
-                <p>While certainly not one-dimensional, there are some common threads that run throughout this group. Connecting with this audience takes a great deal of finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work and going about it the wrong way can actually cause irreparable damage to your brand.</p>
-                <p>It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as a native. That’s why The New BLK gets hired by big, global brands to connect with this audience.</p>
+                <p>Creators, sharers, and curators of content as much as they are consumers, this is a savvy, hyperconnected group. Through our influencer outreach, we zero in on the segment within this audience that makes the most noise. These are the tastemakers and trendsetters that can make or break your brand.</p>
+                <p>While certainly not one-dimensional, there are some common threads that run throughout this group. Engaging this audience takes finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work any more and going about it the wrong way can actually cause irreparable damage to your brand.  </p>
+                <p>It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as native. That’s why The New BLK gets hired by big, global brands to connect with this audience:</p>
                 <p className="uppercase italic weliveit">WE LIVE IT.</p>
               </span>
             </div>
