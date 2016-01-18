@@ -349,7 +349,6 @@
   }
 }
 
-
 img.full {
   width: 100%;
   display: block;
@@ -447,7 +446,7 @@ img.full {
   right: -100%;
   background: white;
   bottom: 50px;
-  z-index: 1;
+  z-index: 1111;
   transition: 0.25s ease-out;
   display: flex;
   flex-direction: column;

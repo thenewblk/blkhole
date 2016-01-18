@@ -29876,75 +29876,109 @@ var VideoGallery = module.exports = React.createClass({displayName: "exports",
     thing = self.props.thing,
     description = thing.description,
     backgroundImage = thing.backgroundImage,
-    style = thing.style;
+    style = thing.style,
+    currentVideo = self.state.currentVideo,
+    type = self.state.type,
+    moreOver = self.state.moreOver;
 
     var wrapper_styles = {
       backgroundColor: self.props.blockColor,
       backgroundImage: "url(" + backgroundImage + ")"
     }
 
-    var videos = thing.videos.map(function(video, index){
-      var image = video.image,
-          url = video.url,
-          title = video.title,
-          type = video.type,
-          video_files = video.video,
-          series = video.series;
+    if (thing.videos.length > 1) {
+      console.log("thing.videos.length > 1");
+      var videos = thing.videos.map(function(video, index){
+        var image = video.image,
+            url = video.url,
+            title = video.title,
+            type = video.type,
+            video_files = video.video,
+            series = video.series;
 
-      if (video_files) {
-        var webm = video_files.webm,
-            mp4 = video_files.mp4;
-      }
+        if (video_files) {
+          var webm = video_files.webm,
+              mp4 = video_files.mp4;
+        }
+        return (
+          React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self, url, type)}, 
+            React.createElement("span", {className: "description"}, 
+              React.createElement("h4", {className: "video_small_title"}, title), 
+              React.createElement("p", {className: "video_small_series"}, series)
+            ), 
+            React.createElement("span", {className: "small_over"}, 
+               (webm || mp4) ?
+                React.createElement("video", {poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
+                     webm ? React.createElement("source", {src: webm, type: "video/webm"}) : null, 
+                     mp4 ? React.createElement("source", {src: mp4, type: "video/mp4"}) : null
+                )
+                : null
+              
+            )
+          )
+        )
+      });
+
       return (
-        React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self, url, type)}, 
-          React.createElement("span", {className: "description"}, 
-            React.createElement("h4", {className: "video_small_title"}, title), 
-            React.createElement("p", {className: "video_small_series"}, series)
-          ), 
-          React.createElement("span", {className: "small_over"}, 
-             (webm || mp4) ?
-              React.createElement("video", {poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-                   webm ? React.createElement("source", {src: webm, type: "video/webm"}) : null, 
-                   mp4 ? React.createElement("source", {src: mp4, type: "video/mp4"}) : null
+        React.createElement("div", {className: currentVideo ? "post videos video_open " + style : "post videos " + style}, 
+          currentVideo ?
+            React.createElement("div", {className: "iframe-video-container"}, 
+              type == "vimeo" ? React.createElement("iframe", {src: currentVideo+"&autoplay=1", width: "853", height: "480", frameBorder: "0", webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true}) : null, 
+              type == "youtube" ? React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}) : null, 
+
+
+              moreOver ? React.createElement("div", {className: "more_overlay"}) : null
+            )
+
+          :
+            React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
+              React.createElement("div", {className: "main_video_container", onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}, 
+                React.createElement(Isvg, {src: "/icons/new/play_1-01.svg", className: "video_play_button"}), 
+                React.createElement("p", {className: "video_description"}, description)
               )
-              : null
+            ), 
+          
+          React.createElement("div", {className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver}, 
+            videos
+          ), 
+          React.createElement("span", {className: "video_more", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave}, 
+            React.createElement("span", {className: "video_more_text"}, "more")
+          )
+        )
+      )
+    } else if (thing.videos.length == 1) {
+        console.log("thing.videos.length == 1");
+        var video = thing.videos[0];
+        var image = video.image,
+            url = video.url,
+            title = video.title,
+            type = video.type,
+            video_files = video.video,
+            series = video.series;
+
+        if (video_files) {
+          var webm = video_files.webm,
+              mp4 = video_files.mp4;
+        }
+        return (
+          React.createElement("div", {className: currentVideo ? "post videos video_open single_video " + style : "post videos single_video " + style}, 
+            currentVideo ?
+              React.createElement("div", {className: "iframe-video-container"}, 
+                type == "vimeo" ? React.createElement("iframe", {src: currentVideo+"&autoplay=1", width: "853", height: "480", frameBorder: "0", webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true}) : null, 
+                type == "youtube" ? React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}) : null
+              )
+            :
+              React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
+                React.createElement("div", {className: "main_video_container", onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}, 
+                  React.createElement(Isvg, {src: "/icons/new/play_1-01.svg", className: "video_play_button"}), 
+                  React.createElement("p", {className: "video_description"}, description), 
+                  React.createElement("div", {className: "more_overlay"})
+                )
+              )
             
           )
         )
-      )
-    });
-
-    var currentVideo = self.state.currentVideo;
-    var type = self.state.type;
-    var moreOver = self.state.moreOver;
-
-    return (
-      React.createElement("div", {className: currentVideo ? "post videos video_open " + style : "post videos " + style}, 
-        currentVideo ?
-          React.createElement("div", {className: "iframe-video-container"}, 
-            type == "vimeo" ? React.createElement("iframe", {src: currentVideo+"&autoplay=1", width: "853", height: "480", frameBorder: "0", webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true}) : null, 
-            type == "youtube" ? React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}) : null, 
-
-
-            moreOver ? React.createElement("div", {className: "more_overlay"}) : null
-          )
-
-        :
-          React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
-            React.createElement("div", {className: "main_video_container", onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}, 
-              React.createElement(Isvg, {src: "/icons/new/play_1-01.svg", className: "video_play_button"}), 
-              React.createElement("p", {className: "video_description"}, description)
-            )
-          ), 
-        
-        React.createElement("div", {className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver}, 
-          videos
-        ), 
-        React.createElement("span", {className: "video_more", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave}, 
-          React.createElement("span", {className: "video_more_text"}, "more")
-        )
-      )
-    )
+    }
   }
 });
 
@@ -30005,7 +30039,7 @@ var util = require('util');
 var Isvg = require('react-inlinesvg');
 
 var Sprite = require('../components/sprite.jsx');
-
+var VideoGallery = require("../components/video_gallery.jsx");
 // var Waypoint = require('react-waypoint');
 
 var ScrollBlocker = require('react-scroll-components/ScrollBlocker');
@@ -30310,6 +30344,24 @@ module.exports = React.createClass({displayName: "exports",
       }
     }
 
+    var videogallery = {
+        type: "videos",
+        backgroundImage: "/images/agency/mugs.jpg",
+        description: "Working with The New BLK, in the words of our clients.",
+        videos: [
+            {
+                type: "vimeo",
+                url: "https://player.vimeo.com/video/151959982?color=333333&title=0&byline=0&portrait=0",
+                title: "Clients Speak",
+                series: "New BLK",
+                image: "/images/agency/mugs.jpg",
+                video: {
+                    webm: "/video/agency_v2.webm",
+                    mp4: "/video/agency.mp4"
+                }
+            }
+          ]
+        };
 
 
     return (
@@ -30343,6 +30395,7 @@ module.exports = React.createClass({displayName: "exports",
             )
           )
         ), 
+        React.createElement(VideoGallery, {thing: videogallery, blockColor: "black"}), 
         React.createElement("div", {className: "needle"}, 
           React.createElement("h1", {className: "needle_headline"}, React.createElement("div", {className: "block_wrapper"}, "MOVE THE NEEDLE")), 
           React.createElement("div", {className: "block"}, 
@@ -30501,7 +30554,7 @@ module.exports = React.createClass({displayName: "exports",
 });
 
 
-},{"../components/sprite.jsx":315,"react":309,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":151,"react-scroll-components/ScrollListenerMixin":152,"util":5}],320:[function(require,module,exports){
+},{"../components/sprite.jsx":315,"../components/video_gallery.jsx":316,"react":309,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":151,"react-scroll-components/ScrollListenerMixin":152,"util":5}],320:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 var Router = require('react-router');

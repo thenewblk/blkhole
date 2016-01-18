@@ -259,6 +259,33 @@
       }
     }
 
+    &.single_video {
+      margin-top: 50px;
+      .main_video_wrapper {
+        align-items: center;
+        justify-content: center;
+        padding: 25px;
+        .main_video_container {
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      .video_description {
+        font-family: 'Museo Sans W01_700';
+      }
+      .more_overlay {
+        position: absolute;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background: black;
+        left: 0;
+        z-index: -1;
+        opacity: 0.3;
+      }
+    }
+
     .main_video_wrapper {
       background-size: cover;
       background-position: center;
@@ -274,6 +301,7 @@
         cursor: pointer;
         display: flex;
         flex-direction: row;
+        z-index: 11;
         .video_play_button {
 
         }
@@ -281,6 +309,10 @@
           flex: 1;
           padding: 0 25px;
         }
+      }
+
+      .video-container {
+        position: absolute;
       }
 
     }

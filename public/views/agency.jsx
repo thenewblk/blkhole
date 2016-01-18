@@ -5,7 +5,7 @@ var util = require('util');
 var Isvg = require('react-inlinesvg');
 
 var Sprite = require('../components/sprite.jsx');
-
+var VideoGallery = require("../components/video_gallery.jsx");
 // var Waypoint = require('react-waypoint');
 
 var ScrollBlocker = require('react-scroll-components/ScrollBlocker');
@@ -310,6 +310,24 @@ module.exports = React.createClass({
       }
     }
 
+    var videogallery = {
+        type: "videos",
+        backgroundImage: "/images/agency/mugs.jpg",
+        description: "Working with The New BLK, in the words of our clients.",
+        videos: [
+            {
+                type: "vimeo",
+                url: "https://player.vimeo.com/video/151959982?color=333333&title=0&byline=0&portrait=0",
+                title: "Clients Speak",
+                series: "New BLK",
+                image: "/images/agency/mugs.jpg",
+                video: {
+                    webm: "/video/agency_v2.webm",
+                    mp4: "/video/agency.mp4"
+                }
+            }
+          ]
+        };
 
 
     return (
@@ -343,6 +361,7 @@ module.exports = React.createClass({
             </div>
           </div>
         </div>
+        <VideoGallery thing={videogallery} blockColor={"black"}/>
         <div className="needle">
           <h1 className="needle_headline"><div className="block_wrapper">MOVE THE NEEDLE</div></h1>
           <div className="block">
