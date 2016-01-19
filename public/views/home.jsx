@@ -206,70 +206,43 @@ module.exports = React.createClass({
         </div>
         <div className="wearethenewblkllc">
           { title ?
-            <StaggeredMotion
+            <Motion
               key={title}
-              defaultStyles={title_styles}
-              styles={
-              function(prevStyles){
-                return prevStyles.map(function(_, i){
-                  return (i === 0)
-                      ? { rotation: spring(0, [300, 30]), opacity: spring(1, [600, 30])}
-                      : { opacity: spring(prevStyles[i - 1].opacity, [600, 30]),
-                          rotation: spring(prevStyles[i - 1].rotation, [300, 30]),
-                        }
-                  });
-              }}>
-              {function(interpolatedStyles){
-                return (
-                  <p className="uppercase italic theme" style={{display: "inline-block"}}>
-                    {interpolatedStyles.map(
-                      function(style, i){
-                          if (title[i] == " "){
-                            return <span key={i} style={{position:"relative", display: "inline", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} >{title[i]}</span>
-                          } else {
-                            return <span key={i} style={{position:"relative", display: "inline-block", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} >{title[i]}</span>
-                          }
-                        }
-                    )}
-                  </p>
-                )
+              defaultStyle={{
+                  opacity: 0,
+                  rotation: Math.random() * -10,
+                  x: Math.random() * 10,
+                }}
+              style={{
+                  opacity: spring(1, [80, 20]),
+                  rotation: spring(0, [200, 20]),
+                  x: spring(0, [200, 20]),
+                }}>
+              {function(style){
+                return (<p className="uppercase italic theme" style={{top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
               }}
-            </StaggeredMotion>
+            </Motion>
           : null }
           <h2 className="bold uppercase newblk">The New BLK</h2>
 
-          { words ?
-            <StaggeredMotion
-              key={words}
-              defaultStyles={words_styles}
-              styles={
-              function(prevStyles){
-                return prevStyles.map(function(_, i){
-                  return (i === 0)
-                      ? { rotation: spring(0, [400, 30]), opacity: spring(1, [1200, 50])}
-                      : { opacity: spring(prevStyles[i - 1].opacity, [1200, 50]),
-                          rotation: spring(prevStyles[i - 1].rotation, [400, 30]),
-                        }
-                });
-              }}>
-              {function(interpolatedStyles){
-                return (
-                  <p className="italic words" style={{display: "inline-block"}}>
-                    {interpolatedStyles.map(
-                      function(style, i){
-                          if (words[i] == " "){
-                            return <span key={i} style={{position:"relative", display: "inline", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} >{words[i]}</span>
-                          } else {
-                            return <span key={i} style={{position:"relative", display: "inline-block", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} >{words[i]}</span>
-                          }
-                        }
-                    )}
-                  </p>
-                )
-              }}
-            </StaggeredMotion>
-          : null }
-
+            { words ?
+              <Motion
+                key={words}
+                defaultStyle={{
+                    opacity: 0,
+                    rotation: Math.random() * 10,
+                    x: Math.random() * -10,
+                  }}
+                style={{
+                    opacity: spring(1, [80, 20]),
+                    rotation: spring(0, [300, 20]),
+                    x: spring(0, [200, 20]),
+                  }}>
+                {function(style){
+                  return (<p className="italic words" style={{top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{words}</p>)
+                }}
+              </Motion>
+            : null }
         </div>
         <div className="home_overlay"></div>
         <div className={"video-container " + video}>

@@ -33227,36 +33227,24 @@ module.exports = React.createClass({
         'div',
         { className: 'wearethenewblkllc' },
         title ? React.createElement(
-          StaggeredMotion,
+          Motion,
           {
             key: title,
-            defaultStyles: title_styles,
-            styles: function styles(prevStyles) {
-              return prevStyles.map(function (_, i) {
-                return i === 0 ? { rotation: spring(0, [300, 30]), opacity: spring(1, [600, 30]) } : { opacity: spring(prevStyles[i - 1].opacity, [600, 30]),
-                  rotation: spring(prevStyles[i - 1].rotation, [300, 30])
-                };
-              });
+            defaultStyle: {
+              opacity: 0,
+              rotation: Math.random() * -10,
+              x: Math.random() * 10
+            },
+            style: {
+              opacity: spring(1, [80, 20]),
+              rotation: spring(0, [200, 20]),
+              x: spring(0, [200, 20])
             } },
-          function (interpolatedStyles) {
+          function (style) {
             return React.createElement(
               'p',
-              { className: 'uppercase italic theme', style: { display: "inline-block" } },
-              interpolatedStyles.map(function (style, i) {
-                if (title[i] == " ") {
-                  return React.createElement(
-                    'span',
-                    { key: i, style: { position: "relative", display: "inline", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
-                    title[i]
-                  );
-                } else {
-                  return React.createElement(
-                    'span',
-                    { key: i, style: { position: "relative", display: "inline-block", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
-                    title[i]
-                  );
-                }
-              })
+              { className: 'uppercase italic theme', style: { top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+              title
             );
           }
         ) : null,
@@ -33266,36 +33254,24 @@ module.exports = React.createClass({
           'The New BLK'
         ),
         words ? React.createElement(
-          StaggeredMotion,
+          Motion,
           {
             key: words,
-            defaultStyles: words_styles,
-            styles: function styles(prevStyles) {
-              return prevStyles.map(function (_, i) {
-                return i === 0 ? { rotation: spring(0, [400, 30]), opacity: spring(1, [1200, 50]) } : { opacity: spring(prevStyles[i - 1].opacity, [1200, 50]),
-                  rotation: spring(prevStyles[i - 1].rotation, [400, 30])
-                };
-              });
+            defaultStyle: {
+              opacity: 0,
+              rotation: Math.random() * 10,
+              x: Math.random() * -10
+            },
+            style: {
+              opacity: spring(1, [80, 20]),
+              rotation: spring(0, [300, 20]),
+              x: spring(0, [200, 20])
             } },
-          function (interpolatedStyles) {
+          function (style) {
             return React.createElement(
               'p',
-              { className: 'italic words', style: { display: "inline-block" } },
-              interpolatedStyles.map(function (style, i) {
-                if (words[i] == " ") {
-                  return React.createElement(
-                    'span',
-                    { key: i, style: { position: "relative", display: "inline", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
-                    words[i]
-                  );
-                } else {
-                  return React.createElement(
-                    'span',
-                    { key: i, style: { position: "relative", display: "inline-block", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
-                    words[i]
-                  );
-                }
-              })
+              { className: 'italic words', style: { top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+              words
             );
           }
         ) : null
