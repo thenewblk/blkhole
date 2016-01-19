@@ -115,7 +115,7 @@ module.exports = React.createClass({
     // }, speed);
 
 
-    interval = speed; // initial condition
+    // interval = speed; // initial condition
 
 
     self.state.timer.start(function(){

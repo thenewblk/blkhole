@@ -1,4 +1,6 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
 var Routes = require('./routes.jsx');
 var Client = require('react-engine/lib/client');
 
@@ -13,7 +15,7 @@ var options = {
 
   // supply a function that can be called
   // to resolve the file that was rendered.
-  viewResolver: function(viewName) {
+  viewResolver: function viewResolver(viewName) {
     return require('./views/' + viewName);
   }
 };
@@ -22,8 +24,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
   Client.boot(options);
 });
 
-
-},{"./routes.jsx":317,"./views/404.jsx":318,"./views/agency.jsx":319,"./views/app.jsx":320,"./views/casestudy.jsx":321,"./views/channel.jsx":322,"./views/channel_footer.jsx":323,"./views/footer.jsx":324,"./views/home.jsx":325,"./views/layout.jsx":326,"./views/login.jsx":327,"./views/menu.jsx":328,"./views/sprite_test.jsx":329,"react-engine/lib/client":11}],2:[function(require,module,exports){
+},{"./routes.jsx":333,"./views/404.jsx":334,"./views/agency.jsx":335,"./views/app.jsx":336,"./views/casestudy.jsx":337,"./views/channel.jsx":338,"./views/channel_footer.jsx":339,"./views/footer.jsx":340,"./views/home.jsx":341,"./views/layout.jsx":342,"./views/login.jsx":343,"./views/menu.jsx":344,"./views/sprite_test.jsx":345,"react-engine/lib/client":11}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -1457,7 +1458,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"./getPrefix":8,"classnames":9,"object-assign":10,"react":309}],8:[function(require,module,exports){
+},{"./getPrefix":8,"classnames":9,"object-assign":10,"react":325}],8:[function(require,module,exports){
 module.exports = function() {
   if (typeof window === 'undefined') return '';
   // Thanks David Walsh
@@ -1640,7 +1641,7 @@ exports.boot = function boot(options, callback) {
   return callback && callback(props);
 };
 
-},{"./config":12,"react":309,"react-router":133}],12:[function(require,module,exports){
+},{"./config":12,"react":325,"react-router":149}],12:[function(require,module,exports){
 module.exports={
   "docType": "<!DOCTYPE html>",
   "client": {
@@ -1973,7 +1974,7 @@ var mapStateOnServer = function mapStateOnServer(_ref) {
 
 exports.HelmetComponent = Helmet;
 exports["default"] = (0, _reactSideEffect2["default"])(reducePropsToState, handleClientStateChange, mapStateOnServer)(Helmet);
-},{"./HelmetConstants.js":14,"deep-equal":86,"he":89,"react":309,"react-side-effect":90,"warning":93}],14:[function(require,module,exports){
+},{"./HelmetConstants.js":14,"deep-equal":86,"he":89,"react":325,"react-side-effect":90,"warning":93}],14:[function(require,module,exports){
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
@@ -3840,7 +3841,7 @@ module.exports = function withSideEffect(reducePropsToState, handleStateChangeOn
     return SideEffect;
   };
 };
-},{"fbjs/lib/ExecutionEnvironment":91,"fbjs/lib/shallowEqual":92,"react":309}],91:[function(require,module,exports){
+},{"fbjs/lib/ExecutionEnvironment":91,"fbjs/lib/shallowEqual":92,"react":325}],91:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -4255,7 +4256,7 @@ module.exports = me = React.createClass({
   }
 });
 
-},{"httpplease":96,"httpplease/plugins/oldiexdomain":106,"once":108,"react":309}],95:[function(require,module,exports){
+},{"httpplease":96,"httpplease/plugins/oldiexdomain":106,"once":108,"react":325}],95:[function(require,module,exports){
 'use strict';
 
 var Response = require('./response');
@@ -4874,6 +4875,1185 @@ function once (fn) {
 }
 
 },{"wrappy":107}],109:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = configAnimation;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _performanceNow = require('performance-now');
+
+var _performanceNow2 = _interopRequireDefault(_performanceNow);
+
+var _raf = require('raf');
+
+var _raf2 = _interopRequireDefault(_raf);
+
+function configAnimation() {
+  var config = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+  var _config$timeStep = config.timeStep;
+  var timeStep = _config$timeStep === undefined ? 1 / 60 * 1000 : _config$timeStep;
+  var _config$timeScale = config.timeScale;
+  var timeScale = _config$timeScale === undefined ? 1 : _config$timeScale;
+  var _config$maxSteps = config.maxSteps;
+  var maxSteps = _config$maxSteps === undefined ? 10 : _config$maxSteps;
+  var _config$raf = config.raf;
+  var raf = _config$raf === undefined ? _raf2['default'] : _config$raf;
+  var _config$now = config.now;
+  var now = _config$now === undefined ? _performanceNow2['default'] : _config$now;
+
+  var animRunning = [];
+  var running = false;
+  var prevTime = 0;
+  var accumulatedTime = 0;
+
+  function loop() {
+    var currentTime = now();
+    var frameTime = currentTime - prevTime; // delta
+
+    prevTime = currentTime;
+    accumulatedTime += frameTime * timeScale;
+
+    if (accumulatedTime > timeStep * maxSteps) {
+      accumulatedTime = 0;
+    }
+
+    var frameNumber = Math.ceil(accumulatedTime / timeStep);
+    for (var i = 0; i < animRunning.length; i++) {
+      var _animRunning$i = animRunning[i];
+      var active = _animRunning$i.active;
+      var animationStep = _animRunning$i.animationStep;
+      var prevPrevState = _animRunning$i.prevState;
+      var prevNextState = animRunning[i].nextState;
+
+      if (!active) {
+        continue;
+      }
+
+      // Seems like because the TS sets destVals as enterVals for the first
+      // tick, we might render that value twice. We render it once, currValue is
+      // enterVal and destVal is enterVal. The next tick is faster than 16ms,
+      // so accumulatedTime (which would be about -16ms from the previous tick)
+      // is negative (-16ms + any number less than 16ms < 0). So we just render
+      // part ways towards the nextState, but that's enterVal still. We render
+      // say 75% between currValue (=== enterVal) and destValue (=== enterVal).
+      // So we render the same value a second time.
+      // The solution below is to recalculate the destination state even when
+      // you're moving partially towards it.
+      if (accumulatedTime <= 0) {
+        animRunning[i].nextState = animationStep(timeStep / 1000, prevPrevState);
+      } else {
+        for (var j = 0; j < frameNumber; j++) {
+          animRunning[i].nextState = animationStep(timeStep / 1000, prevNextState);
+          var _ref = [prevNextState, animRunning[i].nextState];
+          animRunning[i].prevState = _ref[0];
+          prevNextState = _ref[1];
+        }
+      }
+    }
+
+    accumulatedTime = accumulatedTime - frameNumber * timeStep;
+
+    // Render and filter in one iteration.
+    var alpha = 1 + accumulatedTime / timeStep;
+    for (var i = 0; i < animRunning.length; i++) {
+      var _animRunning$i2 = animRunning[i];
+      var animationRender = _animRunning$i2.animationRender;
+      var nextState = _animRunning$i2.nextState;
+      var prevState = _animRunning$i2.prevState;
+
+      // Might mutate animRunning........
+      animationRender(alpha, nextState, prevState);
+    }
+
+    animRunning = animRunning.filter(function (_ref2) {
+      var active = _ref2.active;
+      return active;
+    });
+
+    if (animRunning.length === 0) {
+      running = false;
+    } else {
+      raf(loop);
+    }
+  }
+
+  function start() {
+    if (!running) {
+      running = true;
+      prevTime = now();
+      accumulatedTime = 0;
+      raf(loop);
+    }
+  }
+
+  return function startAnimation(state, animationStep, animationRender) {
+    for (var i = 0; i < animRunning.length; i++) {
+      var val = animRunning[i];
+      if (val.animationStep === animationStep) {
+        val.active = true;
+        val.prevState = state;
+        start();
+        return val.stop;
+      }
+    }
+
+    var newAnim = {
+      animationStep: animationStep,
+      animationRender: animationRender,
+      prevState: state,
+      nextState: state,
+      active: true
+    };
+
+    newAnim.stop = function () {
+      return newAnim.active = false;
+    };
+    animRunning.push(newAnim);
+
+    start();
+
+    return newAnim.stop;
+  };
+}
+
+module.exports = exports['default'];
+},{"performance-now":123,"raf":124}],110:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+exports['default'] = components;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _noVelocity = require('./noVelocity');
+
+var _noVelocity2 = _interopRequireDefault(_noVelocity);
+
+var _hasReachedStyle = require('./hasReachedStyle');
+
+var _hasReachedStyle2 = _interopRequireDefault(_hasReachedStyle);
+
+var _mergeDiff = require('./mergeDiff');
+
+var _mergeDiff2 = _interopRequireDefault(_mergeDiff);
+
+var _animationLoop = require('./animationLoop');
+
+var _animationLoop2 = _interopRequireDefault(_animationLoop);
+
+var _zero = require('./zero');
+
+var _zero2 = _interopRequireDefault(_zero);
+
+var _updateTree = require('./updateTree');
+
+var _deprecatedSprings2 = require('./deprecatedSprings');
+
+var _deprecatedSprings3 = _interopRequireDefault(_deprecatedSprings2);
+
+var _stripStyle = require('./stripStyle');
+
+var _stripStyle2 = _interopRequireDefault(_stripStyle);
+
+var startAnimation = _animationLoop2['default']();
+
+function mapObject(f, obj) {
+  var ret = {};
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key)) {
+      continue;
+    }
+    ret[key] = f(obj[key], key);
+  }
+  return ret;
+}
+
+function everyObj(f, obj) {
+  for (var key in obj) {
+    if (!obj.hasOwnProperty(key)) {
+      continue;
+    }
+    if (!f(obj[key], key)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function components(React) {
+  var PropTypes = React.PropTypes;
+
+  var Motion = React.createClass({
+    displayName: 'Motion',
+
+    propTypes: {
+      // TOOD: warn against putting a config in here
+      defaultValue: function defaultValue(prop, propName) {
+        if (prop[propName]) {
+          return new Error('Spring\'s `defaultValue` has been changed to `defaultStyle`. ' + 'Its format received a few (easy to update!) changes as well.');
+        }
+      },
+      endValue: function endValue(prop, propName) {
+        if (prop[propName]) {
+          return new Error('Spring\'s `endValue` has been changed to `style`. Its format ' + 'received a few (easy to update!) changes as well.');
+        }
+      },
+      defaultStyle: PropTypes.object,
+      style: PropTypes.object.isRequired,
+      children: PropTypes.func.isRequired
+    },
+
+    getInitialState: function getInitialState() {
+      var _props = this.props;
+      var defaultStyle = _props.defaultStyle;
+      var style = _props.style;
+
+      var currentStyle = defaultStyle || style;
+      return {
+        currentStyle: currentStyle,
+        currentVelocity: mapObject(_zero2['default'], currentStyle)
+      };
+    },
+
+    componentDidMount: function componentDidMount() {
+      this.startAnimating();
+    },
+
+    componentWillReceiveProps: function componentWillReceiveProps() {
+      this.startAnimating();
+    },
+
+    animationStep: function animationStep(timestep, state) {
+      var currentStyle = state.currentStyle;
+      var currentVelocity = state.currentVelocity;
+      var style = this.props.style;
+
+      var newCurrentStyle = _updateTree.updateCurrentStyle(timestep, currentStyle, currentVelocity, style);
+      var newCurrentVelocity = _updateTree.updateCurrentVelocity(timestep, currentStyle, currentVelocity, style);
+
+      // TOOD: this isn't necessary anymore. It was used only against endValue func
+      if (_noVelocity2['default'](currentVelocity, newCurrentStyle) && _noVelocity2['default'](newCurrentVelocity, newCurrentStyle)) {
+        // check explanation in `Motion.animationRender`
+        this.stopAnimation(); // Nasty side effects....
+      }
+
+      return {
+        currentStyle: newCurrentStyle,
+        currentVelocity: newCurrentVelocity
+      };
+    },
+
+    stopAnimation: null,
+
+    // used in animationRender
+    hasUnmounted: false,
+
+    componentWillUnmount: function componentWillUnmount() {
+      this.stopAnimation();
+      this.hasUnmounted = true;
+    },
+
+    startAnimating: function startAnimating() {
+      // Is smart enough to not start it twice
+      this.stopAnimation = startAnimation(this.state, this.animationStep, this.animationRender);
+    },
+
+    animationRender: function animationRender(alpha, nextState, prevState) {
+      // `this.hasUnmounted` might be true in the following condition:
+      // user does some checks in `style` and calls an owner handler
+      // owner sets state in the callback, triggering a re-render
+      // unmounts Motion
+      if (!this.hasUnmounted) {
+        this.setState({
+          currentStyle: _updateTree.interpolateValue(alpha, nextState.currentStyle, prevState.currentStyle),
+          currentVelocity: nextState.currentVelocity
+        });
+      }
+    },
+
+    render: function render() {
+      var strippedStyle = _stripStyle2['default'](this.state.currentStyle);
+      var renderedChildren = this.props.children(strippedStyle);
+      return renderedChildren && React.Children.only(renderedChildren);
+    }
+  });
+
+  var StaggeredMotion = React.createClass({
+    displayName: 'StaggeredMotion',
+
+    propTypes: {
+      defaultStyle: function defaultStyle(prop, propName) {
+        if (prop[propName]) {
+          return new Error('You forgot the "s" for `StaggeredMotion`\'s `defaultStyles`.');
+        }
+      },
+      style: function style(prop, propName) {
+        if (prop[propName]) {
+          return new Error('You forgot the "s" for `StaggeredMotion`\'s `styles`.');
+        }
+      },
+      // TOOD: warn against putting configs in here
+      defaultStyles: PropTypes.arrayOf(PropTypes.object),
+      styles: PropTypes.func.isRequired,
+      children: PropTypes.func.isRequired
+    },
+
+    getInitialState: function getInitialState() {
+      var _props2 = this.props;
+      var styles = _props2.styles;
+      var defaultStyles = _props2.defaultStyles;
+
+      var currentStyles = defaultStyles ? defaultStyles : styles();
+      return {
+        currentStyles: currentStyles,
+        currentVelocities: currentStyles.map(function (s) {
+          return mapObject(_zero2['default'], s);
+        })
+      };
+    },
+
+    componentDidMount: function componentDidMount() {
+      this.startAnimating();
+    },
+
+    componentWillReceiveProps: function componentWillReceiveProps() {
+      this.startAnimating();
+    },
+
+    animationStep: function animationStep(timestep, state) {
+      var currentStyles = state.currentStyles;
+      var currentVelocities = state.currentVelocities;
+
+      var styles = this.props.styles(currentStyles.map(_stripStyle2['default']));
+
+      var newCurrentStyles = currentStyles.map(function (currentStyle, i) {
+        return _updateTree.updateCurrentStyle(timestep, currentStyle, currentVelocities[i], styles[i]);
+      });
+      var newCurrentVelocities = currentStyles.map(function (currentStyle, i) {
+        return _updateTree.updateCurrentVelocity(timestep, currentStyle, currentVelocities[i], styles[i]);
+      });
+
+      // TODO: is this right?
+      if (currentVelocities.every(function (v, k) {
+        return _noVelocity2['default'](v, currentStyles[k]);
+      }) && newCurrentVelocities.every(function (v, k) {
+        return _noVelocity2['default'](v, newCurrentStyles[k]);
+      })) {
+        this.stopAnimation();
+      }
+
+      return {
+        currentStyles: newCurrentStyles,
+        currentVelocities: newCurrentVelocities
+      };
+    },
+
+    stopAnimation: null,
+
+    // used in animationRender
+    hasUnmounted: false,
+
+    componentWillUnmount: function componentWillUnmount() {
+      this.stopAnimation();
+      this.hasUnmounted = true;
+    },
+
+    startAnimating: function startAnimating() {
+      this.stopAnimation = startAnimation(this.state, this.animationStep, this.animationRender);
+    },
+
+    animationRender: function animationRender(alpha, nextState, prevState) {
+      // See comment in Motion.
+      if (!this.hasUnmounted) {
+        var currentStyles = nextState.currentStyles.map(function (style, i) {
+          return _updateTree.interpolateValue(alpha, style, prevState.currentStyles[i]);
+        });
+        this.setState({
+          currentStyles: currentStyles,
+          currentVelocities: nextState.currentVelocities
+        });
+      }
+    },
+
+    render: function render() {
+      var strippedStyle = this.state.currentStyles.map(_stripStyle2['default']);
+      var renderedChildren = this.props.children(strippedStyle);
+      return renderedChildren && React.Children.only(renderedChildren);
+    }
+  });
+
+  var TransitionMotion = React.createClass({
+    displayName: 'TransitionMotion',
+
+    propTypes: {
+      defaultValue: function defaultValue(prop, propName) {
+        if (prop[propName]) {
+          return new Error('TransitionSpring\'s `defaultValue` has been changed to ' + '`defaultStyles`. Its format received a few (easy to update!) ' + 'changes as well.');
+        }
+      },
+      endValue: function endValue(prop, propName) {
+        if (prop[propName]) {
+          return new Error('TransitionSpring\'s `endValue` has been changed to `styles`. ' + 'Its format received a few (easy to update!) changes as well.');
+        }
+      },
+      defaultStyle: function defaultStyle(prop, propName) {
+        if (prop[propName]) {
+          return new Error('You forgot the "s" for `TransitionMotion`\'s `defaultStyles`.');
+        }
+      },
+      style: function style(prop, propName) {
+        if (prop[propName]) {
+          return new Error('You forgot the "s" for `TransitionMotion`\'s `styles`.');
+        }
+      },
+      // TOOD: warn against putting configs in here
+      defaultStyles: PropTypes.objectOf(PropTypes.any),
+      styles: PropTypes.oneOfType([PropTypes.func, PropTypes.objectOf(PropTypes.any.isRequired)]).isRequired,
+      willLeave: PropTypes.oneOfType([PropTypes.func]),
+      // TOOD: warn against putting configs in here
+      willEnter: PropTypes.oneOfType([PropTypes.func]),
+      children: PropTypes.func.isRequired
+    },
+
+    getDefaultProps: function getDefaultProps() {
+      return {
+        willEnter: function willEnter(key, value) {
+          return value;
+        },
+        willLeave: function willLeave() {
+          return null;
+        }
+      };
+    },
+
+    getInitialState: function getInitialState() {
+      var _props3 = this.props;
+      var styles = _props3.styles;
+      var defaultStyles = _props3.defaultStyles;
+
+      var currentStyles = undefined;
+      if (defaultStyles == null) {
+        if (typeof styles === 'function') {
+          currentStyles = styles();
+        } else {
+          currentStyles = styles;
+        }
+      } else {
+        currentStyles = defaultStyles;
+      }
+      return {
+        currentStyles: currentStyles,
+        currentVelocities: mapObject(function (s) {
+          return mapObject(_zero2['default'], s);
+        }, currentStyles)
+      };
+    },
+
+    componentDidMount: function componentDidMount() {
+      this.startAnimating();
+    },
+
+    componentWillReceiveProps: function componentWillReceiveProps() {
+      this.startAnimating();
+    },
+
+    animationStep: function animationStep(timestep, state) {
+      var currentStyles = state.currentStyles;
+      var currentVelocities = state.currentVelocities;
+      var _props4 = this.props;
+      var styles = _props4.styles;
+      var willEnter = _props4.willEnter;
+      var willLeave = _props4.willLeave;
+
+      if (typeof styles === 'function') {
+        styles = styles(currentStyles);
+      }
+
+      // TODO: huh?
+      var mergedStyles = styles; // set mergedStyles to styles as the default
+      var hasNewKey = false;
+
+      mergedStyles = _mergeDiff2['default'](currentStyles, styles,
+      // TODO: stop allocating like crazy in this whole code path
+      function (key) {
+        var res = willLeave(key, currentStyles[key], styles, currentStyles, currentVelocities);
+        if (res == null) {
+          // For legacy reason. We won't allow returning null soon
+          // TODO: remove, after next release
+          return null;
+        }
+
+        if (_noVelocity2['default'](currentVelocities[key], currentStyles[key]) && _hasReachedStyle2['default'](currentStyles[key], res)) {
+          return null;
+        }
+        return res;
+      });
+
+      Object.keys(mergedStyles).filter(function (key) {
+        return !currentStyles.hasOwnProperty(key);
+      }).forEach(function (key) {
+        var _extends2, _extends3;
+
+        hasNewKey = true;
+        var enterStyle = willEnter(key, mergedStyles[key], styles, currentStyles, currentVelocities);
+
+        // We can mutate this here because mergeDiff returns a new Obj
+        mergedStyles[key] = enterStyle;
+
+        currentStyles = _extends({}, currentStyles, (_extends2 = {}, _extends2[key] = enterStyle, _extends2));
+        currentVelocities = _extends({}, currentVelocities, (_extends3 = {}, _extends3[key] = mapObject(_zero2['default'], enterStyle), _extends3));
+      });
+
+      var newCurrentStyles = mapObject(function (mergedStyle, key) {
+        return _updateTree.updateCurrentStyle(timestep, currentStyles[key], currentVelocities[key], mergedStyle);
+      }, mergedStyles);
+      var newCurrentVelocities = mapObject(function (mergedStyle, key) {
+        return _updateTree.updateCurrentVelocity(timestep, currentStyles[key], currentVelocities[key], mergedStyle);
+      }, mergedStyles);
+
+      if (!hasNewKey && everyObj(function (v, k) {
+        return _noVelocity2['default'](v, currentStyles[k]);
+      }, currentVelocities) && everyObj(function (v, k) {
+        return _noVelocity2['default'](v, newCurrentStyles[k]);
+      }, newCurrentVelocities)) {
+        // check explanation in `Motion.animationRender`
+        this.stopAnimation(); // Nasty side effects....
+      }
+
+      return {
+        currentStyles: newCurrentStyles,
+        currentVelocities: newCurrentVelocities
+      };
+    },
+
+    stopAnimation: null,
+
+    // used in animationRender
+    hasUnmounted: false,
+
+    componentWillUnmount: function componentWillUnmount() {
+      this.stopAnimation();
+      this.hasUnmounted = true;
+    },
+
+    startAnimating: function startAnimating() {
+      this.stopAnimation = startAnimation(this.state, this.animationStep, this.animationRender);
+    },
+
+    animationRender: function animationRender(alpha, nextState, prevState) {
+      // See comment in Motion.
+      if (!this.hasUnmounted) {
+        var currentStyles = mapObject(function (style, key) {
+          return _updateTree.interpolateValue(alpha, style, prevState.currentStyles[key]);
+        }, nextState.currentStyles);
+        this.setState({
+          currentStyles: currentStyles,
+          currentVelocities: nextState.currentVelocities
+        });
+      }
+    },
+
+    render: function render() {
+      var strippedStyle = mapObject(_stripStyle2['default'], this.state.currentStyles);
+      var renderedChildren = this.props.children(strippedStyle);
+      return renderedChildren && React.Children.only(renderedChildren);
+    }
+  });
+
+  var _deprecatedSprings = _deprecatedSprings3['default'](React);
+
+  var Spring = _deprecatedSprings.Spring;
+  var TransitionSpring = _deprecatedSprings.TransitionSpring;
+
+  return { Spring: Spring, TransitionSpring: TransitionSpring, Motion: Motion, StaggeredMotion: StaggeredMotion, TransitionMotion: TransitionMotion };
+}
+
+module.exports = exports['default'];
+},{"./animationLoop":109,"./deprecatedSprings":111,"./hasReachedStyle":112,"./mergeDiff":113,"./noVelocity":114,"./stripStyle":120,"./updateTree":121,"./zero":122}],111:[function(require,module,exports){
+(function (process){
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = deprecatedSprings;
+var hasWarnedForSpring = {};
+var hasWarnedForTransitionSpring = {};
+
+function deprecatedSprings(React) {
+  var Spring = React.createClass({
+    displayName: 'Spring',
+
+    componentWillMount: function componentWillMount() {
+      if (process.env.NODE_ENV === 'development') {
+        var ownerName = this._reactInternalInstance._currentElement._owner && this._reactInternalInstance._currentElement._owner.getName();
+        if (!hasWarnedForSpring[ownerName]) {
+          hasWarnedForSpring[ownerName] = true;
+          console.error('Spring (used in %srender) has now been renamed to Motion. ' + 'Please see the release note for the upgrade path. Thank you!', ownerName ? ownerName + '\'s ' : 'React.');
+        }
+      }
+    },
+
+    render: function render() {
+      return null;
+    }
+  });
+
+  var TransitionSpring = React.createClass({
+    displayName: 'TransitionSpring',
+
+    componentWillMount: function componentWillMount() {
+      if (process.env.NODE_ENV === 'development') {
+        var ownerName = this._reactInternalInstance._currentElement._owner && this._reactInternalInstance._currentElement._owner.getName();
+        if (!hasWarnedForTransitionSpring[ownerName]) {
+          hasWarnedForTransitionSpring[ownerName] = true;
+          console.error('TransitionSpring (used in %srender) has now been renamed to ' + 'TransitionMotion. Please see the release note for the upgrade ' + 'path. Thank you!', ownerName ? ownerName + '\'s ' : 'React.');
+        }
+      }
+    },
+
+    render: function render() {
+      return null;
+    }
+  });
+
+  return { Spring: Spring, TransitionSpring: TransitionSpring };
+}
+
+module.exports = exports['default'];
+}).call(this,require('_process'))
+},{"_process":3}],112:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = hasReachedStyle;
+
+function hasReachedStyle(currentStyle, style) {
+  for (var key in style) {
+    if (!style.hasOwnProperty(key)) {
+      continue;
+    }
+    var currentValue = currentStyle[key];
+    var destValue = style[key];
+    if (destValue == null || !destValue.config) {
+      // not a spring config
+      continue;
+    }
+    if (currentValue.config && currentValue.val !== destValue.val) {
+      return false;
+    }
+    if (!currentValue.config && currentValue !== destValue.val) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+module.exports = exports['default'];
+},{}],113:[function(require,module,exports){
+
+
+// this function is allocation-less thanks to babel, which transforms the tail
+// calls into loops
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = mergeDiff;
+function mergeDiffArr(_x, _x2, _x3, _x4, _x5, _x6, _x7) {
+  var _again = true;
+
+  _function: while (_again) {
+    var arrA = _x,
+        arrB = _x2,
+        collB = _x3,
+        indexA = _x4,
+        indexB = _x5,
+        onRemove = _x6,
+        accum = _x7;
+    endA = endB = keyA = keyB = fill = fill = undefined;
+    _again = false;
+
+    var endA = indexA === arrA.length;
+    var endB = indexB === arrB.length;
+    var keyA = arrA[indexA];
+    var keyB = arrB[indexB];
+    if (endA && endB) {
+      // returning null here, otherwise lint complains that we're not expecting
+      // a return value in subsequent calls. We know what we're doing.
+      return null;
+    }
+
+    if (endA) {
+      accum[keyB] = collB[keyB];
+      _x = arrA;
+      _x2 = arrB;
+      _x3 = collB;
+      _x4 = indexA;
+      _x5 = indexB + 1;
+      _x6 = onRemove;
+      _x7 = accum;
+      _again = true;
+      continue _function;
+    }
+
+    if (endB) {
+      var fill = onRemove(keyA);
+      if (fill != null) {
+        accum[keyA] = fill;
+      }
+      _x = arrA;
+      _x2 = arrB;
+      _x3 = collB;
+      _x4 = indexA + 1;
+      _x5 = indexB;
+      _x6 = onRemove;
+      _x7 = accum;
+      _again = true;
+      continue _function;
+    }
+
+    if (keyA === keyB) {
+      accum[keyA] = collB[keyA];
+      _x = arrA;
+      _x2 = arrB;
+      _x3 = collB;
+      _x4 = indexA + 1;
+      _x5 = indexB + 1;
+      _x6 = onRemove;
+      _x7 = accum;
+      _again = true;
+      continue _function;
+    }
+
+    if (!collB.hasOwnProperty(keyA)) {
+      var fill = onRemove(keyA);
+      if (fill != null) {
+        accum[keyA] = fill;
+      }
+      _x = arrA;
+      _x2 = arrB;
+      _x3 = collB;
+      _x4 = indexA + 1;
+      _x5 = indexB;
+      _x6 = onRemove;
+      _x7 = accum;
+      _again = true;
+      continue _function;
+    }
+
+    _x = arrA;
+    _x2 = arrB;
+    _x3 = collB;
+    _x4 = indexA + 1;
+    _x5 = indexB;
+    _x6 = onRemove;
+    _x7 = accum;
+    _again = true;
+    continue _function;
+  }
+}
+
+function mergeDiff(a, b, onRemove) {
+  var ret = {};
+  // if anyone can make this work without allocating the arrays here, we'll
+  // give you a medal
+  mergeDiffArr(Object.keys(a), Object.keys(b), b, 0, 0, onRemove, ret);
+  return ret;
+}
+
+module.exports = exports['default'];
+},{}],114:[function(require,module,exports){
+
+// currentStyle keeps the info about whether a prop is configured as a spring
+// or if it's just a random prop that happens to be present on the style
+
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = noVelocity;
+
+function noVelocity(currentVelocity, currentStyle) {
+  for (var key in currentVelocity) {
+    if (!currentVelocity.hasOwnProperty(key)) {
+      continue;
+    }
+    if (currentStyle[key] != null && currentStyle[key].config && currentVelocity[key] !== 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
+module.exports = exports['default'];
+},{}],115:[function(require,module,exports){
+
+// [stiffness, damping]
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = {
+  noWobble: [170, 26], // the default
+  gentle: [120, 14],
+  wobbly: [180, 12],
+  stiff: [210, 20]
+};
+module.exports = exports["default"];
+},{}],116:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _components2 = require('./components');
+
+var _components3 = _interopRequireDefault(_components2);
+
+var _reorderKeys = require('./reorderKeys');
+
+var _reorderKeys2 = _interopRequireDefault(_reorderKeys);
+
+var _components = _components3['default'](_react2['default']);
+
+var Spring = _components.Spring;
+var TransitionSpring = _components.TransitionSpring;
+var Motion = _components.Motion;
+var StaggeredMotion = _components.StaggeredMotion;
+var TransitionMotion = _components.TransitionMotion;
+exports.Spring = Spring;
+exports.TransitionSpring = TransitionSpring;
+exports.Motion = Motion;
+exports.StaggeredMotion = StaggeredMotion;
+exports.TransitionMotion = TransitionMotion;
+
+var _spring2 = require('./spring');
+
+var _spring3 = _interopRequireDefault(_spring2);
+
+exports.spring = _spring3['default'];
+
+var _presets2 = require('./presets');
+
+var _presets3 = _interopRequireDefault(_presets2);
+
+exports.presets = _presets3['default'];
+var utils = {
+  reorderKeys: _reorderKeys2['default']
+};
+exports.utils = utils;
+},{"./components":110,"./presets":115,"./reorderKeys":117,"./spring":118,"react":325}],117:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = reorderKeys;
+
+function reorderKeys(obj, f) {
+  var newKeys = f(Object.keys(obj));
+  var ret = {};
+  for (var i = 0; i < newKeys.length; i++) {
+    var key = newKeys[i];
+    ret[key] = obj[key];
+  }
+
+  return ret;
+}
+
+module.exports = exports["default"];
+},{}],118:[function(require,module,exports){
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = spring;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _presets = require('./presets');
+
+var _presets2 = _interopRequireDefault(_presets);
+
+function spring(val) {
+  var config = arguments.length <= 1 || arguments[1] === undefined ? _presets2['default'].noWobble : arguments[1];
+
+  return { val: val, config: config };
+}
+
+module.exports = exports['default'];
+},{"./presets":115}],119:[function(require,module,exports){
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = stepper;
+
+var errorMargin = 0.0001;
+
+function stepper(frameRate, x, v, destX, k, b) {
+  // Spring stiffness, in kg / s^2
+
+  // for animations, destX is really spring length (spring at rest). initial
+  // position is considered as the stretched/compressed position of a spring
+  var Fspring = -k * (x - destX);
+
+  // Damping, in kg / s
+  var Fdamper = -b * v;
+
+  // usually we put mass here, but for animation purposes, specifying mass is a
+  // bit redundant. you could simply adjust k and b accordingly
+  // let a = (Fspring + Fdamper) / mass;
+  var a = Fspring + Fdamper;
+
+  var newV = v + a * frameRate;
+  var newX = x + newV * frameRate;
+
+  if (Math.abs(newV - v) < errorMargin && Math.abs(newX - x) < errorMargin) {
+    return [destX, 0];
+  }
+
+  return [newX, newV];
+}
+
+module.exports = exports["default"];
+},{}],120:[function(require,module,exports){
+
+// turn {x: {val: 1, config: [1, 2]}, y: 2} generated by
+// `{x: spring(1, [1, 2]), y: 2}` into {x: 1, y: 2}
+
+'use strict';
+
+exports.__esModule = true;
+exports['default'] = stripStyle;
+
+function stripStyle(style) {
+  var ret = {};
+  for (var key in style) {
+    if (!style.hasOwnProperty(key)) {
+      continue;
+    }
+    ret[key] = style[key] == null || style[key].val == null ? style[key] : style[key].val;
+  }
+  return ret;
+}
+
+module.exports = exports['default'];
+},{}],121:[function(require,module,exports){
+
+
+// TODO: refactor common logic with updateCurrValue and updateCurrVelocity
+'use strict';
+
+exports.__esModule = true;
+exports.interpolateValue = interpolateValue;
+exports.updateCurrentStyle = updateCurrentStyle;
+exports.updateCurrentVelocity = updateCurrentVelocity;
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+var _stepper = require('./stepper');
+
+var _stepper2 = _interopRequireDefault(_stepper);
+
+var _spring = require('./spring');
+
+var _spring2 = _interopRequireDefault(_spring);
+
+function interpolateValue(alpha, nextStyle, prevStyle) {
+  // might be used by a TransitionMotion, where prevStyle might not exist anymore
+  if (!prevStyle) {
+    return nextStyle;
+  }
+
+  var ret = {};
+  for (var key in nextStyle) {
+    if (!nextStyle.hasOwnProperty(key)) {
+      continue;
+    }
+
+    if (nextStyle[key] == null || !nextStyle[key].config) {
+      ret[key] = nextStyle[key];
+      // not a spring config, not something we want to interpolate
+      continue;
+    }
+    var prevValue = prevStyle[key].config ? prevStyle[key].val : prevStyle[key];
+    ret[key] = _spring2['default'](nextStyle[key].val * alpha + prevValue * (1 - alpha), nextStyle[key].config);
+  }
+
+  return ret;
+}
+
+// TODO: refactor common logic with updateCurrentVelocity
+
+function updateCurrentStyle(frameRate, currentStyle, currentVelocity, style) {
+  var ret = {};
+  for (var key in style) {
+    if (!style.hasOwnProperty(key)) {
+      continue;
+    }
+    if (style[key] == null || !style[key].config) {
+      ret[key] = style[key];
+      // not a spring config, not something we want to interpolate
+      continue;
+    }
+    var _style$key$config = style[key].config;
+    var k = _style$key$config[0];
+    var b = _style$key$config[1];
+
+    var val = _stepper2['default'](frameRate,
+    // might have been a non-springed prop that just became one
+    currentStyle[key].val == null ? currentStyle[key] : currentStyle[key].val, currentVelocity[key], style[key].val, k, b)[0];
+    ret[key] = _spring2['default'](val, style[key].config);
+  }
+  return ret;
+}
+
+function updateCurrentVelocity(frameRate, currentStyle, currentVelocity, style) {
+  var ret = {};
+  for (var key in style) {
+    if (!style.hasOwnProperty(key)) {
+      continue;
+    }
+    if (style[key] == null || !style[key].config) {
+      // not a spring config, not something we want to interpolate
+      ret[key] = 0;
+      continue;
+    }
+    var _style$key$config2 = style[key].config;
+    var k = _style$key$config2[0];
+    var b = _style$key$config2[1];
+
+    var val = _stepper2['default'](frameRate,
+    // might have been a non-springed prop that just became one
+    currentStyle[key].val == null ? currentStyle[key] : currentStyle[key].val, currentVelocity[key], style[key].val, k, b)[1];
+    ret[key] = val;
+  }
+  return ret;
+}
+},{"./spring":118,"./stepper":119}],122:[function(require,module,exports){
+
+// used by the tree-walking updates and springs. Avoids some allocations
+"use strict";
+
+exports.__esModule = true;
+exports["default"] = zero;
+
+function zero() {
+  return 0;
+}
+
+module.exports = exports["default"];
+},{}],123:[function(require,module,exports){
+(function (process){
+// Generated by CoffeeScript 1.7.1
+(function() {
+  var getNanoSeconds, hrtime, loadTime;
+
+  if ((typeof performance !== "undefined" && performance !== null) && performance.now) {
+    module.exports = function() {
+      return performance.now();
+    };
+  } else if ((typeof process !== "undefined" && process !== null) && process.hrtime) {
+    module.exports = function() {
+      return (getNanoSeconds() - loadTime) / 1e6;
+    };
+    hrtime = process.hrtime;
+    getNanoSeconds = function() {
+      var hr;
+      hr = hrtime();
+      return hr[0] * 1e9 + hr[1];
+    };
+    loadTime = getNanoSeconds();
+  } else if (Date.now) {
+    module.exports = function() {
+      return Date.now() - loadTime;
+    };
+    loadTime = Date.now();
+  } else {
+    module.exports = function() {
+      return new Date().getTime() - loadTime;
+    };
+    loadTime = new Date().getTime();
+  }
+
+}).call(this);
+
+}).call(this,require('_process'))
+},{"_process":3}],124:[function(require,module,exports){
+var now = require('performance-now')
+  , global = typeof window === 'undefined' ? {} : window
+  , vendors = ['moz', 'webkit']
+  , suffix = 'AnimationFrame'
+  , raf = global['request' + suffix]
+  , caf = global['cancel' + suffix] || global['cancelRequest' + suffix]
+
+for(var i = 0; i < vendors.length && !raf; i++) {
+  raf = global[vendors[i] + 'Request' + suffix]
+  caf = global[vendors[i] + 'Cancel' + suffix]
+      || global[vendors[i] + 'CancelRequest' + suffix]
+}
+
+// Some versions of FF have rAF but not cAF
+if(!raf || !caf) {
+  var last = 0
+    , id = 0
+    , queue = []
+    , frameDuration = 1000 / 60
+
+  raf = function(callback) {
+    if(queue.length === 0) {
+      var _now = now()
+        , next = Math.max(0, frameDuration - (_now - last))
+      last = next + _now
+      setTimeout(function() {
+        var cp = queue.slice(0)
+        // Clear queue here to prevent
+        // callbacks from appending listeners
+        // to the current frame's queue
+        queue.length = 0
+        for(var i = 0; i < cp.length; i++) {
+          if(!cp[i].cancelled) {
+            try{
+              cp[i].callback(last)
+            } catch(e) {
+              setTimeout(function() { throw e }, 0)
+            }
+          }
+        }
+      }, Math.round(next))
+    }
+    queue.push({
+      handle: ++id,
+      callback: callback,
+      cancelled: false
+    })
+    return id
+  }
+
+  caf = function(handle) {
+    for(var i = 0; i < queue.length; i++) {
+      if(queue[i].handle === handle) {
+        queue[i].cancelled = true
+      }
+    }
+  }
+}
+
+module.exports = function(fn) {
+  // Wrap in a new function to prevent
+  // `cancel` potentially being assigned
+  // to the native rAF function
+  return raf.call(global, fn)
+}
+module.exports.cancel = function() {
+  caf.apply(global, arguments)
+}
+
+},{"performance-now":123}],125:[function(require,module,exports){
 /**
  * Represents a cancellation caused by navigating away
  * before the previous transition has fully resolved.
@@ -4883,7 +6063,7 @@ function once (fn) {
 function Cancellation() {}
 
 module.exports = Cancellation;
-},{}],110:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict';
 
 var invariant = require('invariant');
@@ -4914,7 +6094,7 @@ var History = {
 };
 
 module.exports = History;
-},{"can-use-dom":143,"invariant":144}],111:[function(require,module,exports){
+},{"can-use-dom":159,"invariant":160}],127:[function(require,module,exports){
 /* jshint -W084 */
 'use strict';
 
@@ -4990,7 +6170,7 @@ var Match = (function () {
 })();
 
 module.exports = Match;
-},{"./PathUtils":113}],112:[function(require,module,exports){
+},{"./PathUtils":129}],128:[function(require,module,exports){
 'use strict';
 
 var PropTypes = require('./PropTypes');
@@ -5061,7 +6241,7 @@ var Navigation = {
 };
 
 module.exports = Navigation;
-},{"./PropTypes":114}],113:[function(require,module,exports){
+},{"./PropTypes":130}],129:[function(require,module,exports){
 'use strict';
 
 var invariant = require('invariant');
@@ -5215,7 +6395,7 @@ var PathUtils = {
 };
 
 module.exports = PathUtils;
-},{"invariant":144,"object-assign":145,"qs":146}],114:[function(require,module,exports){
+},{"invariant":160,"object-assign":161,"qs":162}],130:[function(require,module,exports){
 'use strict';
 
 var assign = require('react/lib/Object.assign');
@@ -5245,7 +6425,7 @@ var PropTypes = assign({}, ReactPropTypes, {
 });
 
 module.exports = PropTypes;
-},{"./Route":116,"react":309,"react/lib/Object.assign":180}],115:[function(require,module,exports){
+},{"./Route":132,"react":325,"react/lib/Object.assign":196}],131:[function(require,module,exports){
 /**
  * Encapsulates a redirect to the given route.
  */
@@ -5258,7 +6438,7 @@ function Redirect(to, params, query) {
 }
 
 module.exports = Redirect;
-},{}],116:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5461,7 +6641,7 @@ var Route = (function () {
 })();
 
 module.exports = Route;
-},{"./PathUtils":113,"./warning":142,"invariant":144,"react/lib/Object.assign":180}],117:[function(require,module,exports){
+},{"./PathUtils":129,"./warning":158,"invariant":160,"react/lib/Object.assign":196}],133:[function(require,module,exports){
 'use strict';
 
 var invariant = require('invariant');
@@ -5537,7 +6717,7 @@ var ScrollHistory = {
 };
 
 module.exports = ScrollHistory;
-},{"./getWindowScrollPosition":132,"can-use-dom":143,"invariant":144}],118:[function(require,module,exports){
+},{"./getWindowScrollPosition":148,"can-use-dom":159,"invariant":160}],134:[function(require,module,exports){
 'use strict';
 
 var PropTypes = require('./PropTypes');
@@ -5612,7 +6792,7 @@ var State = {
 };
 
 module.exports = State;
-},{"./PropTypes":114}],119:[function(require,module,exports){
+},{"./PropTypes":130}],135:[function(require,module,exports){
 /* jshint -W058 */
 
 'use strict';
@@ -5688,7 +6868,7 @@ Transition.to = function (transition, routes, params, query, callback) {
 };
 
 module.exports = Transition;
-},{"./Cancellation":109,"./Redirect":115}],120:[function(require,module,exports){
+},{"./Cancellation":125,"./Redirect":131}],136:[function(require,module,exports){
 /**
  * Actions that modify the URL.
  */
@@ -5714,7 +6894,7 @@ var LocationActions = {
 };
 
 module.exports = LocationActions;
-},{}],121:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 var LocationActions = require('../actions/LocationActions');
@@ -5744,7 +6924,7 @@ var ImitateBrowserBehavior = {
 };
 
 module.exports = ImitateBrowserBehavior;
-},{"../actions/LocationActions":120}],122:[function(require,module,exports){
+},{"../actions/LocationActions":136}],138:[function(require,module,exports){
 /**
  * A scroll behavior that always scrolls to the top of the page
  * after a transition.
@@ -5760,7 +6940,7 @@ var ScrollToTopBehavior = {
 };
 
 module.exports = ScrollToTopBehavior;
-},{}],123:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 /**
  * This component is necessary to get around a context warning
  * present in React 0.13.0. It sovles this by providing a separation
@@ -5799,7 +6979,7 @@ var ContextWrapper = (function (_React$Component) {
 })(React.Component);
 
 module.exports = ContextWrapper;
-},{"react":309}],124:[function(require,module,exports){
+},{"react":325}],140:[function(require,module,exports){
 'use strict';
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -5847,7 +7027,7 @@ DefaultRoute.defaultProps = {
 };
 
 module.exports = DefaultRoute;
-},{"../PropTypes":114,"./Route":128,"./RouteHandler":129}],125:[function(require,module,exports){
+},{"../PropTypes":130,"./Route":144,"./RouteHandler":145}],141:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -5983,7 +7163,7 @@ Link.defaultProps = {
 };
 
 module.exports = Link;
-},{"../PropTypes":114,"react":309,"react/lib/Object.assign":180}],126:[function(require,module,exports){
+},{"../PropTypes":130,"react":325,"react/lib/Object.assign":196}],142:[function(require,module,exports){
 'use strict';
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -6032,7 +7212,7 @@ NotFoundRoute.defaultProps = {
 };
 
 module.exports = NotFoundRoute;
-},{"../PropTypes":114,"./Route":128,"./RouteHandler":129}],127:[function(require,module,exports){
+},{"../PropTypes":130,"./Route":144,"./RouteHandler":145}],143:[function(require,module,exports){
 'use strict';
 
 var _get = function get(_x, _x2, _x3) { var _again = true; _function: while (_again) { var object = _x, property = _x2, receiver = _x3; _again = false; if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { _x = parent; _x2 = property; _x3 = receiver; _again = true; desc = parent = undefined; continue _function; } } else if ('value' in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } } };
@@ -6076,7 +7256,7 @@ Redirect.propTypes = {
 Redirect.defaultProps = {};
 
 module.exports = Redirect;
-},{"../PropTypes":114,"./Route":128}],128:[function(require,module,exports){
+},{"../PropTypes":130,"./Route":144}],144:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -6168,7 +7348,7 @@ Route.defaultProps = {
 };
 
 module.exports = Route;
-},{"../PropTypes":114,"./RouteHandler":129,"invariant":144,"react":309}],129:[function(require,module,exports){
+},{"../PropTypes":130,"./RouteHandler":145,"invariant":160,"react":325}],145:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -6277,7 +7457,7 @@ RouteHandler.childContextTypes = {
 };
 
 module.exports = RouteHandler;
-},{"../PropTypes":114,"./ContextWrapper":123,"react":309,"react/lib/Object.assign":180}],130:[function(require,module,exports){
+},{"../PropTypes":130,"./ContextWrapper":139,"react":325,"react/lib/Object.assign":196}],146:[function(require,module,exports){
 (function (process){
 /* jshint -W058 */
 'use strict';
@@ -6792,7 +7972,7 @@ function createRouter(options) {
 
 module.exports = createRouter;
 }).call(this,require('_process'))
-},{"./Cancellation":109,"./History":110,"./Match":111,"./PathUtils":113,"./PropTypes":114,"./Redirect":115,"./Route":116,"./ScrollHistory":117,"./Transition":119,"./actions/LocationActions":120,"./behaviors/ImitateBrowserBehavior":121,"./createRoutesFromReactChildren":131,"./isReactChildren":134,"./locations/HashLocation":135,"./locations/HistoryLocation":136,"./locations/RefreshLocation":137,"./locations/StaticLocation":138,"./supportsHistory":141,"./warning":142,"_process":3,"can-use-dom":143,"invariant":144,"react":309}],131:[function(require,module,exports){
+},{"./Cancellation":125,"./History":126,"./Match":127,"./PathUtils":129,"./PropTypes":130,"./Redirect":131,"./Route":132,"./ScrollHistory":133,"./Transition":135,"./actions/LocationActions":136,"./behaviors/ImitateBrowserBehavior":137,"./createRoutesFromReactChildren":147,"./isReactChildren":150,"./locations/HashLocation":151,"./locations/HistoryLocation":152,"./locations/RefreshLocation":153,"./locations/StaticLocation":154,"./supportsHistory":157,"./warning":158,"_process":3,"can-use-dom":159,"invariant":160,"react":325}],147:[function(require,module,exports){
 /* jshint -W084 */
 'use strict';
 
@@ -6874,7 +8054,7 @@ function createRoutesFromReactChildren(children) {
 }
 
 module.exports = createRoutesFromReactChildren;
-},{"./Route":116,"./components/DefaultRoute":124,"./components/NotFoundRoute":126,"./components/Redirect":127,"./warning":142,"react":309,"react/lib/Object.assign":180}],132:[function(require,module,exports){
+},{"./Route":132,"./components/DefaultRoute":140,"./components/NotFoundRoute":142,"./components/Redirect":143,"./warning":158,"react":325,"react/lib/Object.assign":196}],148:[function(require,module,exports){
 'use strict';
 
 var invariant = require('invariant');
@@ -6893,7 +8073,7 @@ function getWindowScrollPosition() {
 }
 
 module.exports = getWindowScrollPosition;
-},{"can-use-dom":143,"invariant":144}],133:[function(require,module,exports){
+},{"can-use-dom":159,"invariant":160}],149:[function(require,module,exports){
 'use strict';
 
 exports.DefaultRoute = require('./components/DefaultRoute');
@@ -6925,7 +8105,7 @@ exports.createRoutesFromReactChildren = require('./createRoutesFromReactChildren
 
 exports.create = require('./createRouter');
 exports.run = require('./runRouter');
-},{"./History":110,"./Navigation":112,"./Route":116,"./State":118,"./behaviors/ImitateBrowserBehavior":121,"./behaviors/ScrollToTopBehavior":122,"./components/DefaultRoute":124,"./components/Link":125,"./components/NotFoundRoute":126,"./components/Redirect":127,"./components/Route":128,"./components/RouteHandler":129,"./createRouter":130,"./createRoutesFromReactChildren":131,"./locations/HashLocation":135,"./locations/HistoryLocation":136,"./locations/RefreshLocation":137,"./locations/StaticLocation":138,"./locations/TestLocation":139,"./runRouter":140}],134:[function(require,module,exports){
+},{"./History":126,"./Navigation":128,"./Route":132,"./State":134,"./behaviors/ImitateBrowserBehavior":137,"./behaviors/ScrollToTopBehavior":138,"./components/DefaultRoute":140,"./components/Link":141,"./components/NotFoundRoute":142,"./components/Redirect":143,"./components/Route":144,"./components/RouteHandler":145,"./createRouter":146,"./createRoutesFromReactChildren":147,"./locations/HashLocation":151,"./locations/HistoryLocation":152,"./locations/RefreshLocation":153,"./locations/StaticLocation":154,"./locations/TestLocation":155,"./runRouter":156}],150:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -6939,7 +8119,7 @@ function isReactChildren(object) {
 }
 
 module.exports = isReactChildren;
-},{"react":309}],135:[function(require,module,exports){
+},{"react":325}],151:[function(require,module,exports){
 'use strict';
 
 var LocationActions = require('../actions/LocationActions');
@@ -7051,7 +8231,7 @@ var HashLocation = {
 };
 
 module.exports = HashLocation;
-},{"../History":110,"../actions/LocationActions":120}],136:[function(require,module,exports){
+},{"../History":126,"../actions/LocationActions":136}],152:[function(require,module,exports){
 'use strict';
 
 var LocationActions = require('../actions/LocationActions');
@@ -7136,7 +8316,7 @@ var HistoryLocation = {
 };
 
 module.exports = HistoryLocation;
-},{"../History":110,"../actions/LocationActions":120}],137:[function(require,module,exports){
+},{"../History":126,"../actions/LocationActions":136}],153:[function(require,module,exports){
 'use strict';
 
 var HistoryLocation = require('./HistoryLocation');
@@ -7168,7 +8348,7 @@ var RefreshLocation = {
 };
 
 module.exports = RefreshLocation;
-},{"../History":110,"./HistoryLocation":136}],138:[function(require,module,exports){
+},{"../History":126,"./HistoryLocation":152}],154:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -7218,7 +8398,7 @@ StaticLocation.prototype.replace = throwCannotModify;
 StaticLocation.prototype.pop = throwCannotModify;
 
 module.exports = StaticLocation;
-},{"invariant":144}],139:[function(require,module,exports){
+},{"invariant":160}],155:[function(require,module,exports){
 'use strict';
 
 var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -7309,7 +8489,7 @@ var TestLocation = (function () {
 })();
 
 module.exports = TestLocation;
-},{"../History":110,"../actions/LocationActions":120,"invariant":144}],140:[function(require,module,exports){
+},{"../History":126,"../actions/LocationActions":136,"invariant":160}],156:[function(require,module,exports){
 'use strict';
 
 var createRouter = require('./createRouter');
@@ -7360,7 +8540,7 @@ function runRouter(routes, location, callback) {
 }
 
 module.exports = runRouter;
-},{"./createRouter":130}],141:[function(require,module,exports){
+},{"./createRouter":146}],157:[function(require,module,exports){
 'use strict';
 
 function supportsHistory() {
@@ -7377,7 +8557,7 @@ function supportsHistory() {
 }
 
 module.exports = supportsHistory;
-},{}],142:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -7439,7 +8619,7 @@ if (__DEV__) {
 
 module.exports = warning;
 }).call(this,require('_process'))
-},{"_process":3}],143:[function(require,module,exports){
+},{"_process":3}],159:[function(require,module,exports){
 var canUseDOM = !!(
   typeof window !== 'undefined' &&
   window.document &&
@@ -7447,7 +8627,7 @@ var canUseDOM = !!(
 );
 
 module.exports = canUseDOM;
-},{}],144:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -7502,7 +8682,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":3}],145:[function(require,module,exports){
+},{"_process":3}],161:[function(require,module,exports){
 'use strict';
 
 function ToObject(val) {
@@ -7530,10 +8710,10 @@ module.exports = Object.assign || function (target, source) {
 	return to;
 };
 
-},{}],146:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 module.exports = require('./lib/');
 
-},{"./lib/":147}],147:[function(require,module,exports){
+},{"./lib/":163}],163:[function(require,module,exports){
 // Load modules
 
 var Stringify = require('./stringify');
@@ -7550,7 +8730,7 @@ module.exports = {
     parse: Parse
 };
 
-},{"./parse":148,"./stringify":149}],148:[function(require,module,exports){
+},{"./parse":164,"./stringify":165}],164:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -7713,7 +8893,7 @@ module.exports = function (str, options) {
     return Utils.compact(obj);
 };
 
-},{"./utils":150}],149:[function(require,module,exports){
+},{"./utils":166}],165:[function(require,module,exports){
 // Load modules
 
 var Utils = require('./utils');
@@ -7812,7 +8992,7 @@ module.exports = function (obj, options) {
     return keys.join(delimiter);
 };
 
-},{"./utils":150}],150:[function(require,module,exports){
+},{"./utils":166}],166:[function(require,module,exports){
 // Load modules
 
 
@@ -7946,7 +9126,7 @@ exports.isBuffer = function (obj) {
         obj.constructor.isBuffer(obj));
 };
 
-},{}],151:[function(require,module,exports){
+},{}],167:[function(require,module,exports){
 /** @jsx React.DOM */
 var React = require('react');
 var assign = require('react/lib/Object.assign');
@@ -7981,7 +9161,7 @@ var ScrollBlocker = React.createClass({displayName: "ScrollBlocker",
 });
 
 module.exports = ScrollBlocker;
-},{"react":309,"react/lib/Object.assign":180}],152:[function(require,module,exports){
+},{"react":325,"react/lib/Object.assign":196}],168:[function(require,module,exports){
 'use strict';
 
 var win = typeof window !== 'undefined' ? window : false;
@@ -8045,7 +9225,7 @@ var ScrollListenerMixin = {
 
 module.exports = ScrollListenerMixin;
 
-},{"react/lib/ViewportMetrics":258}],153:[function(require,module,exports){
+},{"react/lib/ViewportMetrics":274}],169:[function(require,module,exports){
 (function (global){
 /*
  *  Copyright (c) 2015-present, Facebook, Inc.
@@ -8140,7 +9320,7 @@ var TimerMixin = {
 module.exports = TimerMixin;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],154:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -8273,7 +9453,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"react":309}],155:[function(require,module,exports){
+},{"react":325}],171:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -8300,7 +9480,7 @@ var AutoFocusMixin = {
 
 module.exports = AutoFocusMixin;
 
-},{"./focusNode":273}],156:[function(require,module,exports){
+},{"./focusNode":289}],172:[function(require,module,exports){
 /**
  * Copyright 2013-2015 Facebook, Inc.
  * All rights reserved.
@@ -8795,7 +9975,7 @@ var BeforeInputEventPlugin = {
 
 module.exports = BeforeInputEventPlugin;
 
-},{"./EventConstants":168,"./EventPropagators":173,"./ExecutionEnvironment":174,"./FallbackCompositionState":175,"./SyntheticCompositionEvent":247,"./SyntheticInputEvent":251,"./keyOf":295}],157:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPropagators":189,"./ExecutionEnvironment":190,"./FallbackCompositionState":191,"./SyntheticCompositionEvent":263,"./SyntheticInputEvent":267,"./keyOf":311}],173:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -8920,7 +10100,7 @@ var CSSProperty = {
 
 module.exports = CSSProperty;
 
-},{}],158:[function(require,module,exports){
+},{}],174:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -9102,7 +10282,7 @@ var CSSPropertyOperations = {
 module.exports = CSSPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./CSSProperty":157,"./ExecutionEnvironment":174,"./camelizeStyleName":262,"./dangerousStyleValue":267,"./hyphenateStyleName":287,"./memoizeStringOnly":297,"./warning":308,"_process":3}],159:[function(require,module,exports){
+},{"./CSSProperty":173,"./ExecutionEnvironment":190,"./camelizeStyleName":278,"./dangerousStyleValue":283,"./hyphenateStyleName":303,"./memoizeStringOnly":313,"./warning":324,"_process":3}],175:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -9202,7 +10382,7 @@ PooledClass.addPoolingTo(CallbackQueue);
 module.exports = CallbackQueue;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./PooledClass":181,"./invariant":289,"_process":3}],160:[function(require,module,exports){
+},{"./Object.assign":196,"./PooledClass":197,"./invariant":305,"_process":3}],176:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -9584,7 +10764,7 @@ var ChangeEventPlugin = {
 
 module.exports = ChangeEventPlugin;
 
-},{"./EventConstants":168,"./EventPluginHub":170,"./EventPropagators":173,"./ExecutionEnvironment":174,"./ReactUpdates":241,"./SyntheticEvent":249,"./isEventSupported":290,"./isTextInputElement":292,"./keyOf":295}],161:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPluginHub":186,"./EventPropagators":189,"./ExecutionEnvironment":190,"./ReactUpdates":257,"./SyntheticEvent":265,"./isEventSupported":306,"./isTextInputElement":308,"./keyOf":311}],177:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -9609,7 +10789,7 @@ var ClientReactRootIndex = {
 
 module.exports = ClientReactRootIndex;
 
-},{}],162:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -9747,7 +10927,7 @@ var DOMChildrenOperations = {
 module.exports = DOMChildrenOperations;
 
 }).call(this,require('_process'))
-},{"./Danger":165,"./ReactMultiChildUpdateTypes":226,"./invariant":289,"./setTextContent":303,"_process":3}],163:[function(require,module,exports){
+},{"./Danger":181,"./ReactMultiChildUpdateTypes":242,"./invariant":305,"./setTextContent":319,"_process":3}],179:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -10046,7 +11226,7 @@ var DOMProperty = {
 module.exports = DOMProperty;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],164:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],180:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -10238,7 +11418,7 @@ var DOMPropertyOperations = {
 module.exports = DOMPropertyOperations;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":163,"./quoteAttributeValueForBrowser":301,"./warning":308,"_process":3}],165:[function(require,module,exports){
+},{"./DOMProperty":179,"./quoteAttributeValueForBrowser":317,"./warning":324,"_process":3}],181:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -10425,7 +11605,7 @@ var Danger = {
 module.exports = Danger;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":174,"./createNodesFromMarkup":266,"./emptyFunction":268,"./getMarkupWrap":281,"./invariant":289,"_process":3}],166:[function(require,module,exports){
+},{"./ExecutionEnvironment":190,"./createNodesFromMarkup":282,"./emptyFunction":284,"./getMarkupWrap":297,"./invariant":305,"_process":3}],182:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -10464,7 +11644,7 @@ var DefaultEventPluginOrder = [
 
 module.exports = DefaultEventPluginOrder;
 
-},{"./keyOf":295}],167:[function(require,module,exports){
+},{"./keyOf":311}],183:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -10604,7 +11784,7 @@ var EnterLeaveEventPlugin = {
 
 module.exports = EnterLeaveEventPlugin;
 
-},{"./EventConstants":168,"./EventPropagators":173,"./ReactMount":224,"./SyntheticMouseEvent":253,"./keyOf":295}],168:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPropagators":189,"./ReactMount":240,"./SyntheticMouseEvent":269,"./keyOf":311}],184:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -10676,7 +11856,7 @@ var EventConstants = {
 
 module.exports = EventConstants;
 
-},{"./keyMirror":294}],169:[function(require,module,exports){
+},{"./keyMirror":310}],185:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -10766,7 +11946,7 @@ var EventListener = {
 module.exports = EventListener;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":268,"_process":3}],170:[function(require,module,exports){
+},{"./emptyFunction":284,"_process":3}],186:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -11044,7 +12224,7 @@ var EventPluginHub = {
 module.exports = EventPluginHub;
 
 }).call(this,require('_process'))
-},{"./EventPluginRegistry":171,"./EventPluginUtils":172,"./accumulateInto":259,"./forEachAccumulated":274,"./invariant":289,"_process":3}],171:[function(require,module,exports){
+},{"./EventPluginRegistry":187,"./EventPluginUtils":188,"./accumulateInto":275,"./forEachAccumulated":290,"./invariant":305,"_process":3}],187:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -11324,7 +12504,7 @@ var EventPluginRegistry = {
 module.exports = EventPluginRegistry;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],172:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],188:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -11545,7 +12725,7 @@ var EventPluginUtils = {
 module.exports = EventPluginUtils;
 
 }).call(this,require('_process'))
-},{"./EventConstants":168,"./invariant":289,"_process":3}],173:[function(require,module,exports){
+},{"./EventConstants":184,"./invariant":305,"_process":3}],189:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -11687,7 +12867,7 @@ var EventPropagators = {
 module.exports = EventPropagators;
 
 }).call(this,require('_process'))
-},{"./EventConstants":168,"./EventPluginHub":170,"./accumulateInto":259,"./forEachAccumulated":274,"_process":3}],174:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPluginHub":186,"./accumulateInto":275,"./forEachAccumulated":290,"_process":3}],190:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -11731,7 +12911,7 @@ var ExecutionEnvironment = {
 
 module.exports = ExecutionEnvironment;
 
-},{}],175:[function(require,module,exports){
+},{}],191:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -11822,7 +13002,7 @@ PooledClass.addPoolingTo(FallbackCompositionState);
 
 module.exports = FallbackCompositionState;
 
-},{"./Object.assign":180,"./PooledClass":181,"./getTextContentAccessor":284}],176:[function(require,module,exports){
+},{"./Object.assign":196,"./PooledClass":197,"./getTextContentAccessor":300}],192:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -12033,7 +13213,7 @@ var HTMLDOMPropertyConfig = {
 
 module.exports = HTMLDOMPropertyConfig;
 
-},{"./DOMProperty":163,"./ExecutionEnvironment":174}],177:[function(require,module,exports){
+},{"./DOMProperty":179,"./ExecutionEnvironment":190}],193:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -12189,7 +13369,7 @@ var LinkedValueUtils = {
 module.exports = LinkedValueUtils;
 
 }).call(this,require('_process'))
-},{"./ReactPropTypes":232,"./invariant":289,"_process":3}],178:[function(require,module,exports){
+},{"./ReactPropTypes":248,"./invariant":305,"_process":3}],194:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -12246,7 +13426,7 @@ var LocalEventTrapMixin = {
 module.exports = LocalEventTrapMixin;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserEventEmitter":184,"./accumulateInto":259,"./forEachAccumulated":274,"./invariant":289,"_process":3}],179:[function(require,module,exports){
+},{"./ReactBrowserEventEmitter":200,"./accumulateInto":275,"./forEachAccumulated":290,"./invariant":305,"_process":3}],195:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -12304,7 +13484,7 @@ var MobileSafariClickEventPlugin = {
 
 module.exports = MobileSafariClickEventPlugin;
 
-},{"./EventConstants":168,"./emptyFunction":268}],180:[function(require,module,exports){
+},{"./EventConstants":184,"./emptyFunction":284}],196:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -12353,7 +13533,7 @@ function assign(target, sources) {
 
 module.exports = assign;
 
-},{}],181:[function(require,module,exports){
+},{}],197:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -12469,7 +13649,7 @@ var PooledClass = {
 module.exports = PooledClass;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],182:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],198:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -12621,7 +13801,7 @@ React.version = '0.13.3';
 module.exports = React;
 
 }).call(this,require('_process'))
-},{"./EventPluginUtils":172,"./ExecutionEnvironment":174,"./Object.assign":180,"./ReactChildren":186,"./ReactClass":187,"./ReactComponent":188,"./ReactContext":192,"./ReactCurrentOwner":193,"./ReactDOM":194,"./ReactDOMTextComponent":205,"./ReactDefaultInjection":208,"./ReactElement":211,"./ReactElementValidator":212,"./ReactInstanceHandles":220,"./ReactMount":224,"./ReactPerf":229,"./ReactPropTypes":232,"./ReactReconciler":235,"./ReactServerRendering":238,"./findDOMNode":271,"./onlyChild":298,"_process":3}],183:[function(require,module,exports){
+},{"./EventPluginUtils":188,"./ExecutionEnvironment":190,"./Object.assign":196,"./ReactChildren":202,"./ReactClass":203,"./ReactComponent":204,"./ReactContext":208,"./ReactCurrentOwner":209,"./ReactDOM":210,"./ReactDOMTextComponent":221,"./ReactDefaultInjection":224,"./ReactElement":227,"./ReactElementValidator":228,"./ReactInstanceHandles":236,"./ReactMount":240,"./ReactPerf":245,"./ReactPropTypes":248,"./ReactReconciler":251,"./ReactServerRendering":254,"./findDOMNode":287,"./onlyChild":314,"_process":3}],199:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -12652,7 +13832,7 @@ var ReactBrowserComponentMixin = {
 
 module.exports = ReactBrowserComponentMixin;
 
-},{"./findDOMNode":271}],184:[function(require,module,exports){
+},{"./findDOMNode":287}],200:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -13005,7 +14185,7 @@ var ReactBrowserEventEmitter = assign({}, ReactEventEmitterMixin, {
 
 module.exports = ReactBrowserEventEmitter;
 
-},{"./EventConstants":168,"./EventPluginHub":170,"./EventPluginRegistry":171,"./Object.assign":180,"./ReactEventEmitterMixin":215,"./ViewportMetrics":258,"./isEventSupported":290}],185:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPluginHub":186,"./EventPluginRegistry":187,"./Object.assign":196,"./ReactEventEmitterMixin":231,"./ViewportMetrics":274,"./isEventSupported":306}],201:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -13132,7 +14312,7 @@ var ReactChildReconciler = {
 
 module.exports = ReactChildReconciler;
 
-},{"./ReactReconciler":235,"./flattenChildren":272,"./instantiateReactComponent":288,"./shouldUpdateReactComponent":305}],186:[function(require,module,exports){
+},{"./ReactReconciler":251,"./flattenChildren":288,"./instantiateReactComponent":304,"./shouldUpdateReactComponent":321}],202:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -13285,7 +14465,7 @@ var ReactChildren = {
 module.exports = ReactChildren;
 
 }).call(this,require('_process'))
-},{"./PooledClass":181,"./ReactFragment":217,"./traverseAllChildren":307,"./warning":308,"_process":3}],187:[function(require,module,exports){
+},{"./PooledClass":197,"./ReactFragment":233,"./traverseAllChildren":323,"./warning":324,"_process":3}],203:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -14231,7 +15411,7 @@ var ReactClass = {
 module.exports = ReactClass;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./ReactComponent":188,"./ReactCurrentOwner":193,"./ReactElement":211,"./ReactErrorUtils":214,"./ReactInstanceMap":221,"./ReactLifeCycle":222,"./ReactPropTypeLocationNames":230,"./ReactPropTypeLocations":231,"./ReactUpdateQueue":240,"./invariant":289,"./keyMirror":294,"./keyOf":295,"./warning":308,"_process":3}],188:[function(require,module,exports){
+},{"./Object.assign":196,"./ReactComponent":204,"./ReactCurrentOwner":209,"./ReactElement":227,"./ReactErrorUtils":230,"./ReactInstanceMap":237,"./ReactLifeCycle":238,"./ReactPropTypeLocationNames":246,"./ReactPropTypeLocations":247,"./ReactUpdateQueue":256,"./invariant":305,"./keyMirror":310,"./keyOf":311,"./warning":324,"_process":3}],204:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -14385,7 +15565,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactComponent;
 
 }).call(this,require('_process'))
-},{"./ReactUpdateQueue":240,"./invariant":289,"./warning":308,"_process":3}],189:[function(require,module,exports){
+},{"./ReactUpdateQueue":256,"./invariant":305,"./warning":324,"_process":3}],205:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -14432,7 +15612,7 @@ var ReactComponentBrowserEnvironment = {
 
 module.exports = ReactComponentBrowserEnvironment;
 
-},{"./ReactDOMIDOperations":198,"./ReactMount":224}],190:[function(require,module,exports){
+},{"./ReactDOMIDOperations":214,"./ReactMount":240}],206:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -14493,7 +15673,7 @@ var ReactComponentEnvironment = {
 module.exports = ReactComponentEnvironment;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],191:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],207:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -15406,7 +16586,7 @@ var ReactCompositeComponent = {
 module.exports = ReactCompositeComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./ReactComponentEnvironment":190,"./ReactContext":192,"./ReactCurrentOwner":193,"./ReactElement":211,"./ReactElementValidator":212,"./ReactInstanceMap":221,"./ReactLifeCycle":222,"./ReactNativeComponent":227,"./ReactPerf":229,"./ReactPropTypeLocationNames":230,"./ReactPropTypeLocations":231,"./ReactReconciler":235,"./ReactUpdates":241,"./emptyObject":269,"./invariant":289,"./shouldUpdateReactComponent":305,"./warning":308,"_process":3}],192:[function(require,module,exports){
+},{"./Object.assign":196,"./ReactComponentEnvironment":206,"./ReactContext":208,"./ReactCurrentOwner":209,"./ReactElement":227,"./ReactElementValidator":228,"./ReactInstanceMap":237,"./ReactLifeCycle":238,"./ReactNativeComponent":243,"./ReactPerf":245,"./ReactPropTypeLocationNames":246,"./ReactPropTypeLocations":247,"./ReactReconciler":251,"./ReactUpdates":257,"./emptyObject":285,"./invariant":305,"./shouldUpdateReactComponent":321,"./warning":324,"_process":3}],208:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -15484,7 +16664,7 @@ var ReactContext = {
 module.exports = ReactContext;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./emptyObject":269,"./warning":308,"_process":3}],193:[function(require,module,exports){
+},{"./Object.assign":196,"./emptyObject":285,"./warning":324,"_process":3}],209:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -15518,7 +16698,7 @@ var ReactCurrentOwner = {
 
 module.exports = ReactCurrentOwner;
 
-},{}],194:[function(require,module,exports){
+},{}],210:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -15697,7 +16877,7 @@ var ReactDOM = mapObject({
 module.exports = ReactDOM;
 
 }).call(this,require('_process'))
-},{"./ReactElement":211,"./ReactElementValidator":212,"./mapObject":296,"_process":3}],195:[function(require,module,exports){
+},{"./ReactElement":227,"./ReactElementValidator":228,"./mapObject":312,"_process":3}],211:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -15761,7 +16941,7 @@ var ReactDOMButton = ReactClass.createClass({
 
 module.exports = ReactDOMButton;
 
-},{"./AutoFocusMixin":155,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211,"./keyMirror":294}],196:[function(require,module,exports){
+},{"./AutoFocusMixin":171,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227,"./keyMirror":310}],212:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -16271,7 +17451,7 @@ ReactDOMComponent.injection = {
 module.exports = ReactDOMComponent;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":158,"./DOMProperty":163,"./DOMPropertyOperations":164,"./Object.assign":180,"./ReactBrowserEventEmitter":184,"./ReactComponentBrowserEnvironment":189,"./ReactMount":224,"./ReactMultiChild":225,"./ReactPerf":229,"./escapeTextContentForBrowser":270,"./invariant":289,"./isEventSupported":290,"./keyOf":295,"./warning":308,"_process":3}],197:[function(require,module,exports){
+},{"./CSSPropertyOperations":174,"./DOMProperty":179,"./DOMPropertyOperations":180,"./Object.assign":196,"./ReactBrowserEventEmitter":200,"./ReactComponentBrowserEnvironment":205,"./ReactMount":240,"./ReactMultiChild":241,"./ReactPerf":245,"./escapeTextContentForBrowser":286,"./invariant":305,"./isEventSupported":306,"./keyOf":311,"./warning":324,"_process":3}],213:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -16320,7 +17500,7 @@ var ReactDOMForm = ReactClass.createClass({
 
 module.exports = ReactDOMForm;
 
-},{"./EventConstants":168,"./LocalEventTrapMixin":178,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211}],198:[function(require,module,exports){
+},{"./EventConstants":184,"./LocalEventTrapMixin":194,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227}],214:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -16488,7 +17668,7 @@ ReactPerf.measureMethods(ReactDOMIDOperations, 'ReactDOMIDOperations', {
 module.exports = ReactDOMIDOperations;
 
 }).call(this,require('_process'))
-},{"./CSSPropertyOperations":158,"./DOMChildrenOperations":162,"./DOMPropertyOperations":164,"./ReactMount":224,"./ReactPerf":229,"./invariant":289,"./setInnerHTML":302,"_process":3}],199:[function(require,module,exports){
+},{"./CSSPropertyOperations":174,"./DOMChildrenOperations":178,"./DOMPropertyOperations":180,"./ReactMount":240,"./ReactPerf":245,"./invariant":305,"./setInnerHTML":318,"_process":3}],215:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -16533,7 +17713,7 @@ var ReactDOMIframe = ReactClass.createClass({
 
 module.exports = ReactDOMIframe;
 
-},{"./EventConstants":168,"./LocalEventTrapMixin":178,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211}],200:[function(require,module,exports){
+},{"./EventConstants":184,"./LocalEventTrapMixin":194,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227}],216:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -16579,7 +17759,7 @@ var ReactDOMImg = ReactClass.createClass({
 
 module.exports = ReactDOMImg;
 
-},{"./EventConstants":168,"./LocalEventTrapMixin":178,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211}],201:[function(require,module,exports){
+},{"./EventConstants":184,"./LocalEventTrapMixin":194,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227}],217:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -16756,7 +17936,7 @@ var ReactDOMInput = ReactClass.createClass({
 module.exports = ReactDOMInput;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":155,"./DOMPropertyOperations":164,"./LinkedValueUtils":177,"./Object.assign":180,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211,"./ReactMount":224,"./ReactUpdates":241,"./invariant":289,"_process":3}],202:[function(require,module,exports){
+},{"./AutoFocusMixin":171,"./DOMPropertyOperations":180,"./LinkedValueUtils":193,"./Object.assign":196,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227,"./ReactMount":240,"./ReactUpdates":257,"./invariant":305,"_process":3}],218:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -16808,7 +17988,7 @@ var ReactDOMOption = ReactClass.createClass({
 module.exports = ReactDOMOption;
 
 }).call(this,require('_process'))
-},{"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211,"./warning":308,"_process":3}],203:[function(require,module,exports){
+},{"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227,"./warning":324,"_process":3}],219:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -16986,7 +18166,7 @@ var ReactDOMSelect = ReactClass.createClass({
 
 module.exports = ReactDOMSelect;
 
-},{"./AutoFocusMixin":155,"./LinkedValueUtils":177,"./Object.assign":180,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211,"./ReactUpdates":241}],204:[function(require,module,exports){
+},{"./AutoFocusMixin":171,"./LinkedValueUtils":193,"./Object.assign":196,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227,"./ReactUpdates":257}],220:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -17199,7 +18379,7 @@ var ReactDOMSelection = {
 
 module.exports = ReactDOMSelection;
 
-},{"./ExecutionEnvironment":174,"./getNodeForCharacterOffset":282,"./getTextContentAccessor":284}],205:[function(require,module,exports){
+},{"./ExecutionEnvironment":190,"./getNodeForCharacterOffset":298,"./getTextContentAccessor":300}],221:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -17316,7 +18496,7 @@ assign(ReactDOMTextComponent.prototype, {
 
 module.exports = ReactDOMTextComponent;
 
-},{"./DOMPropertyOperations":164,"./Object.assign":180,"./ReactComponentBrowserEnvironment":189,"./ReactDOMComponent":196,"./escapeTextContentForBrowser":270}],206:[function(require,module,exports){
+},{"./DOMPropertyOperations":180,"./Object.assign":196,"./ReactComponentBrowserEnvironment":205,"./ReactDOMComponent":212,"./escapeTextContentForBrowser":286}],222:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -17456,7 +18636,7 @@ var ReactDOMTextarea = ReactClass.createClass({
 module.exports = ReactDOMTextarea;
 
 }).call(this,require('_process'))
-},{"./AutoFocusMixin":155,"./DOMPropertyOperations":164,"./LinkedValueUtils":177,"./Object.assign":180,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactElement":211,"./ReactUpdates":241,"./invariant":289,"./warning":308,"_process":3}],207:[function(require,module,exports){
+},{"./AutoFocusMixin":171,"./DOMPropertyOperations":180,"./LinkedValueUtils":193,"./Object.assign":196,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactElement":227,"./ReactUpdates":257,"./invariant":305,"./warning":324,"_process":3}],223:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -17529,7 +18709,7 @@ var ReactDefaultBatchingStrategy = {
 
 module.exports = ReactDefaultBatchingStrategy;
 
-},{"./Object.assign":180,"./ReactUpdates":241,"./Transaction":257,"./emptyFunction":268}],208:[function(require,module,exports){
+},{"./Object.assign":196,"./ReactUpdates":257,"./Transaction":273,"./emptyFunction":284}],224:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -17688,7 +18868,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./BeforeInputEventPlugin":156,"./ChangeEventPlugin":160,"./ClientReactRootIndex":161,"./DefaultEventPluginOrder":166,"./EnterLeaveEventPlugin":167,"./ExecutionEnvironment":174,"./HTMLDOMPropertyConfig":176,"./MobileSafariClickEventPlugin":179,"./ReactBrowserComponentMixin":183,"./ReactClass":187,"./ReactComponentBrowserEnvironment":189,"./ReactDOMButton":195,"./ReactDOMComponent":196,"./ReactDOMForm":197,"./ReactDOMIDOperations":198,"./ReactDOMIframe":199,"./ReactDOMImg":200,"./ReactDOMInput":201,"./ReactDOMOption":202,"./ReactDOMSelect":203,"./ReactDOMTextComponent":205,"./ReactDOMTextarea":206,"./ReactDefaultBatchingStrategy":207,"./ReactDefaultPerf":209,"./ReactElement":211,"./ReactEventListener":216,"./ReactInjection":218,"./ReactInstanceHandles":220,"./ReactMount":224,"./ReactReconcileTransaction":234,"./SVGDOMPropertyConfig":242,"./SelectEventPlugin":243,"./ServerReactRootIndex":244,"./SimpleEventPlugin":245,"./createFullPageComponent":265,"_process":3}],209:[function(require,module,exports){
+},{"./BeforeInputEventPlugin":172,"./ChangeEventPlugin":176,"./ClientReactRootIndex":177,"./DefaultEventPluginOrder":182,"./EnterLeaveEventPlugin":183,"./ExecutionEnvironment":190,"./HTMLDOMPropertyConfig":192,"./MobileSafariClickEventPlugin":195,"./ReactBrowserComponentMixin":199,"./ReactClass":203,"./ReactComponentBrowserEnvironment":205,"./ReactDOMButton":211,"./ReactDOMComponent":212,"./ReactDOMForm":213,"./ReactDOMIDOperations":214,"./ReactDOMIframe":215,"./ReactDOMImg":216,"./ReactDOMInput":217,"./ReactDOMOption":218,"./ReactDOMSelect":219,"./ReactDOMTextComponent":221,"./ReactDOMTextarea":222,"./ReactDefaultBatchingStrategy":223,"./ReactDefaultPerf":225,"./ReactElement":227,"./ReactEventListener":232,"./ReactInjection":234,"./ReactInstanceHandles":236,"./ReactMount":240,"./ReactReconcileTransaction":250,"./SVGDOMPropertyConfig":258,"./SelectEventPlugin":259,"./ServerReactRootIndex":260,"./SimpleEventPlugin":261,"./createFullPageComponent":281,"_process":3}],225:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -17954,7 +19134,7 @@ var ReactDefaultPerf = {
 
 module.exports = ReactDefaultPerf;
 
-},{"./DOMProperty":163,"./ReactDefaultPerfAnalysis":210,"./ReactMount":224,"./ReactPerf":229,"./performanceNow":300}],210:[function(require,module,exports){
+},{"./DOMProperty":179,"./ReactDefaultPerfAnalysis":226,"./ReactMount":240,"./ReactPerf":245,"./performanceNow":316}],226:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -18160,7 +19340,7 @@ var ReactDefaultPerfAnalysis = {
 
 module.exports = ReactDefaultPerfAnalysis;
 
-},{"./Object.assign":180}],211:[function(require,module,exports){
+},{"./Object.assign":196}],227:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -18468,7 +19648,7 @@ ReactElement.isValidElement = function(object) {
 module.exports = ReactElement;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./ReactContext":192,"./ReactCurrentOwner":193,"./warning":308,"_process":3}],212:[function(require,module,exports){
+},{"./Object.assign":196,"./ReactContext":208,"./ReactCurrentOwner":209,"./warning":324,"_process":3}],228:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -18933,7 +20113,7 @@ var ReactElementValidator = {
 module.exports = ReactElementValidator;
 
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":193,"./ReactElement":211,"./ReactFragment":217,"./ReactNativeComponent":227,"./ReactPropTypeLocationNames":230,"./ReactPropTypeLocations":231,"./getIteratorFn":280,"./invariant":289,"./warning":308,"_process":3}],213:[function(require,module,exports){
+},{"./ReactCurrentOwner":209,"./ReactElement":227,"./ReactFragment":233,"./ReactNativeComponent":243,"./ReactPropTypeLocationNames":246,"./ReactPropTypeLocations":247,"./getIteratorFn":296,"./invariant":305,"./warning":324,"_process":3}],229:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -19028,7 +20208,7 @@ var ReactEmptyComponent = {
 module.exports = ReactEmptyComponent;
 
 }).call(this,require('_process'))
-},{"./ReactElement":211,"./ReactInstanceMap":221,"./invariant":289,"_process":3}],214:[function(require,module,exports){
+},{"./ReactElement":227,"./ReactInstanceMap":237,"./invariant":305,"_process":3}],230:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -19060,7 +20240,7 @@ var ReactErrorUtils = {
 
 module.exports = ReactErrorUtils;
 
-},{}],215:[function(require,module,exports){
+},{}],231:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -19110,7 +20290,7 @@ var ReactEventEmitterMixin = {
 
 module.exports = ReactEventEmitterMixin;
 
-},{"./EventPluginHub":170}],216:[function(require,module,exports){
+},{"./EventPluginHub":186}],232:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -19293,7 +20473,7 @@ var ReactEventListener = {
 
 module.exports = ReactEventListener;
 
-},{"./EventListener":169,"./ExecutionEnvironment":174,"./Object.assign":180,"./PooledClass":181,"./ReactInstanceHandles":220,"./ReactMount":224,"./ReactUpdates":241,"./getEventTarget":279,"./getUnboundedScrollPosition":285}],217:[function(require,module,exports){
+},{"./EventListener":185,"./ExecutionEnvironment":190,"./Object.assign":196,"./PooledClass":197,"./ReactInstanceHandles":236,"./ReactMount":240,"./ReactUpdates":257,"./getEventTarget":295,"./getUnboundedScrollPosition":301}],233:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -19478,7 +20658,7 @@ var ReactFragment = {
 module.exports = ReactFragment;
 
 }).call(this,require('_process'))
-},{"./ReactElement":211,"./warning":308,"_process":3}],218:[function(require,module,exports){
+},{"./ReactElement":227,"./warning":324,"_process":3}],234:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -19520,7 +20700,7 @@ var ReactInjection = {
 
 module.exports = ReactInjection;
 
-},{"./DOMProperty":163,"./EventPluginHub":170,"./ReactBrowserEventEmitter":184,"./ReactClass":187,"./ReactComponentEnvironment":190,"./ReactDOMComponent":196,"./ReactEmptyComponent":213,"./ReactNativeComponent":227,"./ReactPerf":229,"./ReactRootIndex":237,"./ReactUpdates":241}],219:[function(require,module,exports){
+},{"./DOMProperty":179,"./EventPluginHub":186,"./ReactBrowserEventEmitter":200,"./ReactClass":203,"./ReactComponentEnvironment":206,"./ReactDOMComponent":212,"./ReactEmptyComponent":229,"./ReactNativeComponent":243,"./ReactPerf":245,"./ReactRootIndex":253,"./ReactUpdates":257}],235:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -19655,7 +20835,7 @@ var ReactInputSelection = {
 
 module.exports = ReactInputSelection;
 
-},{"./ReactDOMSelection":204,"./containsNode":263,"./focusNode":273,"./getActiveElement":275}],220:[function(require,module,exports){
+},{"./ReactDOMSelection":220,"./containsNode":279,"./focusNode":289,"./getActiveElement":291}],236:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -19991,7 +21171,7 @@ var ReactInstanceHandles = {
 module.exports = ReactInstanceHandles;
 
 }).call(this,require('_process'))
-},{"./ReactRootIndex":237,"./invariant":289,"_process":3}],221:[function(require,module,exports){
+},{"./ReactRootIndex":253,"./invariant":305,"_process":3}],237:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -20040,7 +21220,7 @@ var ReactInstanceMap = {
 
 module.exports = ReactInstanceMap;
 
-},{}],222:[function(require,module,exports){
+},{}],238:[function(require,module,exports){
 /**
  * Copyright 2015, Facebook, Inc.
  * All rights reserved.
@@ -20077,7 +21257,7 @@ var ReactLifeCycle = {
 
 module.exports = ReactLifeCycle;
 
-},{}],223:[function(require,module,exports){
+},{}],239:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -20125,7 +21305,7 @@ var ReactMarkupChecksum = {
 
 module.exports = ReactMarkupChecksum;
 
-},{"./adler32":260}],224:[function(require,module,exports){
+},{"./adler32":276}],240:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -21016,7 +22196,7 @@ ReactPerf.measureMethods(ReactMount, 'ReactMount', {
 module.exports = ReactMount;
 
 }).call(this,require('_process'))
-},{"./DOMProperty":163,"./ReactBrowserEventEmitter":184,"./ReactCurrentOwner":193,"./ReactElement":211,"./ReactElementValidator":212,"./ReactEmptyComponent":213,"./ReactInstanceHandles":220,"./ReactInstanceMap":221,"./ReactMarkupChecksum":223,"./ReactPerf":229,"./ReactReconciler":235,"./ReactUpdateQueue":240,"./ReactUpdates":241,"./containsNode":263,"./emptyObject":269,"./getReactRootElementInContainer":283,"./instantiateReactComponent":288,"./invariant":289,"./setInnerHTML":302,"./shouldUpdateReactComponent":305,"./warning":308,"_process":3}],225:[function(require,module,exports){
+},{"./DOMProperty":179,"./ReactBrowserEventEmitter":200,"./ReactCurrentOwner":209,"./ReactElement":227,"./ReactElementValidator":228,"./ReactEmptyComponent":229,"./ReactInstanceHandles":236,"./ReactInstanceMap":237,"./ReactMarkupChecksum":239,"./ReactPerf":245,"./ReactReconciler":251,"./ReactUpdateQueue":256,"./ReactUpdates":257,"./containsNode":279,"./emptyObject":285,"./getReactRootElementInContainer":299,"./instantiateReactComponent":304,"./invariant":305,"./setInnerHTML":318,"./shouldUpdateReactComponent":321,"./warning":324,"_process":3}],241:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -21446,7 +22626,7 @@ var ReactMultiChild = {
 
 module.exports = ReactMultiChild;
 
-},{"./ReactChildReconciler":185,"./ReactComponentEnvironment":190,"./ReactMultiChildUpdateTypes":226,"./ReactReconciler":235}],226:[function(require,module,exports){
+},{"./ReactChildReconciler":201,"./ReactComponentEnvironment":206,"./ReactMultiChildUpdateTypes":242,"./ReactReconciler":251}],242:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -21479,7 +22659,7 @@ var ReactMultiChildUpdateTypes = keyMirror({
 
 module.exports = ReactMultiChildUpdateTypes;
 
-},{"./keyMirror":294}],227:[function(require,module,exports){
+},{"./keyMirror":310}],243:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -21586,7 +22766,7 @@ var ReactNativeComponent = {
 module.exports = ReactNativeComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./invariant":289,"_process":3}],228:[function(require,module,exports){
+},{"./Object.assign":196,"./invariant":305,"_process":3}],244:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -21698,7 +22878,7 @@ var ReactOwner = {
 module.exports = ReactOwner;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],229:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],245:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -21802,7 +22982,7 @@ function _noMeasure(objName, fnName, func) {
 module.exports = ReactPerf;
 
 }).call(this,require('_process'))
-},{"_process":3}],230:[function(require,module,exports){
+},{"_process":3}],246:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -21830,7 +23010,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = ReactPropTypeLocationNames;
 
 }).call(this,require('_process'))
-},{"_process":3}],231:[function(require,module,exports){
+},{"_process":3}],247:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -21854,7 +23034,7 @@ var ReactPropTypeLocations = keyMirror({
 
 module.exports = ReactPropTypeLocations;
 
-},{"./keyMirror":294}],232:[function(require,module,exports){
+},{"./keyMirror":310}],248:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -22203,7 +23383,7 @@ function getPreciseType(propValue) {
 
 module.exports = ReactPropTypes;
 
-},{"./ReactElement":211,"./ReactFragment":217,"./ReactPropTypeLocationNames":230,"./emptyFunction":268}],233:[function(require,module,exports){
+},{"./ReactElement":227,"./ReactFragment":233,"./ReactPropTypeLocationNames":246,"./emptyFunction":284}],249:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -22259,7 +23439,7 @@ PooledClass.addPoolingTo(ReactPutListenerQueue);
 
 module.exports = ReactPutListenerQueue;
 
-},{"./Object.assign":180,"./PooledClass":181,"./ReactBrowserEventEmitter":184}],234:[function(require,module,exports){
+},{"./Object.assign":196,"./PooledClass":197,"./ReactBrowserEventEmitter":200}],250:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -22435,7 +23615,7 @@ PooledClass.addPoolingTo(ReactReconcileTransaction);
 
 module.exports = ReactReconcileTransaction;
 
-},{"./CallbackQueue":159,"./Object.assign":180,"./PooledClass":181,"./ReactBrowserEventEmitter":184,"./ReactInputSelection":219,"./ReactPutListenerQueue":233,"./Transaction":257}],235:[function(require,module,exports){
+},{"./CallbackQueue":175,"./Object.assign":196,"./PooledClass":197,"./ReactBrowserEventEmitter":200,"./ReactInputSelection":235,"./ReactPutListenerQueue":249,"./Transaction":273}],251:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -22559,7 +23739,7 @@ var ReactReconciler = {
 module.exports = ReactReconciler;
 
 }).call(this,require('_process'))
-},{"./ReactElementValidator":212,"./ReactRef":236,"_process":3}],236:[function(require,module,exports){
+},{"./ReactElementValidator":228,"./ReactRef":252,"_process":3}],252:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -22630,7 +23810,7 @@ ReactRef.detachRefs = function(instance, element) {
 
 module.exports = ReactRef;
 
-},{"./ReactOwner":228}],237:[function(require,module,exports){
+},{"./ReactOwner":244}],253:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -22661,7 +23841,7 @@ var ReactRootIndex = {
 
 module.exports = ReactRootIndex;
 
-},{}],238:[function(require,module,exports){
+},{}],254:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -22743,7 +23923,7 @@ module.exports = {
 };
 
 }).call(this,require('_process'))
-},{"./ReactElement":211,"./ReactInstanceHandles":220,"./ReactMarkupChecksum":223,"./ReactServerRenderingTransaction":239,"./emptyObject":269,"./instantiateReactComponent":288,"./invariant":289,"_process":3}],239:[function(require,module,exports){
+},{"./ReactElement":227,"./ReactInstanceHandles":236,"./ReactMarkupChecksum":239,"./ReactServerRenderingTransaction":255,"./emptyObject":285,"./instantiateReactComponent":304,"./invariant":305,"_process":3}],255:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -22856,7 +24036,7 @@ PooledClass.addPoolingTo(ReactServerRenderingTransaction);
 
 module.exports = ReactServerRenderingTransaction;
 
-},{"./CallbackQueue":159,"./Object.assign":180,"./PooledClass":181,"./ReactPutListenerQueue":233,"./Transaction":257,"./emptyFunction":268}],240:[function(require,module,exports){
+},{"./CallbackQueue":175,"./Object.assign":196,"./PooledClass":197,"./ReactPutListenerQueue":249,"./Transaction":273,"./emptyFunction":284}],256:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2015, Facebook, Inc.
@@ -23155,7 +24335,7 @@ var ReactUpdateQueue = {
 module.exports = ReactUpdateQueue;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./ReactCurrentOwner":193,"./ReactElement":211,"./ReactInstanceMap":221,"./ReactLifeCycle":222,"./ReactUpdates":241,"./invariant":289,"./warning":308,"_process":3}],241:[function(require,module,exports){
+},{"./Object.assign":196,"./ReactCurrentOwner":209,"./ReactElement":227,"./ReactInstanceMap":237,"./ReactLifeCycle":238,"./ReactUpdates":257,"./invariant":305,"./warning":324,"_process":3}],257:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -23437,7 +24617,7 @@ var ReactUpdates = {
 module.exports = ReactUpdates;
 
 }).call(this,require('_process'))
-},{"./CallbackQueue":159,"./Object.assign":180,"./PooledClass":181,"./ReactCurrentOwner":193,"./ReactPerf":229,"./ReactReconciler":235,"./Transaction":257,"./invariant":289,"./warning":308,"_process":3}],242:[function(require,module,exports){
+},{"./CallbackQueue":175,"./Object.assign":196,"./PooledClass":197,"./ReactCurrentOwner":209,"./ReactPerf":245,"./ReactReconciler":251,"./Transaction":273,"./invariant":305,"./warning":324,"_process":3}],258:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -23531,7 +24711,7 @@ var SVGDOMPropertyConfig = {
 
 module.exports = SVGDOMPropertyConfig;
 
-},{"./DOMProperty":163}],243:[function(require,module,exports){
+},{"./DOMProperty":179}],259:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -23726,7 +24906,7 @@ var SelectEventPlugin = {
 
 module.exports = SelectEventPlugin;
 
-},{"./EventConstants":168,"./EventPropagators":173,"./ReactInputSelection":219,"./SyntheticEvent":249,"./getActiveElement":275,"./isTextInputElement":292,"./keyOf":295,"./shallowEqual":304}],244:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPropagators":189,"./ReactInputSelection":235,"./SyntheticEvent":265,"./getActiveElement":291,"./isTextInputElement":308,"./keyOf":311,"./shallowEqual":320}],260:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -23757,7 +24937,7 @@ var ServerReactRootIndex = {
 
 module.exports = ServerReactRootIndex;
 
-},{}],245:[function(require,module,exports){
+},{}],261:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -24185,7 +25365,7 @@ var SimpleEventPlugin = {
 module.exports = SimpleEventPlugin;
 
 }).call(this,require('_process'))
-},{"./EventConstants":168,"./EventPluginUtils":172,"./EventPropagators":173,"./SyntheticClipboardEvent":246,"./SyntheticDragEvent":248,"./SyntheticEvent":249,"./SyntheticFocusEvent":250,"./SyntheticKeyboardEvent":252,"./SyntheticMouseEvent":253,"./SyntheticTouchEvent":254,"./SyntheticUIEvent":255,"./SyntheticWheelEvent":256,"./getEventCharCode":276,"./invariant":289,"./keyOf":295,"./warning":308,"_process":3}],246:[function(require,module,exports){
+},{"./EventConstants":184,"./EventPluginUtils":188,"./EventPropagators":189,"./SyntheticClipboardEvent":262,"./SyntheticDragEvent":264,"./SyntheticEvent":265,"./SyntheticFocusEvent":266,"./SyntheticKeyboardEvent":268,"./SyntheticMouseEvent":269,"./SyntheticTouchEvent":270,"./SyntheticUIEvent":271,"./SyntheticWheelEvent":272,"./getEventCharCode":292,"./invariant":305,"./keyOf":311,"./warning":324,"_process":3}],262:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24230,7 +25410,7 @@ SyntheticEvent.augmentClass(SyntheticClipboardEvent, ClipboardEventInterface);
 
 module.exports = SyntheticClipboardEvent;
 
-},{"./SyntheticEvent":249}],247:[function(require,module,exports){
+},{"./SyntheticEvent":265}],263:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24275,7 +25455,7 @@ SyntheticEvent.augmentClass(
 
 module.exports = SyntheticCompositionEvent;
 
-},{"./SyntheticEvent":249}],248:[function(require,module,exports){
+},{"./SyntheticEvent":265}],264:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24314,7 +25494,7 @@ SyntheticMouseEvent.augmentClass(SyntheticDragEvent, DragEventInterface);
 
 module.exports = SyntheticDragEvent;
 
-},{"./SyntheticMouseEvent":253}],249:[function(require,module,exports){
+},{"./SyntheticMouseEvent":269}],265:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24480,7 +25660,7 @@ PooledClass.addPoolingTo(SyntheticEvent, PooledClass.threeArgumentPooler);
 
 module.exports = SyntheticEvent;
 
-},{"./Object.assign":180,"./PooledClass":181,"./emptyFunction":268,"./getEventTarget":279}],250:[function(require,module,exports){
+},{"./Object.assign":196,"./PooledClass":197,"./emptyFunction":284,"./getEventTarget":295}],266:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24519,7 +25699,7 @@ SyntheticUIEvent.augmentClass(SyntheticFocusEvent, FocusEventInterface);
 
 module.exports = SyntheticFocusEvent;
 
-},{"./SyntheticUIEvent":255}],251:[function(require,module,exports){
+},{"./SyntheticUIEvent":271}],267:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24565,7 +25745,7 @@ SyntheticEvent.augmentClass(
 
 module.exports = SyntheticInputEvent;
 
-},{"./SyntheticEvent":249}],252:[function(require,module,exports){
+},{"./SyntheticEvent":265}],268:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24652,7 +25832,7 @@ SyntheticUIEvent.augmentClass(SyntheticKeyboardEvent, KeyboardEventInterface);
 
 module.exports = SyntheticKeyboardEvent;
 
-},{"./SyntheticUIEvent":255,"./getEventCharCode":276,"./getEventKey":277,"./getEventModifierState":278}],253:[function(require,module,exports){
+},{"./SyntheticUIEvent":271,"./getEventCharCode":292,"./getEventKey":293,"./getEventModifierState":294}],269:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24733,7 +25913,7 @@ SyntheticUIEvent.augmentClass(SyntheticMouseEvent, MouseEventInterface);
 
 module.exports = SyntheticMouseEvent;
 
-},{"./SyntheticUIEvent":255,"./ViewportMetrics":258,"./getEventModifierState":278}],254:[function(require,module,exports){
+},{"./SyntheticUIEvent":271,"./ViewportMetrics":274,"./getEventModifierState":294}],270:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24781,7 +25961,7 @@ SyntheticUIEvent.augmentClass(SyntheticTouchEvent, TouchEventInterface);
 
 module.exports = SyntheticTouchEvent;
 
-},{"./SyntheticUIEvent":255,"./getEventModifierState":278}],255:[function(require,module,exports){
+},{"./SyntheticUIEvent":271,"./getEventModifierState":294}],271:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24843,7 +26023,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 
 module.exports = SyntheticUIEvent;
 
-},{"./SyntheticEvent":249,"./getEventTarget":279}],256:[function(require,module,exports){
+},{"./SyntheticEvent":265,"./getEventTarget":295}],272:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -24904,7 +26084,7 @@ SyntheticMouseEvent.augmentClass(SyntheticWheelEvent, WheelEventInterface);
 
 module.exports = SyntheticWheelEvent;
 
-},{"./SyntheticMouseEvent":253}],257:[function(require,module,exports){
+},{"./SyntheticMouseEvent":269}],273:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -25145,7 +26325,7 @@ var Transaction = {
 module.exports = Transaction;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],258:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],274:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25174,7 +26354,7 @@ var ViewportMetrics = {
 
 module.exports = ViewportMetrics;
 
-},{}],259:[function(require,module,exports){
+},{}],275:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -25240,7 +26420,7 @@ function accumulateInto(current, next) {
 module.exports = accumulateInto;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],260:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],276:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25274,7 +26454,7 @@ function adler32(data) {
 
 module.exports = adler32;
 
-},{}],261:[function(require,module,exports){
+},{}],277:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25306,7 +26486,7 @@ function camelize(string) {
 
 module.exports = camelize;
 
-},{}],262:[function(require,module,exports){
+},{}],278:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -25348,7 +26528,7 @@ function camelizeStyleName(string) {
 
 module.exports = camelizeStyleName;
 
-},{"./camelize":261}],263:[function(require,module,exports){
+},{"./camelize":277}],279:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25392,7 +26572,7 @@ function containsNode(outerNode, innerNode) {
 
 module.exports = containsNode;
 
-},{"./isTextNode":293}],264:[function(require,module,exports){
+},{"./isTextNode":309}],280:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25478,7 +26658,7 @@ function createArrayFromMixed(obj) {
 
 module.exports = createArrayFromMixed;
 
-},{"./toArray":306}],265:[function(require,module,exports){
+},{"./toArray":322}],281:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -25540,7 +26720,7 @@ function createFullPageComponent(tag) {
 module.exports = createFullPageComponent;
 
 }).call(this,require('_process'))
-},{"./ReactClass":187,"./ReactElement":211,"./invariant":289,"_process":3}],266:[function(require,module,exports){
+},{"./ReactClass":203,"./ReactElement":227,"./invariant":305,"_process":3}],282:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -25630,7 +26810,7 @@ function createNodesFromMarkup(markup, handleScript) {
 module.exports = createNodesFromMarkup;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":174,"./createArrayFromMixed":264,"./getMarkupWrap":281,"./invariant":289,"_process":3}],267:[function(require,module,exports){
+},{"./ExecutionEnvironment":190,"./createArrayFromMixed":280,"./getMarkupWrap":297,"./invariant":305,"_process":3}],283:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25688,7 +26868,7 @@ function dangerousStyleValue(name, value) {
 
 module.exports = dangerousStyleValue;
 
-},{"./CSSProperty":157}],268:[function(require,module,exports){
+},{"./CSSProperty":173}],284:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25722,7 +26902,7 @@ emptyFunction.thatReturnsArgument = function(arg) { return arg; };
 
 module.exports = emptyFunction;
 
-},{}],269:[function(require,module,exports){
+},{}],285:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -25746,7 +26926,7 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = emptyObject;
 
 }).call(this,require('_process'))
-},{"_process":3}],270:[function(require,module,exports){
+},{"_process":3}],286:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25786,7 +26966,7 @@ function escapeTextContentForBrowser(text) {
 
 module.exports = escapeTextContentForBrowser;
 
-},{}],271:[function(require,module,exports){
+},{}],287:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -25859,7 +27039,7 @@ function findDOMNode(componentOrElement) {
 module.exports = findDOMNode;
 
 }).call(this,require('_process'))
-},{"./ReactCurrentOwner":193,"./ReactInstanceMap":221,"./ReactMount":224,"./invariant":289,"./isNode":291,"./warning":308,"_process":3}],272:[function(require,module,exports){
+},{"./ReactCurrentOwner":209,"./ReactInstanceMap":237,"./ReactMount":240,"./invariant":305,"./isNode":307,"./warning":324,"_process":3}],288:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -25917,7 +27097,7 @@ function flattenChildren(children) {
 module.exports = flattenChildren;
 
 }).call(this,require('_process'))
-},{"./traverseAllChildren":307,"./warning":308,"_process":3}],273:[function(require,module,exports){
+},{"./traverseAllChildren":323,"./warning":324,"_process":3}],289:[function(require,module,exports){
 /**
  * Copyright 2014-2015, Facebook, Inc.
  * All rights reserved.
@@ -25946,7 +27126,7 @@ function focusNode(node) {
 
 module.exports = focusNode;
 
-},{}],274:[function(require,module,exports){
+},{}],290:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -25977,7 +27157,7 @@ var forEachAccumulated = function(arr, cb, scope) {
 
 module.exports = forEachAccumulated;
 
-},{}],275:[function(require,module,exports){
+},{}],291:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26006,7 +27186,7 @@ function getActiveElement() /*?DOMElement*/ {
 
 module.exports = getActiveElement;
 
-},{}],276:[function(require,module,exports){
+},{}],292:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26058,7 +27238,7 @@ function getEventCharCode(nativeEvent) {
 
 module.exports = getEventCharCode;
 
-},{}],277:[function(require,module,exports){
+},{}],293:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26163,7 +27343,7 @@ function getEventKey(nativeEvent) {
 
 module.exports = getEventKey;
 
-},{"./getEventCharCode":276}],278:[function(require,module,exports){
+},{"./getEventCharCode":292}],294:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26210,7 +27390,7 @@ function getEventModifierState(nativeEvent) {
 
 module.exports = getEventModifierState;
 
-},{}],279:[function(require,module,exports){
+},{}],295:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26241,7 +27421,7 @@ function getEventTarget(nativeEvent) {
 
 module.exports = getEventTarget;
 
-},{}],280:[function(require,module,exports){
+},{}],296:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26285,7 +27465,7 @@ function getIteratorFn(maybeIterable) {
 
 module.exports = getIteratorFn;
 
-},{}],281:[function(require,module,exports){
+},{}],297:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -26404,7 +27584,7 @@ function getMarkupWrap(nodeName) {
 module.exports = getMarkupWrap;
 
 }).call(this,require('_process'))
-},{"./ExecutionEnvironment":174,"./invariant":289,"_process":3}],282:[function(require,module,exports){
+},{"./ExecutionEnvironment":190,"./invariant":305,"_process":3}],298:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26479,7 +27659,7 @@ function getNodeForCharacterOffset(root, offset) {
 
 module.exports = getNodeForCharacterOffset;
 
-},{}],283:[function(require,module,exports){
+},{}],299:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26514,7 +27694,7 @@ function getReactRootElementInContainer(container) {
 
 module.exports = getReactRootElementInContainer;
 
-},{}],284:[function(require,module,exports){
+},{}],300:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26551,7 +27731,7 @@ function getTextContentAccessor() {
 
 module.exports = getTextContentAccessor;
 
-},{"./ExecutionEnvironment":174}],285:[function(require,module,exports){
+},{"./ExecutionEnvironment":190}],301:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26591,7 +27771,7 @@ function getUnboundedScrollPosition(scrollable) {
 
 module.exports = getUnboundedScrollPosition;
 
-},{}],286:[function(require,module,exports){
+},{}],302:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26624,7 +27804,7 @@ function hyphenate(string) {
 
 module.exports = hyphenate;
 
-},{}],287:[function(require,module,exports){
+},{}],303:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26665,7 +27845,7 @@ function hyphenateStyleName(string) {
 
 module.exports = hyphenateStyleName;
 
-},{"./hyphenate":286}],288:[function(require,module,exports){
+},{"./hyphenate":302}],304:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -26803,7 +27983,7 @@ function instantiateReactComponent(node, parentCompositeType) {
 module.exports = instantiateReactComponent;
 
 }).call(this,require('_process'))
-},{"./Object.assign":180,"./ReactCompositeComponent":191,"./ReactEmptyComponent":213,"./ReactNativeComponent":227,"./invariant":289,"./warning":308,"_process":3}],289:[function(require,module,exports){
+},{"./Object.assign":196,"./ReactCompositeComponent":207,"./ReactEmptyComponent":229,"./ReactNativeComponent":243,"./invariant":305,"./warning":324,"_process":3}],305:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -26860,7 +28040,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":3}],290:[function(require,module,exports){
+},{"_process":3}],306:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26925,7 +28105,7 @@ function isEventSupported(eventNameSuffix, capture) {
 
 module.exports = isEventSupported;
 
-},{"./ExecutionEnvironment":174}],291:[function(require,module,exports){
+},{"./ExecutionEnvironment":190}],307:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26952,7 +28132,7 @@ function isNode(object) {
 
 module.exports = isNode;
 
-},{}],292:[function(require,module,exports){
+},{}],308:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -26995,7 +28175,7 @@ function isTextInputElement(elem) {
 
 module.exports = isTextInputElement;
 
-},{}],293:[function(require,module,exports){
+},{}],309:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27020,7 +28200,7 @@ function isTextNode(object) {
 
 module.exports = isTextNode;
 
-},{"./isNode":291}],294:[function(require,module,exports){
+},{"./isNode":307}],310:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -27075,7 +28255,7 @@ var keyMirror = function(obj) {
 module.exports = keyMirror;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],295:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],311:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27111,7 +28291,7 @@ var keyOf = function(oneKeyObj) {
 
 module.exports = keyOf;
 
-},{}],296:[function(require,module,exports){
+},{}],312:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27164,7 +28344,7 @@ function mapObject(object, callback, context) {
 
 module.exports = mapObject;
 
-},{}],297:[function(require,module,exports){
+},{}],313:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27197,7 +28377,7 @@ function memoizeStringOnly(callback) {
 
 module.exports = memoizeStringOnly;
 
-},{}],298:[function(require,module,exports){
+},{}],314:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -27237,7 +28417,7 @@ function onlyChild(children) {
 module.exports = onlyChild;
 
 }).call(this,require('_process'))
-},{"./ReactElement":211,"./invariant":289,"_process":3}],299:[function(require,module,exports){
+},{"./ReactElement":227,"./invariant":305,"_process":3}],315:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27265,7 +28445,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = performance || {};
 
-},{"./ExecutionEnvironment":174}],300:[function(require,module,exports){
+},{"./ExecutionEnvironment":190}],316:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27293,7 +28473,7 @@ var performanceNow = performance.now.bind(performance);
 
 module.exports = performanceNow;
 
-},{"./performance":299}],301:[function(require,module,exports){
+},{"./performance":315}],317:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27321,7 +28501,7 @@ function quoteAttributeValueForBrowser(value) {
 
 module.exports = quoteAttributeValueForBrowser;
 
-},{"./escapeTextContentForBrowser":270}],302:[function(require,module,exports){
+},{"./escapeTextContentForBrowser":286}],318:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27410,7 +28590,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setInnerHTML;
 
-},{"./ExecutionEnvironment":174}],303:[function(require,module,exports){
+},{"./ExecutionEnvironment":190}],319:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27452,7 +28632,7 @@ if (ExecutionEnvironment.canUseDOM) {
 
 module.exports = setTextContent;
 
-},{"./ExecutionEnvironment":174,"./escapeTextContentForBrowser":270,"./setInnerHTML":302}],304:[function(require,module,exports){
+},{"./ExecutionEnvironment":190,"./escapeTextContentForBrowser":286,"./setInnerHTML":318}],320:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
  * All rights reserved.
@@ -27496,7 +28676,7 @@ function shallowEqual(objA, objB) {
 
 module.exports = shallowEqual;
 
-},{}],305:[function(require,module,exports){
+},{}],321:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -27600,7 +28780,7 @@ function shouldUpdateReactComponent(prevElement, nextElement) {
 module.exports = shouldUpdateReactComponent;
 
 }).call(this,require('_process'))
-},{"./warning":308,"_process":3}],306:[function(require,module,exports){
+},{"./warning":324,"_process":3}],322:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -27672,7 +28852,7 @@ function toArray(obj) {
 module.exports = toArray;
 
 }).call(this,require('_process'))
-},{"./invariant":289,"_process":3}],307:[function(require,module,exports){
+},{"./invariant":305,"_process":3}],323:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -27925,7 +29105,7 @@ function traverseAllChildren(children, callback, traverseContext) {
 module.exports = traverseAllChildren;
 
 }).call(this,require('_process'))
-},{"./ReactElement":211,"./ReactFragment":217,"./ReactInstanceHandles":220,"./getIteratorFn":280,"./invariant":289,"./warning":308,"_process":3}],308:[function(require,module,exports){
+},{"./ReactElement":227,"./ReactFragment":233,"./ReactInstanceHandles":236,"./getIteratorFn":296,"./invariant":305,"./warning":324,"_process":3}],324:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -27988,10 +29168,10 @@ if ("production" !== process.env.NODE_ENV) {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"./emptyFunction":268,"_process":3}],309:[function(require,module,exports){
+},{"./emptyFunction":284,"_process":3}],325:[function(require,module,exports){
 module.exports = require('./lib/React');
 
-},{"./lib/React":182}],310:[function(require,module,exports){
+},{"./lib/React":198}],326:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -29194,7 +30374,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":311,"reduce":312}],311:[function(require,module,exports){
+},{"emitter":327,"reduce":328}],327:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -29360,7 +30540,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],312:[function(require,module,exports){
+},{}],328:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -29385,28 +30565,31 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],313:[function(require,module,exports){
+},{}],329:[function(require,module,exports){
+'use strict';
+
 var React = require('react');
 
 var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
+var Dragger = module.exports = React.createClass({
+  displayName: 'exports',
 
-var Dragger = module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
-    return { position: {top: 500, left: 250} };
+  getInitialState: function getInitialState() {
+    return { position: { top: 500, left: 250 } };
   },
 
-  handleStart: function (event, ui) {
-    this.setState( { position: ui.position } );
+  handleStart: function handleStart(event, ui) {
+    this.setState({ position: ui.position });
   },
 
-  handleDrag: function (event, ui) {
-    this.setState( { position: ui.position } );
+  handleDrag: function handleDrag(event, ui) {
+    this.setState({ position: ui.position });
   },
 
-  handleStop: function (event, ui) {
-    this.setState( { position: ui.position } );
+  handleStop: function handleStop(event, ui) {
+    this.setState({ position: ui.position });
   },
   render: function render() {
     var self = this;
@@ -29414,77 +30597,82 @@ var Dragger = module.exports = React.createClass({displayName: "exports",
         top = self.props.top,
         left = self.state.position.left;
 
-    return (
-      React.createElement("div", {className: "post dragger"}, 
-        React.createElement("div", {className: "dragger_images"}, 
-          React.createElement(Draggable, {
-              axis: "x", 
-              start: {x: 250, y: 500}, 
-              bounds: "parent", 
-              moveOnStartChange: false, 
-              zIndex: 100, 
-              onStart: self.handleStart, 
-              onDrag: self.handleDrag, 
-              onStop: self.handleStop}, 
-                React.createElement("span", {className: "handle"}, 
-                  React.createElement(Isvg, {src: "/icons/new/slide.svg"})
-                )
-          ), 
-          React.createElement("div", {className: "bottom_image", style: {backgroundImage: "url("+bottom+")"}}), 
-          React.createElement("div", {className: "top_image", style: {backgroundImage: "url("+top+")", width: left+1+"px"}})
-
-        )
-
+    return React.createElement(
+      'div',
+      { className: 'post dragger' },
+      React.createElement(
+        'div',
+        { className: 'dragger_images' },
+        React.createElement(
+          Draggable,
+          {
+            axis: 'x',
+            start: { x: 250, y: 500 },
+            bounds: 'parent',
+            moveOnStartChange: false,
+            zIndex: 100,
+            onStart: self.handleStart,
+            onDrag: self.handleDrag,
+            onStop: self.handleStop },
+          React.createElement(
+            'span',
+            { className: 'handle' },
+            React.createElement(Isvg, { src: '/icons/new/slide.svg' })
+          )
+        ),
+        React.createElement('div', { className: 'bottom_image', style: { backgroundImage: "url(" + bottom + ")" } }),
+        React.createElement('div', { className: 'top_image', style: { backgroundImage: "url(" + top + ")", width: left + 1 + "px" } })
       )
-    )
+    );
   }
-})
+});
 
+},{"react":325,"react-draggable":6,"react-inlinesvg":94}],330:[function(require,module,exports){
+'use strict';
 
-},{"react":309,"react-draggable":6,"react-inlinesvg":94}],314:[function(require,module,exports){
 var React = require('react');
 var Isvg = require('react-inlinesvg');
 
-var Mouser = module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
+var Mouser = module.exports = React.createClass({
+  displayName: 'exports',
+
+  getInitialState: function getInitialState() {
     // return { position: {top: 500, left: 250} };
     return { over: false, left: 250 };
   },
 
-  mouseEnter: function () {
+  mouseEnter: function mouseEnter() {
     // console.log("mouseOver: " + util.inspect(event));
-    this.setState({over: true})
+    this.setState({ over: true });
   },
 
-  mouseLeave: function () {
+  mouseLeave: function mouseLeave() {
     // console.log("mouseOver: " + util.inspect(event));
-    this.setState({over: false})
+    this.setState({ over: false });
   },
 
-  onMouseMove: function(event){
+  onMouseMove: function onMouseMove(event) {
 
     var window_width = window.innerWidth - 130,
-        screenX = event.offsetX ,
-        clientX = event.clientX ,
+        screenX = event.offsetX,
+        clientX = event.clientX,
         screenY = event.offsetY;
 
+    // console.log("window_width: " + window_width);
+    // console.log("screenX: " + screenX);
+    // console.log("clientX: " + clientX);
+    // console.log("screenY: " + screenY);
+    // console.log("margin_diff: " + margin_diff);
+    // console.log("inner_left: " + inner_left);
+    // console.log("left: " + left);
 
-        // console.log("window_width: " + window_width);
-        // console.log("screenX: " + screenX);
-        // console.log("clientX: " + clientX);
-        // console.log("screenY: " + screenY);
-        // console.log("margin_diff: " + margin_diff);
-        // console.log("inner_left: " + inner_left);
-        // console.log("left: " + left);
-
-    this.setState({left: (500 - screenX), screenX: screenX, screenY: (screenY)});
-
+    this.setState({ left: 500 - screenX, screenX: screenX, screenY: screenY });
   },
 
-  onMouseUp: function (e) {
-  // this.setState({dragging: false})
-    e.stopPropagation()
-    e.preventDefault()
+  onMouseUp: function onMouseUp(e) {
+    // this.setState({dragging: false})
+    e.stopPropagation();
+    e.preventDefault();
   },
 
   // componentDidMount: function () {
@@ -29492,7 +30680,7 @@ var Mouser = module.exports = React.createClass({displayName: "exports",
   //   document.addEventListener('mousemove', this.onMouseMove)
   // },
 
-  componentDidUpdate: function (props, state) {
+  componentDidUpdate: function componentDidUpdate(props, state) {
     if (this.state.over) {
       document.addEventListener('mousemove', this.onMouseMove);
       // document.addEventListener('resize', this.onMouseMove);
@@ -29506,13 +30694,12 @@ var Mouser = module.exports = React.createClass({displayName: "exports",
     }
   },
 
-  componentDidMount: function() {
+  componentDidMount: function componentDidMount() {
     // document.addEventListener('resize', this.onMouseMove);
     // document.addEventListener('scroll', this.onMouseMove);
   },
 
-
-  componentDidUnmount: function() {
+  componentDidUnmount: function componentDidUnmount() {
     // document.removeEventListener('resize', this.onMouseMove);
     // document.removeEventListener('scroll', this.onMouseMove);
   },
@@ -29526,369 +30713,383 @@ var Mouser = module.exports = React.createClass({displayName: "exports",
         screenY = self.state.screenY,
         over = self.state.over;
 
-    return (
-      React.createElement("div", {className:  over ? "post mouser" : "post mouser over"}, 
-        React.createElement("div", {className: "block_wrapper"}, 
-          React.createElement("span", {className: "left_label"}), 
-          React.createElement("span", {className: "content"}, 
-            React.createElement("div", {className: "dragger_images"}, 
-
-              React.createElement("div", {className: "bottom_image", style: {backgroundImage: "url("+bottom+")"}}), 
-              React.createElement("div", {className: "top_image", style: {backgroundImage: "url("+top+")", width: left+"px"}}), 
-              React.createElement("div", {className: "mouse_overlay", onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave})
-            ), 
-
-            React.createElement("span", {className: "handle", style: {top: screenY, left: screenX}}, 
-              React.createElement(Isvg, {src: "/icons/new/slide.svg"})
-            )
+    return React.createElement(
+      'div',
+      { className: over ? "post mouser" : "post mouser over" },
+      React.createElement(
+        'div',
+        { className: 'block_wrapper' },
+        React.createElement('span', { className: 'left_label' }),
+        React.createElement(
+          'span',
+          { className: 'content' },
+          React.createElement(
+            'div',
+            { className: 'dragger_images' },
+            React.createElement('div', { className: 'bottom_image', style: { backgroundImage: "url(" + bottom + ")" } }),
+            React.createElement('div', { className: 'top_image', style: { backgroundImage: "url(" + top + ")", width: left + "px" } }),
+            React.createElement('div', { className: 'mouse_overlay', onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave })
+          ),
+          React.createElement(
+            'span',
+            { className: 'handle', style: { top: screenY, left: screenX } },
+            React.createElement(Isvg, { src: '/icons/new/slide.svg' })
           )
         )
       )
-    )
+    );
   }
-})
+});
 
+},{"react":325,"react-inlinesvg":94}],331:[function(require,module,exports){
+'use strict';
 
-},{"react":309,"react-inlinesvg":94}],315:[function(require,module,exports){
 var React = require('react');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 
 function getFilePathExtension(path) {
 	var filename = path.split('\\').pop().split('/').pop();
-	return filename.substr(( Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
+	return filename.substr((Math.max(0, filename.lastIndexOf(".")) || Infinity) + 1);
 }
 
-module.exports = React.createClass({displayName: "exports",
-  getInitialState: function() {
-    return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
-  },
+module.exports = React.createClass({
+	displayName: 'exports',
 
-	getDefaultProps: function() {
-		return { hover: true, loop: false, play: false }
+	getInitialState: function getInitialState() {
+		return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} };
 	},
 
-	componentWillMount: function(){
+	getDefaultProps: function getDefaultProps() {
+		return { hover: true, loop: false, play: false };
+	},
+
+	componentWillMount: function componentWillMount() {
 		var timer = {
-		    running: false,
-		    iv: 5000,
-		    timeout: false,
-		    cb : function(){},
-		    start : function(cb,iv){
-		        var elm = this;
-		        clearInterval(this.timeout);
-		        this.running = true;
-		        if(cb) this.cb = cb;
-		        if(iv) this.iv = iv;
-		        this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
-		    },
-		    execute : function(e){
-		        if(!e.running) return false;
-		        e.cb();
-		        e.start();
-		    },
-		    stop : function(){
-		        this.running = false;
-		    },
-		    set_interval : function(iv){
-		        clearInterval(this.timeout);
-		        this.start(false, iv);
-		    }
+			running: false,
+			iv: 5000,
+			timeout: false,
+			cb: function cb() {},
+			start: function start(cb, iv) {
+				var elm = this;
+				clearInterval(this.timeout);
+				this.running = true;
+				if (cb) this.cb = cb;
+				if (iv) this.iv = iv;
+				this.timeout = setTimeout(function () {
+					elm.execute(elm);
+				}, this.iv);
+			},
+			execute: function execute(e) {
+				if (!e.running) return false;
+				e.cb();
+				e.start();
+			},
+			stop: function stop() {
+				this.running = false;
+			},
+			set_interval: function set_interval(iv) {
+				clearInterval(this.timeout);
+				this.start(false, iv);
+			}
 		};
-		this.setState({timer: timer})
+		this.setState({ timer: timer });
 	},
 
-  componentDidMount: function(){
-    this.animate();
-  },
+	componentDidMount: function componentDidMount() {
+		this.animate();
+	},
 
-  componentWillUnmount: function(){
+	componentWillUnmount: function componentWillUnmount() {
 		this.state.timer.stop();
-    this.setState({animation: "stop"});
-  },
-
-  enter: function()	{
-    this.setState({animation: "forward"});
-
+		this.setState({ animation: "stop" });
 	},
 
-  out: function()	{
-    this.setState({animation: "reverse"});
+	enter: function enter() {
+		this.setState({ animation: "forward" });
 	},
 
-	enterLoop: function()	{
-		this.setState({animation: "startloop"});
+	out: function out() {
+		this.setState({ animation: "reverse" });
 	},
 
-	outLoop: function()	{
-		this.setState({animation: "stoploop"});
+	enterLoop: function enterLoop() {
+		this.setState({ animation: "startloop" });
 	},
 
-	play: function()	{
-		this.setState({animation: "play"});
+	outLoop: function outLoop() {
+		this.setState({ animation: "stoploop" });
 	},
 
-	reset: function()	{
-		this.setState({animation: "stoploop"});
+	play: function play() {
+		this.setState({ animation: "play" });
 	},
 
-  animate: function(){
-    var self = this;
-    var speed = ( 1000 * self.props.duration ) / self.props.frames;
+	reset: function reset() {
+		this.setState({ animation: "stoploop" });
+	},
 
-    // interv = this.setInterval(function(){
-    //     if ( self.state.animation == "start") {
-    //     }
-    //
-    //     if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
-    //         console.log(self.state);
-    //         var new_frame = self.state.current_frame + 1;
-    //         var col = (new_frame % self.props.columns) +1;
-    //         var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-    //
-    //         var x = (col - 1) * self.props.frameW * -1;
-    //         var y = (row - 1) * self.props.frameH * -1;
-    //         self.setState( { current_frame: new_frame, x: x, y: y } );
-    //     }
-    //
-    //     if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
-    //         var new_frame = self.state.current_frame - 1;
-    //         var col = (new_frame % self.props.columns) +1;
-    //         var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-    //
-    //         var x = (col - 1) * self.props.frameW * -1;
-    //         var y = (row - 1) * self.props.frameH * -1;
-    //         self.setState( { current_frame: new_frame, x: x, y: y } );
-    //     }
-    //     if ( self.state.animation == "stop") {
-    //       clearInterval(interv);
-    //     }
-    //
-    // }, speed);
+	animate: function animate() {
+		var self = this;
+		var speed = 1000 * self.props.duration / self.props.frames;
 
+		// interv = this.setInterval(function(){
+		//     if ( self.state.animation == "start") {
+		//     }
+		//
+		//     if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
+		//         console.log(self.state);
+		//         var new_frame = self.state.current_frame + 1;
+		//         var col = (new_frame % self.props.columns) +1;
+		//         var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+		//
+		//         var x = (col - 1) * self.props.frameW * -1;
+		//         var y = (row - 1) * self.props.frameH * -1;
+		//         self.setState( { current_frame: new_frame, x: x, y: y } );
+		//     }
+		//
+		//     if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
+		//         var new_frame = self.state.current_frame - 1;
+		//         var col = (new_frame % self.props.columns) +1;
+		//         var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+		//
+		//         var x = (col - 1) * self.props.frameW * -1;
+		//         var y = (row - 1) * self.props.frameH * -1;
+		//         self.setState( { current_frame: new_frame, x: x, y: y } );
+		//     }
+		//     if ( self.state.animation == "stop") {
+		//       clearInterval(interv);
+		//     }
+		//
+		// }, speed);
 
-    interval = speed; // initial condition
+		// interval = speed; // initial condition
 
+		self.state.timer.start(function () {
+			if (self.state.animation == "start") {}
 
-    self.state.timer.start(function(){
-      if ( self.state.animation == "start") {
-      }
+			if (self.state.animation == "forward" && self.state.current_frame != self.props.frames - 1) {
 
-      if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
+				var new_frame = self.state.current_frame + 1;
+				var col = new_frame % self.props.columns + 1;
+				var row = Math.floor(new_frame / self.props.columns) + 1;
 
-          var new_frame = self.state.current_frame + 1;
-          var col = (new_frame % self.props.columns) + 1;
-          var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+				var x = (col - 1) * self.props.frameW * -1;
+				var y = (row - 1) * self.props.frameH * -1;
+				self.setState({ current_frame: new_frame, x: x, y: y });
+			}
 
-          var x = (col - 1) * self.props.frameW * -1;
-          var y = (row - 1) * self.props.frameH * -1;
-          self.setState( { current_frame: new_frame, x: x, y: y } );
-      }
+			if (self.state.animation == "reverse" && self.state.current_frame != 0) {
+				var new_frame = self.state.current_frame - 1;
+				var col = new_frame % self.props.columns + 1;
+				var row = Math.floor(new_frame / self.props.columns) + 1;
 
-      if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
-          var new_frame = self.state.current_frame - 1;
-          var col = (new_frame % self.props.columns) + 1;
-          var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+				var x = (col - 1) * self.props.frameW * -1;
+				var y = (row - 1) * self.props.frameH * -1;
+				self.setState({ current_frame: new_frame, x: x, y: y });
+			}
 
-          var x = (col - 1) * self.props.frameW * -1;
-          var y = (row - 1) * self.props.frameH * -1;
-          self.setState( { current_frame: new_frame, x: x, y: y } );
-      }
-
-			if (( self.state.animation == "startloop")) {
-				if (self.state.current_frame == self.props.frames - 1 ) {
-					self.setState( { current_frame: 0, x: 0, y: 0 } );
+			if (self.state.animation == "startloop") {
+				if (self.state.current_frame == self.props.frames - 1) {
+					self.setState({ current_frame: 0, x: 0, y: 0 });
 				} else {
 					var new_frame = self.state.current_frame + 1;
-					var col = (new_frame % self.props.columns) + 1;
-					var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+					var col = new_frame % self.props.columns + 1;
+					var row = Math.floor(new_frame / self.props.columns) + 1;
 
 					var x = (col - 1) * self.props.frameW * -1;
 					var y = (row - 1) * self.props.frameH * -1;
-					self.setState( { current_frame: new_frame, x: x, y: y } );
+					self.setState({ current_frame: new_frame, x: x, y: y });
 				}
 			}
 
-			if ((self.state.animation == "play") ) {
-				if (self.state.current_frame == self.props.frames - 1 ) {
-					self.setState( { animation: "start" } );
+			if (self.state.animation == "play") {
+				if (self.state.current_frame == self.props.frames - 1) {
+					self.setState({ animation: "start" });
 				} else {
 					var new_frame = self.state.current_frame + 1;
-					var col = (new_frame % self.props.columns) + 1;
-					var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+					var col = new_frame % self.props.columns + 1;
+					var row = Math.floor(new_frame / self.props.columns) + 1;
 
 					var x = (col - 1) * self.props.frameW * -1;
 					var y = (row - 1) * self.props.frameH * -1;
-					self.setState( { current_frame: new_frame, x: x, y: y } );
+					self.setState({ current_frame: new_frame, x: x, y: y });
 				}
-      }
-
-			if (( self.state.animation == "stoploop")) {
-				self.setState( { current_frame: 0, x: 0, y: 0 } );
 			}
 
+			if (self.state.animation == "stoploop") {
+				self.setState({ current_frame: 0, x: 0, y: 0 });
+			}
+		}, speed);
+	},
 
-    } , speed );
-  },
+	render: function render() {
+		var self = this;
 
-  render: function() {
-    var self = this;
+		var image = self.props.image,
+		    width = self.props.frameW * self.props.columns,
+		    hover = self.props.hover,
+		    loop = self.props.loop,
+		    play = self.props.play,
+		    height = self.props.frameH * Math.ceil(self.props.frames / self.props.columns);
 
-    var image = self.props.image,
-				width = self.props.frameW * self.props.columns,
-				hover = self.props.hover,
-				loop = self.props.loop,
-				play = self.props.play,
-				height = self.props.frameH * ( Math.ceil( self.props.frames / self.props.columns ) );
+		if (self.props.className) {
+			var className = self.props.className + " icon sprite_container";
+		} else {
+			var className = "icon sprite_container";
+		}
 
-    if (self.props.className) {
-      var className = self.props.className + " icon sprite_container";
-    } else {
-      var className = "icon sprite_container";
-    }
+		var style = {
+			transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
+			WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
+			width: width,
+			height: height,
+			position: "absolute"
+		};
 
-    var style = {
-      transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
-      WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
-      width: width,
-      height: height,
-      position: "absolute"
-    };
+		var size = {
+			height: self.props.frameH + "px",
+			width: self.props.frameW + "px"
+		};
+		if (self.props.duration && self.props.frames) {
+			self.animate();
+		}
 
-    var size = {
-      height: self.props.frameH + "px",
-      width: self.props.frameW + "px",
-    };
-    if (self.props.duration && self.props.frames) {
-      self.animate();
-    }
-
-
-		if (image){
-			if (hover){
-				if ((getFilePathExtension(image) === "svg")){
-		      return (
-		        React.createElement("span", {onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size}, 
-
-		          React.createElement("span", {className: "svg_icon_wrapper", style:  style }, 
-		            React.createElement(Isvg, {src: image, className: "isvg"}, 
-		              "Here's some optional content for browsers that don't support XHR or inline" + ' ' +
-		              "SVGs. You can use other React components here too. Here, I'll show you."
-
-		            )
-		          )
-		        )
-		      )
-		    } else {
-		      return (
-		        React.createElement("span", {onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size}, 
-		          React.createElement("img", {src: image, width: width, height:  height, style:  style })
-		        )
-		      )
-		    }
-			} else if (loop){
-				if ((getFilePathExtension(image) === "svg")){
-					return (
-						React.createElement("span", {onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size}, 
-
-							React.createElement("span", {className: "svg_icon_wrapper loop", style:  style }, 
-								React.createElement(Isvg, {src: image, className: "isvg"}, 
-									"Here's some optional content for browsers that don't support XHR or inline" + ' ' +
-									"SVGs. You can use other React components here too. Here, I'll show you."
-
-								)
+		if (image) {
+			if (hover) {
+				if (getFilePathExtension(image) === "svg") {
+					return React.createElement(
+						'span',
+						{ onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size },
+						React.createElement(
+							'span',
+							{ className: 'svg_icon_wrapper', style: style },
+							React.createElement(
+								Isvg,
+								{ src: image, className: 'isvg' },
+								'Here\'s some optional content for browsers that don\'t support XHR or inline SVGs. You can use other React components here too. Here, I\'ll show you.'
 							)
 						)
-					)
+					);
 				} else {
-					return (
-						React.createElement("span", {onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size}, 
-							React.createElement("img", {src: image, width: width, height:  height, style:  style })
+					return React.createElement(
+						'span',
+						{ onMouseEnter: self.enter, onMouseLeave: self.out, className: className, style: size },
+						React.createElement('img', { src: image, width: width, height: height, style: style })
+					);
+				}
+			} else if (loop) {
+				if (getFilePathExtension(image) === "svg") {
+					return React.createElement(
+						'span',
+						{ onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size },
+						React.createElement(
+							'span',
+							{ className: 'svg_icon_wrapper loop', style: style },
+							React.createElement(
+								Isvg,
+								{ src: image, className: 'isvg' },
+								'Here\'s some optional content for browsers that don\'t support XHR or inline SVGs. You can use other React components here too. Here, I\'ll show you.'
+							)
 						)
-					)
+					);
+				} else {
+					return React.createElement(
+						'span',
+						{ onMouseEnter: self.enterLoop, onMouseLeave: self.out, className: className, style: size },
+						React.createElement('img', { src: image, width: width, height: height, style: style })
+					);
 				}
 			} else {
-				if ((getFilePathExtension(image) === "svg")){
+				if (getFilePathExtension(image) === "svg") {
 					var VisibilitySensor = require('react-visibility-sensor');
 
-					var onChange = function (isVisible) {
-				    if (isVisible){
+					var onChange = function onChange(isVisible) {
+						if (isVisible) {
 							self.play();
 						} else {
 							self.reset();
 						};
-				  };
+					};
 
-		      return (
-						React.createElement(VisibilitySensor, {onChange: onChange}, 
-			        React.createElement("span", {className: className, style: size}, 
-			          React.createElement("span", {className: "svg_icon_wrapper play", style:  style }, 
-			            React.createElement(Isvg, {src: image, className: "isvg"}, 
-			              "Here's some optional content for browsers that don't support XHR or inline" + ' ' +
-			              "SVGs. You can use other React components here too. Here, I'll show you."
-
-			            )
-			          )
-			        )
+					return React.createElement(
+						VisibilitySensor,
+						{ onChange: onChange },
+						React.createElement(
+							'span',
+							{ className: className, style: size },
+							React.createElement(
+								'span',
+								{ className: 'svg_icon_wrapper play', style: style },
+								React.createElement(
+									Isvg,
+									{ src: image, className: 'isvg' },
+									'Here\'s some optional content for browsers that don\'t support XHR or inline SVGs. You can use other React components here too. Here, I\'ll show you.'
+								)
+							)
 						)
-		      )
-		    } else {
-		      return (
-		        React.createElement("span", {className: className, style: size}, 
-		          React.createElement("img", {src: image, width: width, height:  height, style:  style })
-		        )
-		      )
-		    }
+					);
+				} else {
+					return React.createElement(
+						'span',
+						{ className: className, style: size },
+						React.createElement('img', { src: image, width: width, height: height, style: style })
+					);
+				}
 			}
-
 		} else {
-				return (
-					React.createElement("h2", null, "fuck you")
-				)
-			}
-	  }
+			return React.createElement(
+				'h2',
+				null,
+				'fuck you'
+			);
+		}
+	}
 });
 
+},{"react":325,"react-inlinesvg":94,"react-visibility-sensor":170,"util":5}],332:[function(require,module,exports){
+'use strict';
 
-},{"react":309,"react-inlinesvg":94,"react-visibility-sensor":154,"util":5}],316:[function(require,module,exports){
 var React = require('react');
 var Isvg = require('react-inlinesvg');
 
-var VideoGallery = module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
-    return {currentVideo: "", moreOver: false};
+var VideoGallery = module.exports = React.createClass({
+  displayName: 'exports',
+
+  getInitialState: function getInitialState() {
+    return { currentVideo: "", moreOver: false };
   },
-  setCurrentVideo: function(video, type){
+  setCurrentVideo: function setCurrentVideo(video, type) {
     console.log("setCurrentVideo");
-    this.setState({currentVideo: video, type: type})
+    this.setState({ currentVideo: video, type: type });
   },
 
-  moreOver: function(){
-    this.setState({moreOver: true})
+  moreOver: function moreOver() {
+    this.setState({ moreOver: true });
   },
 
-  moreLeave: function(){
-    this.setState({moreOver: false})
+  moreLeave: function moreLeave() {
+    this.setState({ moreOver: false });
   },
 
   render: function render() {
     var self = this,
-    thing = self.props.thing,
-    description = thing.description,
-    backgroundImage = thing.backgroundImage,
-    style = thing.style,
-    currentVideo = self.state.currentVideo,
-    type = self.state.type,
-    moreOver = self.state.moreOver;
+        thing = self.props.thing,
+        description = thing.description,
+        backgroundImage = thing.backgroundImage,
+        style = thing.style,
+        currentVideo = self.state.currentVideo,
+        type = self.state.type,
+        moreOver = self.state.moreOver;
 
     var wrapper_styles = {
       backgroundColor: self.props.blockColor,
       backgroundImage: "url(" + backgroundImage + ")"
-    }
+    };
 
     if (thing.videos.length > 1) {
       console.log("thing.videos.length > 1");
-      var videos = thing.videos.map(function(video, index){
+      var videos = thing.videos.map(function (video, index) {
         var image = video.image,
             url = video.url,
             title = video.title,
@@ -29900,90 +31101,119 @@ var VideoGallery = module.exports = React.createClass({displayName: "exports",
           var webm = video_files.webm,
               mp4 = video_files.mp4;
         }
-        return (
-          React.createElement("span", {key: index, className: "video_small", style: {backgroundImage: "url("+image+")"}, onClick: self.setCurrentVideo.bind(self, url, type)}, 
-            React.createElement("span", {className: "description"}, 
-              React.createElement("h4", {className: "video_small_title"}, title), 
-              React.createElement("p", {className: "video_small_series"}, series)
-            ), 
-            React.createElement("span", {className: "small_over"}, 
-               (webm || mp4) ?
-                React.createElement("video", {poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-                     webm ? React.createElement("source", {src: webm, type: "video/webm"}) : null, 
-                     mp4 ? React.createElement("source", {src: mp4, type: "video/mp4"}) : null
-                )
-                : null
-              
+        return React.createElement(
+          'span',
+          { key: index, className: 'video_small', style: { backgroundImage: "url(" + image + ")" }, onClick: self.setCurrentVideo.bind(self, url, type) },
+          React.createElement(
+            'span',
+            { className: 'description' },
+            React.createElement(
+              'h4',
+              { className: 'video_small_title' },
+              title
+            ),
+            React.createElement(
+              'p',
+              { className: 'video_small_series' },
+              series
             )
+          ),
+          React.createElement(
+            'span',
+            { className: 'small_over' },
+            webm || mp4 ? React.createElement(
+              'video',
+              { poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+              webm ? React.createElement('source', { src: webm, type: 'video/webm' }) : null,
+              mp4 ? React.createElement('source', { src: mp4, type: 'video/mp4' }) : null
+            ) : null
           )
-        )
+        );
       });
 
-      return (
-        React.createElement("div", {className: currentVideo ? "post videos video_open " + style : "post videos " + style}, 
-          currentVideo ?
-            React.createElement("div", {className: "iframe-video-container"}, 
-              type == "vimeo" ? React.createElement("iframe", {src: currentVideo+"&autoplay=1", width: "853", height: "480", frameBorder: "0", webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true}) : null, 
-              type == "youtube" ? React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}) : null, 
-
-
-              moreOver ? React.createElement("div", {className: "more_overlay"}) : null
+      return React.createElement(
+        'div',
+        { className: currentVideo ? "post videos video_open " + style : "post videos " + style },
+        currentVideo ? React.createElement(
+          'div',
+          { className: 'iframe-video-container' },
+          type == "vimeo" ? React.createElement('iframe', { src: currentVideo + "&autoplay=1", width: '853', height: '480', frameBorder: '0', webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true }) : null,
+          type == "youtube" ? React.createElement('iframe', { src: currentVideo + "?autoplay=1", frameBorder: '0', width: '560', height: '315' }) : null,
+          moreOver ? React.createElement('div', { className: 'more_overlay' }) : null
+        ) : React.createElement(
+          'div',
+          { className: 'main_video_wrapper', style: wrapper_styles },
+          React.createElement(
+            'div',
+            { className: 'main_video_container', onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type) },
+            React.createElement(Isvg, { src: '/icons/new/play_1-01.svg', className: 'video_play_button' }),
+            React.createElement(
+              'p',
+              { className: 'video_description' },
+              description
             )
-
-          :
-            React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
-              React.createElement("div", {className: "main_video_container", onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}, 
-                React.createElement(Isvg, {src: "/icons/new/play_1-01.svg", className: "video_play_button"}), 
-                React.createElement("p", {className: "video_description"}, description)
-              )
-            ), 
-          
-          React.createElement("div", {className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver}, 
-            videos
-          ), 
-          React.createElement("span", {className: "video_more", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave}, 
-            React.createElement("span", {className: "video_more_text"}, "more")
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver },
+          videos
+        ),
+        React.createElement(
+          'span',
+          { className: 'video_more', onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave },
+          React.createElement(
+            'span',
+            { className: 'video_more_text' },
+            'more'
           )
         )
-      )
+      );
     } else if (thing.videos.length == 1) {
-        console.log("thing.videos.length == 1");
-        var video = thing.videos[0];
-        var image = video.image,
-            url = video.url,
-            title = video.title,
-            type = video.type,
-            video_files = video.video,
-            series = video.series;
+      console.log("thing.videos.length == 1");
+      var video = thing.videos[0];
+      var image = video.image,
+          url = video.url,
+          title = video.title,
+          type = video.type,
+          video_files = video.video,
+          series = video.series;
 
-        if (video_files) {
-          var webm = video_files.webm,
-              mp4 = video_files.mp4;
-        }
-        return (
-          React.createElement("div", {className: currentVideo ? "post videos video_open single_video " + style : "post videos single_video " + style}, 
-            currentVideo ?
-              React.createElement("div", {className: "iframe-video-container"}, 
-                type == "vimeo" ? React.createElement("iframe", {src: currentVideo+"&autoplay=1", width: "853", height: "480", frameBorder: "0", webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true}) : null, 
-                type == "youtube" ? React.createElement("iframe", {src: currentVideo+"?autoplay=1", frameBorder: "0", width: "560", height: "315"}) : null
-              )
-            :
-              React.createElement("div", {className: "main_video_wrapper", style: wrapper_styles}, 
-                React.createElement("div", {className: "main_video_container", onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type)}, 
-                  React.createElement(Isvg, {src: "/icons/new/play_1-01.svg", className: "video_play_button"}), 
-                  React.createElement("p", {className: "video_description"}, description), 
-                  React.createElement("div", {className: "more_overlay"})
-                )
-              )
-            
+      if (video_files) {
+        var webm = video_files.webm,
+            mp4 = video_files.mp4;
+      }
+      return React.createElement(
+        'div',
+        { className: currentVideo ? "post videos video_open single_video " + style : "post videos single_video " + style },
+        currentVideo ? React.createElement(
+          'div',
+          { className: 'iframe-video-container' },
+          type == "vimeo" ? React.createElement('iframe', { src: currentVideo + "&autoplay=1", width: '853', height: '480', frameBorder: '0', webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true }) : null,
+          type == "youtube" ? React.createElement('iframe', { src: currentVideo + "?autoplay=1", frameBorder: '0', width: '560', height: '315' }) : null
+        ) : React.createElement(
+          'div',
+          { className: 'main_video_wrapper', style: wrapper_styles },
+          React.createElement(
+            'div',
+            { className: 'main_video_container', onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type) },
+            React.createElement(Isvg, { src: '/icons/new/play_1-01.svg', className: 'video_play_button' }),
+            React.createElement(
+              'p',
+              { className: 'video_description' },
+              description
+            ),
+            React.createElement('div', { className: 'more_overlay' })
           )
         )
+      );
     }
   }
 });
 
+},{"react":325,"react-inlinesvg":94}],333:[function(require,module,exports){
+'use strict';
 
-},{"react":309,"react-inlinesvg":94}],317:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Route = Router.Route;
@@ -30000,38 +31230,51 @@ var App = require('./views/app.jsx'),
 
 var NotFound = require('./views/404.jsx');
 
-var routes = module.exports = (
-    React.createElement(Route, {path: "/", handler: App}, 
-      React.createElement(Route, {name: "login", handler: Login}), 
-      React.createElement(Route, {path: "/agency", handler: Agency}), 
-      React.createElement(Route, {path: "/sprite-test", handler: SpriteTest}), 
-      React.createElement(Route, {path: ":channel", handler: Channel}), 
-      React.createElement(Route, {path: "/post/:casestudy", handler: CaseStudy, key: "Thing!" }), 
-      React.createElement(DefaultRoute, {handler: Home}), 
-      React.createElement(NotFoundRoute, {handler: NotFound})
-    )
+var routes = module.exports = React.createElement(
+    Route,
+    { path: '/', handler: App },
+    React.createElement(Route, { name: 'login', handler: Login }),
+    React.createElement(Route, { path: '/agency', handler: Agency }),
+    React.createElement(Route, { path: '/sprite-test', handler: SpriteTest }),
+    React.createElement(Route, { path: ':channel', handler: Channel }),
+    React.createElement(Route, { path: '/post/:casestudy', handler: CaseStudy, key: "Thing!" }),
+    React.createElement(DefaultRoute, { handler: Home }),
+    React.createElement(NotFoundRoute, { handler: NotFound })
 );
 
+},{"./views/404.jsx":334,"./views/agency.jsx":335,"./views/app.jsx":336,"./views/casestudy.jsx":337,"./views/channel.jsx":338,"./views/home.jsx":341,"./views/login.jsx":343,"./views/sprite_test.jsx":345,"react":325,"react-router":149}],334:[function(require,module,exports){
+'use strict';
 
-},{"./views/404.jsx":318,"./views/agency.jsx":319,"./views/app.jsx":320,"./views/casestudy.jsx":321,"./views/channel.jsx":322,"./views/home.jsx":325,"./views/login.jsx":327,"./views/sprite_test.jsx":329,"react":309,"react-router":133}],318:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 
-module.exports = React.createClass({displayName: "exports",
+module.exports = React.createClass({
+  displayName: 'exports',
 
   render: function render() {
 
-    return (
-      React.createElement(Layout, React.__spread({},  this.props), 
-        React.createElement("h3", null, "URL: ", this.props.url, " - Not Found(404)"), 
-        React.createElement("h6", null, "I am a Plain vanilla react view")
+    return React.createElement(
+      Layout,
+      this.props,
+      React.createElement(
+        'h3',
+        null,
+        'URL: ',
+        this.props.url,
+        ' - Not Found(404)'
+      ),
+      React.createElement(
+        'h6',
+        null,
+        'I am a Plain vanilla react view'
       )
     );
   }
 });
 
+},{"./layout.jsx":342,"react":325}],335:[function(require,module,exports){
+'use strict';
 
-},{"./layout.jsx":326,"react":309}],319:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
 
@@ -30045,260 +31288,282 @@ var VideoGallery = require("../components/video_gallery.jsx");
 var ScrollBlocker = require('react-scroll-components/ScrollBlocker');
 var ScrollListenerMixin = require('react-scroll-components/ScrollListenerMixin');
 
-var services = [
-  {
-    id: 0,
-    area: "branding",
-    name: "ID",
-    words: "We are often tasked with naming and branding new ventures, products, and services, sometimes even new categories altogether. As many of our clients are market disruptors, we spend a lot of time crafting new brands and developing the framework for families of brands. Naming, logo, and identity projects tend to be multifaceted, blending research and marketing strategy with very detailed conceptual work. Everything from trademark searches to procuring the right domain name can come into play. Creatively, there is always a storytelling component. We start with a visual mood board and segue into a brand lexicon and archetype profile, forming the foundation for a well-crafted narrative, which we call the “brand mantra.” Each step flows into the next. Logos are complex things, often with paradoxical imperatives. They need to clearly communicate a great deal, but do so quickly; be unique and ownable, but also familiar and relatable; feel contemporary and forward-thinking, but allow for evolution over time. These projects are always iterative, as we go from pencil sketches to black and white mockups to refined marks with color and type treatment options to brand style guides at the end. "
-  },
-  {
-    id: 1,
-    area: "branding",
-    name: "Packaging",
-    words: "Our senior creative team comes from a heavy consumer packaged goods background. Plus, we’re suckers for good packaging as much as the next person. So, packaging is near and dear to our hearts. With our clients competing on increasingly crowded shelves, we’re always looking at what will help their brands jump out, while still tying back to their overall brand stories. These projects extend beyond the exterior package to also include what’s inside the box as well as supporting materials at point-of-sale, which can often play a larger role in the purchase decision than the package itself. "
-  },
-  {
-    id: 2,
-    area: "branding",
-    name: "Strategy",
-    words: "When we’re hired as agency-of-record, a big part of what we do every day is provide strategic counsel, acting as a sounding board for new initiatives and having a key seat at the board room table when it comes to strategic planning. While this typically starts with marketing communications, these conversations have a way of dipping into a whole host of topics, from product development to sales to customer service. Even though we are perhaps better known for our creative chops, we have also been brought in for purely strategic assignments, in some cases helping turn around under-performing brands and other times assessing and assisting internal creative teams in their initiatives. "
-  },
-  {
-    id: 3,
-    area: "content",
-    name: "Viral",
-    words: "“Let’s make a video that goes viral” is a brilliant strategy that brings to mind the old Steve Martin bit about how to become a millionaire: “First, get a million dollars.” That said, there is a bag of tricks we can use to give our content the best opportunity to catch fire. It starts with a killer creative concept and a willingness to take some risks. But, it also includes a viral seeding strategy, getting our content in front of as many influential consumers as possible, the type of people who make a lot of noise online. At The New BLK, we handle the video production from concept to execution, as well as the marketing of that content through word-of-mouth, paid, and earned media. "
-  },
-  {
-    id: 4,
-    area: "content",
-    name: "Narrative",
-    words: "We love videos as a storytelling medium, for their immediacy, their visual impact, and the emotional connection they can forge with an audience. We’re not alone in this. Harvard Business Review did a fascinating study on the chemical reactions that happen in the brain, specifically the release of oxytocin, when watching a video and how that leads to an increased desire to help others, even to make charitable donations. Our in-house video production team tells stories in a variety of formats. Currently trending at The New BLK are unscripted episodic series, brand mantra scripted narrative videos, and fundraising videos for nonprofits. "
-  },
-  {
-    id: 5,
-    area: "content",
-    name: "Broadcast",
-    words: "No matter how much you hear about cord-cutting and the death of traditional broadcast media, TV and radio are thriving in this golden era of content. Likewise, TV and radio advertising play a vital role in many of our clients’ marketing campaigns. Working as a hybrid ad agency and production company, we produce award-winning 30s and 60s TV and radio spots very efficiently and effectively, keeping production values high and production costs low. Working with our outside media buyer partner, we get great reach with our spots and maximize exposure for our clients. "
-  },
-  {
-    id: 6,
-    area: "content",
-    name: "Publishing",
-    words: "When we talk about content, we’re often talking about video. But, not always. The Internet is still a great place for the written word and not all pictures have to be of the moving variety. To wit, we’ve worked hand in hand with clients to develop a more comprehensive online publishing platform–consulting on strategy, editorial direction, staffing, and logistics. All kinds of cool things have come into play in the publishing arena, from Instagram feeds to blogs, podcasts, and online forums and other community-building tools. We even helped one client launch a whole online magazine as a spinoff brand to support its entree into a new industry. "
-  },
-  {
-    id: 7,
-    area: "experiential",
-    name: "Influencers",
-    words: "A key ingredient to many a successful experiential campaign is convincing the cool kids to get behind it. You want the people who chatter the most to embrace what you’re doing, make it  their own, and keep the conversation going. It comes down to really understanding your core audience and then finding the right movers and shakers within that audience. We’ve worked alongside clients and other agencies to develop influencer outreach strategies and to execute them with the right boots on the ground. We have recruited and managed successful on-the-ground street teams for a number of clients, including Airbnb, Wells Blue Bunny, Ballot Hero, and UNO Athletics. "
-  },
-  {
-    id: 8,
-    area: "experiential",
-    name: "Events",
-    words: "We’ve produced over a hundred events, from mobile pop-ups to large-scale stadium crowds and a wide range in between. Sometimes, we are concepting, planning, and managing our own events for clients and other times we are connecting with existing events. We get involved from pre-event hype to in-event experience to post-event followup, understanding that every step along the way is a critical touchpoint where the audience intersects the brand. Seamless product integration, where the brand is adding value and not getting in the way, is a critical component in all cases. Too often event marketing ends when the event concludes. To us, for an event to be successful it has to have long enough legs to live on and segue organically into the next touchpoint. "
-  },
-  {
-    id: 9,
-    area: "experiential",
-    name: "Promotions",
-    words: "Every successful experiential campaign needs a great hook and oftentimes that means a promotional component that reads quickly, has an obvious appeal to the core audience, and speaks to the brand essence. This usually takes the form of a well-crafted game, contest, sweeps, or some combination of those elements. We typically work as a blended team with our clients’ internal departments as well as outside agencies and legal counsel to handle all of the detailed logistics of a promotional campaign.  "
-  },
-  {
-    id: 10,
-    area: "experiential",
-    name: "Sponsorships",
-    words: "Putting your name and logo on a sign at an event still has some value. But, to us, that’s barely scratching the surface of what a sponsorship can be. The best sponsorships feel more like true partnerships, when the sponsor brand and the event brand overlap in target audience, personality, voice, and core values. Sponsors today should get off the sidelines and into the game, should demand an opportunity to create a meaningful interaction with the audience. We’ve spent many years in the “co-marketing” trenches and love looking for opportunities to bring brands together, especially when it means bringing one of our clients together with another. We work closely with several event brands, including Maha Music Festival, to create unique, ownable brand experiences for their sponsors. "
-  },
-  {
-    id: 11,
-    area: "digital",
-    name: "Social",
-    words: "Social media today is in a similar spot to where web site development and digital advertising was in the late 90s and early 2000s. Every brand knows they need to get in on the action. We’ve gotten over that hump. But, there’s still a lot of grappling with overall strategy, the why behind what we’re doing. Without enough clear roadmaps or best practices, there’s a great deal of confusion about the how piece as well. We work with our clients to develop social media strategies tailored to their specific business objectives, technical requirements, and audience dynamics. Collaboration is a core value at The New BLK and there are few better examples of how that comes into play than social media. Whether we take the lead on managing your social properties or simply provide support and counsel, your social media initiative will necessitate a team effort, meaning a blended team of agency and client."
-  },
-  {
-    id: 12,
-    area: "digital",
-    name: "Campaigns",
-    words: "Every campaign we work on involves a major digital component. After all, it is 2016. Sometimes, the campaign is entirely digital, especially with clients that have a brand experience that takes place primarily online. In any scenario, our digital campaigns are a lot like offline campaigns in that they start with clear, measurable objectives and critical insights about your audience and dovetail into a dynamic creative concept that has enough legs to sustain an ongoing campaign. Our campaigns typically consist of a mix of SEO, SEM, display, rich media, sponsored content, pre-roll and in-programming advertising."
-  },
-  {
-    id: 13,
-    area: "digital",
-    name: "Development",
-    words: "Front-end user experience and development and back-end coding are part of The New BLK bag of tricks. Our team has worked on developing everything from large-scale enterprise e-commerce web sites to online communities to robust mobile apps. But, our chosen focus in the development arena is working on components that will increase the impact of a campaign, from engagement to conversion. That often means designing and building campaign microsites, but it can also mean developing specific tools and apps."
-  },
-  {
-    id: 14,
-    area: "digital",
-    name: "Email",
-    words: "Not nearly as sexy as whatever’s trending in social and mobile, email is still the workhorse of any self-respecting digital campaign. Some say email marketing is dead, killed off by spammers who went to the well one too many times. Um, they’re wrong. Pound for pound, email kicks everyone’s ass. We’ve seen it time and again, across a wide swath of industries. Well written, well designed emails, with a compelling reason to engage can be ridiculously effective at a relatively low cost. We work with clients to setup their email marketing operations, from list management to template design to editorial planning to back-end analytics. "
-  },
-  {
-    id: 15,
-    area: "digital",
-    name: "Mobile",
-    words: "Let’s face it, this is a broad category. When we talk about mobile, we’re talking about a lot of things. The first thing that comes to mind is responsive design, which means designing and building web sites so the user experience is great on a range of screen sizes, from desktop to tablet to smartphone. Numerous sources place mobile usage at over 60% of all web traffic. Google Analytics on our clients’ sites show similar numbers.  Our web design process typically starts with the question: how will this work on mobile? We talk to a lot of companies looking for mobile app development, but more often than not what they really need is an excellent mobile-friendly website. The mobile marketing mix also includes all the other ways you can interact with a brand through your phone – text alerts, geo-targeted promotional offers, and the various social apps such as Instagram, Twitter, Foursquare and Facebook, among others. As more and more of our time spent online continues to shift to the small screen of mobile, mobile marketing becomes less of a subgenre but rather the definitive digital experience."
-  }
-];
+var services = [{
+  id: 0,
+  area: "branding",
+  name: "ID",
+  words: "We are often tasked with naming and branding new ventures, products, and services, sometimes even new categories altogether. As many of our clients are market disruptors, we spend a lot of time crafting new brands and developing the framework for families of brands. Naming, logo, and identity projects tend to be multifaceted, blending research and marketing strategy with very detailed conceptual work. Everything from trademark searches to procuring the right domain name can come into play. Creatively, there is always a storytelling component. We start with a visual mood board and segue into a brand lexicon and archetype profile, forming the foundation for a well-crafted narrative, which we call the “brand mantra.” Each step flows into the next. Logos are complex things, often with paradoxical imperatives. They need to clearly communicate a great deal, but do so quickly; be unique and ownable, but also familiar and relatable; feel contemporary and forward-thinking, but allow for evolution over time. These projects are always iterative, as we go from pencil sketches to black and white mockups to refined marks with color and type treatment options to brand style guides at the end. "
+}, {
+  id: 1,
+  area: "branding",
+  name: "Packaging",
+  words: "Our senior creative team comes from a heavy consumer packaged goods background. Plus, we’re suckers for good packaging as much as the next person. So, packaging is near and dear to our hearts. With our clients competing on increasingly crowded shelves, we’re always looking at what will help their brands jump out, while still tying back to their overall brand stories. These projects extend beyond the exterior package to also include what’s inside the box as well as supporting materials at point-of-sale, which can often play a larger role in the purchase decision than the package itself. "
+}, {
+  id: 2,
+  area: "branding",
+  name: "Strategy",
+  words: "When we’re hired as agency-of-record, a big part of what we do every day is provide strategic counsel, acting as a sounding board for new initiatives and having a key seat at the board room table when it comes to strategic planning. While this typically starts with marketing communications, these conversations have a way of dipping into a whole host of topics, from product development to sales to customer service. Even though we are perhaps better known for our creative chops, we have also been brought in for purely strategic assignments, in some cases helping turn around under-performing brands and other times assessing and assisting internal creative teams in their initiatives. "
+}, {
+  id: 3,
+  area: "content",
+  name: "Viral",
+  words: "“Let’s make a video that goes viral” is a brilliant strategy that brings to mind the old Steve Martin bit about how to become a millionaire: “First, get a million dollars.” That said, there is a bag of tricks we can use to give our content the best opportunity to catch fire. It starts with a killer creative concept and a willingness to take some risks. But, it also includes a viral seeding strategy, getting our content in front of as many influential consumers as possible, the type of people who make a lot of noise online. At The New BLK, we handle the video production from concept to execution, as well as the marketing of that content through word-of-mouth, paid, and earned media. "
+}, {
+  id: 4,
+  area: "content",
+  name: "Narrative",
+  words: "We love videos as a storytelling medium, for their immediacy, their visual impact, and the emotional connection they can forge with an audience. We’re not alone in this. Harvard Business Review did a fascinating study on the chemical reactions that happen in the brain, specifically the release of oxytocin, when watching a video and how that leads to an increased desire to help others, even to make charitable donations. Our in-house video production team tells stories in a variety of formats. Currently trending at The New BLK are unscripted episodic series, brand mantra scripted narrative videos, and fundraising videos for nonprofits. "
+}, {
+  id: 5,
+  area: "content",
+  name: "Broadcast",
+  words: "No matter how much you hear about cord-cutting and the death of traditional broadcast media, TV and radio are thriving in this golden era of content. Likewise, TV and radio advertising play a vital role in many of our clients’ marketing campaigns. Working as a hybrid ad agency and production company, we produce award-winning 30s and 60s TV and radio spots very efficiently and effectively, keeping production values high and production costs low. Working with our outside media buyer partner, we get great reach with our spots and maximize exposure for our clients. "
+}, {
+  id: 6,
+  area: "content",
+  name: "Publishing",
+  words: "When we talk about content, we’re often talking about video. But, not always. The Internet is still a great place for the written word and not all pictures have to be of the moving variety. To wit, we’ve worked hand in hand with clients to develop a more comprehensive online publishing platform–consulting on strategy, editorial direction, staffing, and logistics. All kinds of cool things have come into play in the publishing arena, from Instagram feeds to blogs, podcasts, and online forums and other community-building tools. We even helped one client launch a whole online magazine as a spinoff brand to support its entree into a new industry. "
+}, {
+  id: 7,
+  area: "experiential",
+  name: "Influencers",
+  words: "A key ingredient to many a successful experiential campaign is convincing the cool kids to get behind it. You want the people who chatter the most to embrace what you’re doing, make it  their own, and keep the conversation going. It comes down to really understanding your core audience and then finding the right movers and shakers within that audience. We’ve worked alongside clients and other agencies to develop influencer outreach strategies and to execute them with the right boots on the ground. We have recruited and managed successful on-the-ground street teams for a number of clients, including Airbnb, Wells Blue Bunny, Ballot Hero, and UNO Athletics. "
+}, {
+  id: 8,
+  area: "experiential",
+  name: "Events",
+  words: "We’ve produced over a hundred events, from mobile pop-ups to large-scale stadium crowds and a wide range in between. Sometimes, we are concepting, planning, and managing our own events for clients and other times we are connecting with existing events. We get involved from pre-event hype to in-event experience to post-event followup, understanding that every step along the way is a critical touchpoint where the audience intersects the brand. Seamless product integration, where the brand is adding value and not getting in the way, is a critical component in all cases. Too often event marketing ends when the event concludes. To us, for an event to be successful it has to have long enough legs to live on and segue organically into the next touchpoint. "
+}, {
+  id: 9,
+  area: "experiential",
+  name: "Promotions",
+  words: "Every successful experiential campaign needs a great hook and oftentimes that means a promotional component that reads quickly, has an obvious appeal to the core audience, and speaks to the brand essence. This usually takes the form of a well-crafted game, contest, sweeps, or some combination of those elements. We typically work as a blended team with our clients’ internal departments as well as outside agencies and legal counsel to handle all of the detailed logistics of a promotional campaign.  "
+}, {
+  id: 10,
+  area: "experiential",
+  name: "Sponsorships",
+  words: "Putting your name and logo on a sign at an event still has some value. But, to us, that’s barely scratching the surface of what a sponsorship can be. The best sponsorships feel more like true partnerships, when the sponsor brand and the event brand overlap in target audience, personality, voice, and core values. Sponsors today should get off the sidelines and into the game, should demand an opportunity to create a meaningful interaction with the audience. We’ve spent many years in the “co-marketing” trenches and love looking for opportunities to bring brands together, especially when it means bringing one of our clients together with another. We work closely with several event brands, including Maha Music Festival, to create unique, ownable brand experiences for their sponsors. "
+}, {
+  id: 11,
+  area: "digital",
+  name: "Social",
+  words: "Social media today is in a similar spot to where web site development and digital advertising was in the late 90s and early 2000s. Every brand knows they need to get in on the action. We’ve gotten over that hump. But, there’s still a lot of grappling with overall strategy, the why behind what we’re doing. Without enough clear roadmaps or best practices, there’s a great deal of confusion about the how piece as well. We work with our clients to develop social media strategies tailored to their specific business objectives, technical requirements, and audience dynamics. Collaboration is a core value at The New BLK and there are few better examples of how that comes into play than social media. Whether we take the lead on managing your social properties or simply provide support and counsel, your social media initiative will necessitate a team effort, meaning a blended team of agency and client."
+}, {
+  id: 12,
+  area: "digital",
+  name: "Campaigns",
+  words: "Every campaign we work on involves a major digital component. After all, it is 2016. Sometimes, the campaign is entirely digital, especially with clients that have a brand experience that takes place primarily online. In any scenario, our digital campaigns are a lot like offline campaigns in that they start with clear, measurable objectives and critical insights about your audience and dovetail into a dynamic creative concept that has enough legs to sustain an ongoing campaign. Our campaigns typically consist of a mix of SEO, SEM, display, rich media, sponsored content, pre-roll and in-programming advertising."
+}, {
+  id: 13,
+  area: "digital",
+  name: "Development",
+  words: "Front-end user experience and development and back-end coding are part of The New BLK bag of tricks. Our team has worked on developing everything from large-scale enterprise e-commerce web sites to online communities to robust mobile apps. But, our chosen focus in the development arena is working on components that will increase the impact of a campaign, from engagement to conversion. That often means designing and building campaign microsites, but it can also mean developing specific tools and apps."
+}, {
+  id: 14,
+  area: "digital",
+  name: "Email",
+  words: "Not nearly as sexy as whatever’s trending in social and mobile, email is still the workhorse of any self-respecting digital campaign. Some say email marketing is dead, killed off by spammers who went to the well one too many times. Um, they’re wrong. Pound for pound, email kicks everyone’s ass. We’ve seen it time and again, across a wide swath of industries. Well written, well designed emails, with a compelling reason to engage can be ridiculously effective at a relatively low cost. We work with clients to setup their email marketing operations, from list management to template design to editorial planning to back-end analytics. "
+}, {
+  id: 15,
+  area: "digital",
+  name: "Mobile",
+  words: "Let’s face it, this is a broad category. When we talk about mobile, we’re talking about a lot of things. The first thing that comes to mind is responsive design, which means designing and building web sites so the user experience is great on a range of screen sizes, from desktop to tablet to smartphone. Numerous sources place mobile usage at over 60% of all web traffic. Google Analytics on our clients’ sites show similar numbers.  Our web design process typically starts with the question: how will this work on mobile? We talk to a lot of companies looking for mobile app development, but more often than not what they really need is an excellent mobile-friendly website. The mobile marketing mix also includes all the other ways you can interact with a brand through your phone – text alerts, geo-targeted promotional offers, and the various social apps such as Instagram, Twitter, Foursquare and Facebook, among others. As more and more of our time spent online continues to shift to the small screen of mobile, mobile marketing becomes less of a subgenre but rather the definitive digital experience."
+}];
 
-var Needles = React.createClass({displayName: "Needles",
-  getInitialState: function(){
+var Needles = React.createClass({
+  displayName: 'Needles',
+
+  getInitialState: function getInitialState() {
     return {
       current_needle: 0,
-      needles: [
-        {
-          headline: "This One Goes to 11",
-          copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup headlined by Modest Mouse and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
-          sprite: {
-            image: "/icons/agency/maha.svg",
-            columns: 11,
-            frames: 22,
-            duration: .5,
-            frameW: 250,
-            frameH: 250
-          }
-        },
-        {
-          headline: "Filling an Arena",
-          copy: "Ticket sales for UNO Athletics grew by 89% in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the 'Call Me Maverick' campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.",
-          sprite: {
-            image: "/icons/agency/uno.svg",
-            columns: 11,
-            frames: 44,
-            duration: .5,
-            frameW: 300,
-            frameH: 200
-          }
-        },
-        {
-          headline: "Growing a Forest",
-          copy: "Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to the present, 262% is the actual increase in average daily attendance, as crazy as it looks. More than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.",
-          sprite: {
-            image: "/icons/agency/fontenelle.svg",
-            columns: 13,
-            frames: 13,
-            duration: .5,
-            frameW: 125,
-            frameH: 225
-          }
+      needles: [{
+        headline: "This One Goes to 11",
+        copy: "For the first time ever, Maha Music Festival sold out of tickets in 2015. To get there, we had to increase ticket sales by more than 20% over the previous year. A great music lineup headlined by Modest Mouse and an exceptionally well-run event were certainly big factors, but we like to think our multi-tiered grassroots, experiential, social, broadcast and digital campaign had a hand in the success story as well.",
+        sprite: {
+          image: "/icons/agency/maha.svg",
+          columns: 11,
+          frames: 22,
+          duration: .5,
+          frameW: 250,
+          frameH: 250
         }
-      ]
-    }
+      }, {
+        headline: "Filling an Arena",
+        copy: "Ticket sales for UNO Athletics grew by 89% in 2014/2015 over the previous academic year. Through a combination of outdoor, radio, TV, digital, experiential and in-game messaging, the 'Call Me Maverick' campaign has kicked into high gear and filled the seats at the brand new Baxter Arena.",
+        sprite: {
+          image: "/icons/agency/uno.svg",
+          columns: 11,
+          frames: 44,
+          duration: .5,
+          frameW: 300,
+          frameH: 200
+        }
+      }, {
+        headline: "Growing a Forest",
+        copy: "Like watching a time lapse of a sapling growing into a mighty tree, we’ve seen average daily admissions to Fontenelle Forest skyrocket in the years we’ve worked together. From 2011 to the present, 262% is the actual increase in average daily attendance, as crazy as it looks. More than double and a half. We credit the success to consistency and discipline in our messaging, a story that resonates with the audience on a real, emotional level, and a savvy client that was willing to take some smart risks.",
+        sprite: {
+          image: "/icons/agency/fontenelle.svg",
+          columns: 13,
+          frames: 13,
+          duration: .5,
+          frameW: 125,
+          frameH: 225
+        }
+      }]
+    };
   },
-  nextNeedle: function(){
+  nextNeedle: function nextNeedle() {
     var self = this;
     var current_needle = self.state.current_needle;
     var needles = self.state.needles;
-    if (current_needle < (needles.length -1)) {
-      self.setState({current_needle: current_needle + 1})
+    if (current_needle < needles.length - 1) {
+      self.setState({ current_needle: current_needle + 1 });
     }
   },
-  prevNeedle: function(){
+  prevNeedle: function prevNeedle() {
     var self = this;
     var current_needle = self.state.current_needle;
     if (current_needle > 0) {
-      self.setState({current_needle: current_needle - 1})
+      self.setState({ current_needle: current_needle - 1 });
     }
   },
 
-  moveNeedle: function(index){
+  moveNeedle: function moveNeedle(index) {
     var self = this;
     var current_needle = self.state.current_needle;
     var needles = self.state.needles;
-    if ((index >= 0) && (index < (needles.length )) ) {
-      self.setState({current_needle: index})
+    if (index >= 0 && index < needles.length) {
+      self.setState({ current_needle: index });
     }
   },
   render: function render() {
     var self = this;
 
     var current_needle = self.state.current_needle;
-    var needles  = self.state.needles.map(function(needle, index){
-        return (
-          React.createElement("div", {className: "needle_section block", key: index}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label"}, 
-                React.createElement(Sprite, {
-                  className: "needle_sprite", 
-                  image: needle.sprite.image, 
-                  columns: needle.sprite.columns, 
-                  frames: needle.sprite.frames, 
-                  duration: needle.sprite.duration, 
-                  frameW: needle.sprite.frameW, 
-                  frameH: needle.sprite.frameH, 
-                  hover: false})
-              ), 
-              React.createElement("div", {className: "copy white_text content"}, 
-                React.createElement("h2", {className: "headline"}, needle.headline), 
-                React.createElement("p", null, needle.copy)
-              )
+    var needles = self.state.needles.map(function (needle, index) {
+      return React.createElement(
+        'div',
+        { className: 'needle_section block', key: index },
+        React.createElement(
+          'div',
+          { className: 'block_wrapper' },
+          React.createElement(
+            'span',
+            { className: 'left_label' },
+            React.createElement(Sprite, {
+              className: 'needle_sprite',
+              image: needle.sprite.image,
+              columns: needle.sprite.columns,
+              frames: needle.sprite.frames,
+              duration: needle.sprite.duration,
+              frameW: needle.sprite.frameW,
+              frameH: needle.sprite.frameH,
+              hover: false })
+          ),
+          React.createElement(
+            'div',
+            { className: 'copy white_text content' },
+            React.createElement(
+              'h2',
+              { className: 'headline' },
+              needle.headline
+            ),
+            React.createElement(
+              'p',
+              null,
+              needle.copy
             )
           )
         )
+      );
     });
-    var next_needle, prev_needle = false;
+    var next_needle,
+        prev_needle = false;
 
-    if (current_needle < (needles.length -1)) {
+    if (current_needle < needles.length - 1) {
       next_needle = true;
     }
     if (current_needle > 0) {
       prev_needle = true;
     }
 
-    var needle_indicators = self.state.needles.map(function(needle, index){
-      return (
-        React.createElement("span", {key: index, onClick: self.moveNeedle.bind(self, index), className:  index == current_needle ? "needle_diamond active" : "needle_diamond"})
-      )
+    var needle_indicators = self.state.needles.map(function (needle, index) {
+      return React.createElement('span', { key: index, onClick: self.moveNeedle.bind(self, index), className: index == current_needle ? "needle_diamond active" : "needle_diamond" });
     });
 
-    return (
-      React.createElement("div", {className: "needles"}, 
-        React.createElement("div", {className: "needles_info thing_" + current_needle}, 
-          React.createElement("div", {className: "needles_info_wrapper"}, 
-            needle_indicators
-          )
-        ), 
-        React.createElement("div", {className: "needles_container"}, 
-          React.createElement("div", {className: "needles_container_wrapper"}, 
-            React.createElement("div", {className: "needles_wrapper thing_" + current_needle}, 
-              needles
-            )
-          )
-        ), 
-        React.createElement("div", {className: "bottom_detail"}, 
-           next_needle ? React.createElement("span", {className: "next_needle here", onClick: self.nextNeedle}, React.createElement(Isvg, {src: "/icons/new/right-01.svg"})) : React.createElement("span", {className: "next_needle"}, React.createElement(Isvg, {src: "/icons/new/right-01.svg"})), 
-           prev_needle ? React.createElement("span", {className: "prev_needle here", onClick: self.prevNeedle}, React.createElement(Isvg, {src: "/icons/new/left-01.svg"})) : React.createElement("span", {className: "prev_needle"}, React.createElement(Isvg, {src: "/icons/new/left-01.svg"}))
+    return React.createElement(
+      'div',
+      { className: 'needles' },
+      React.createElement(
+        'div',
+        { className: "needles_info thing_" + current_needle },
+        React.createElement(
+          'div',
+          { className: 'needles_info_wrapper' },
+          needle_indicators
         )
-
+      ),
+      React.createElement(
+        'div',
+        { className: 'needles_container' },
+        React.createElement(
+          'div',
+          { className: 'needles_container_wrapper' },
+          React.createElement(
+            'div',
+            { className: "needles_wrapper thing_" + current_needle },
+            needles
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'bottom_detail' },
+        next_needle ? React.createElement(
+          'span',
+          { className: 'next_needle here', onClick: self.nextNeedle },
+          React.createElement(Isvg, { src: '/icons/new/right-01.svg' })
+        ) : React.createElement(
+          'span',
+          { className: 'next_needle' },
+          React.createElement(Isvg, { src: '/icons/new/right-01.svg' })
+        ),
+        prev_needle ? React.createElement(
+          'span',
+          { className: 'prev_needle here', onClick: self.prevNeedle },
+          React.createElement(Isvg, { src: '/icons/new/left-01.svg' })
+        ) : React.createElement(
+          'span',
+          { className: 'prev_needle' },
+          React.createElement(Isvg, { src: '/icons/new/left-01.svg' })
+        )
       )
-    )
+    );
   }
 });
 
-module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  getInitialState: function getInitialState() {
     return {
       service: null,
       play_uno: false,
       services: services
-    }
+    };
   },
 
-  openService: function(value){
+  openService: function openService(value) {
     var self = this;
-    var service = self.state.services.filter(function(thing){
+    var service = self.state.services.filter(function (thing) {
       return thing.name == value;
     });
 
-    self.setState({service: service[0]});
-
+    self.setState({ service: service[0] });
   },
 
-  closeService: function(){
-    this.setState({service: null});
+  closeService: function closeService() {
+    this.setState({ service: null });
   },
 
   render: function render() {
@@ -30306,255 +31571,478 @@ module.exports = React.createClass({displayName: "exports",
     var service = self.state.service,
         services = self.state.services,
         play_uno = self.state.play_uno,
-        branding = services.filter(function(service){
-          return service.area == "branding";
-        }).map(function(service){
-          return (
-            React.createElement("p", {key: service.name, onClick: self.openService.bind(self,service.name), className: "service"}, service.name)
-          )
-        }),
-        content = self.state.services.filter(function(service){
-          return service.area == "content";
-        }).map(function(service){
-          return (
-            React.createElement("p", {key: service.name, onClick: self.openService.bind(self,service.name), className: "service"}, service.name)
-          )
-        }),
-        experiential = self.state.services.filter(function(service){
-          return service.area == "experiential";
-        }).map(function(service){
-          return (
-            React.createElement("p", {key: service.name, onClick: self.openService.bind(self,service.name), className: "service"}, service.name)
-          )
-        }),
-        digital = self.state.services.filter(function(service){
-          return service.area == "digital";
-        }).map(function(service){
-          return (
-            React.createElement("p", {key: service.name, onClick: self.openService.bind(self,service.name), className: "service"}, service.name)
-          )
-        });
+        branding = services.filter(function (service) {
+      return service.area == "branding";
+    }).map(function (service) {
+      return React.createElement(
+        'p',
+        { key: service.name, onClick: self.openService.bind(self, service.name), className: 'service' },
+        service.name
+      );
+    }),
+        content = self.state.services.filter(function (service) {
+      return service.area == "content";
+    }).map(function (service) {
+      return React.createElement(
+        'p',
+        { key: service.name, onClick: self.openService.bind(self, service.name), className: 'service' },
+        service.name
+      );
+    }),
+        experiential = self.state.services.filter(function (service) {
+      return service.area == "experiential";
+    }).map(function (service) {
+      return React.createElement(
+        'p',
+        { key: service.name, onClick: self.openService.bind(self, service.name), className: 'service' },
+        service.name
+      );
+    }),
+        digital = self.state.services.filter(function (service) {
+      return service.area == "digital";
+    }).map(function (service) {
+      return React.createElement(
+        'p',
+        { key: service.name, onClick: self.openService.bind(self, service.name), className: 'service' },
+        service.name
+      );
+    });
 
-    if (service){
-      if (service.id < services.length ){
+    if (service) {
+      if (service.id < services.length) {
         var next_service = services[service.id + 1];
       }
-      if (service.id > 0 ){
+      if (service.id > 0) {
         var prev_service = services[service.id - 1];
       }
     }
 
     var videogallery = {
-        type: "videos",
-        backgroundImage: "/images/agency/mugs.jpg",
-        description: "Working with The New BLK, in the words of our clients.",
-        videos: [
-            {
-                type: "vimeo",
-                url: "https://player.vimeo.com/video/151959982?color=333333&title=0&byline=0&portrait=0",
-                title: "Clients Speak",
-                series: "New BLK",
-                image: "/images/agency/mugs.jpg",
-                video: {
-                    webm: "/video/agency_v2.webm",
-                    mp4: "/video/agency.mp4"
-                }
-            }
-          ]
-        };
+      type: "videos",
+      backgroundImage: "/images/agency/mugs.jpg",
+      description: "Working with The New BLK, in the words of our clients.",
+      videos: [{
+        type: "vimeo",
+        url: "https://player.vimeo.com/video/151959982?color=333333&title=0&byline=0&portrait=0",
+        title: "Clients Speak",
+        series: "New BLK",
+        image: "/images/agency/mugs.jpg",
+        video: {
+          webm: "/video/agency_v2.webm",
+          mp4: "/video/agency.mp4"
+        }
+      }]
+    };
 
-
-    return (
-      React.createElement("div", {className: "agency"}, 
-        React.createElement(Helmet, {
-              title: "Agency | The New BLK", 
-              meta: [
-                  {"name": "description", "content": "the new blk" }
-              ], 
-              link: [
-                  {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "icon", "href": "/favicon.ico"}
-              ]}
-          ), 
-        React.createElement("div", {className: "agency_top"}, 
-          React.createElement("div", {className: "top_copy"}, 
-            React.createElement("h1", {className: "subheader_top"}, React.createElement("div", {className: "block_wrapper"}, "WE BUILD POWERFUL EXPERIENCES"))
-          ), 
-          React.createElement("div", {className: "theoldgirl"}, 
-            React.createElement("div", {className: "block"}, 
-              React.createElement("div", {className: "block_wrapper"}, 
-                React.createElement("span", {className: "left_label bold"}, "Story"), 
-                React.createElement("span", {className: "content"}, "Founded in 2010 and headquartered in downtown Omaha, we work with some of the most innovative local, regional, national, and global brands. Together, we define and refine the brand experience, from story, messaging, and look and feel to ongoing engagement. We believe that our four core service areas–Branding, Content, Experiential, and Digital–are essential building blocks for a brand with a purpose, a vision, and a great story to tell.")
-              )
-            ), 
-            React.createElement("div", {className: "border-wrap"}, 
-              React.createElement("span", {className: "top_line"}), 
-              React.createElement("span", {className: "bottom_line"}), 
-              React.createElement("span", {className: "right_line"}), 
-              React.createElement("span", {className: "bottom_right_corner"})
+    return React.createElement(
+      'div',
+      { className: 'agency' },
+      React.createElement(Helmet, {
+        title: 'Agency | The New BLK',
+        meta: [{ "name": "description", "content": "the new blk" }],
+        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }, { "rel": "icon", "href": "/favicon.ico" }]
+      }),
+      React.createElement(
+        'div',
+        { className: 'agency_top' },
+        React.createElement(
+          'div',
+          { className: 'top_copy' },
+          React.createElement(
+            'h1',
+            { className: 'subheader_top' },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              'WE BUILD POWERFUL EXPERIENCES'
             )
           )
-        ), 
-        React.createElement(VideoGallery, {thing: videogallery, blockColor: "black"}), 
-        React.createElement("div", {className: "needle"}, 
-          React.createElement("h1", {className: "needle_headline"}, React.createElement("div", {className: "block_wrapper"}, "MOVE THE NEEDLE")), 
-          React.createElement("div", {className: "block"}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label"}), 
-              React.createElement("span", {className: "content"}, 
-                React.createElement("p", null, "The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.")
+        ),
+        React.createElement(
+          'div',
+          { className: 'theoldgirl' },
+          React.createElement(
+            'div',
+            { className: 'block' },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              React.createElement(
+                'span',
+                { className: 'left_label bold' },
+                'Story'
+              ),
+              React.createElement(
+                'span',
+                { className: 'content' },
+                'Founded in 2010 and headquartered in downtown Omaha, we work with some of the most innovative local, regional, national, and global brands. Together, we define and refine the brand experience, from story, messaging, and look and feel to ongoing engagement. We believe that our four core service areas–Branding, Content, Experiential, and Digital–are essential building blocks for a brand with a purpose, a vision, and a great story to tell.'
               )
             )
-          ), 
-          React.createElement(Needles, null)
-        ), 
-        React.createElement("div", {className: "services"}, 
-          React.createElement("div", {className: "block"}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label bold"}, "Services"), 
-              React.createElement("span", {className: "content"}, 
-                React.createElement("p", null, "As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience."), 
-                React.createElement("p", {className: "italic"}, "Our four core, overlapping service areas are:")
+          ),
+          React.createElement(
+            'div',
+            { className: 'border-wrap' },
+            React.createElement('span', { className: 'top_line' }),
+            React.createElement('span', { className: 'bottom_line' }),
+            React.createElement('span', { className: 'right_line' }),
+            React.createElement('span', { className: 'bottom_right_corner' })
+          )
+        )
+      ),
+      React.createElement(VideoGallery, { thing: videogallery, blockColor: "black" }),
+      React.createElement(
+        'div',
+        { className: 'needle' },
+        React.createElement(
+          'h1',
+          { className: 'needle_headline' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            'MOVE THE NEEDLE'
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'block' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            React.createElement('span', { className: 'left_label' }),
+            React.createElement(
+              'span',
+              { className: 'content' },
+              React.createElement(
+                'p',
+                null,
+                'The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.'
               )
             )
-          ), 
-           service ?
-              React.createElement("div", {className: "service_detail open"}, 
-                React.createElement("div", {className: "service_detail_wrapper"}, 
-                  React.createElement("span", {className: "close", onClick: self.closeService}, React.createElement(Isvg, {src: "/icons/new/close-01.svg"})), 
-                  React.createElement("div", {className: "top_detail"}, 
-                    React.createElement("div", {className: "left"}, 
-                      React.createElement("p", {className: "area bold"}, "Services ", React.createElement("span", {className: "diamond"}), " ", service.area), 
-                      React.createElement("h1", {className: "name uppercase"}, service.name)
-                    ), 
-                    React.createElement("div", {className: "right"}, 
-                      React.createElement("p", {className: "words"}, service.words)
-                    )
-                  ), 
-                  React.createElement("div", {className: "bottom_detail"}, 
-                     next_service ?
-                      React.createElement("span", {className: "next_service here", onClick: self.openService.bind(self,next_service.name)}, 
-                        React.createElement("span", {className: "service_name bold"}, next_service.name), 
-                        React.createElement(Isvg, {src: "/icons/new/right-01.svg"})
-                      )
-                    :
-                      React.createElement("span", {className: "next_service"}, React.createElement(Isvg, {src: "/icons/new/right-01.svg"})), 
-                    
-                     prev_service ?
-                      React.createElement("span", {className: "prev_service here", onClick: self.openService.bind(self,prev_service.name)}, 
-                        React.createElement(Isvg, {src: "/icons/new/left-01.svg"}), 
-                        React.createElement("span", {className: "service_name bold"}, prev_service.name)
-                      )
-                    :
-                      React.createElement("span", {className: "prev_service"}, React.createElement(Isvg, {src: "/icons/new/left-01.svg"}))
-                    
-                  )
+          )
+        ),
+        React.createElement(Needles, null)
+      ),
+      React.createElement(
+        'div',
+        { className: 'services' },
+        React.createElement(
+          'div',
+          { className: 'block' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            React.createElement(
+              'span',
+              { className: 'left_label bold' },
+              'Services'
+            ),
+            React.createElement(
+              'span',
+              { className: 'content' },
+              React.createElement(
+                'p',
+                null,
+                'As an agency that builds powerful brand experiences, our work extends to a wide range of touchpoints, encompassing traditional and nontraditional, digital, and analog media. We approach each challenge from what we call “the swarm” – a full-on immersion in your brand, with a multidisciplinary team coming at it from a variety of angles. No matter what the task at hand is, we always keep an eye on the big picture, fitting the needs of the individual project into the overall context of how your brand intersects with your audience.'
+              ),
+              React.createElement(
+                'p',
+                { className: 'italic' },
+                'Our four core, overlapping service areas are:'
+              )
+            )
+          )
+        ),
+        service ? React.createElement(
+          'div',
+          { className: 'service_detail open' },
+          React.createElement(
+            'div',
+            { className: 'service_detail_wrapper' },
+            React.createElement(
+              'span',
+              { className: 'close', onClick: self.closeService },
+              React.createElement(Isvg, { src: '/icons/new/close-01.svg' })
+            ),
+            React.createElement(
+              'div',
+              { className: 'top_detail' },
+              React.createElement(
+                'div',
+                { className: 'left' },
+                React.createElement(
+                  'p',
+                  { className: 'area bold' },
+                  'Services ',
+                  React.createElement('span', { className: 'diamond' }),
+                  ' ',
+                  service.area
+                ),
+                React.createElement(
+                  'h1',
+                  { className: 'name uppercase' },
+                  service.name
+                )
+              ),
+              React.createElement(
+                'div',
+                { className: 'right' },
+                React.createElement(
+                  'p',
+                  { className: 'words' },
+                  service.words
                 )
               )
-              :
-                React.createElement("div", {className: "service_detail"}, 
-                  React.createElement("div", {className: "service_detail_wrapper"}, 
-                    React.createElement("span", {className: "close"}, React.createElement(Isvg, {src: "/icons/new/close-01.svg"}))
-                  )
-                ), 
-            
-          React.createElement("div", {className: "block service_list"}, 
-            React.createElement("div", {className: "service_type"}, 
-              React.createElement("h2", {className: "service_title"}, "Branding"), 
-              branding
-            ), 
-            React.createElement("div", {className: "service_type"}, 
-              React.createElement("h2", {className: "service_title"}, "Content"), 
-              content
-            ), 
-            React.createElement("div", {className: "service_type"}, 
-              React.createElement("h2", {className: "service_title"}, "Experiential"), 
-              experiential
-            ), 
-            React.createElement("div", {className: "service_type"}, 
-              React.createElement("h2", {className: "service_title"}, "Digital"), 
-              digital
-            )
-          )
-        ), 
-
-        React.createElement("div", {className: "image-container"}, 
-          React.createElement("img", {className: "full", src: "/images/agency/millenial_Conny.jpg"}), 
-          React.createElement("div", {className: "block white_text bottom_thing"}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label bold"}, "Clients"), 
-              React.createElement("span", {className: "content"}, 
-                React.createElement("p", {className: "uppercase italic"}, "OUR CLIENTS TEND TO STAND "), 
-                React.createElement("h3", {className: "bold"}, "FOR SOMETHING BIGGER.")
-              )
-            ), 
-            React.createElement("div", {className: "border-wrap"}, 
-              React.createElement("span", {className: "top_line"}), 
-              React.createElement("span", {className: "right_line"})
-            )
-          )
-        ), 
-
-        React.createElement("div", {className: "clients"}, 
-          React.createElement("div", {className: "block"}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label"}), 
-              React.createElement("span", {className: "content"}, 
-                React.createElement("p", null, "No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, and solving old problems in new ways to get better results."), 
-                React.createElement("p", null, "We focus on verticals that fit the lifestyle of our core Millennial audience, including: music & entertainment, sports, food & beverage, technology, apparel, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.")
+            ),
+            React.createElement(
+              'div',
+              { className: 'bottom_detail' },
+              next_service ? React.createElement(
+                'span',
+                { className: 'next_service here', onClick: self.openService.bind(self, next_service.name) },
+                React.createElement(
+                  'span',
+                  { className: 'service_name bold' },
+                  next_service.name
+                ),
+                React.createElement(Isvg, { src: '/icons/new/right-01.svg' })
+              ) : React.createElement(
+                'span',
+                { className: 'next_service' },
+                React.createElement(Isvg, { src: '/icons/new/right-01.svg' })
+              ),
+              prev_service ? React.createElement(
+                'span',
+                { className: 'prev_service here', onClick: self.openService.bind(self, prev_service.name) },
+                React.createElement(Isvg, { src: '/icons/new/left-01.svg' }),
+                React.createElement(
+                  'span',
+                  { className: 'service_name bold' },
+                  prev_service.name
+                )
+              ) : React.createElement(
+                'span',
+                { className: 'prev_service' },
+                React.createElement(Isvg, { src: '/icons/new/left-01.svg' })
               )
             )
-          ), 
-          React.createElement("div", {className: "border-wrap"}, 
-            React.createElement("span", {className: "right_line"})
           )
-
-        ), 
-
-        React.createElement("div", {className: "image-container woman-image"}, 
-          React.createElement("img", {className: "full", src: "/images/agency/millenial_woman.jpg"}), 
-          React.createElement("div", {className: "block white_text bottom_thing"}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label bold"}, "Audience"), 
-              React.createElement("span", {className: "content"}, 
-                React.createElement("h3", {className: "uppercase"}, "OUR PRIMARY AUDIENCE IS MILLENNIALS, \u0003WITH HEAVY CROSSOVER INTO GENERATION X.")
-              )
-            ), 
-            React.createElement("div", {className: "upper border-wrap"}, 
-              React.createElement("span", {className: "right_line"}), 
-              React.createElement("span", {className: "bottom_right_corner"})
-            ), 
-            React.createElement("div", {className: "lower border-wrap"}, 
-              React.createElement("span", {className: "top_line"}), 
-              React.createElement("span", {className: "left_line"}), 
-              React.createElement("span", {className: "top_left_corner"})
+        ) : React.createElement(
+          'div',
+          { className: 'service_detail' },
+          React.createElement(
+            'div',
+            { className: 'service_detail_wrapper' },
+            React.createElement(
+              'span',
+              { className: 'close' },
+              React.createElement(Isvg, { src: '/icons/new/close-01.svg' })
             )
           )
-        ), 
-        React.createElement("div", {className: "audience"}, 
-          React.createElement("div", {className: "block"}, 
-            React.createElement("div", {className: "block_wrapper"}, 
-              React.createElement("span", {className: "left_label"}), 
-              React.createElement("span", {className: "content"}, 
-                React.createElement("p", null, "Creators, sharers, and curators of content as much as they are consumers, this is a savvy, hyperconnected group. Through our influencer outreach, we zero in on the segment within this audience that makes the most noise. These are the tastemakers and trendsetters that can make or break your brand."), 
-                React.createElement("p", null, "While certainly not one-dimensional, there are some common threads that run throughout this group. Engaging this audience takes finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work any more and going about it the wrong way can actually cause irreparable damage to your brand.  "), 
-                React.createElement("p", null, "It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as native. That’s why The New BLK gets hired by big, global brands to connect with this audience:"), 
-                React.createElement("p", {className: "uppercase italic weliveit"}, "WE LIVE IT.")
+        ),
+        React.createElement(
+          'div',
+          { className: 'block service_list' },
+          React.createElement(
+            'div',
+            { className: 'service_type' },
+            React.createElement(
+              'h2',
+              { className: 'service_title' },
+              'Branding'
+            ),
+            branding
+          ),
+          React.createElement(
+            'div',
+            { className: 'service_type' },
+            React.createElement(
+              'h2',
+              { className: 'service_title' },
+              'Content'
+            ),
+            content
+          ),
+          React.createElement(
+            'div',
+            { className: 'service_type' },
+            React.createElement(
+              'h2',
+              { className: 'service_title' },
+              'Experiential'
+            ),
+            experiential
+          ),
+          React.createElement(
+            'div',
+            { className: 'service_type' },
+            React.createElement(
+              'h2',
+              { className: 'service_title' },
+              'Digital'
+            ),
+            digital
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'image-container' },
+        React.createElement('img', { className: 'full', src: '/images/agency/millenial_Conny.jpg' }),
+        React.createElement(
+          'div',
+          { className: 'block white_text bottom_thing' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            React.createElement(
+              'span',
+              { className: 'left_label bold' },
+              'Clients'
+            ),
+            React.createElement(
+              'span',
+              { className: 'content' },
+              React.createElement(
+                'p',
+                { className: 'uppercase italic' },
+                'OUR CLIENTS TEND TO STAND '
+              ),
+              React.createElement(
+                'h3',
+                { className: 'bold' },
+                'FOR SOMETHING BIGGER.'
               )
             )
-          ), 
-          React.createElement("div", {className: "border-wrap"}, 
-            React.createElement("span", {className: "left_line"})
+          ),
+          React.createElement(
+            'div',
+            { className: 'border-wrap' },
+            React.createElement('span', { className: 'top_line' }),
+            React.createElement('span', { className: 'right_line' })
           )
-
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'clients' },
+        React.createElement(
+          'div',
+          { className: 'block' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            React.createElement('span', { className: 'left_label' }),
+            React.createElement(
+              'span',
+              { className: 'content' },
+              React.createElement(
+                'p',
+                null,
+                'No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, and solving old problems in new ways to get better results.'
+              ),
+              React.createElement(
+                'p',
+                null,
+                'We focus on verticals that fit the lifestyle of our core Millennial audience, including: music & entertainment, sports, food & beverage, technology, apparel, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.'
+              )
+            )
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'border-wrap' },
+          React.createElement('span', { className: 'right_line' })
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'image-container woman-image' },
+        React.createElement('img', { className: 'full', src: '/images/agency/millenial_woman.jpg' }),
+        React.createElement(
+          'div',
+          { className: 'block white_text bottom_thing' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            React.createElement(
+              'span',
+              { className: 'left_label bold' },
+              'Audience'
+            ),
+            React.createElement(
+              'span',
+              { className: 'content' },
+              React.createElement(
+                'h3',
+                { className: 'uppercase' },
+                'OUR PRIMARY AUDIENCE IS MILLENNIALS, \u0003WITH HEAVY CROSSOVER INTO GENERATION X.'
+              )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'upper border-wrap' },
+            React.createElement('span', { className: 'right_line' }),
+            React.createElement('span', { className: 'bottom_right_corner' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'lower border-wrap' },
+            React.createElement('span', { className: 'top_line' }),
+            React.createElement('span', { className: 'left_line' }),
+            React.createElement('span', { className: 'top_left_corner' })
+          )
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'audience' },
+        React.createElement(
+          'div',
+          { className: 'block' },
+          React.createElement(
+            'div',
+            { className: 'block_wrapper' },
+            React.createElement('span', { className: 'left_label' }),
+            React.createElement(
+              'span',
+              { className: 'content' },
+              React.createElement(
+                'p',
+                null,
+                'Creators, sharers, and curators of content as much as they are consumers, this is a savvy, hyperconnected group. Through our influencer outreach, we zero in on the segment within this audience that makes the most noise. These are the tastemakers and trendsetters that can make or break your brand.'
+              ),
+              React.createElement(
+                'p',
+                null,
+                'While certainly not one-dimensional, there are some common threads that run throughout this group. Engaging this audience takes finesse and often poses a serious challenge to traditional marketers. The old play book just doesn’t work any more and going about it the wrong way can actually cause irreparable damage to your brand.  '
+              ),
+              React.createElement(
+                'p',
+                null,
+                'It’s not just about speaking the right language, although that’s part of it. You have to be so fully immersed in this world to pass as native. That’s why The New BLK gets hired by big, global brands to connect with this audience:'
+              ),
+              React.createElement(
+                'p',
+                { className: 'uppercase italic weliveit' },
+                'WE LIVE IT.'
+              )
+            )
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'border-wrap' },
+          React.createElement('span', { className: 'left_line' })
         )
       )
     );
   }
 });
 
+},{"../components/sprite.jsx":331,"../components/video_gallery.jsx":332,"react":325,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],336:[function(require,module,exports){
+'use strict';
 
-},{"../components/sprite.jsx":315,"../components/video_gallery.jsx":316,"react":309,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":151,"react-scroll-components/ScrollListenerMixin":152,"util":5}],320:[function(require,module,exports){
 var Layout = require('./layout.jsx');
 var React = require('react');
 var Router = require('react-router');
@@ -30562,20 +32050,23 @@ var Link = Router.Link;
 
 var util = require('util');
 
-module.exports = React.createClass({displayName: "exports",
-  mixins: [ Router.State ],
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  mixins: [Router.State],
 
   render: function render() {
-    return (
-      React.createElement(Layout, React.__spread({},  this.props), 
-        React.createElement(Router.RouteHandler, React.__spread({},  this.props))
-      )
+    return React.createElement(
+      Layout,
+      this.props,
+      React.createElement(Router.RouteHandler, this.props)
     );
   }
 });
 
+},{"./layout.jsx":342,"react":325,"react-router":149,"util":5}],337:[function(require,module,exports){
+'use strict';
 
-},{"./layout.jsx":326,"react":309,"react-router":133,"util":5}],321:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -30593,42 +32084,51 @@ var Dragger = require("../components/dragger.jsx");
 var VideoGallery = require("../components/video_gallery.jsx");
 
 var SetIntervalMixin = {
-  componentWillMount: function() {
+  componentWillMount: function componentWillMount() {
     this.intervals = [];
   },
-  setInterval: function() {
+  setInterval: function (_setInterval) {
+    function setInterval() {
+      return _setInterval.apply(this, arguments);
+    }
+
+    setInterval.toString = function () {
+      return _setInterval.toString();
+    };
+
+    return setInterval;
+  }(function () {
     this.intervals.push(setInterval.apply(null, arguments));
-  },
-  componentWillUnmount: function() {
+  }),
+  componentWillUnmount: function componentWillUnmount() {
     this.intervals.forEach(clearInterval);
   }
 };
 
 var TimerMixin = require('react-timer-mixin');
 
+module.exports = React.createClass({
+  displayName: 'exports',
 
-module.exports = React.createClass({displayName: "exports",
-  mixins: [ Router.State, TimerMixin ],
-  getInitialState: function(){
-    return {params: {}, title: ''};
+  mixins: [Router.State, TimerMixin],
+  getInitialState: function getInitialState() {
+    return { params: {}, title: '' };
   },
 
-  getContent: function(){
+  getContent: function getContent() {
     var self = this;
-    request
-      .get('/api/post/'+self.getParams().casestudy)
-      .end(function(err, res){
-        if (res) {
-          self.setState({content: res.body, title: res.body.name });
-        }
-      });
+    request.get('/api/post/' + self.getParams().casestudy).end(function (err, res) {
+      if (res) {
+        self.setState({ content: res.body, title: res.body.name });
+      }
+    });
   },
 
   // componentWillMount: function() {
   //   var self = this;
   // },
 
-  componentWillMount: function() {
+  componentWillMount: function componentWillMount() {
     var self = this;
     self.setState({ params: self.getParams(), content: null });
 
@@ -30639,24 +32139,28 @@ module.exports = React.createClass({displayName: "exports",
     // else if (self.getParams().casestudy){
     //   self.getContent();
     // }
-    self.setTimeout(function() { self.getContent(); }, 500);
+    self.setTimeout(function () {
+      self.getContent();
+    }, 500);
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var self = this;
     self.setState({ params: self.getParams(), content: null });
-    self.setTimeout(function() { self.getContent(); }, 500);
+    self.setTimeout(function () {
+      self.getContent();
+    }, 500);
   },
 
-  componentDidMount: function() {},
+  componentDidMount: function componentDidMount() {},
 
-  consoleLog: function(){
+  consoleLog: function consoleLog() {
     console.log("this.state: " + util.inspect(this.state));
     console.log("this.props: " + util.inspect(this.props));
   },
 
-  toggleDescription: function(){
-    this.setState({view_description: !this.state.view_description});
+  toggleDescription: function toggleDescription() {
+    this.setState({ view_description: !this.state.view_description });
   },
 
   render: function render() {
@@ -30664,221 +32168,279 @@ module.exports = React.createClass({displayName: "exports",
     var title = self.state.title;
     var content = self.state.content;
     var casestudy = self.state.params.casestudy;
-    if  (content) {
+    if (content) {
       var name = self.state.content.name;
       var project_tags = self.state.content.project_tags;
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
-      }
+      };
 
       var block_style = {
         backgroundColor: self.state.content.block_color,
-        background: "linear-gradient(135deg, transparent 50px, "+self.state.content.block_color+" 0) top left, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) top right, linear-gradient(315deg, transparent 50px, "+self.state.content.block_color+" 0) bottom right, linear-gradient(0deg, transparent 0, "+self.state.content.block_color+" 0) bottom left",
+        background: "linear-gradient(135deg, transparent 50px, " + self.state.content.block_color + " 0) top left, linear-gradient(0deg, transparent 0, " + self.state.content.block_color + " 0) top right, linear-gradient(315deg, transparent 50px, " + self.state.content.block_color + " 0) bottom right, linear-gradient(0deg, transparent 0, " + self.state.content.block_color + " 0) bottom left",
         backgroundSize: "51%",
         backgroundRepeat: "no-repeat"
-      }
+      };
 
-      var things = self.state.content.content.things.map(function(thing, index){
+      var things = self.state.content.content.things.map(function (thing, index) {
 
         if (thing.type == "block") {
-          var words = thing.content.map(function(word, index){
-            return (
-              React.createElement("span", {key: index, className:  "content " + word.style}, word.content)
-            )
+          var words = thing.content.map(function (word, index) {
+            return React.createElement(
+              'span',
+              { key: index, className: "content " + word.style },
+              word.content
+            );
           });
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style, style: block_style}, 
-              React.createElement("div", {className: "block_wrapper"}, 
-                words
-              )
+          return React.createElement(
+            'div',
+            { key: index, className: "post " + thing.type + " " + thing.style, style: block_style },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              words
             )
-          )
+          );
         }
 
         if (thing.type == "text") {
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-              React.createElement("div", {className: "block_wrapper"}, 
-                React.createElement("span", {className: "left_label"}), 
-                React.createElement("span", {className: "content"}, 
-                  thing.headline ? React.createElement("h2", {className: "headline"}, thing.headline) : null, 
-                  thing.content
-                )
+          return React.createElement(
+            'div',
+            { key: index, className: "post " + thing.type + " " + thing.style },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              React.createElement('span', { className: 'left_label' }),
+              React.createElement(
+                'span',
+                { className: 'content' },
+                thing.headline ? React.createElement(
+                  'h2',
+                  { className: 'headline' },
+                  thing.headline
+                ) : null,
+                thing.content
               )
             )
-          )
+          );
         }
 
         if (thing.type == "pullquote") {
           if (thing.image) {
-            return (
-              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-                React.createElement("img", {className: "break", src: self.state.content.content.break}), 
-                React.createElement("img", {src: thing.image}), 
-                React.createElement("img", {className: "break", src: self.state.content.content.break})
-              )
-            )
+            return React.createElement(
+              'div',
+              { key: index, className: "post " + thing.type + " " + thing.style },
+              React.createElement('img', { className: 'break', src: self.state.content.content.break }),
+              React.createElement('img', { src: thing.image }),
+              React.createElement('img', { className: 'break', src: self.state.content.content.break })
+            );
           }
           if (thing.content) {
-            return (
-              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, React.createElement("img", {className: "break", src: self.state.content.content.break}), React.createElement("p", null, thing.content), React.createElement("img", {className: "break", src: self.state.content.content.break}))
-            )
+            return React.createElement(
+              'div',
+              { key: index, className: "post " + thing.type + " " + thing.style },
+              React.createElement('img', { className: 'break', src: self.state.content.content.break }),
+              React.createElement(
+                'p',
+                null,
+                thing.content
+              ),
+              React.createElement('img', { className: 'break', src: self.state.content.content.break })
+            );
           }
         }
 
         if (thing.type == "image") {
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, React.createElement("img", {src: thing.url}))
-          )
+          return React.createElement(
+            'div',
+            { key: index, className: "post " + thing.type + " " + thing.style },
+            React.createElement('img', { src: thing.url })
+          );
         }
 
         if (thing.type == "logo") {
           var style = thing.style;
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, React.createElement("img", {src: thing.url}))
-          )
+          return React.createElement(
+            'div',
+            { key: index, className: "post " + thing.type + " " + thing.style },
+            React.createElement('img', { src: thing.url })
+          );
         }
 
         if (thing.type == "logos") {
-          var logos = thing.content.map(function(small_logo, index){
-            return (
-              React.createElement("span", {key: index, className: "small_logo"}, React.createElement("img", {src: small_logo}))
-            )
+          var logos = thing.content.map(function (small_logo, index) {
+            return React.createElement(
+              'span',
+              { key: index, className: 'small_logo' },
+              React.createElement('img', { src: small_logo })
+            );
           });
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, logos)
-          )
+          return React.createElement(
+            'div',
+            { key: index, className: "post " + thing.type + " " + thing.style },
+            logos
+          );
         }
 
         if (thing.type == "images") {
-          var images = thing.images.map(function(image, index){
-            return (
-              React.createElement("div", {key: index, className: "image-wrapper"}, React.createElement("img", {src: image}))
-            )
+          var images = thing.images.map(function (image, index) {
+            return React.createElement(
+              'div',
+              { key: index, className: 'image-wrapper' },
+              React.createElement('img', { src: image })
+            );
           });
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-              images
-            )
-          )
+          return React.createElement(
+            'div',
+            { key: index, className: "post " + thing.type + " " + thing.style },
+            images
+          );
         }
 
         if (thing.type == "video") {
 
-          return (
-            React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}
-
-            )
-          )
+          return React.createElement('div', { key: index, className: "post " + thing.type + " " + thing.style });
         }
 
         if (thing.type == "videos") {
-          return (
-            React.createElement(VideoGallery, {key: index, thing: thing, blockColor: self.state.content.block_color})
-          )
+          return React.createElement(VideoGallery, { key: index, thing: thing, blockColor: self.state.content.block_color });
         }
 
-        if ( thing.type == "mouser" ) {
+        if (thing.type == "mouser") {
           var top = thing.top,
               bottom = thing.bottom;
-          return (
-            React.createElement(Mouser, {key: index, bottom: bottom, top: top})
-          )
+          return React.createElement(Mouser, { key: index, bottom: bottom, top: top });
         }
 
-        if ( thing.type == "dragger" ) {
+        if (thing.type == "dragger") {
           var top = thing.top,
               bottom = thing.bottom;
-          return (
-            React.createElement(Dragger, {key: index, bottom: bottom, top: top})
-          )
+          return React.createElement(Dragger, { key: index, bottom: bottom, top: top });
         }
 
-        if ( thing.type == "doublewide" ) {
-          if (thing.arrangement == "image-left"){
-            return (
-              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-                React.createElement("div", {className: "image"}, 
-                  React.createElement("img", {src: thing.image})
-                ), 
-                React.createElement("span", {className: "text"}, 
-                   thing.headline ? React.createElement("h2", {className: "headline"}, thing.headline) : null, 
-                   thing.vargas ? React.createElement("img", {className: "vargas-signature", src: thing.vargas}) : null, 
-                   thing.content
-                )
+        if (thing.type == "doublewide") {
+          if (thing.arrangement == "image-left") {
+            return React.createElement(
+              'div',
+              { key: index, className: "post " + thing.type + " " + thing.style },
+              React.createElement(
+                'div',
+                { className: 'image' },
+                React.createElement('img', { src: thing.image })
+              ),
+              React.createElement(
+                'span',
+                { className: 'text' },
+                thing.headline ? React.createElement(
+                  'h2',
+                  { className: 'headline' },
+                  thing.headline
+                ) : null,
+                thing.vargas ? React.createElement('img', { className: 'vargas-signature', src: thing.vargas }) : null,
+                thing.content
               )
-            )
-
-          } else if (thing.arrangement == "text-left"){
-            return (
-              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-                React.createElement("span", {className: "text"}, 
-                   thing.headline ? React.createElement("h2", {className: "headline"}, thing.headline) : null, 
-                   thing.vargas ? React.createElement("img", {className: "vargas-signature", src: thing.vargas}) : null, 
-                  thing.content
-                ), 
-                React.createElement("div", {className: "image"}, 
-                  React.createElement("img", {src: thing.image})
-                )
+            );
+          } else if (thing.arrangement == "text-left") {
+            return React.createElement(
+              'div',
+              { key: index, className: "post " + thing.type + " " + thing.style },
+              React.createElement(
+                'span',
+                { className: 'text' },
+                thing.headline ? React.createElement(
+                  'h2',
+                  { className: 'headline' },
+                  thing.headline
+                ) : null,
+                thing.vargas ? React.createElement('img', { className: 'vargas-signature', src: thing.vargas }) : null,
+                thing.content
+              ),
+              React.createElement(
+                'div',
+                { className: 'image' },
+                React.createElement('img', { src: thing.image })
               )
-            )
-
+            );
           } else {
-            return (
-              React.createElement("div", {key: index, className: "post " + thing.type + " " + thing.style}, 
-                React.createElement("p", null, "Which arrangement?")
+            return React.createElement(
+              'div',
+              { key: index, className: "post " + thing.type + " " + thing.style },
+              React.createElement(
+                'p',
+                null,
+                'Which arrangement?'
               )
-            )
-
+            );
           }
         }
-
       });
     }
-    if (content){
-      return (
-        React.createElement("div", {className: "case_study loaded", key: casestudy}, 
-          React.createElement(Helmet, {
-                title: title, 
-                meta: [
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
-                ], 
-                link: [
-                  {"rel": "icon", "href": "/favicon.ico"}
-                ]}
-            ), 
-          React.createElement("div", {className: "main_content loaded", key: casestudy}, 
-            React.createElement("div", {className: "top", style: top_image}, 
-              React.createElement("span", {className: "case_study_name"}, React.createElement(Isvg, {src: "/icons/new/down-01.svg"}), React.createElement("h1", {className: "heading"}, name))
-            ), 
-            React.createElement("div", {className: "post block top_block", style: block_style}, 
-              React.createElement("div", {className: "block_wrapper"}, 
-                React.createElement("span", {className: "left_label"}, self.state.content.top_block.project_tags), 
-                React.createElement("span", {className: "content"}, self.state.content.top_block.content)
+    if (content) {
+      return React.createElement(
+        'div',
+        { className: 'case_study loaded', key: casestudy },
+        React.createElement(Helmet, {
+          title: title,
+          meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
+          link: [{ "rel": "icon", "href": "/favicon.ico" }]
+        }),
+        React.createElement(
+          'div',
+          { className: 'main_content loaded', key: casestudy },
+          React.createElement(
+            'div',
+            { className: 'top', style: top_image },
+            React.createElement(
+              'span',
+              { className: 'case_study_name' },
+              React.createElement(Isvg, { src: '/icons/new/down-01.svg' }),
+              React.createElement(
+                'h1',
+                { className: 'heading' },
+                name
               )
-            ), 
-            things, 
-            React.createElement(Channel, {channel: self.state.content.channel, view_description: false})
-          )
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'post block top_block', style: block_style },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              React.createElement(
+                'span',
+                { className: 'left_label' },
+                self.state.content.top_block.project_tags
+              ),
+              React.createElement(
+                'span',
+                { className: 'content' },
+                self.state.content.top_block.content
+              )
+            )
+          ),
+          things,
+          React.createElement(Channel, { channel: self.state.content.channel, view_description: false })
         )
-      )
+      );
     } else {
-      return (
-
-        React.createElement("div", {className: "case_study loading", key: casestudy}, 
-          React.createElement("div", {className: "main_content loading", key: casestudy}), 
-          React.createElement("div", {className: "case_study_loader"}, 
-            "loading..."
-          )
+      return React.createElement(
+        'div',
+        { className: 'case_study loading', key: casestudy },
+        React.createElement('div', { className: 'main_content loading', key: casestudy }),
+        React.createElement(
+          'div',
+          { className: 'case_study_loader' },
+          'loading...'
         )
-      )
+      );
     }
   }
 });
 
+},{"../components/dragger.jsx":329,"../components/mouser.jsx":330,"../components/sprite.jsx":331,"../components/video_gallery.jsx":332,"./channel.jsx":338,"react":325,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],338:[function(require,module,exports){
+'use strict';
 
-},{"../components/dragger.jsx":313,"../components/mouser.jsx":314,"../components/sprite.jsx":315,"../components/video_gallery.jsx":316,"./channel.jsx":322,"react":309,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":133,"react-timer-mixin":153,"superagent":310,"util":5}],322:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -30889,34 +32451,34 @@ var Sprite = require('../components/sprite.jsx');
 
 var util = require('util');
 
-module.exports = React.createClass({displayName: "exports",
-  mixins: [ Router.State ],
-  getInitialState: function(){
-    return {params: {}, title: ''};
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  mixins: [Router.State],
+  getInitialState: function getInitialState() {
+    return { params: {}, title: '' };
   },
 
-  getDefaultProps: function(){
+  getDefaultProps: function getDefaultProps() {
     var self = this;
     return { view_description: true };
   },
 
-  getContent: function(){
+  getContent: function getContent() {
     var self = this;
     var channel = self.props.channel || self.getParams().channel;
-    request
-      .get('/api/channel/'+channel)
-      .end(function(err, res){
-        if (res) {
-          self.setState({content: res.body, title: res.body.name, view_description: self.props.view_description });
-        }
-      });
+    request.get('/api/channel/' + channel).end(function (err, res) {
+      if (res) {
+        self.setState({ content: res.body, title: res.body.name, view_description: self.props.view_description });
+      }
+    });
   },
 
   // componentWillMount: function() {
   //   var self = this;
   // },
 
-  componentDidMount: function() {
+  componentDidMount: function componentDidMount() {
     var self = this;
     self.setState({ params: self.getParams(), view_description: self.props.view_description });
     self.getContent();
@@ -30929,32 +32491,31 @@ module.exports = React.createClass({displayName: "exports",
     // }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var self = this;
     self.getContent();
   },
 
-  consoleLog: function(){
+  consoleLog: function consoleLog() {
     console.log("this.state: " + util.inspect(this.state));
     console.log("this.props: " + util.inspect(this.props));
   },
 
-  toggleDescription: function(){
-    this.setState({view_description: !this.state.view_description});
+  toggleDescription: function toggleDescription() {
+    this.setState({ view_description: !this.state.view_description });
   },
 
   render: function render() {
     var self = this;
     var title = self.state.title;
 
-    if (self.state.view_description == true){
+    if (self.state.view_description == true) {
       var project_view = "featured_projects show";
     } else {
       var project_view = "featured_projects hide";
     }
 
-
-    if  (self.state.content) {
+    if (self.state.content) {
       var name = self.state.content.name;
       var description = self.state.content.description;
       var icon = self.state.content.icon;
@@ -30966,125 +32527,171 @@ module.exports = React.createClass({displayName: "exports",
             mp4 = video_files.mp4;
       }
 
-      var projects = self.state.content.case_studies.map(function(project, index){
+      var projects = self.state.content.case_studies.map(function (project, index) {
         var project_color = project.color;
         var tmp_styles = {
-          backgroundImage: 'url('+project.featured_image+')'
-        }
-        var tmp_number = index+1;
+          backgroundImage: 'url(' + project.featured_image + ')'
+        };
+        var tmp_number = index + 1;
         if (project.url) {
-          return (
-             React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
-               React.createElement(Link, {to: project.url}, 
-                 React.createElement("div", {className: "project_content"}, 
-
-                   React.createElement("div", {className: "project_inner"}, 
-                     React.createElement("h1", {className: "project_name"}, project.name), 
-                     React.createElement("p", {className: "project_tagline"}, project.tagline)
-                   ), 
-                   React.createElement("div", {className: "project_overlay", style: {background: project_color}})
-                 )
-               )
-             )
-           )
+          return React.createElement(
+            'div',
+            { key: index, className: "project project_" + tmp_number, style: tmp_styles },
+            React.createElement(
+              Link,
+              { to: project.url },
+              React.createElement(
+                'div',
+                { className: 'project_content' },
+                React.createElement(
+                  'div',
+                  { className: 'project_inner' },
+                  React.createElement(
+                    'h1',
+                    { className: 'project_name' },
+                    project.name
+                  ),
+                  React.createElement(
+                    'p',
+                    { className: 'project_tagline' },
+                    project.tagline
+                  )
+                ),
+                React.createElement('div', { className: 'project_overlay', style: { background: project_color } })
+              )
+            )
+          );
         } else {
-          return (
-            React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
-              React.createElement("div", {className: "project_content"}, 
-                React.createElement("div", {className: "project_inner"}, 
-                  React.createElement("h1", {className: "project_name"}, project.name), 
-                  React.createElement("p", {className: "project_tagline"}, project.tagline)
+          return React.createElement(
+            'div',
+            { key: index, className: "project project_" + tmp_number, style: tmp_styles },
+            React.createElement(
+              'div',
+              { className: 'project_content' },
+              React.createElement(
+                'div',
+                { className: 'project_inner' },
+                React.createElement(
+                  'h1',
+                  { className: 'project_name' },
+                  project.name
+                ),
+                React.createElement(
+                  'p',
+                  { className: 'project_tagline' },
+                  project.tagline
                 )
               )
+            )
+          );
+        }
+      });
+
+      var formatted_description = self.state.content.descriptions.map(function (copy, index) {
+        return React.createElement(
+          'p',
+          { className: 'decription_copy' },
+          copy
+        );
+      });
+
+      return React.createElement(
+        'div',
+        { className: 'channel' },
+        React.createElement(Helmet, {
+          title: title,
+          meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
+          link: [{ "rel": "canonical", "href": "http://mysite.com/example" }, { "rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png" }, { "rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png" }]
+        }),
+        React.createElement(
+          'div',
+          { className: 'content' },
+          React.createElement(
+            'div',
+            { className: project_view },
+            projects.reverse(),
+            React.createElement(
+              'div',
+              { className: 'channel_info' },
+              React.createElement(
+                'div',
+                { className: 'channel_container' },
+                React.createElement(
+                  'span',
+                  { className: 'channel_words' },
+                  React.createElement(
+                    'h1',
+                    { className: 'channel_name' },
+                    name
+                  ),
+                  React.createElement(
+                    'div',
+                    { className: 'channel_description' },
+                    formatted_description
+                  )
+                ),
+                React.createElement(
+                  'span',
+                  { className: 'channel_button' },
+                  React.createElement(
+                    'span',
+                    { className: 'view_channel', onClick: self.toggleDescription },
+                    'View ',
+                    name,
+                    ' projects'
+                  ),
+                  React.createElement(
+                    'span',
+                    { className: 'channel_icon', key: name, id: name, onClick: self.toggleDescription },
+                    icon ? React.createElement(Sprite, {
+                      image: icon.image,
+                      columns: icon.columns,
+                      frames: icon.frames,
+                      duration: icon.duration,
+                      frameW: icon.frameW,
+                      frameH: icon.frameH,
+                      hover: true
+                    }) : null
+                  )
+                )
+              ),
+              React.createElement('div', { className: 'channel_overlay' }),
+              webm || mp4 ? React.createElement(
+                'div',
+                { className: 'video-container', key: title },
+                React.createElement(
+                  'video',
+                  { className: 'visible', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+                  webm ? React.createElement('source', { src: webm, type: 'video/webm' }) : null,
+                  mp4 ? React.createElement('source', { src: mp4, type: 'video/mp4' }) : null
+                )
+              ) : null
             )
           )
-        }
-      });
-
-      var formatted_description = self.state.content.descriptions.map(function(copy, index){
-        return (
-          React.createElement("p", {className: "decription_copy"}, copy)
-        )
-      });
-
-      return (
-        React.createElement("div", {className: "channel"}, 
-          React.createElement(Helmet, {
-                title: title, 
-                meta: [
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
-                ], 
-                link: [
-                    {"rel": "canonical", "href": "http://mysite.com/example"},
-                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-                ]}
-            ), 
-            React.createElement("div", {className: "content"}, 
-              React.createElement("div", {className: project_view}, 
-                projects.reverse(), 
-                React.createElement("div", {className: "channel_info"}, 
-                  React.createElement("div", {className: "channel_container"}, 
-                    React.createElement("span", {className: "channel_words"}, 
-                      React.createElement("h1", {className: "channel_name"}, name), 
-                      React.createElement("div", {className: "channel_description"}, formatted_description)
-                    ), 
-                    React.createElement("span", {className: "channel_button"}, 
-                      React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
-                      React.createElement("span", {className: "channel_icon", key: name, id: name, onClick: self.toggleDescription}, 
-                         icon ?
-                        React.createElement(Sprite, {
-                          image: icon.image, 
-                          columns: icon.columns, 
-                          frames: icon.frames, 
-                          duration: icon.duration, 
-                          frameW: icon.frameW, 
-                          frameH: icon.frameH, 
-                          hover: true}
-                        )
-                      : null
-                      )
-                    )
-                  ), 
-                  React.createElement("div", {className: "channel_overlay"}), 
-
-                     (webm || mp4) ?
-                      React.createElement("div", {className: "video-container", key: title}, 
-                        React.createElement("video", {className: "visible", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-                             webm ? React.createElement("source", {src: webm, type: "video/webm"}) : null, 
-                             mp4 ? React.createElement("source", {src: mp4, type: "video/mp4"}) : null
-                        )
-                      )
-                      : null
-                    
-                )
-              )
-            )
         )
       );
     } else {
-      return (
-        React.createElement("div", {className: "channel"}, 
-          React.createElement(Helmet, {
-                title: title, 
-                meta: [
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
-                ], 
-                link: [
-                  {"rel": "icon", "href": "/favicon.ico"}
-                ]}
-          ), 
-          React.createElement("p", null, "\"Loading...\"")
+      return React.createElement(
+        'div',
+        { className: 'channel' },
+        React.createElement(Helmet, {
+          title: title,
+          meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
+          link: [{ "rel": "icon", "href": "/favicon.ico" }]
+        }),
+        React.createElement(
+          'p',
+          null,
+          '"Loading..."'
         )
       );
     }
   }
 });
 
+},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],339:[function(require,module,exports){
+'use strict';
 
-},{"../components/sprite.jsx":315,"react":309,"react-helmet":15,"react-router":133,"superagent":310,"util":5}],323:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 var Helmet = require('react-helmet');
@@ -31095,136 +32702,187 @@ var Sprite = require('../components/sprite.jsx');
 
 var util = require('util');
 
-module.exports = React.createClass({displayName: "exports",
-  mixins: [ Router.State ],
-  getInitialState: function(){
-    return {params: {}, title: '', view_description: false};
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  mixins: [Router.State],
+  getInitialState: function getInitialState() {
+    return { params: {}, title: '', view_description: false };
   },
 
-  getContent: function(){
+  getContent: function getContent() {
     var self = this;
-    console.log
-    request
-      .get('/api/channel/'+self.props.channel)
-      .end(function(err, res){
-        if (res) {
-          self.setState({content: res.body, title: res.body.name, view_description: false });
-        }
-      });
+    console.log;
+    request.get('/api/channel/' + self.props.channel).end(function (err, res) {
+      if (res) {
+        self.setState({ content: res.body, title: res.body.name, view_description: false });
+      }
+    });
   },
 
   // componentWillMount: function() {
   //   var self = this;
   // },
 
-  componentDidMount: function() {
+  componentDidMount: function componentDidMount() {
     var self = this;
     self.setState({ params: self.getParams() });
     self.getContent();
-
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var self = this;
     self.getContent();
   },
 
-  consoleLog: function(){
+  consoleLog: function consoleLog() {
     console.log("this.state: " + util.inspect(this.state));
     console.log("this.props: " + util.inspect(this.props));
   },
 
-  toggleDescription: function(){
-    this.setState({view_description: !this.state.view_description});
+  toggleDescription: function toggleDescription() {
+    this.setState({ view_description: !this.state.view_description });
   },
 
   render: function render() {
     var self = this;
     var title = self.state.title;
-    if (self.state.view_description){
+    if (self.state.view_description) {
       var project_view = "featured_projects show";
     } else {
       var project_view = "featured_projects hide";
     }
-
 
     if (self.state.content) {
       var name = self.state.content.name;
       var description = self.state.content.description;
       var icon = self.state.content.icon;
 
-      var projects = self.state.content.case_studies.map(function(project, index){
+      var projects = self.state.content.case_studies.map(function (project, index) {
         var tmp_styles = {
-          backgroundImage: 'url('+project.featured_image+')'
-        }
-        var tmp_number = index+1;
+          backgroundImage: 'url(' + project.featured_image + ')'
+        };
+        var tmp_number = index + 1;
         if (project.url) {
-          return (
-             React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
-               React.createElement(Link, {to: project.url}, 
-                 React.createElement("div", {className: "project_content"}, 
-                   React.createElement("div", {className: "project_inner"}, 
-                     React.createElement("h1", {className: "project_name"}, project.name), 
-                     React.createElement("p", {className: "project_tagline"}, project.tagline)
-                   )
-                 )
-               )
-             )
-           )
-        } else {
-          return (
-            React.createElement("div", {key: index, className: "project project_"+tmp_number, style: tmp_styles}, 
-              React.createElement("div", {className: "project_content"}, 
-                React.createElement("div", {className: "project_inner"}, 
-                  React.createElement("h1", {className: "project_name"}, project.name), 
-                  React.createElement("p", {className: "project_tagline"}, project.tagline)
-                )
-              )
-            )
-          )
-        }
-      });
-      return (
-        React.createElement("div", {className: "channel"}, 
-            React.createElement("div", {className: "content"}, 
-              React.createElement("div", {className: project_view}, 
-                projects.reverse(), 
-                React.createElement("div", {className: "channel_info"}, 
-                  React.createElement("div", {className: "channel_container"}, 
-                    React.createElement("h1", {className: "channel_name"}, name), 
-                    React.createElement("div", {className: "channel_description"}, description), 
-                    React.createElement("span", {className: "view_channel", onClick: self.toggleDescription}, "View ", name, " projects"), 
-                    React.createElement("span", {className: "channel_icon", onClick: self.toggleDescription}, 
-                       icon ?
-                      React.createElement(Sprite, {
-                        image: icon.image, 
-                        columns: icon.columns, 
-                        frames: icon.frames, 
-                        duration: icon.duration, 
-                        frameW: icon.frameW, 
-                        frameH: icon.frameH, 
-                        hover: true}
-                      )
-                    : null
-                    )
+          return React.createElement(
+            'div',
+            { key: index, className: "project project_" + tmp_number, style: tmp_styles },
+            React.createElement(
+              Link,
+              { to: project.url },
+              React.createElement(
+                'div',
+                { className: 'project_content' },
+                React.createElement(
+                  'div',
+                  { className: 'project_inner' },
+                  React.createElement(
+                    'h1',
+                    { className: 'project_name' },
+                    project.name
+                  ),
+                  React.createElement(
+                    'p',
+                    { className: 'project_tagline' },
+                    project.tagline
                   )
                 )
               )
             )
+          );
+        } else {
+          return React.createElement(
+            'div',
+            { key: index, className: "project project_" + tmp_number, style: tmp_styles },
+            React.createElement(
+              'div',
+              { className: 'project_content' },
+              React.createElement(
+                'div',
+                { className: 'project_inner' },
+                React.createElement(
+                  'h1',
+                  { className: 'project_name' },
+                  project.name
+                ),
+                React.createElement(
+                  'p',
+                  { className: 'project_tagline' },
+                  project.tagline
+                )
+              )
+            )
+          );
+        }
+      });
+      return React.createElement(
+        'div',
+        { className: 'channel' },
+        React.createElement(
+          'div',
+          { className: 'content' },
+          React.createElement(
+            'div',
+            { className: project_view },
+            projects.reverse(),
+            React.createElement(
+              'div',
+              { className: 'channel_info' },
+              React.createElement(
+                'div',
+                { className: 'channel_container' },
+                React.createElement(
+                  'h1',
+                  { className: 'channel_name' },
+                  name
+                ),
+                React.createElement(
+                  'div',
+                  { className: 'channel_description' },
+                  description
+                ),
+                React.createElement(
+                  'span',
+                  { className: 'view_channel', onClick: self.toggleDescription },
+                  'View ',
+                  name,
+                  ' projects'
+                ),
+                React.createElement(
+                  'span',
+                  { className: 'channel_icon', onClick: self.toggleDescription },
+                  icon ? React.createElement(Sprite, {
+                    image: icon.image,
+                    columns: icon.columns,
+                    frames: icon.frames,
+                    duration: icon.duration,
+                    frameW: icon.frameW,
+                    frameH: icon.frameH,
+                    hover: true
+                  }) : null
+                )
+              )
+            )
+          )
         )
       );
     } else {
-      return (
-        React.createElement("div", {className: "channel"}, 
-          React.createElement("p", null, "\"Loading...\"")
+      return React.createElement(
+        'div',
+        { className: 'channel' },
+        React.createElement(
+          'p',
+          null,
+          '"Loading..."'
         )
       );
     }
   }
 });
 
+},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
+'use strict';
 
-},{"../components/sprite.jsx":315,"react":309,"react-helmet":15,"react-router":133,"superagent":310,"util":5}],324:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 
@@ -31232,186 +32890,71 @@ var Link = Router.Link;
 
 var Isvg = require('react-inlinesvg');
 
-module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
-    return { };
-  },
+module.exports = React.createClass({
+  displayName: 'exports',
 
-  render: function render() {
-
-    return (
-        React.createElement("footer", {className: "footer"}, 
-          React.createElement("div", {className: "f-wrapper"}, 
-            React.createElement("div", {className: "contact"}, 
-              React.createElement("p", {className: "telly"}, React.createElement("a", {href: "tel:4024035619"}, "402.403.5619")), 
-              React.createElement("p", {className: "info"}, "info@thenewblk.com")
-            ), 
-            React.createElement("div", {className: "social"}, 
-              React.createElement("a", {href: "https://www.facebook.com/newblk", target: "_blank"}, React.createElement(Isvg, {className: "facebook", src: "/icons/new/facebook_1-01.svg"})), 
-              React.createElement("a", {href: "https://twitter.com/thenewblk", target: "_blank"}, React.createElement(Isvg, {className: "twitter", src: "/icons/new/twitter_1-01.svg"})), 
-              React.createElement("a", {href: "https://instagram.com/blkstagram", target: "_blank"}, React.createElement(Isvg, {className: "instagram", src: "/icons/new/instagram_1-01.svg"}))
-            ), 
-            React.createElement("div", {className: "map"}, 
-              React.createElement("a", {href: "https://www.google.com/maps/dir//1213+Jones+St,+Omaha,+NE+68102/@41.2531413,-95.9348167,17z/data=!4m13!1m4!3m3!1s0x87938fa8d0d71f35:0x66540c961935aa26!2s1213+Jones+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938fa8d0d71f35:0x66540c961935aa26!2m2!1d-95.9326227!2d41.2531413", target: "_blank"}, React.createElement("p", null, "1213 Jones Street ", React.createElement("br", null), "Omaha, NE 68102"))
-            )
-          )
-        )
-    );
-  }
-});
-
-
-},{"react":309,"react-inlinesvg":94,"react-router":133}],325:[function(require,module,exports){
-var React = require('react');
-var Router = require('react-router');
-var Helmet = require('react-helmet');
-
-var Sprite = require('../components/sprite.jsx');
-var Link = Router.Link;
-
-var util = require('util');
-
-module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
+  getInitialState: function getInitialState() {
     return {};
   },
-  setAgency: function(){
-    this.setState({title: "your agency", video: "agency", words: "We only know one way: All in."})
-  },
-  setHandcrafted: function(){
-    this.setState({title: "handcrafted", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build."})
-  },
-  handcraftedLoaded: function(){
-    console.log("handcraftedLoaded");
-  },
-  setExperiential: function(){
-    this.setState({title: "experiential", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting."})
-  },
-  resetVideo: function(){
-    this.setState({title: null, video: null, words: null})
-  },
-  componenetDidMount: function(){
-    var self = this;
-    var handcrafted = document.createElement('video');
-    handcrafted.src = "/video/handcrafted.mp4"
-    handcrafted.loadeddata = self.handcraftedLoaded();
-  },
 
   render: function render() {
-    var self = this,
-        video = self.state.video,
-        words = self.state.words,
-        title = self.state.title
 
-    return (
-      React.createElement("div", {className: "home_page"}, 
-        React.createElement(Helmet, {
-              title: "The New BLK", 
-              meta: [
-                  {"name": "description", "content": "the new blk" }
-              ], 
-              link: [
-                  {"rel": "canonical", "href": "http://thenewblk.com/"}
-              ]}
-          ), 
-        React.createElement("div", {className: "diamond_grid_3"}, 
-          React.createElement("div", {className: "square"}), 
-          React.createElement(Link, {className: "square", to: "/agency"}, 
-            React.createElement("span", {className: "diamond_wrapper", onMouseOver: self.setAgency, onMouseOut: self.resetVideo}, 
-              React.createElement(Sprite, {
-                image: "/icons/agency_icon_sprite-01.svg", 
-                columns: 9, 
-                frames: 9, 
-                duration: .25, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Agency")
+    return React.createElement(
+      'footer',
+      { className: 'footer' },
+      React.createElement(
+        'div',
+        { className: 'f-wrapper' },
+        React.createElement(
+          'div',
+          { className: 'contact' },
+          React.createElement(
+            'p',
+            { className: 'telly' },
+            React.createElement(
+              'a',
+              { href: 'tel:4024035619' },
+              '402.403.5619'
             )
-          ), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement(Link, {className: "square", to: "/experiential", onMouseOver: self.setExperiential, onMouseOut: self.resetVideo}, 
-            React.createElement("span", {className: "diamond_wrapper"}, 
-              React.createElement(Sprite, {
-                image: "/icons/experiential-sprite-01.svg", 
-                columns: 9, 
-                frames: 15, 
-                duration: .5, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Experiential")
+          ),
+          React.createElement(
+            'p',
+            { className: 'info' },
+            'info@thenewblk.com'
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'social' },
+          React.createElement(
+            'a',
+            { href: 'https://www.facebook.com/newblk', target: '_blank' },
+            React.createElement(Isvg, { className: 'facebook', src: '/icons/new/facebook_1-01.svg' })
+          ),
+          React.createElement(
+            'a',
+            { href: 'https://twitter.com/thenewblk', target: '_blank' },
+            React.createElement(Isvg, { className: 'twitter', src: '/icons/new/twitter_1-01.svg' })
+          ),
+          React.createElement(
+            'a',
+            { href: 'https://instagram.com/blkstagram', target: '_blank' },
+            React.createElement(Isvg, { className: 'instagram', src: '/icons/new/instagram_1-01.svg' })
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'map' },
+          React.createElement(
+            'a',
+            { href: 'https://www.google.com/maps/dir//1213+Jones+St,+Omaha,+NE+68102/@41.2531413,-95.9348167,17z/data=!4m13!1m4!3m3!1s0x87938fa8d0d71f35:0x66540c961935aa26!2s1213+Jones+St,+Omaha,+NE+68102!3b1!4m7!1m0!1m5!1m1!1s0x87938fa8d0d71f35:0x66540c961935aa26!2m2!1d-95.9326227!2d41.2531413', target: '_blank' },
+            React.createElement(
+              'p',
+              null,
+              '1213 Jones Street ',
+              React.createElement('br', null),
+              'Omaha, NE 68102'
             )
-          ), 
-          React.createElement(Link, {className: "square", to: "/handcrafted", onMouseOver: self.setHandcrafted, onMouseOut: self.resetVideo}, 
-            React.createElement("span", {className: "diamond_wrapper"}, 
-              React.createElement(Sprite, {
-                image: "/icons/handcrafted-sprite-01.svg", 
-                columns: 8, 
-                frames: 16, 
-                duration: .4, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Handcrafted")
-            )
-          ), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"}), 
-          React.createElement("div", {className: "square"})
-        ), 
-        React.createElement("div", {className: "wearethenewblkllc"}, 
-          React.createElement("p", {className: "uppercase italic theme"},  title ? title + " is" : "We are"), 
-          React.createElement("h2", {className: "bold uppercase newblk"}, "The New BLK"), 
-          React.createElement("p", {className: "italic words"}, words ? words : "an ad agency, creative think tank, and content production studio.")
-        ), 
-        React.createElement("div", {className: "home_overlay"}), 
-        React.createElement("div", {className: "video-container " + video}, 
-          React.createElement("video", {className: "experiential", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-            React.createElement("source", {src: "/video/Experiential.webm", type: "video/webm"}), 
-            React.createElement("source", {src: "/video/experiential.mp4", type: "video/mp4"})
-          ), 
-          React.createElement("video", {className: "handcrafted", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-            React.createElement("source", {src: "/video/Handcrafted.webm", type: "video/webm"}), 
-            React.createElement("source", {src: "/video/handcrafted.mp4", type: "video/mp4"})
-          ), 
-          React.createElement("video", {className: "agency", poster: "/images/transparent.png", autoPlay: true, muted: "muted", loop: true}, 
-            React.createElement("source", {src: "/video/agency_v2.webm", type: "video/webm"}), 
-            React.createElement("source", {src: "/video/agency.mp4", type: "video/mp4"})
           )
         )
       )
@@ -31419,8 +32962,374 @@ module.exports = React.createClass({displayName: "exports",
   }
 });
 
+},{"react":325,"react-inlinesvg":94,"react-router":149}],341:[function(require,module,exports){
+'use strict';
 
-},{"../components/sprite.jsx":315,"react":309,"react-helmet":15,"react-router":133,"util":5}],326:[function(require,module,exports){
+var React = require('react');
+var Router = require('react-router');
+var Helmet = require('react-helmet');
+
+var spring = require('react-motion').spring;
+var presets = require('react-motion').presets;
+var Motion = require('react-motion').Motion;
+var StaggeredMotion = require('react-motion').StaggeredMotion;
+var TransitionMotion = require('react-motion').TransitionMotion;
+
+var Sprite = require('../components/sprite.jsx');
+var Link = Router.Link;
+
+var util = require('util');
+
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  getInitialState: function getInitialState() {
+    return { title: 'We are', words: "We only know one way: All in." };
+  },
+  setAgency: function setAgency() {
+    this.setState({ title: "your agency is", video: "agency", words: "an ad agency, creative think tank, and content production studio." });
+  },
+  setHandcrafted: function setHandcrafted() {
+    this.setState({ title: "handcrafted is", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build." });
+  },
+  handcraftedLoaded: function handcraftedLoaded() {
+    console.log("handcraftedLoaded");
+  },
+  setExperiential: function setExperiential() {
+    this.setState({ title: "experiential is", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting." });
+  },
+  resetVideo: function resetVideo() {
+    this.setState({ title: 'We are', video: null, words: "We only know one way: All in." });
+  },
+  componenetDidMount: function componenetDidMount() {
+    var self = this;
+    var handcrafted = document.createElement('video');
+    handcrafted.src = "/video/handcrafted.mp4";
+    handcrafted.loadeddata = self.handcraftedLoaded();
+  },
+
+  render: function render() {
+    var self = this,
+        video = self.state.video,
+        words = self.state.words,
+        title = self.state.title;
+
+    if (title) {
+      var title_styles = title.split('').map(function (index) {
+        return { rotation: (Math.random() - 0.5) * 10, x: 0, y: 0, opacity: 0 };
+      });
+    }
+
+    if (words) {
+      var words_styles = words.split('').map(function (index) {
+        return { rotation: (Math.random() - 0.5) * 25, x: 0, y: 0, opacity: 0 };
+      });
+    }
+    var example = "an ad agency, creative think tank, and content production studio.";
+    var example_styles = example.split('').map(function (index) {
+      return { rotation: (Math.random() - 0.5) * 4500, x: (Math.random() - 0.5) * 1000, y: (Math.random() - 0.5) * 1000, opacity: 0, scale: 1 };
+    });
+
+    return React.createElement(
+      'div',
+      { className: 'home_page' },
+      React.createElement(Helmet, {
+        title: 'The New BLK',
+        meta: [{ "name": "description", "content": "the new blk" }],
+        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }]
+      }),
+      React.createElement(
+        'div',
+        { className: 'diamond_grid_3' },
+        React.createElement(
+          'span',
+          { className: 'desktop_squares' },
+          React.createElement('div', { className: 'square' }),
+          React.createElement(
+            Link,
+            { className: 'square', to: '/agency', onMouseEnter: self.setAgency, onMouseLeave: self.resetVideo },
+            React.createElement(
+              'span',
+              { className: 'diamond_wrapper' },
+              React.createElement(Sprite, {
+                image: '/icons/agency_icon_sprite-01.svg',
+                columns: 9,
+                frames: 9,
+                duration: .25,
+                frameW: 50,
+                frameH: 50,
+                hover: true }),
+              React.createElement(
+                'span',
+                { className: 'name' },
+                'Agency'
+              )
+            )
+          ),
+          React.createElement('div', { className: 'square' }),
+          React.createElement(
+            Link,
+            { className: 'square', to: '/experiential', onMouseEnter: self.setExperiential, onMouseLeave: self.resetVideo },
+            React.createElement(
+              'span',
+              { className: 'diamond_wrapper' },
+              React.createElement(Sprite, {
+                image: '/icons/experiential-sprite-01.svg',
+                columns: 9,
+                frames: 15,
+                duration: .5,
+                frameW: 50,
+                frameH: 50,
+                hover: true }),
+              React.createElement(
+                'span',
+                { className: 'name' },
+                'Experiential'
+              )
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'square', to: '/handcrafted', onMouseEnter: self.setHandcrafted, onMouseLeave: self.resetVideo },
+            React.createElement(
+              'span',
+              { className: 'diamond_wrapper' },
+              React.createElement(Sprite, {
+                image: '/icons/handcrafted-sprite-01.svg',
+                columns: 8,
+                frames: 16,
+                duration: .4,
+                frameW: 50,
+                frameH: 50,
+                hover: true }),
+              React.createElement(
+                'span',
+                { className: 'name' },
+                'Handcrafted'
+              )
+            )
+          ),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' })
+        ),
+        React.createElement(
+          'span',
+          { className: 'mobile_squares' },
+          React.createElement(
+            Link,
+            { className: 'square', to: '/agency', onMouseEnter: self.setAgency, onMouseLeave: self.resetVideo },
+            React.createElement(
+              'span',
+              { className: 'diamond_wrapper' },
+              React.createElement(Sprite, {
+                image: '/icons/agency_icon_sprite-01.svg',
+                columns: 9,
+                frames: 9,
+                duration: .25,
+                frameW: 50,
+                frameH: 50,
+                hover: true }),
+              React.createElement(
+                'span',
+                { className: 'name' },
+                'Agency'
+              )
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'square', to: '/experiential', onMouseEnter: self.setExperiential, onMouseLeave: self.resetVideo },
+            React.createElement(
+              'span',
+              { className: 'diamond_wrapper' },
+              React.createElement(Sprite, {
+                image: '/icons/experiential-sprite-01.svg',
+                columns: 9,
+                frames: 15,
+                duration: .5,
+                frameW: 50,
+                frameH: 50,
+                hover: true }),
+              React.createElement(
+                'span',
+                { className: 'name' },
+                'Experiential'
+              )
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'square', to: '/handcrafted', onMouseEnter: self.setHandcrafted, onMouseLeave: self.resetVideo },
+            React.createElement(
+              'span',
+              { className: 'diamond_wrapper' },
+              React.createElement(Sprite, {
+                image: '/icons/handcrafted-sprite-01.svg',
+                columns: 8,
+                frames: 16,
+                duration: .4,
+                frameW: 50,
+                frameH: 50,
+                hover: true }),
+              React.createElement(
+                'span',
+                { className: 'name' },
+                'Handcrafted'
+              )
+            )
+          ),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' }),
+          React.createElement('div', { className: 'square' })
+        )
+      ),
+      React.createElement(
+        'div',
+        { className: 'wearethenewblkllc' },
+        title ? React.createElement(
+          StaggeredMotion,
+          {
+            key: title,
+            defaultStyles: title_styles,
+            styles: function styles(prevStyles) {
+              return prevStyles.map(function (_, i) {
+                return i === 0 ? { rotation: spring(0, [300, 30]), opacity: spring(1, [600, 30]) } : { opacity: spring(prevStyles[i - 1].opacity, [600, 30]),
+                  rotation: spring(prevStyles[i - 1].rotation, [300, 30])
+                };
+              });
+            } },
+          function (interpolatedStyles) {
+            return React.createElement(
+              'p',
+              { className: 'uppercase italic theme', style: { display: "inline-block" } },
+              interpolatedStyles.map(function (style, i) {
+                if (title[i] == " ") {
+                  return React.createElement(
+                    'span',
+                    { key: i, style: { position: "relative", display: "inline", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+                    title[i]
+                  );
+                } else {
+                  return React.createElement(
+                    'span',
+                    { key: i, style: { position: "relative", display: "inline-block", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+                    title[i]
+                  );
+                }
+              })
+            );
+          }
+        ) : null,
+        React.createElement(
+          'h2',
+          { className: 'bold uppercase newblk' },
+          'The New BLK'
+        ),
+        words ? React.createElement(
+          StaggeredMotion,
+          {
+            key: words,
+            defaultStyles: words_styles,
+            styles: function styles(prevStyles) {
+              return prevStyles.map(function (_, i) {
+                return i === 0 ? { rotation: spring(0, [400, 30]), opacity: spring(1, [1200, 50]) } : { opacity: spring(prevStyles[i - 1].opacity, [1200, 50]),
+                  rotation: spring(prevStyles[i - 1].rotation, [400, 30])
+                };
+              });
+            } },
+          function (interpolatedStyles) {
+            return React.createElement(
+              'p',
+              { className: 'italic words', style: { display: "inline-block" } },
+              interpolatedStyles.map(function (style, i) {
+                if (words[i] == " ") {
+                  return React.createElement(
+                    'span',
+                    { key: i, style: { position: "relative", display: "inline", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+                    words[i]
+                  );
+                } else {
+                  return React.createElement(
+                    'span',
+                    { key: i, style: { position: "relative", display: "inline-block", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+                    words[i]
+                  );
+                }
+              })
+            );
+          }
+        ) : null
+      ),
+      React.createElement('div', { className: 'home_overlay' }),
+      React.createElement(
+        'div',
+        { className: "video-container " + video },
+        React.createElement(
+          'video',
+          { className: 'experiential', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+          React.createElement('source', { src: '/video/Experiential.webm', type: 'video/webm' }),
+          React.createElement('source', { src: '/video/experiential.mp4', type: 'video/mp4' })
+        ),
+        React.createElement(
+          'video',
+          { className: 'handcrafted', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+          React.createElement('source', { src: '/video/Handcrafted.webm', type: 'video/webm' }),
+          React.createElement('source', { src: '/video/handcrafted.mp4', type: 'video/mp4' })
+        ),
+        React.createElement(
+          'video',
+          { className: 'agency', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+          React.createElement('source', { src: '/video/agency_v2.webm', type: 'video/webm' }),
+          React.createElement('source', { src: '/video/agency.mp4', type: 'video/mp4' })
+        )
+      )
+    );
+  }
+});
+
+},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"react-motion":116,"react-router":149,"util":5}],342:[function(require,module,exports){
+'use strict';
+
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
@@ -31430,28 +33339,28 @@ var Helmet = require('react-helmet');
 var util = require('util');
 
 function slugify(text) {
-  return text.toString().toLowerCase()
-    .replace(/\s+/g, '-')           // Replace spaces with -
-    .replace(/\//g, '-')
-    .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
-    .replace(/\-\-+/g, '-')         // Replace multiple - with single -
-    .replace(/^-+/, '')             // Trim - from start of text
-    .replace(/-+$/, '');            // Trim - from end of text
+  return text.toString().toLowerCase().replace(/\s+/g, '-') // Replace spaces with -
+  .replace(/\//g, '-').replace(/[^\w\-]+/g, '') // Remove all non-word chars
+  .replace(/\-\-+/g, '-') // Replace multiple - with single -
+  .replace(/^-+/, '') // Trim - from start of text
+  .replace(/-+$/, ''); // Trim - from end of text
 }
 
-module.exports = React.createClass({displayName: "exports",
-  mixins: [ Router.State ],
+module.exports = React.createClass({
+  displayName: 'exports',
 
-  getInitialState: function(){
-    return { menu: "" }
+  mixins: [Router.State],
+
+  getInitialState: function getInitialState() {
+    return { menu: "" };
   },
 
-  menuOver: function(){
-    this.setState({menu: " menu_over"})
+  menuOver: function menuOver() {
+    this.setState({ menu: " menu_over" });
   },
 
-  menuOut: function(){
-    this.setState({menu: ""});
+  menuOut: function menuOut() {
+    this.setState({ menu: "" });
   },
 
   render: function render() {
@@ -31464,76 +33373,123 @@ module.exports = React.createClass({displayName: "exports",
       var path = slugify(self.getPathname());
     }
 
-    return (
-      React.createElement("html", null, 
-        React.createElement("head", null, 
-          React.createElement("meta", {charSet: "utf-8"}), 
-          React.createElement("meta", {name: "viewport", content: "width=device-width, initial-scale=1.0"}), 
-          React.createElement("link", {rel: "icon", href: "/favicon.ico"}), 
-          React.createElement("link", {type: "text/css", rel: "stylesheet", href: "http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"}), 
-          React.createElement("link", {rel: "stylesheet", href: "/styles/main.css"})
-        ), 
-        React.createElement("body", {className: path + menu}, 
-          React.createElement(Menu, {onMouseOver: self.menuOver, onMouseOut: self.menuOut}), 
-          React.createElement("div", {className: "navigator_overlay"}), 
-          React.createElement("div", {className: "main"}, 
-            this.props.children, 
-            React.createElement(Footer, null)
-          ), 
-
-          React.createElement("div", {className: "mobile_main"}, 
-            React.createElement("h3", {className: "earthlings"}, "Greetings earthlings, our mobile ship is currently under construction. Please visit our mother ship on your desktop computing machine."), 
-            React.createElement(Footer, null)
-          )
-
-        ), 
-        React.createElement("script", {src: "/bundle.js"})
-      )
+    return React.createElement(
+      'html',
+      null,
+      React.createElement(
+        'head',
+        null,
+        React.createElement('meta', { charSet: 'utf-8' }),
+        React.createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
+        React.createElement('link', { rel: 'icon', href: '/favicon.ico' }),
+        React.createElement('link', { type: 'text/css', rel: 'stylesheet', href: 'http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css' }),
+        React.createElement('link', { rel: 'stylesheet', href: '/styles/main.css' })
+      ),
+      React.createElement(
+        'body',
+        { className: path + menu },
+        React.createElement(Menu, { onMouseOver: self.menuOver, onMouseOut: self.menuOut }),
+        React.createElement('div', { className: 'navigator_overlay' }),
+        React.createElement(
+          'div',
+          { className: 'main' },
+          this.props.children,
+          React.createElement(Footer, null)
+        ),
+        React.createElement(
+          'div',
+          { className: 'mobile_main' },
+          React.createElement(
+            'h3',
+            { className: 'earthlings' },
+            'Greetings earthlings, our mobile ship is currently under construction. Please visit our mother ship on your desktop computing machine.'
+          ),
+          React.createElement(Footer, null)
+        )
+      ),
+      React.createElement('script', { src: '/bundle.js' })
     );
   }
 });
 
+},{"./footer.jsx":340,"./menu.jsx":344,"react":325,"react-helmet":15,"react-router":149,"util":5}],343:[function(require,module,exports){
+'use strict';
 
-},{"./footer.jsx":324,"./menu.jsx":328,"react":309,"react-helmet":15,"react-router":133,"util":5}],327:[function(require,module,exports){
 var React = require('react');
 var util = require('util');
 
-module.exports = React.createClass({displayName: "exports",
-  componentDidMount: function() {
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  componentDidMount: function componentDidMount() {
     document.title = "Login";
   },
   render: function render() {
 
-    return (
-      React.createElement("div", {className: "login"}, 
-        React.createElement("h1", null, "Log In"), 
-      	React.createElement("form", {action: "/login", method: "post"}, 
-      		React.createElement("div", {className: "form-group"}, 
-      			React.createElement("p", {className: "cf"}, 
-      				React.createElement("label", null, "Email"), 
-      				React.createElement("input", {type: "text", name: "email"})
-      			)
-      		), 
-      		React.createElement("div", {className: "form-group"}, 
-      			React.createElement("p", {className: "cf"}, 
-      				React.createElement("label", null, "Password"), 
-      				React.createElement("input", {type: "password", name: "password"})
-      			)
-
-      		), 
-
-      		React.createElement("button", {type: "submit"}, "Login")
-      	), 
-
-      	React.createElement("hr", null), 
-      	React.createElement("p", null, "Or go ", React.createElement("a", {href: "/"}, "home"), ".")
+    return React.createElement(
+      'div',
+      { className: 'login' },
+      React.createElement(
+        'h1',
+        null,
+        'Log In'
+      ),
+      React.createElement(
+        'form',
+        { action: '/login', method: 'post' },
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement(
+            'p',
+            { className: 'cf' },
+            React.createElement(
+              'label',
+              null,
+              'Email'
+            ),
+            React.createElement('input', { type: 'text', name: 'email' })
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'form-group' },
+          React.createElement(
+            'p',
+            { className: 'cf' },
+            React.createElement(
+              'label',
+              null,
+              'Password'
+            ),
+            React.createElement('input', { type: 'password', name: 'password' })
+          )
+        ),
+        React.createElement(
+          'button',
+          { type: 'submit' },
+          'Login'
+        )
+      ),
+      React.createElement('hr', null),
+      React.createElement(
+        'p',
+        null,
+        'Or go ',
+        React.createElement(
+          'a',
+          { href: '/' },
+          'home'
+        ),
+        '.'
       )
     );
   }
 });
 
+},{"react":325,"util":5}],344:[function(require,module,exports){
+'use strict';
 
-},{"react":309,"util":5}],328:[function(require,module,exports){
 var React = require('react');
 var Router = require('react-router');
 
@@ -31542,80 +33498,119 @@ var Link = Router.Link;
 
 var Isvg = require('react-inlinesvg');
 
-module.exports = React.createClass({displayName: "exports",
-  getInitialState: function(){
-    return { };
+module.exports = React.createClass({
+  displayName: 'exports',
+
+  getInitialState: function getInitialState() {
+    return {};
   },
 
   render: function render() {
 
-    return (
-        React.createElement("div", {className: "navigator", onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut}, 
-          React.createElement(Link, {className: "new-blk-logo", to: "/"}, React.createElement(Isvg, {uniquifyIDs: false, className: "newblk_logo", src: "/images/blk_logo.svg"})), 
-          React.createElement("div", {className: "items"}, 
-            React.createElement(Link, {className: "channel_link", to: "/agency"}, 
-              React.createElement(Sprite, {
-                image: "/icons/agency_icon_sprite-01.svg", 
-                columns: 9, 
-                frames: 9, 
-                duration: .25, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Agency")
-            ), 
-            React.createElement(Link, {className: "channel_link lost", to: "/disruption"}, 
-              React.createElement(Sprite, {
-                image: "/icons/disruption-icon.png", 
-                columns: 9, 
-                frames: 18, 
-                duration: .5, 
-                frameW: 50, 
-                frameH: 50, 
-                loop: true}), 
-              React.createElement("span", {className: "name"}, "DISRUPTION")
-            ), 
-            React.createElement(Link, {className: "channel_link", to: "/experiential"}, 
-              React.createElement(Sprite, {
-                image: "/icons/experiential-sprite-01.svg", 
-                columns: 9, 
-                frames: 15, 
-                duration: .5, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Experiential")
-            ), 
-            React.createElement(Link, {className: "channel_link lost", to: "/superfans"}, 
-              React.createElement(Sprite, {
-                image: "/icons/superfan-sprite-01.svg", 
-                columns: 9, 
-                frames: 17, 
-                duration: .5, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Superfans")
-            ), 
-            React.createElement(Link, {className: "channel_link", to: "/handcrafted"}, 
-              React.createElement(Sprite, {
-                image: "/icons/handcrafted-sprite-01.svg", 
-                columns: 8, 
-                frames: 16, 
-                duration: .4, 
-                frameW: 50, 
-                frameH: 50, 
-                hover: true}), 
-              React.createElement("span", {className: "name"}, "Handcrafted")
-            )
+    return React.createElement(
+      'div',
+      { className: 'navigator', onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut },
+      React.createElement(
+        Link,
+        { className: 'new-blk-logo', to: '/' },
+        React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
+      ),
+      React.createElement(
+        'div',
+        { className: 'items' },
+        React.createElement(
+          Link,
+          { className: 'channel_link', to: '/agency' },
+          React.createElement(Sprite, {
+            image: '/icons/agency_icon_sprite-01.svg',
+            columns: 9,
+            frames: 9,
+            duration: .25,
+            frameW: 50,
+            frameH: 50,
+            hover: true }),
+          React.createElement(
+            'span',
+            { className: 'name' },
+            'Agency'
+          )
+        ),
+        React.createElement(
+          Link,
+          { className: 'channel_link lost', to: '/disruption' },
+          React.createElement(Sprite, {
+            image: '/icons/disruption-icon.png',
+            columns: 9,
+            frames: 18,
+            duration: .5,
+            frameW: 50,
+            frameH: 50,
+            loop: true }),
+          React.createElement(
+            'span',
+            { className: 'name' },
+            'DISRUPTION'
+          )
+        ),
+        React.createElement(
+          Link,
+          { className: 'channel_link', to: '/experiential' },
+          React.createElement(Sprite, {
+            image: '/icons/experiential-sprite-01.svg',
+            columns: 9,
+            frames: 15,
+            duration: .5,
+            frameW: 50,
+            frameH: 50,
+            hover: true }),
+          React.createElement(
+            'span',
+            { className: 'name' },
+            'Experiential'
+          )
+        ),
+        React.createElement(
+          Link,
+          { className: 'channel_link lost', to: '/superfans' },
+          React.createElement(Sprite, {
+            image: '/icons/superfan-sprite-01.svg',
+            columns: 9,
+            frames: 17,
+            duration: .5,
+            frameW: 50,
+            frameH: 50,
+            hover: true }),
+          React.createElement(
+            'span',
+            { className: 'name' },
+            'Superfans'
+          )
+        ),
+        React.createElement(
+          Link,
+          { className: 'channel_link', to: '/handcrafted' },
+          React.createElement(Sprite, {
+            image: '/icons/handcrafted-sprite-01.svg',
+            columns: 8,
+            frames: 16,
+            duration: .4,
+            frameW: 50,
+            frameH: 50,
+            hover: true }),
+          React.createElement(
+            'span',
+            { className: 'name' },
+            'Handcrafted'
           )
         )
+      )
     );
   }
 });
 
+},{"../components/sprite.jsx":331,"react":325,"react-inlinesvg":94,"react-router":149}],345:[function(require,module,exports){
+'use strict';
 
-},{"../components/sprite.jsx":315,"react":309,"react-inlinesvg":94,"react-router":133}],329:[function(require,module,exports){
 var React = require('react');
 var Helmet = require('react-helmet');
 var Sprite = require('../components/sprite.jsx');
@@ -31623,21 +33618,32 @@ var Sprite = require('../components/sprite.jsx');
 var util = require('util');
 
 var SetIntervalMixin = {
-  componentWillMount: function() {
+  componentWillMount: function componentWillMount() {
     this.intervals = [];
   },
-  setInterval: function() {
+  setInterval: function (_setInterval) {
+    function setInterval() {
+      return _setInterval.apply(this, arguments);
+    }
+
+    setInterval.toString = function () {
+      return _setInterval.toString();
+    };
+
+    return setInterval;
+  }(function () {
     this.intervals.push(setInterval.apply(null, arguments));
-  },
-  componentWillUnmount: function() {
+  }),
+  componentWillUnmount: function componentWillUnmount() {
     this.intervals.forEach(clearInterval);
   }
 };
 
+module.exports = React.createClass({
+  displayName: 'exports',
 
-module.exports = React.createClass({displayName: "exports",
-  mixins: [ SetIntervalMixin ],
-  getInitialState: function(){
+  mixins: [SetIntervalMixin],
+  getInitialState: function getInitialState() {
     return {
       image: "/icons/blk-2.svg",
       columns: 11,
@@ -31650,31 +33656,30 @@ module.exports = React.createClass({displayName: "exports",
     };
   },
 
-  handleColumns: function(event) {
-    this.setState({columns: event.target.value});
+  handleColumns: function handleColumns(event) {
+    this.setState({ columns: event.target.value });
   },
 
-  handleFrames: function(event) {
-    this.setState({frames: event.target.value});
+  handleFrames: function handleFrames(event) {
+    this.setState({ frames: event.target.value });
   },
 
-  handleDuration: function(event) {
-    var value = parseInt(event.target.value)
+  handleDuration: function handleDuration(event) {
+    var value = parseInt(event.target.value);
     var seconds = value / 1000;
-    this.setState({duration: seconds});
-
+    this.setState({ duration: seconds });
   },
 
-  handleFrameW: function(event) {
-    this.setState({frameW: event.target.value});
+  handleFrameW: function handleFrameW(event) {
+    this.setState({ frameW: event.target.value });
   },
 
-  handleFrameH: function(event) {
-    this.setState({frameH: event.target.value});
+  handleFrameH: function handleFrameH(event) {
+    this.setState({ frameH: event.target.value });
   },
 
-  handleHover: function() {
-    this.setState({hover: !this.state.hover, loop: !this.state.loop});
+  handleHover: function handleHover() {
+    this.setState({ hover: !this.state.hover, loop: !this.state.loop });
   },
 
   render: function render() {
@@ -31690,72 +33695,112 @@ module.exports = React.createClass({displayName: "exports",
         hover = self.state.hover,
         loop = self.state.loop;
 
-    return (
-      React.createElement("div", null, 
-        React.createElement(Helmet, {
-              title: "the new blk", 
-              meta: [
-                  {"name": "description", "content": "the new blk" }
-              ], 
-              link: [
-                  {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "icon", "href": "/favicon.ico"}
-              ]}
-          ), 
-
-        React.createElement("h3", {className: "centered"}, "Go ahead and play with some Spritesheet animations: "), 
-
-        React.createElement("div", {className: "home_sprite"}, 
-          React.createElement(Sprite, {
-            image: image, 
-            columns: columns, 
-            frames: frames, 
-            speed: (duration* 1000)/ frames, 
-            duration: duration, 
-            frameW: frameW, 
-            frameH: frameH, 
-            hover: hover, 
-            loop: loop})
-        ), 
-        React.createElement("div", {className: "controls"}, 
-
-          React.createElement("div", {className: "control"}, 
-            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "columns", value: columns, onChange: this.handleColumns}), " Columns:"), 
-            React.createElement("input", {type: "range", name: "columns", min: "0", max: "100", value: columns, onChange: this.handleColumns})
-          ), 
-
-          React.createElement("div", {className: "control"}, 
-            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "frames", value: frames, onChange: this.handleFrames}), " Frames:"), 
-            React.createElement("input", {type: "range", name: "frames", min: "0", max: "100", value: frames, onChange: this.handleFrames})
-          ), 
-
-          React.createElement("div", {className: "control"}, 
-            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "duration", value: duration_control, onChange: this.handleDuration}), " Duration (in milliseconds):"), 
-            React.createElement("input", {type: "range", name: "duration", min: "0", max: "10000", value: duration_control, onChange: this.handleDuration})
-          ), 
-
-          React.createElement("div", {className: "control"}, 
-            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "frameW", value: frameW, onChange: this.handleFrameW}), " Frame Width (in pixels):"), 
-            React.createElement("input", {type: "range", name: "frameW", min: "0", max: "100", value: frameW, onChange: this.handleFrameW})
-          ), 
-
-          React.createElement("div", {className: "control"}, 
-            React.createElement("p", null, React.createElement("input", {className: "simple_input", type: "number", name: "frameH", value: frameH, onChange: this.handleFrameH}), " Frame Height (in pixels):"), 
-            React.createElement("input", {type: "range", name: "frameH", min: "0", max: "100", value: frameH, onChange: this.handleFrameH})
-          ), 
-
-          React.createElement("div", {className: "control"}, 
-            React.createElement("p", null, 
-               hover ?  React.createElement("button", {onClick: this.handleHover, className: "hover hoverloop_button"}, "Hover") : null, 
-               loop ? React.createElement("button", {onClick: this.handleHover, className: "loop hoverloop_button"}, "Loop") : null
-            )
+    return React.createElement(
+      'div',
+      null,
+      React.createElement(Helmet, {
+        title: 'the new blk',
+        meta: [{ "name": "description", "content": "the new blk" }],
+        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }, { "rel": "icon", "href": "/favicon.ico" }]
+      }),
+      React.createElement(
+        'h3',
+        { className: 'centered' },
+        'Go ahead and play with some Spritesheet animations: '
+      ),
+      React.createElement(
+        'div',
+        { className: 'home_sprite' },
+        React.createElement(Sprite, {
+          image: image,
+          columns: columns,
+          frames: frames,
+          speed: duration * 1000 / frames,
+          duration: duration,
+          frameW: frameW,
+          frameH: frameH,
+          hover: hover,
+          loop: loop })
+      ),
+      React.createElement(
+        'div',
+        { className: 'controls' },
+        React.createElement(
+          'div',
+          { className: 'control' },
+          React.createElement(
+            'p',
+            null,
+            React.createElement('input', { className: 'simple_input', type: 'number', name: 'columns', value: columns, onChange: this.handleColumns }),
+            ' Columns:'
+          ),
+          React.createElement('input', { type: 'range', name: 'columns', min: '0', max: '100', value: columns, onChange: this.handleColumns })
+        ),
+        React.createElement(
+          'div',
+          { className: 'control' },
+          React.createElement(
+            'p',
+            null,
+            React.createElement('input', { className: 'simple_input', type: 'number', name: 'frames', value: frames, onChange: this.handleFrames }),
+            ' Frames:'
+          ),
+          React.createElement('input', { type: 'range', name: 'frames', min: '0', max: '100', value: frames, onChange: this.handleFrames })
+        ),
+        React.createElement(
+          'div',
+          { className: 'control' },
+          React.createElement(
+            'p',
+            null,
+            React.createElement('input', { className: 'simple_input', type: 'number', name: 'duration', value: duration_control, onChange: this.handleDuration }),
+            ' Duration (in milliseconds):'
+          ),
+          React.createElement('input', { type: 'range', name: 'duration', min: '0', max: '10000', value: duration_control, onChange: this.handleDuration })
+        ),
+        React.createElement(
+          'div',
+          { className: 'control' },
+          React.createElement(
+            'p',
+            null,
+            React.createElement('input', { className: 'simple_input', type: 'number', name: 'frameW', value: frameW, onChange: this.handleFrameW }),
+            ' Frame Width (in pixels):'
+          ),
+          React.createElement('input', { type: 'range', name: 'frameW', min: '0', max: '100', value: frameW, onChange: this.handleFrameW })
+        ),
+        React.createElement(
+          'div',
+          { className: 'control' },
+          React.createElement(
+            'p',
+            null,
+            React.createElement('input', { className: 'simple_input', type: 'number', name: 'frameH', value: frameH, onChange: this.handleFrameH }),
+            ' Frame Height (in pixels):'
+          ),
+          React.createElement('input', { type: 'range', name: 'frameH', min: '0', max: '100', value: frameH, onChange: this.handleFrameH })
+        ),
+        React.createElement(
+          'div',
+          { className: 'control' },
+          React.createElement(
+            'p',
+            null,
+            hover ? React.createElement(
+              'button',
+              { onClick: this.handleHover, className: 'hover hoverloop_button' },
+              'Hover'
+            ) : null,
+            loop ? React.createElement(
+              'button',
+              { onClick: this.handleHover, className: 'loop hoverloop_button' },
+              'Loop'
+            ) : null
           )
         )
-
       )
     );
   }
 });
 
-
-},{"../components/sprite.jsx":315,"react":309,"react-helmet":15,"util":5}]},{},[1]);
+},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"util":5}]},{},[1]);

@@ -17,6 +17,7 @@ var jshint = require('gulp-jshint'),
   source = require('vinyl-source-stream'),
 	autoprefixer = require('gulp-autoprefixer');
 
+var babelify = require("babelify");
 
 // Lint Task
 // gulp.task('lint', function() {
@@ -41,7 +42,7 @@ gulp.task('react', function() {
     // Browserify/bundle the JS.
 		// browserify -t reactify -t require-globify public/index.js -o public/bundle.js
     browserify('./public/index.js')
-				.transform([reactify])
+				.transform(babelify, {presets: ["es2015", "react"]})
 				.transform([globify])
         .bundle()
         .pipe(source('bundle.js'))
