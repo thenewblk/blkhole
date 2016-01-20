@@ -20,6 +20,7 @@
     "react": "^0.13.3",
     "react-draggable": "^0.8.5",
     "react-engine": "^1.6.0",
+    "react-g-analytics": "0.0.9",
     "react-helmet": "^1.0.1",
     "react-inlinesvg": "^0.4.2",
     "react-motion": "^0.3.1",
