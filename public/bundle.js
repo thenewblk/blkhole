@@ -31638,7 +31638,7 @@ module.exports = React.createClass({
       React.createElement(Helmet, {
         title: 'Agency | The New BLK',
         meta: [{ "name": "description", "content": "the new blk" }],
-        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }, { "rel": "icon", "href": "/favicon.ico" }]
+        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }, { "rel": "icon", "href": "/images//favicon.png" }]
       }),
       React.createElement(
         'div',
@@ -32380,7 +32380,7 @@ module.exports = React.createClass({
         React.createElement(Helmet, {
           title: title,
           meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
-          link: [{ "rel": "icon", "href": "/favicon.ico" }]
+          link: [{ "rel": "icon", "href": "/images/favicon.png" }]
         }),
         React.createElement(
           'div',
@@ -32675,7 +32675,7 @@ module.exports = React.createClass({
         React.createElement(Helmet, {
           title: title,
           meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
-          link: [{ "rel": "icon", "href": "/favicon.ico" }]
+          link: [{ "rel": "icon", "href": "/images/favicon.png" }]
         }),
         React.createElement(
           'p',
@@ -32982,10 +32982,10 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { title: 'We are', words: "We only know one way: All in." };
+    return { title: 'We are', words: "an ad agency, creative think tank, and content production studio." };
   },
   setAgency: function setAgency() {
-    this.setState({ title: "your agency is", video: "agency", words: "an ad agency, creative think tank, and content production studio." });
+    this.setState({ title: "your agency is", video: "agency", words: "We only know one way: All in." });
   },
   setHandcrafted: function setHandcrafted() {
     this.setState({ title: "handcrafted is", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build." });
@@ -32997,7 +32997,7 @@ module.exports = React.createClass({
     this.setState({ title: "experiential is", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting." });
   },
   resetVideo: function resetVideo() {
-    this.setState({ title: 'We are', video: null, words: "We only know one way: All in." });
+    this.setState({ title: 'We are', video: null, words: "an ad agency, creative think tank, and content production studio." });
   },
   componenetDidMount: function componenetDidMount() {
     var self = this;
@@ -33241,7 +33241,7 @@ module.exports = React.createClass({
           function (style) {
             return React.createElement(
               'p',
-              { className: 'uppercase italic theme', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+              { key: title, className: 'uppercase italic theme', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
               title
             );
           }
@@ -33266,7 +33266,7 @@ module.exports = React.createClass({
           function (style) {
             return React.createElement(
               'p',
-              { className: 'italic words', style: { position: "relative", top: style.x, left: style.y, opacity: style.opacity } },
+              { key: words, className: 'italic words', style: { position: "relative", top: style.x, left: style.y, opacity: style.opacity } },
               words
             );
           }
@@ -33353,7 +33353,7 @@ module.exports = React.createClass({
         null,
         React.createElement('meta', { charSet: 'utf-8' }),
         React.createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
-        React.createElement('link', { rel: 'icon', href: '/favicon.ico' }),
+        React.createElement('link', { rel: 'icon', href: '/images/favicon.png' }),
         React.createElement('link', { type: 'text/css', rel: 'stylesheet', href: 'http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css' }),
         React.createElement('link', { rel: 'stylesheet', href: '/styles/main.css' })
       ),

@@ -146,8 +146,8 @@ module.exports = React.createClass({
                 <div className="channel_info">
                   <div className="channel_container">
                     <span className="channel_words">
-                      <h1 className="channel_name">{name}</h1>
-                      <div className="channel_description">{formatted_description}</div>
+                        <h1 className="channel_name">{name}</h1>
+                        <div className="channel_description">{formatted_description}</div>
                     </span>
                     <span className="channel_button">
                       <span className="view_channel" onClick={self.toggleDescription}>View {name} projects</span>
@@ -167,7 +167,6 @@ module.exports = React.createClass({
                     </span>
                   </div>
                   <div className="channel_overlay"></div>
-
                     { (webm || mp4) ?
                       <div className="video-container" key={title}>
                         <video className="visible" poster="/images/transparent.png" autoPlay muted="muted" loop>
@@ -175,8 +174,7 @@ module.exports = React.createClass({
                             { mp4 ? <source src={mp4} type="video/mp4" /> : null }
                         </video>
                       </div>
-                      : null
-                    }
+                    : null }
                 </div>
               </div>
             </div>
@@ -192,7 +190,7 @@ module.exports = React.createClass({
                     {"property": "og:type", "content": "article"}
                 ]}
                 link={[
-                  {"rel": "icon", "href": "/favicon.ico"}
+                  {"rel": "icon", "href": "/images/favicon.png"}
                 ]}
           />
           <p>"Loading..."</p>

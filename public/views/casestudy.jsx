@@ -267,7 +267,7 @@ module.exports = React.createClass({
                     {"property": "og:type", "content": "article"}
                 ]}
                 link={[
-                  {"rel": "icon", "href": "/favicon.ico"}
+                  {"rel": "icon", "href": "/images/favicon.png"}
                 ]}
             />
           <div className="main_content loaded" key={casestudy}>

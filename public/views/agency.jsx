@@ -339,7 +339,7 @@ module.exports = React.createClass({
               ]}
               link={[
                   {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "icon", "href": "/favicon.ico"}
+                  {"rel": "icon", "href": "/images//favicon.png"}
               ]}
           />
         <div className="agency_top">

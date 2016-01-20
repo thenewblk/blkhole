@@ -46,7 +46,7 @@ module.exports = React.createClass({
         <head>
           <meta charSet='utf-8' />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-          <link rel="icon" href="/favicon.ico" />
+          <link rel="icon" href="/images/favicon.png" />
           <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"/>
           <link rel="stylesheet" href="/styles/main.css" />
         </head>

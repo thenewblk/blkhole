@@ -16,10 +16,10 @@ var util = require('util');
 
 module.exports = React.createClass({
   getInitialState: function(){
-    return {title: 'We are', words: "We only know one way: All in."};
+    return {title: 'We are', words: "an ad agency, creative think tank, and content production studio."};
   },
   setAgency: function(){
-    this.setState({title: "your agency is", video: "agency", words: "an ad agency, creative think tank, and content production studio."})
+    this.setState({title: "your agency is", video: "agency", words: "We only know one way: All in."})
   },
   setHandcrafted: function(){
     this.setState({title: "handcrafted is", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build."})
@@ -31,7 +31,7 @@ module.exports = React.createClass({
     this.setState({title: "experiential is", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting."})
   },
   resetVideo: function(){
-    this.setState({title: 'We are', video: null, words: "We only know one way: All in."})
+    this.setState({title: 'We are', video: null, words: "an ad agency, creative think tank, and content production studio."})
   },
   componenetDidMount: function(){
     var self = this;
@@ -219,7 +219,7 @@ module.exports = React.createClass({
                   x: spring(0, [80, 20]),
                 }}>
               {function(style){
-                return (<p className="uppercase italic theme" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
+                return (<p key={title} className="uppercase italic theme" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
               }}
             </Motion>
           : null }
@@ -237,7 +237,7 @@ module.exports = React.createClass({
                     x: spring(0, [80, 20]),
                   }}>
                 {function(style){
-                  return (<p className="italic words" style={{position: "relative", top: style.x, left: style.y, opacity: style.opacity}}>{words}</p>)
+                  return (<p key={words} className="italic words" style={{position: "relative", top: style.x, left: style.y, opacity: style.opacity}}>{words}</p>)
                 }}
               </Motion>
             : null }
