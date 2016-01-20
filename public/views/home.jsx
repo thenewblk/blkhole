@@ -1,6 +1,5 @@
 var React = require('react');
 var Router = require('react-router');
-var Helmet = require('react-helmet');
 
 var spring = require('react-motion').spring;
 var presets = require('react-motion').presets;
@@ -64,18 +63,6 @@ module.exports = React.createClass({
 
     return (
       <div className="home_page">
-        <Helmet
-              title="The New BLK"
-              meta={[
-                  {"name": "description", "content": "The New BLK" },
-                  {"property": "og:title", "content": "The New BLK" },
-                  {"property": "og:image", "content": "/images/blk.jpg" },
-                  {"property": "og:description", "content": "We are an ad agency, creative think tank, and content production studio." }
-              ]}
-              link={[
-                  {"rel": "canonical", "href": "http://thenewblk.com/"}
-              ]}
-          />
         <div className="diamond_grid_3">
           <span className="desktop_squares">
             <div className="square"></div>

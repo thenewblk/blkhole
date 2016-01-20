@@ -73,11 +73,11 @@ app.get('/post/:post', function(req, res) {
     .findOne({ slug: req.params.post })
     .exec( function (err, post) {
         if (err) return console.log(err);
-        if (post.length) {
+        if (post) {
           res.render(req.url, {
             title: post.name,
             image: post.content.top_image,
-            description: post.top_block.content,
+            description: post.description,
             content: post
           });
         } else {

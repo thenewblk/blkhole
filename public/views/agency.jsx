@@ -1,5 +1,4 @@
 var React = require('react');
-var Helmet = require('react-helmet');
 
 var util = require('util');
 var Isvg = require('react-inlinesvg');

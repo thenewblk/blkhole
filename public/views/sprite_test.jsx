@@ -1,5 +1,4 @@
 var React = require('react');
-var Helmet = require('react-helmet');
 var Sprite = require('../components/sprite.jsx');
 var Loader = require('../components/loader.jsx');
 
@@ -75,17 +74,6 @@ module.exports = React.createClass({
 
     return (
       <div>
-        <Helmet
-              title="the new blk"
-              meta={[
-                  {"name": "description", "content": "the new blk" }
-              ]}
-              link={[
-                  {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "icon", "href": "/favicon.ico"}
-              ]}
-          />
-
         <h3 className="centered">Go ahead and play with some Spritesheet animations: </h3>
 
         <div className="home_sprite">

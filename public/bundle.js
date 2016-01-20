@@ -31403,7 +31403,6 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react');
-var Helmet = require('react-helmet');
 
 var util = require('util');
 var Isvg = require('react-inlinesvg');
@@ -32162,7 +32161,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"react":325,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],337:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"react":325,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],337:[function(require,module,exports){
 'use strict';
 
 var Layout = require('./layout.jsx');
@@ -32191,7 +32190,6 @@ module.exports = React.createClass({
 
 var React = require('react');
 var Router = require('react-router');
-var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var Sprite = require('../components/sprite.jsx');
@@ -32553,12 +32551,11 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/dragger.jsx":329,"../components/loader.jsx":330,"../components/mouser.jsx":331,"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"./channel.jsx":339,"react":325,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],339:[function(require,module,exports){
+},{"../components/dragger.jsx":329,"../components/loader.jsx":330,"../components/mouser.jsx":331,"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"./channel.jsx":339,"react":325,"react-draggable":6,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],339:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var Router = require('react-router');
-var Helmet = require('react-helmet');
 var request = require('superagent');
 var Link = Router.Link;
 
@@ -32791,7 +32788,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
+},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33069,7 +33066,6 @@ module.exports = React.createClass({
 
 var React = require('react');
 var Router = require('react-router');
-var Helmet = require('react-helmet');
 
 var spring = require('react-motion').spring;
 var presets = require('react-motion').presets;
@@ -33135,11 +33131,6 @@ module.exports = React.createClass({
     return React.createElement(
       'div',
       { className: 'home_page' },
-      React.createElement(Helmet, {
-        title: 'The New BLK',
-        meta: [{ "name": "description", "content": "The New BLK" }, { "property": "og:title", "content": "The New BLK" }, { "property": "og:image", "content": "/images/blk.jpg" }, { "property": "og:description", "content": "We are an ad agency, creative think tank, and content production studio." }],
-        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }]
-      }),
       React.createElement(
         'div',
         { className: 'diamond_grid_3' },
@@ -33403,14 +33394,13 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-motion":116,"react-router":149,"util":5}],343:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"react":325,"react-motion":116,"react-router":149,"util":5}],343:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
 var Footer = require('./footer.jsx');
-var Helmet = require('react-helmet');
 
 var util = require('util');
 
@@ -33466,23 +33456,29 @@ module.exports = React.createClass({
   render: function render() {
     var self = this,
         menu = self.state.menu,
-        content = self.props.content;
+        case_study = self.props.content;
 
     if (self.getPathname() == "/") {
       var path = "home";
     } else {
       var path = slugify(self.getPathname());
     }
+    var url = "http://thenewblk.herokuapp.com";
     var type = "website";
     var title = "The New BLK";
     var image = "http://thenewblk.herokuapp.com/images/blk.jpg";
     var description = "We are an ad agency, creative think tank, and content production studio.";
 
-    if (content && content.type == 'case-study') {
+    if (case_study) {
       type = "article";
-      title = content.name;
-      image = "http://thenewblk.herokuapp.com" + content.content.top_image;
-      description = util.inspect(content.top_block).content;
+      title = case_study.name;
+      image = "http://thenewblk.herokuapp.com" + case_study.content.top_image;
+
+      if (self.props.description) {
+        description = self.props.description;
+      }
+
+      url = url + self.getPathname();
     }
 
     return React.createElement(
@@ -33493,9 +33489,10 @@ module.exports = React.createClass({
         null,
         React.createElement('meta', { charSet: 'utf-8' }),
         React.createElement('meta', { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }),
+        React.createElement('meta', { property: 'og:url', content: url }),
         React.createElement('meta', { property: 'og:type', content: type }),
         React.createElement('meta', { property: 'og:title', content: title }),
-        React.createElement('meta', { property: 'og:image', content: "http://thenewblk.herokuapp.com" + image }),
+        React.createElement('meta', { property: 'og:image', content: image }),
         React.createElement('meta', { property: 'og:description', content: description }),
         React.createElement('meta', { property: 'fb:app_id', content: '128452107535065' }),
         React.createElement('link', { rel: 'icon', href: '/images/favicon.png' }),
@@ -33529,7 +33526,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"./footer.jsx":341,"./menu.jsx":345,"react":325,"react-helmet":15,"react-router":149,"util":5}],344:[function(require,module,exports){
+},{"./footer.jsx":341,"./menu.jsx":345,"react":325,"react-router":149,"util":5}],344:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33729,7 +33726,6 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react');
-var Helmet = require('react-helmet');
 var Sprite = require('../components/sprite.jsx');
 var Loader = require('../components/loader.jsx');
 
@@ -33816,11 +33812,6 @@ module.exports = React.createClass({
     return React.createElement(
       'div',
       null,
-      React.createElement(Helmet, {
-        title: 'the new blk',
-        meta: [{ "name": "description", "content": "the new blk" }],
-        link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }, { "rel": "icon", "href": "/favicon.ico" }]
-      }),
       React.createElement(
         'h3',
         { className: 'centered' },
@@ -33922,4 +33913,4 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-helmet":15,"util":5}]},{},[1]);
+},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"util":5}]},{},[1]);

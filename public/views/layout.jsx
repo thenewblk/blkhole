@@ -2,7 +2,6 @@ var React = require('react');
 var Router = require('react-router');
 var Menu = require('./menu.jsx');
 var Footer = require('./footer.jsx');
-var Helmet = require('react-helmet');
 
 var util = require('util');
 
@@ -57,23 +56,29 @@ module.exports = React.createClass({
   render: function render() {
     var self = this,
         menu = self.state.menu,
-        content = self.props.content;
+        case_study = self.props.content;
 
     if (self.getPathname() == "/") {
       var path = "home";
     } else {
       var path = slugify(self.getPathname());
     }
+    var url = "http://thenewblk.herokuapp.com";
     var type = "website";
     var title = "The New BLK";
     var image = "http://thenewblk.herokuapp.com/images/blk.jpg";
     var description = "We are an ad agency, creative think tank, and content production studio.";
 
-    if (content && content.type == 'case-study') {
+    if (case_study) {
       type = "article";
-      title = content.name;
-      image = "http://thenewblk.herokuapp.com" + content.content.top_image;
-      description = util.inspect(content.top_block).content ;
+      title = case_study.name;
+      image = "http://thenewblk.herokuapp.com" + case_study.content.top_image;
+
+      if (self.props.description){
+        description = self.props.description;
+      }
+      
+      url = url + self.getPathname()
     }
 
 
@@ -84,15 +89,16 @@ module.exports = React.createClass({
         <head>
           <meta charSet='utf-8' />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta property="og:url" content={url} />
           <meta property="og:type" content={type} />
           <meta property="og:title" content={title} />
-          <meta property="og:image" content={"http://thenewblk.herokuapp.com"+image} />
+          <meta property="og:image" content={image} />
           <meta property="og:description" content={description} />
 
           <meta property="fb:app_id" content="128452107535065" />
 
           <link rel="icon" href="/images/favicon.png" />
-          <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"/>
+          <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css" />
           <link rel="stylesheet" href="/styles/main.css" />
         </head>
         <body className={path + menu}>

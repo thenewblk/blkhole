@@ -1,6 +1,5 @@
 var React = require('react');
 var Router = require('react-router');
-var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var Sprite = require('../components/sprite.jsx');
