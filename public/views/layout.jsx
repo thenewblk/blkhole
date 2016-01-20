@@ -77,7 +77,7 @@ module.exports = React.createClass({
       if (self.props.description){
         description = self.props.description;
       }
-      
+
       url = url + self.getPathname()
     }
 
@@ -96,7 +96,7 @@ module.exports = React.createClass({
           <meta property="og:description" content={description} />
 
           <meta property="fb:app_id" content="128452107535065" />
-
+          <title>The New BLK</title>
           <link rel="icon" href="/images/favicon.png" />
           <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css" />
           <link rel="stylesheet" href="/styles/main.css" />

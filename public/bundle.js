@@ -31403,6 +31403,7 @@ module.exports = React.createClass({
 'use strict';
 
 var React = require('react');
+var Helmet = require('react-helmet');
 
 var util = require('util');
 var Isvg = require('react-inlinesvg');
@@ -31763,6 +31764,7 @@ module.exports = React.createClass({
     return React.createElement(
       'div',
       { className: 'agency' },
+      React.createElement(Helmet, { title: 'Agency | The New BLK' }),
       React.createElement(
         'div',
         { className: 'agency_top' },
@@ -32161,7 +32163,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"react":325,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],337:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"react":325,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],337:[function(require,module,exports){
 'use strict';
 
 var Layout = require('./layout.jsx');
@@ -32190,6 +32192,7 @@ module.exports = React.createClass({
 
 var React = require('react');
 var Router = require('react-router');
+var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var Sprite = require('../components/sprite.jsx');
@@ -32501,6 +32504,7 @@ module.exports = React.createClass({
       return React.createElement(
         'div',
         { className: 'case_study loaded', key: casestudy },
+        React.createElement(Helmet, { title: title + " | The New BLK" }),
         React.createElement(
           'div',
           { className: 'main_content loaded', key: casestudy },
@@ -32537,7 +32541,7 @@ module.exports = React.createClass({
             )
           ),
           things,
-          React.createElement(Channel, { channel: self.state.content.channel, view_description: false })
+          React.createElement(Channel, { channel: self.state.content.channel, view_description: false, no_title: true })
         )
       );
     } else {
@@ -32551,11 +32555,12 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/dragger.jsx":329,"../components/loader.jsx":330,"../components/mouser.jsx":331,"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"./channel.jsx":339,"react":325,"react-draggable":6,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],339:[function(require,module,exports){
+},{"../components/dragger.jsx":329,"../components/loader.jsx":330,"../components/mouser.jsx":331,"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"./channel.jsx":339,"react":325,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],339:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var Router = require('react-router');
+var Helmet = require('react-helmet');
 var request = require('superagent');
 var Link = Router.Link;
 
@@ -32621,7 +32626,7 @@ module.exports = React.createClass({
   render: function render() {
     var self = this;
     var title = self.state.title;
-
+    var no_title = self.props.no_title;
     if (self.state.view_description == true) {
       var project_view = "featured_projects show";
     } else {
@@ -32711,6 +32716,7 @@ module.exports = React.createClass({
       return React.createElement(
         'div',
         { className: 'channel' },
+        no_title ? null : React.createElement(Helmet, { title: title + " | The New BLK" }),
         React.createElement(
           'div',
           { className: 'content' },
@@ -32788,7 +32794,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
+},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33495,6 +33501,11 @@ module.exports = React.createClass({
         React.createElement('meta', { property: 'og:image', content: image }),
         React.createElement('meta', { property: 'og:description', content: description }),
         React.createElement('meta', { property: 'fb:app_id', content: '128452107535065' }),
+        React.createElement(
+          'title',
+          null,
+          'The New BLK'
+        ),
         React.createElement('link', { rel: 'icon', href: '/images/favicon.png' }),
         React.createElement('link', { type: 'text/css', rel: 'stylesheet', href: 'http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css' }),
         React.createElement('link', { rel: 'stylesheet', href: '/styles/main.css' })

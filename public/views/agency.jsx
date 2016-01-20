@@ -1,4 +1,5 @@
 var React = require('react');
+var Helmet = require('react-helmet');
 
 var util = require('util');
 var Isvg = require('react-inlinesvg');
@@ -331,6 +332,7 @@ module.exports = React.createClass({
 
     return (
       <div className="agency">
+        <Helmet title="Agency | The New BLK" />
         <div className="agency_top">
           <div className="top_copy">
             <h1 className="subheader_top"><div className="block_wrapper">WE BUILD POWERFUL EXPERIENCES</div></h1>

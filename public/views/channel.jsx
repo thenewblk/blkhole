@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var Helmet = require('react-helmet');
 var request = require('superagent');
 var Link = Router.Link;
 
@@ -65,7 +66,7 @@ module.exports = React.createClass({
   render: function render() {
     var self = this;
     var title = self.state.title;
-
+    var no_title = self.props.no_title;
     if (self.state.view_description == true){
       var project_view = "featured_projects show";
     } else {
@@ -128,6 +129,7 @@ module.exports = React.createClass({
 
       return (
         <div className="channel">
+          { no_title ? null : <Helmet title={title + " | The New BLK"} /> }
             <div className="content">
               <div className={project_view}>
                 {projects.reverse()}

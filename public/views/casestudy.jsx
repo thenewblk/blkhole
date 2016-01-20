@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var Sprite = require('../components/sprite.jsx');
@@ -261,6 +262,7 @@ module.exports = React.createClass({
     if (content){
       return (
         <div className="case_study loaded" key={casestudy}>
+          <Helmet title={title + " | The New BLK"} />
           <div className="main_content loaded" key={casestudy}>
             <div className="top" style={top_image}>
               <span className="case_study_name"><Isvg src="/icons/new/down-01.svg" /><h1 className="heading">{name}</h1></span>
@@ -272,13 +274,12 @@ module.exports = React.createClass({
               </div>
             </div>
             {things}
-            <Channel channel={self.state.content.channel} view_description={false} />
+            <Channel channel={self.state.content.channel} view_description={false} no_title={true} />
           </div>
         </div>
       )
     } else {
       return (
-
         <div className="case_study loading" key={casestudy}>
           <div className="main_content loading" key={casestudy}></div>
           <Loader />
