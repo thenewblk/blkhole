@@ -262,19 +262,6 @@ module.exports = React.createClass({
     if (content){
       return (
         <div className="case_study loaded" key={casestudy}>
-          <Helmet
-                title={title}
-                meta={[
-                    {"name": "description", "content": name },
-                    {"property": "og:type", "content": "article"},
-                    {"property": "og:title", "content": name },
-                    {"property": "og:image", "content": self.state.content.content.top_image },
-                    {"property": "og:description", "content": self.state.content.top_block.content }
-                ]}
-                link={[
-                  {"rel": "icon", "href": "/images/favicon.png"}
-                ]}
-            />
           <div className="main_content loaded" key={casestudy}>
             <div className="top" style={top_image}>
               <span className="case_study_name"><Isvg src="/icons/new/down-01.svg" /><h1 className="heading">{name}</h1></span>

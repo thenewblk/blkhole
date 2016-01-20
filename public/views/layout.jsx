@@ -45,6 +45,9 @@ module.exports = React.createClass({
 
   componentDidMount: function(){
     this.googleAnalytics();
+
+    console.log("state: " + util.inspect(this.state));
+    console.log("props: " + util.inspect(this.props));
   },
 
   componentWillReceiveProps: function(){
@@ -53,12 +56,24 @@ module.exports = React.createClass({
 
   render: function render() {
     var self = this,
-        menu = self.state.menu;
+        menu = self.state.menu,
+        content = self.props.content;
 
     if (self.getPathname() == "/") {
       var path = "home";
     } else {
       var path = slugify(self.getPathname());
+    }
+    var type = "website";
+    var title = "The New BLK";
+    var image = "/images/blk.jpg";
+    var description = "We are an ad agency, creative think tank, and content production studio.";
+
+    if (content && content.type == 'case-study') {
+      type = "article";
+      title = content.name;
+      image = content.content.top_image;
+      description = content.top_block.content;
     }
 
     return (
@@ -66,6 +81,13 @@ module.exports = React.createClass({
         <head>
           <meta charSet='utf-8' />
           <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <meta property="og:type" content={type} />
+          <meta property="og:title" content={title} />
+          <meta property="og:image" content={image} />
+          <meta property="og:description" content={description} />
+
+          <meta preoperty="fb:app_id" content="128452107535065" />
+
           <link rel="icon" href="/images/favicon.png" />
           <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css"/>
           <link rel="stylesheet" href="/styles/main.css" />

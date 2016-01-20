@@ -129,21 +129,6 @@ module.exports = React.createClass({
 
       return (
         <div className="channel">
-          <Helmet
-                title={title}
-                meta={[
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"},
-                    {"property": "og:title", "content": title },
-                    {"property": "og:image", "content": "/images/blk.jpg" },
-                    {"property": "og:description", "content": self.state.content.descriptions }
-                ]}
-                link={[
-                    {"rel": "canonical", "href": "http://mysite.com/example"},
-                    {"rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png"},
-                    {"rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png"}
-                ]}
-            />
             <div className="content">
               <div className={project_view}>
                 {projects.reverse()}
@@ -187,16 +172,6 @@ module.exports = React.createClass({
     } else {
       return (
         <div className="channel">
-          <Helmet
-                title={title}
-                meta={[
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
-                ]}
-                link={[
-                  {"rel": "icon", "href": "/images/favicon.png"}
-                ]}
-          />
           <Loader />
         </div>
       );

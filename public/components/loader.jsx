@@ -17,7 +17,7 @@ module.exports = React.createClass({
   mixins: [SetIntervalMixin],
 
   getInitialState: function() {
-    return {icon: 0, speed: 150};
+    return {icon: 0, speed: 100};
   },
   componentDidMount: function(){
     var self = this;

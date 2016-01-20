@@ -332,16 +332,6 @@ module.exports = React.createClass({
 
     return (
       <div className="agency">
-        <Helmet
-              title="Agency | The New BLK"
-              meta={[
-                  {"name": "description", "content": "the new blk" }
-              ]}
-              link={[
-                  {"rel": "canonical", "href": "http://thenewblk.com/"},
-                  {"rel": "icon", "href": "/images//favicon.png"}
-              ]}
-          />
         <div className="agency_top">
           <div className="top_copy">
             <h1 className="subheader_top"><div className="block_wrapper">WE BUILD POWERFUL EXPERIENCES</div></h1>

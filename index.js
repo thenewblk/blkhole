@@ -66,11 +66,6 @@ app.get('/channel/:channel', function(req, res) {
           content: channel
         });
   });
-  // res.render(req.url, {
-  //   title: 'Experiential',
-  //   channel: 'experiential',
-  //   name: { first: "alex", last: "rock"}
-  // });
 });
 
 app.get('/post/:post', function(req, res) {
@@ -78,20 +73,24 @@ app.get('/post/:post', function(req, res) {
     .findOne({ slug: req.params.post })
     .exec( function (err, post) {
         if (err) return console.log(err);
-        res.render(req.url, {
-          content: post
-        });
+        if (post.length) {
+          res.render(req.url, {
+            title: post.name,
+            image: post.content.top_image,
+            description: post.top_block.content,
+            content: post
+          });
+        } else {
+          res.render(req.url, {
+            content: post
+          });
+        }
   });
-  // res.render(req.url, {
-  //   title: 'Experiential',
-  //   channel: 'experiential',
-  //   name: { first: "alex", last: "rock"}
-  // });
 });
 
 app.get('*', function(req, res) {
   res.render(req.url, {
-    title: 'Home Page'
+    title: req.url
   });
 });
 
@@ -101,7 +100,7 @@ app.get('/login', function(req, res) {
   });
 });
 
-// 404 template
+
 app.use(function(req, res) {
   res.render('404', {
     title: 'React Engine Express Sample App',
