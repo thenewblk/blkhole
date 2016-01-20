@@ -13,6 +13,7 @@
     "browserify": "^9.0.4",
     "express": "^4.12.3",
     "express-session": "^1.11.3",
+    "ga-react-router": "^1.4.0",
     "moment": "^2.10.3",
     "mongoose": "^4.0.5",
     "node-jsx": "^0.12.4",
