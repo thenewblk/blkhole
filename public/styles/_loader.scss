@@ -1,0 +1,42 @@
+.loading_icons {
+  fill: white;
+  width: 100px;
+  g#disruption, g#handcrafted, g#superfan, g#experiential, g#agency {
+    display: none;
+  }
+  &.icon_1 {
+    g#disruption {
+      display: block;
+    }
+  }
+  &.icon_2 {
+    g#handcrafted {
+      display: block;
+    }
+  }
+  &.icon_3 {
+    g#superfan {
+      display: block;
+    }
+  }
+  &.icon_4 {
+    g#experiential {
+      display: block;
+    }
+  }
+  &.icon_5 {
+    g#agency {
+      display: block;
+    }
+  }
+}
+
+.loader_wrapper {
+  background: black;
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+
+}

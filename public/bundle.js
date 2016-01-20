@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function onLoad() {
   Client.boot(options);
 });
 
-},{"./routes.jsx":333,"./views/404.jsx":334,"./views/agency.jsx":335,"./views/app.jsx":336,"./views/casestudy.jsx":337,"./views/channel.jsx":338,"./views/channel_footer.jsx":339,"./views/footer.jsx":340,"./views/home.jsx":341,"./views/layout.jsx":342,"./views/login.jsx":343,"./views/menu.jsx":344,"./views/sprite_test.jsx":345,"react-engine/lib/client":11}],2:[function(require,module,exports){
+},{"./routes.jsx":334,"./views/404.jsx":335,"./views/agency.jsx":336,"./views/app.jsx":337,"./views/casestudy.jsx":338,"./views/channel.jsx":339,"./views/channel_footer.jsx":340,"./views/footer.jsx":341,"./views/home.jsx":342,"./views/layout.jsx":343,"./views/login.jsx":344,"./views/menu.jsx":345,"./views/sprite_test.jsx":346,"react-engine/lib/client":11}],2:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -30628,6 +30628,135 @@ var Dragger = module.exports = React.createClass({
 });
 
 },{"react":325,"react-draggable":6,"react-inlinesvg":94}],330:[function(require,module,exports){
+"use strict";
+
+var React = require('react');
+
+var SetIntervalMixin = {
+  componentWillMount: function componentWillMount() {
+    this.intervals = [];
+  },
+  setInterval: function (_setInterval) {
+    function setInterval() {
+      return _setInterval.apply(this, arguments);
+    }
+
+    setInterval.toString = function () {
+      return _setInterval.toString();
+    };
+
+    return setInterval;
+  }(function () {
+    this.intervals.push(setInterval.apply(null, arguments));
+  }),
+  componentWillUnmount: function componentWillUnmount() {
+    this.intervals.forEach(clearInterval);
+  }
+};
+
+module.exports = React.createClass({
+  displayName: "exports",
+
+  mixins: [SetIntervalMixin],
+
+  getInitialState: function getInitialState() {
+    return { icon: 0, speed: 150 };
+  },
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    if (self.props.speed) {
+      self.setInterval(self.tick, self.props.speed);
+    } else {
+      self.setInterval(self.tick, self.state.speed);
+    }
+  },
+
+  tick: function tick() {
+    var self = this;
+    if (self.state.icon == 5) {
+      self.setState({ icon: 1 });
+    } else {
+      self.setState({ icon: self.state.icon + 1 });
+    }
+  },
+
+  render: function render() {
+    var self = this;
+    var svg_style = {
+      enableBackground: "new 0 0 105.9 101"
+    };
+    var class_name = "loading_icons icon_" + self.state.icon;
+    return React.createElement(
+      "div",
+      { className: "loader_wrapper" },
+      React.createElement(
+        "svg",
+        { x: "0px", y: "0px", viewBox: "0 0 105.9 101", style: svg_style, className: class_name },
+        React.createElement(
+          "g",
+          { id: "disruption" },
+          React.createElement(
+            "g",
+            null,
+            React.createElement("rect", { x: "52.3", y: "74", transform: "matrix(5.975762e-03 -1 1 5.975762e-03 -38.7269 144.151)", width: "1.8", height: "35.2" }),
+            React.createElement("path", { d: "M66.7,18.4c-1.1-2.1-3.3-3.4-5.7-3.4l-15.1-0.1c-2.4,0-4.6,1.3-5.7,3.4L66.7,18.4z" }),
+            React.createElement("path", { d: "M62.1,37.4l-4.2,11.6l5.7,0c0.5,0,0.9,0.4,0.9,0.9c0,0.2-0.1,0.4-0.2,0.5L44.6,78.8c-0.3,0.4-0.8,0.5-1.2,0.2 c-0.3-0.2-0.5-0.6-0.3-1l5.8-19.2l-5.2,0c-0.5,0-0.9-0.4-0.9-0.9c0-0.1,0-0.2,0.1-0.3l8.9-21c0.1-0.3,0.5-0.5,0.8-0.5l8.6,0.1 c0.5,0,0.9,0.4,0.9,0.9C62.1,37.2,62.1,37.3,62.1,37.4z" }),
+            React.createElement("path", { d: "M71.3,19.4c-0.5-0.5-1.3-0.9-2-0.9c-1.1-3.1-3.8-5.4-7-5.8l0-0.7c0-1.5-0.7-2.6-1.7-2.6l-2.5,0l0.1-8.7 l-9.5-0.1l-0.1,8.7l-2.4,0l-0.3,0c-0.8,0.2-1.4,1.2-1.4,2.6l0,0.6c-3.2,0.4-6,2.6-7.1,5.7c-1.7,0.2-3,1.6-3.1,3.4l-0.5,75.7 c0,0.4,0.2,0.9,0.5,1.2c0.3,0.3,0.6,0.4,1,0.5c0,0.1,0.1,0.1,0.1,0.2c0.5,0.5,1.2,0.8,1.9,0.8l31.1,0.2c0.2,0,0.5,0,0.7-0.1 c0.5-0.1,1-0.4,1.3-0.8c0.1,0,0.1,0,0.2,0c0.7-0.2,1.3-0.9,1.3-1.6l0.5-75.7C72.3,20.9,72,20.1,71.3,19.4z M45.8,14.8l15.1,0.1 c2.4,0,4.6,1.3,5.7,3.4l-26.6-0.2C41.2,16.1,43.4,14.9,45.8,14.8z M68.5,95.8l-31.2-0.2l0-3.3l31.2,0.2L68.5,95.8z M68.5,90.8 l-31.2-0.2l0.4-67.5l0-0.6l30.9,0.2l0.3,0L68.5,90.8z" }),
+            React.createElement("path", { d: "M61.2,36.2l-8.6-0.1c-0.4,0-0.7,0.2-0.8,0.5l-8.9,21c-0.2,0.4,0,1,0.5,1.2c0.1,0,0.2,0.1,0.3,0.1l5.2,0 L43,78.1c-0.1,0.5,0.1,1,0.6,1.1c0.4,0.1,0.8,0,1-0.3l19.7-28.5c0.3-0.4,0.2-0.9-0.2-1.2C63.9,49,63.7,49,63.6,49l-5.7,0l4.2-11.6 c0.2-0.5-0.1-1-0.5-1.1C61.4,36.2,61.3,36.2,61.2,36.2z" })
+          )
+        ),
+        React.createElement(
+          "g",
+          { id: "superfan" },
+          React.createElement(
+            "g",
+            null,
+            React.createElement("polygon", { points: "2.9,58.5 6.1,71.9 14.2,71.6 10.1,55.2 \t\t" }),
+            React.createElement("path", { d: "M102.8,62.9l-9.6-40.1c-0.5-2.2-2.8-3.6-5-3.1c-0.3,0.1-0.5,0.1-0.8,0.3L14.6,53.1l4.7,18.2l13.6-0.6l0.9,8.4 c0.1,1.2,1.2,2.2,2.4,2.2c0,0,0.1,0,0.1,0l22.2-0.8c1.4,0,2.4-1.2,2.4-2.5c0-0.1,0-0.1,0-0.2L60,69.6L98.9,68c2.3-0.1,4.1-2,4-4.3 C102.9,63.4,102.8,63.1,102.8,62.9z M38.4,76.4l-0.6-5.4l17.3-0.6l0.6,5.4L38.4,76.4z" })
+          )
+        ),
+        React.createElement(
+          "g",
+          { id: "handcrafted" },
+          React.createElement("path", { d: "M66.5,6.9c0-3.5-2.8-6.4-6.3-6.4c0,0,0,0,0,0l-14.4,0c-3.5,0-6.3,2.8-6.4,6.4V14h0l-0.1,62h0.1 c0,0.1,0,0.3,0.1,0.4l11.9,23.1c0.3,0.5,0.8,0.9,1.5,0.9H53c0.6,0,1.2-0.3,1.5-0.9l11.8-23.1c0.1-0.2,0.1-0.4,0.1-0.6h0.1l0-61.9h0 L66.5,6.9z M55.9,89.5h-6.1l-6.2-12.1l18.5,0L55.9,89.5z M56.1,14.1h3.3l0,56.6H56L56.1,14.1z M50,14.1l-0.1,56.6h-3.3l0-56.6 L50,14.1z M45.7,3.8l14.4,0c1.7,0,3.1,1.4,3.1,3.1c0,0,0,0,0,0v3.8l-20.6,0V6.9C42.6,5.2,44,3.8,45.7,3.8z" })
+        ),
+        React.createElement(
+          "g",
+          { id: "experiential" },
+          React.createElement(
+            "g",
+            null,
+            React.createElement("path", { d: "M77.3,80.3c-5.6-0.1-10.1,4.3-10.2,9.9c-0.1,5.6,4.3,10.1,9.9,10.2c5.6,0.1,10.1-4.3,10.2-9.9 c0-0.1,0-0.1,0-0.2C87.3,84.9,82.8,80.4,77.3,80.3z M77.3,97.1c-3.7,0.1-6.7-2.8-6.8-6.5c-0.1-3.7,2.8-6.7,6.5-6.8 c3.7-0.1,6.7,2.8,6.8,6.5c0,0.1,0,0.1,0,0.2C83.8,94,80.9,97,77.3,97.1z" }),
+            React.createElement("path", { d: "M29.2,80.3c-5.6-0.1-10.1,4.3-10.2,9.9c-0.1,5.6,4.3,10.1,9.9,10.2c5.6,0.1,10.1-4.3,10.2-9.9 c0-0.1,0-0.1,0-0.2C39.1,84.9,34.7,80.4,29.2,80.3z M29.2,97.1c-3.7,0.1-6.7-2.8-6.8-6.5c-0.1-3.7,2.8-6.7,6.5-6.8 c3.7-0.1,6.7,2.8,6.8,6.5c0,0.1,0,0.1,0,0.2C35.7,94,32.8,97,29.2,97.1z" }),
+            React.createElement("path", { d: "M53.2,20.6c5.5-0.1,9.9-4.6,9.9-10.1c0.1-5.5-4.3-10-9.7-10.1s-10,4.3-10.1,9.7c0,0.1,0,0.2,0,0.3 C43.3,16.1,47.7,20.6,53.2,20.6z M53.2,3.9c3.6,0,6.5,3,6.5,6.6c0.1,3.6-2.8,6.5-6.3,6.6s-6.5-2.8-6.6-6.3c0-0.1,0-0.2,0-0.3 C46.7,7,49.6,4,53.2,3.9z" }),
+            React.createElement("path", { d: "M95.5,34.5c-5.6-0.1-10.1,4.3-10.2,9.9c-0.1,5.6,4.3,10.1,9.9,10.2c5.6,0.1,10.1-4.3,10.2-9.9 c0-0.1,0-0.1,0-0.2C105.4,39.1,101,34.6,95.5,34.5z M95.5,51.2c-3.7,0.1-6.7-2.8-6.8-6.5c-0.1-3.7,2.8-6.7,6.5-6.8 c3.7-0.1,6.7,2.8,6.8,6.5c0,0.1,0,0.1,0,0.2C102,48.2,99.1,51.2,95.5,51.2L95.5,51.2z" }),
+            React.createElement("path", { d: "M20.2,44.6c0-5.5-4.4-10-9.9-10.1c-5.6,0.1-10,4.7-9.9,10.2c0.1,5.4,4.5,9.8,9.9,9.9 C15.8,54.6,20.2,50.1,20.2,44.6z M3.8,44.6c0-3.6,2.9-6.6,6.5-6.6c3.7,0.1,6.6,3.2,6.5,6.8c-0.1,3.5-2.9,6.4-6.5,6.5 C6.6,51.2,3.7,48.2,3.8,44.6L3.8,44.6z" }),
+            React.createElement("path", { d: "M61.8,42.8c-0.1-4.9-4-8.8-8.9-8.7c-4.9,0.1-8.8,4-8.7,8.9c0,3.1,1.7,5.9,4.3,7.5c-2.6,0.9-4.3,3.3-4.3,6 v12.6h17.6V56.5c0-2.7-1.7-5.1-4.3-6C60.1,48.8,61.8,45.9,61.8,42.8z" }),
+            React.createElement("path", { d: "M68.4,13.8c1.3,0.5,2.5,1.1,3.8,1.7c0.9,0.5,2,0.2,2.5-0.7c0.5-0.9,0.2-2-0.7-2.5c0,0-0.1,0-0.1-0.1 c-1.3-0.7-2.7-1.3-4.1-1.9c-0.1,0-0.1,0-0.2-0.1c-1-0.3-2,0.3-2.2,1.2C67,12.5,67.5,13.4,68.4,13.8z" }),
+            React.createElement("path", { d: "M81.3,21.9c0.7,0.7,1.8,0.7,2.5,0c0.7-0.7,0.7-1.8,0-2.5c0,0-0.1-0.1-0.1-0.1c-1.1-1-2.3-2-3.4-2.9 c-0.8-0.6-1.9-0.5-2.5,0.3c-0.6,0.8-0.5,1.9,0.3,2.5c0,0,0.1,0,0.1,0.1C79.2,20,80.3,20.9,81.3,21.9z" }),
+            React.createElement("path", { d: "M88.4,30.5c0.5,0.8,1.6,1.1,2.5,0.6c0.8-0.5,1.1-1.6,0.6-2.5c-0.8-1.3-1.6-2.5-2.6-3.7 c-0.6-0.8-1.7-0.9-2.5-0.3c-0.8,0.6-0.9,1.7-0.3,2.5l0,0C86.9,28.2,87.7,29.3,88.4,30.5z" }),
+            React.createElement("path", { d: "M37,10.4c-0.1,0-0.1,0-0.2,0.1c-1.4,0.5-2.8,1.2-4.1,1.9c-0.9,0.4-1.3,1.5-0.9,2.4s1.5,1.3,2.4,0.9 c0,0,0.1,0,0.1-0.1c1.2-0.6,2.5-1.2,3.8-1.7c0.9-0.3,1.4-1.4,1.1-2.3C38.8,10.6,37.9,10.1,37,10.4z" }),
+            React.createElement("path", { d: "M25.2,21.9c1-0.9,2.1-1.8,3.2-2.7c0.8-0.6,1-1.7,0.4-2.5c-0.6-0.8-1.7-1-2.5-0.4c0,0-0.1,0-0.1,0.1 c-1.2,0.9-2.3,1.9-3.4,2.9c-0.8,0.6-0.8,1.8-0.2,2.5c0.6,0.8,1.8,0.8,2.5,0.2C25.1,21.9,25.1,21.9,25.2,21.9z" }),
+            React.createElement("path", { d: "M15.6,31.1c0.8,0.5,2,0.3,2.5-0.6c0,0,0,0,0,0c0.7-1.2,1.5-2.3,2.4-3.4c0.6-0.8,0.5-1.9-0.3-2.5 c-0.8-0.6-1.9-0.5-2.5,0.3c0,0,0,0,0,0c-0.9,1.2-1.8,2.4-2.6,3.7C14.5,29.4,14.8,30.5,15.6,31.1z" }),
+            React.createElement("path", { d: "M96.3,60.5c-1-0.2-1.9,0.5-2.1,1.5c-0.2,1.3-0.5,2.7-0.9,4c-0.3,1,0.3,2,1.3,2.2c1,0.3,2-0.3,2.2-1.3 c0.4-1.4,0.7-2.9,1-4.4C97.9,61.6,97.3,60.7,96.3,60.5z" }),
+            React.createElement("path", { d: "M93.3,71.8c-0.9-0.4-2,0-2.4,0.9c0,0,0,0,0,0c-0.6,1.2-1.2,2.5-1.9,3.7c-0.5,0.9-0.2,2,0.6,2.5 c0.9,0.5,2,0.2,2.5-0.6c0.8-1.3,1.5-2.6,2.1-4C94.6,73.3,94.2,72.2,93.3,71.8z" }),
+            React.createElement("path", { d: "M13.2,66c-0.4-1.3-0.7-2.7-0.9-4c-0.1-1-1.1-1.7-2-1.5s-1.7,1.1-1.5,2c0,0,0,0.1,0,0.1c0.3,1.5,0.6,2.9,1,4.4 c0.3,1,1.3,1.5,2.2,1.3C12.9,68,13.4,67,13.2,66L13.2,66z" }),
+            React.createElement("path", { d: "M15.6,72.7c-0.4-0.9-1.5-1.3-2.4-0.9c-0.9,0.4-1.3,1.5-0.9,2.4l0,0c0.6,1.4,1.3,2.7,2.1,4 c0.5,0.9,1.6,1.1,2.5,0.6c0.9-0.5,1.1-1.6,0.6-2.5C16.8,75.1,16.2,73.9,15.6,72.7z" }),
+            React.createElement("path", { d: "M50.1,96.4c-1.4-0.1-2.8-0.2-4.1-0.5c-1-0.2-1.9,0.5-2.1,1.4c-0.2,1,0.5,1.9,1.4,2.1c0,0,0.1,0,0.1,0 c1.5,0.2,3,0.4,4.5,0.5c1,0.1,1.8-0.7,1.9-1.7S51.1,96.5,50.1,96.4z" }),
+            React.createElement("path", { d: "M61.2,95.7c-1.3,0.3-2.7,0.5-4.1,0.6c-1,0.1-1.7,1-1.6,2c0.1,1,1,1.7,2,1.6c1.5-0.2,3-0.4,4.4-0.7 c1-0.2,1.6-1.1,1.4-2.1C63.2,96.1,62.2,95.5,61.2,95.7z" })
+          )
+        ),
+        React.createElement(
+          "g",
+          { id: "agency" },
+          React.createElement("path", { d: "M102.8,8.7c0-0.5-0.3-1-0.8-1.2c-1.2-0.4-2.4-0.7-3.6-0.7c-1.3,0-2.5,0.3-3.6,0.9c-0.7,0.4-1.6,0.6-2.5,0.6 c-1.2,0-2.3-0.3-3.4-0.7c0.7-0.7,1-1.6,1-2.5c0.2-1.7-1.1-3.2-2.8-3.4c-1.7-0.2-3.2,1.1-3.4,2.8c0,0.2,0,0.4,0,0.6 c0,1.2,0.6,2.3,1.6,3v21.1h-3.2c-0.9,0-1.7,0.8-1.6,1.8v2.3h-9.1c-0.6-2.3-2.6-4-5-4.1c-0.3,0-0.6,0-0.8,0.1l-9.3-11.4 c0.4-0.8,0.6-1.8,0.6-2.7c0-1.6-0.7-3.2-1.8-4.4c0.1-3.2,1.1-4.9,2-5.7c2.5-2.4,4.8-1.3,4.8-1.3c0.4-2.4-2-4.5-5.2-2.7 c-2.9,1.6-4.3,5.5-4.3,7.6v0.7c-0.6-0.1-1.1-0.1-1.7,0V8.8c0-2.1-1.4-6-4.3-7.6c-3.2-1.7-5.6,0.3-5.2,2.7c0,0,2.3-1.2,4.8,1.3 c0.9,0.8,1.9,2.5,2,5.8c-1.1,1.1-1.7,2.6-1.7,4.2c0,0.9,0.2,1.9,0.6,2.7l-9.3,11.4c-0.3-0.1-0.5-0.1-0.8-0.1 c-2.4,0.1-4.5,1.7-5,4.1H21.6v-1.9c1.1-0.8,1.8-2.1,1.8-3.5v-2l0,0V14.9c0.5-0.1,1-0.1,1.5-0.1c0.7,0,1.3-0.7,1.2-1.4 c0-0.6-0.5-1.1-1.2-1.2c-2.7,0-5.2,0.9-7.3,2.6c-0.8-1.7-1.2-3.5-1.3-5.3c0.7-0.7,1.2-1.6,1.2-2.7c0.1-1.8-1.3-3.3-3.1-3.4 c-1.8,0.1-3.2,1.6-3.1,3.4c0,1,0.4,2,1.2,2.7c-0.1,1.8-0.5,3.5-1.3,5.2c-2-1.6-4.6-2.5-7.2-2.5c-0.7,0.1-1.2,0.8-1.1,1.5 c0.1,0.6,0.6,1.1,1.2,1.1c0.5,0,1.1,0,1.6,0.1v10.9h0.1v2c0,1.3,0.6,2.6,1.6,3.4v6C7.3,38.2,8.1,39,9,39h0.1v49.2H7.3 c-0.9,0-1.7,0.8-1.6,1.8v8.8c0,0.9,0.7,1.7,1.6,1.8h87.4c0.9,0,1.7-0.8,1.6-1.8V90c0-0.9-0.7-1.7-1.6-1.8h-1.6V39h0.1 c0.9,0,1.7-0.8,1.6-1.8V31c0-0.9-0.7-1.7-1.6-1.8h-4.5v-9.8c0.9,0.2,1.7,0.3,2.6,0.3c1.5,0,2.9-0.3,4.3-0.8c1-0.4,2-0.7,3-0.7 c0.9,0,1.8,0.2,2.5,0.6c0.3,0.3,0.8,0.3,1.2,0.1c0.4-0.2,0.6-0.7,0.6-1.1L102.8,8.7z M85.5,54L85.5,54v-0.2V39.8h4.4v48.3h-4.4 C85.5,88.1,85.5,54,85.5,54z M82.2,66.2C75,54.8,63.7,48,51.6,48c-12.8,0-24.5,7.5-31.6,19.8V56.3l13.7-16.8 c0.9,0.8,2.1,1.2,3.3,1.3c2.4-0.1,4.5-1.7,5-4.1h19.5c0.6,2.3,2.6,4,5,4.1c1.2,0,2.3-0.5,3.2-1.2l12.6,15.5V66.2z M49.2,20.4 c1.5,0.9,3.3,0.9,4.7,0L62.6,31c-0.6,0.7-1,1.5-1.2,2.3H41.9c-0.2-0.9-0.7-1.6-1.3-2.3L49.2,20.4z M68.5,35c-0.1,1.2-1.1,2-2.3,1.9 s-2-1.1-1.9-2.3c0.1-1.1,1-1.9,2.1-1.9C67.6,32.8,68.5,33.8,68.5,35z M53.7,15.2c0.1,1.2-0.8,2.2-1.9,2.3c-1.2,0.1-2.2-0.8-2.3-1.9 c0-0.1,0-0.2,0-0.4c-0.1-1.2,0.8-2.2,1.9-2.3c1.2-0.1,2.2,0.8,2.3,1.9C53.7,15,53.7,15.1,53.7,15.2z M36.8,32.7 c1.3-0.1,2.4,0.8,2.5,2.1s-0.8,2.4-2.1,2.5c-1.3,0.1-2.4-0.8-2.5-2.1c0-0.1,0-0.1,0-0.2C34.7,33.8,35.6,32.8,36.8,32.7z M8.2,28.3 h12.7c-0.1,0.4-0.4,0.8-0.8,1c0,0-0.1,0-0.1,0H9h0C8.6,29,8.3,28.7,8.2,28.3z M14.4,18.8l-1.2-2.8c0.5-1.1,0.9-2.1,1.2-3.3 c0.3,1.1,0.7,2.2,1.2,3.3L14.4,18.8z M13.9,21.8h1.3c0.2,0.2,0.2,0.4,0.2,0.7c0.1,0.5-0.3,0.9-0.8,1s-0.9-0.3-1-0.8 c0-0.1,0-0.1,0-0.2C13.6,22.2,13.7,22,13.9,21.8z M10.6,32.8h7.8v2.7h-7.8V32.8z M21,15.6v10h-5c1.1-0.6,1.9-1.9,1.8-3.2 c0-0.8-0.3-1.6-0.8-2.3C17.5,18.1,19,16.4,21,15.6z M14.4,6c0.4,0,0.7,0.4,0.7,0.8c0,0.4-0.2,0.7-0.6,0.8S13.8,7.4,13.7,7 c0-0.1,0-0.1,0-0.2C13.7,6.4,14,6.1,14.4,6z M11.9,20.3c-0.5,0.6-0.7,1.4-0.7,2.2c0,1.3,0.7,2.5,1.8,3.2h-5v-10 C10,16.5,11.5,18.2,11.9,20.3z M20,39c0.9,0,1.7-0.8,1.6-1.8v-0.4h9.9L19.9,51L20,39L20,39L20,39z M16.7,39.5v48.6h-4.4V39.5H16.7 L16.7,39.5z M93.1,97H8.9v-5.2h84.2C93.1,91.7,93.1,97,93.1,97z M28.1,88.2c2.2-13.4,12-23.3,23.5-23.3c11.4,0,21.3,9.9,23.5,23.3 C75.1,88.2,28.1,88.2,28.1,88.2z M78.4,88.2c-2.2-15.4-13.6-26.9-26.8-26.9c-13.3,0-24.5,11.4-26.8,26.9h-4.9v-13 c0.1-0.2,0.1-0.3,0.2-0.4c0.1-0.2,0.2-0.3,0.4-0.7c6.2-13.9,18.1-22.5,31.1-22.5c12.6,0,24.4,8.2,30.6,21.4v15.2L78.4,88.2 L78.4,88.2z M82.2,49.8l-10.6-13h8.9v0.4c0,0.9,0.7,1.7,1.6,1.8h0.1L82.2,49.8L82.2,49.8z M91.5,35.5h-7.8v-2.7h7.8L91.5,35.5 L91.5,35.5z M94.7,16.5c-1.1,0.5-2.3,0.7-3.4,0.7c-0.9,0-1.8-0.1-2.6-0.3v-6.6c2,0.7,5.2,1.1,7.3-0.2c0.8-0.4,1.6-0.6,2.5-0.6 c0.7,0,1.4,0.1,2.1,0.3l0.1,6.2C98.6,15.5,96.5,15.7,94.7,16.5z" })
+        )
+      )
+    );
+  }
+});
+
+},{"react":325}],331:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -30741,7 +30870,7 @@ var Mouser = module.exports = React.createClass({
   }
 });
 
-},{"react":325,"react-inlinesvg":94}],331:[function(require,module,exports){
+},{"react":325,"react-inlinesvg":94}],332:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31047,7 +31176,7 @@ module.exports = React.createClass({
 	}
 });
 
-},{"react":325,"react-inlinesvg":94,"react-visibility-sensor":170,"util":5}],332:[function(require,module,exports){
+},{"react":325,"react-inlinesvg":94,"react-visibility-sensor":170,"util":5}],333:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31209,7 +31338,7 @@ var VideoGallery = module.exports = React.createClass({
   }
 });
 
-},{"react":325,"react-inlinesvg":94}],333:[function(require,module,exports){
+},{"react":325,"react-inlinesvg":94}],334:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -31240,7 +31369,7 @@ var routes = module.exports = React.createElement(
     React.createElement(NotFoundRoute, { handler: NotFound })
 );
 
-},{"./views/404.jsx":334,"./views/agency.jsx":335,"./views/app.jsx":336,"./views/casestudy.jsx":337,"./views/channel.jsx":338,"./views/home.jsx":341,"./views/login.jsx":343,"./views/sprite_test.jsx":345,"react":325,"react-router":149}],334:[function(require,module,exports){
+},{"./views/404.jsx":335,"./views/agency.jsx":336,"./views/app.jsx":337,"./views/casestudy.jsx":338,"./views/channel.jsx":339,"./views/home.jsx":342,"./views/login.jsx":344,"./views/sprite_test.jsx":346,"react":325,"react-router":149}],335:[function(require,module,exports){
 'use strict';
 
 var Layout = require('./layout.jsx');
@@ -31270,7 +31399,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"./layout.jsx":342,"react":325}],335:[function(require,module,exports){
+},{"./layout.jsx":343,"react":325}],336:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -32038,7 +32167,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":331,"../components/video_gallery.jsx":332,"react":325,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],336:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"react":325,"react-helmet":15,"react-inlinesvg":94,"react-scroll-components/ScrollBlocker":167,"react-scroll-components/ScrollListenerMixin":168,"util":5}],337:[function(require,module,exports){
 'use strict';
 
 var Layout = require('./layout.jsx');
@@ -32062,7 +32191,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"./layout.jsx":342,"react":325,"react-router":149,"util":5}],337:[function(require,module,exports){
+},{"./layout.jsx":343,"react":325,"react-router":149,"util":5}],338:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -32071,6 +32200,8 @@ var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var Sprite = require('../components/sprite.jsx');
+var Loader = require('../components/loader.jsx');
+
 var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
@@ -32379,7 +32510,7 @@ module.exports = React.createClass({
         { className: 'case_study loaded', key: casestudy },
         React.createElement(Helmet, {
           title: title,
-          meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
+          meta: [{ "name": "description", "content": name }, { "property": "og:type", "content": "article" }, { "property": "og:title", "content": name }, { "property": "og:image", "content": self.state.content.content.top_image }, { "property": "og:description", "content": self.state.content.top_block.content }],
           link: [{ "rel": "icon", "href": "/images/favicon.png" }]
         }),
         React.createElement(
@@ -32426,17 +32557,13 @@ module.exports = React.createClass({
         'div',
         { className: 'case_study loading', key: casestudy },
         React.createElement('div', { className: 'main_content loading', key: casestudy }),
-        React.createElement(
-          'div',
-          { className: 'case_study_loader' },
-          'loading...'
-        )
+        React.createElement(Loader, null)
       );
     }
   }
 });
 
-},{"../components/dragger.jsx":329,"../components/mouser.jsx":330,"../components/sprite.jsx":331,"../components/video_gallery.jsx":332,"./channel.jsx":338,"react":325,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],338:[function(require,module,exports){
+},{"../components/dragger.jsx":329,"../components/loader.jsx":330,"../components/mouser.jsx":331,"../components/sprite.jsx":332,"../components/video_gallery.jsx":333,"./channel.jsx":339,"react":325,"react-draggable":6,"react-helmet":15,"react-inlinesvg":94,"react-router":149,"react-timer-mixin":169,"superagent":326,"util":5}],339:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -32446,6 +32573,7 @@ var request = require('superagent');
 var Link = Router.Link;
 
 var Sprite = require('../components/sprite.jsx');
+var Loader = require('../components/loader.jsx');
 
 var util = require('util');
 
@@ -32598,7 +32726,7 @@ module.exports = React.createClass({
         { className: 'channel' },
         React.createElement(Helmet, {
           title: title,
-          meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
+          meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }, { "property": "og:title", "content": title }, { "property": "og:image", "content": "/images/blk.jpg" }, { "property": "og:description", "content": self.state.content.descriptions }],
           link: [{ "rel": "canonical", "href": "http://mysite.com/example" }, { "rel": "apple-touch-icon", "href": "http://mysite.com/img/apple-touch-icon-57x57.png" }, { "rel": "apple-touch-icon", "sizes": "72x72", "href": "http://mysite.com/img/apple-touch-icon-72x72.png" }]
         }),
         React.createElement(
@@ -32677,17 +32805,13 @@ module.exports = React.createClass({
           meta: [{ "name": "description", "content": title }, { "property": "og:type", "content": "article" }],
           link: [{ "rel": "icon", "href": "/images/favicon.png" }]
         }),
-        React.createElement(
-          'p',
-          null,
-          '"Loading..."'
-        )
+        React.createElement(Loader, null)
       );
     }
   }
 });
 
-},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],339:[function(require,module,exports){
+},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -32878,7 +33002,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],340:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-router":149,"superagent":326,"util":5}],341:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -32960,7 +33084,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"react":325,"react-inlinesvg":94,"react-router":149}],341:[function(require,module,exports){
+},{"react":325,"react-inlinesvg":94,"react-router":149}],342:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33033,7 +33157,7 @@ module.exports = React.createClass({
       { className: 'home_page' },
       React.createElement(Helmet, {
         title: 'The New BLK',
-        meta: [{ "name": "description", "content": "the new blk" }],
+        meta: [{ "name": "description", "content": "The New BLK" }, { "property": "og:title", "content": "The New BLK" }, { "property": "og:image", "content": "/images/blk.jpg" }, { "property": "og:description", "content": "We are an ad agency, creative think tank, and content production studio." }],
         link: [{ "rel": "canonical", "href": "http://thenewblk.com/" }]
       }),
       React.createElement(
@@ -33299,7 +33423,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"react-motion":116,"react-router":149,"util":5}],342:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-motion":116,"react-router":149,"util":5}],343:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33344,12 +33468,16 @@ module.exports = React.createClass({
       }, i[r].l = 1 * new Date();a = s.createElement(o), m = s.getElementsByTagName(o)[0];a.async = 1;a.src = g;m.parentNode.insertBefore(a, m);
     })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-72655037-1', 'auto');
-    ga('send', 'pageview');
+    window.ga('create', 'UA-72655037-1', 'auto');
+    window.ga('send', 'pageview', { 'page': this.getPathname() });
   },
 
   componentDidMount: function componentDidMount() {
     this.googleAnalytics();
+  },
+
+  componentWillReceiveProps: function componentWillReceiveProps() {
+    window.ga('send', 'pageview', { 'page': this.getPathname() });
   },
 
   render: function render() {
@@ -33401,7 +33529,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"./footer.jsx":340,"./menu.jsx":344,"react":325,"react-helmet":15,"react-router":149,"util":5}],343:[function(require,module,exports){
+},{"./footer.jsx":341,"./menu.jsx":345,"react":325,"react-helmet":15,"react-router":149,"util":5}],344:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33476,7 +33604,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"react":325,"util":5}],344:[function(require,module,exports){
+},{"react":325,"util":5}],345:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
@@ -33597,12 +33725,13 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":331,"react":325,"react-inlinesvg":94,"react-router":149}],345:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"react":325,"react-inlinesvg":94,"react-router":149}],346:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
 var Helmet = require('react-helmet');
 var Sprite = require('../components/sprite.jsx');
+var Loader = require('../components/loader.jsx');
 
 var util = require('util');
 
@@ -33787,9 +33916,10 @@ module.exports = React.createClass({
             ) : null
           )
         )
-      )
+      ),
+      React.createElement(Loader, null)
     );
   }
 });
 
-},{"../components/sprite.jsx":331,"react":325,"react-helmet":15,"util":5}]},{},[1]);
+},{"../components/loader.jsx":330,"../components/sprite.jsx":332,"react":325,"react-helmet":15,"util":5}]},{},[1]);

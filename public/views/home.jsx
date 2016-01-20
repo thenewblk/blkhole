@@ -67,7 +67,10 @@ module.exports = React.createClass({
         <Helmet
               title="The New BLK"
               meta={[
-                  {"name": "description", "content": "the new blk" }
+                  {"name": "description", "content": "The New BLK" },
+                  {"property": "og:title", "content": "The New BLK" },
+                  {"property": "og:image", "content": "/images/blk.jpg" },
+                  {"property": "og:description", "content": "We are an ad agency, creative think tank, and content production studio." }
               ]}
               link={[
                   {"rel": "canonical", "href": "http://thenewblk.com/"}

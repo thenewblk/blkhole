@@ -4,6 +4,8 @@ var Helmet = require('react-helmet');
 var request = require('superagent');
 
 var Sprite = require('../components/sprite.jsx');
+var Loader = require('../components/loader.jsx');
+
 var Draggable = require('react-draggable');
 var Isvg = require('react-inlinesvg');
 
@@ -263,8 +265,11 @@ module.exports = React.createClass({
           <Helmet
                 title={title}
                 meta={[
-                    {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
+                    {"name": "description", "content": name },
+                    {"property": "og:type", "content": "article"},
+                    {"property": "og:title", "content": name },
+                    {"property": "og:image", "content": self.state.content.content.top_image },
+                    {"property": "og:description", "content": self.state.content.top_block.content }
                 ]}
                 link={[
                   {"rel": "icon", "href": "/images/favicon.png"}
@@ -290,9 +295,7 @@ module.exports = React.createClass({
 
         <div className="case_study loading" key={casestudy}>
           <div className="main_content loading" key={casestudy}></div>
-          <div className="case_study_loader">
-            loading...
-          </div>
+          <Loader />
         </div>
       )
     }

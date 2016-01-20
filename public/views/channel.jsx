@@ -5,6 +5,7 @@ var request = require('superagent');
 var Link = Router.Link;
 
 var Sprite = require('../components/sprite.jsx');
+var Loader = require('../components/loader.jsx');
 
 var util = require('util');
 
@@ -132,7 +133,10 @@ module.exports = React.createClass({
                 title={title}
                 meta={[
                     {"name": "description", "content": title },
-                    {"property": "og:type", "content": "article"}
+                    {"property": "og:type", "content": "article"},
+                    {"property": "og:title", "content": title },
+                    {"property": "og:image", "content": "/images/blk.jpg" },
+                    {"property": "og:description", "content": self.state.content.descriptions }
                 ]}
                 link={[
                     {"rel": "canonical", "href": "http://mysite.com/example"},
@@ -193,7 +197,7 @@ module.exports = React.createClass({
                   {"rel": "icon", "href": "/images/favicon.png"}
                 ]}
           />
-          <p>"Loading..."</p>
+          <Loader />
         </div>
       );
     }

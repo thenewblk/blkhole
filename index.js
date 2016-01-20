@@ -79,7 +79,6 @@ app.get('/post/:post', function(req, res) {
     .exec( function (err, post) {
         if (err) return console.log(err);
         res.render(req.url, {
-          title: post.name,
           content: post
         });
   });

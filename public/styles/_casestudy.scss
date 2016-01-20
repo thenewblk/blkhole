@@ -47,7 +47,7 @@
   transition: 1s ease-out;
   min-height: 100vh;
   &.loading {
-
+    height: 100vh;
     // background: black;
   }
   &.loaded {

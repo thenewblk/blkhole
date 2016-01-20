@@ -39,12 +39,16 @@ module.exports = React.createClass({
     m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-    ga('create', 'UA-72655037-1', 'auto');
-    ga('send', 'pageview');
+    window.ga('create', 'UA-72655037-1', 'auto');
+    window.ga('send', 'pageview', {'page': this.getPathname()});
   },
 
   componentDidMount: function(){
     this.googleAnalytics();
+  },
+
+  componentWillReceiveProps: function(){
+    window.ga('send', 'pageview', {'page': this.getPathname()});
   },
 
   render: function render() {
