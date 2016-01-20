@@ -5,7 +5,7 @@
 
 $third: (( 100vw / 3vw ) / sqrt(2));
 
-$mobile_diamond_size: 23.57023vw;
+$mobile_diamond_size: 23vw;
 $mobile_left_factor: 10.4vw;
 $mobile_border_width: .2vw;
 $mobile_diamond_margin: (($mobile_diamond_size - ( 2 * $mobile_border_width)) * (sqrt(2) - 1)) / 2;

@@ -324,7 +324,7 @@
       height: 100%;
       width: 275px;
       z-index: 2;
-      overflow: scroll;
+      overflow: overlay;
       &:hover {
         padding-left: 275px;
         width: 550px;
