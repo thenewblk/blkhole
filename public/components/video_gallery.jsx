@@ -34,7 +34,6 @@ var VideoGallery = module.exports = React.createClass({
     }
 
     if (thing.videos.length > 1) {
-      console.log("thing.videos.length > 1");
       var videos = thing.videos.map(function(video, index){
         var image = video.image,
             url = video.url,
@@ -94,7 +93,6 @@ var VideoGallery = module.exports = React.createClass({
         </div>
       )
     } else if (thing.videos.length == 1) {
-        console.log("thing.videos.length == 1");
         var video = thing.videos[0];
         var image = video.image,
             url = video.url,

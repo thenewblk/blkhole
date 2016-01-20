@@ -106,10 +106,15 @@
     padding: 50px;
     padding-left: 0;
     background-image: url(/images/agency/theoldgirl_grayscale.jpg);
-    background-position: top;
+    background-position: -150px 150px;
+    background-repeat: no-repeat;
+    background-color: white;
     background-size: cover;
     position: relative;
     display: flex;
+    @media (min-width: 1400px) {
+      background-position: top;
+    }
     .block {
       padding-top: 50px;
       width: 100%;
@@ -157,6 +162,9 @@
       .right_line {
         top: 0;
       }
+    }
+    .left_label {
+      padding-left: 90px;
     }
     .content {
       .uppercase {

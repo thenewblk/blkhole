@@ -211,15 +211,15 @@ module.exports = React.createClass({
               defaultStyle={{
                   opacity: 0,
                   rotation: Math.random() * -10,
-                  x: Math.random() * 10,
+                  x: Math.random() * 2,
                 }}
               style={{
                   opacity: spring(1, [80, 20]),
                   rotation: spring(0, [200, 20]),
-                  x: spring(0, [200, 20]),
+                  x: spring(0, [80, 20]),
                 }}>
               {function(style){
-                return (<p className="uppercase italic theme" style={{top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
+                return (<p className="uppercase italic theme" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
               }}
             </Motion>
           : null }
@@ -230,16 +230,14 @@ module.exports = React.createClass({
                 key={words}
                 defaultStyle={{
                     opacity: 0,
-                    rotation: Math.random() * 10,
-                    x: Math.random() * -10,
+                    x: Math.random() * -15,
                   }}
                 style={{
                     opacity: spring(1, [80, 20]),
-                    rotation: spring(0, [300, 20]),
-                    x: spring(0, [200, 20]),
+                    x: spring(0, [80, 20]),
                   }}>
                 {function(style){
-                  return (<p className="italic words" style={{top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{words}</p>)
+                  return (<p className="italic words" style={{position: "relative", top: style.x, left: style.y, opacity: style.opacity}}>{words}</p>)
                 }}
               </Motion>
             : null }

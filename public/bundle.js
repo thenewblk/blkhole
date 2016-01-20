@@ -31088,7 +31088,6 @@ var VideoGallery = module.exports = React.createClass({
     };
 
     if (thing.videos.length > 1) {
-      console.log("thing.videos.length > 1");
       var videos = thing.videos.map(function (video, index) {
         var image = video.image,
             url = video.url,
@@ -31170,7 +31169,6 @@ var VideoGallery = module.exports = React.createClass({
         )
       );
     } else if (thing.videos.length == 1) {
-      console.log("thing.videos.length == 1");
       var video = thing.videos[0];
       var image = video.image,
           url = video.url,
@@ -33233,17 +33231,17 @@ module.exports = React.createClass({
             defaultStyle: {
               opacity: 0,
               rotation: Math.random() * -10,
-              x: Math.random() * 10
+              x: Math.random() * 2
             },
             style: {
               opacity: spring(1, [80, 20]),
               rotation: spring(0, [200, 20]),
-              x: spring(0, [200, 20])
+              x: spring(0, [80, 20])
             } },
           function (style) {
             return React.createElement(
               'p',
-              { className: 'uppercase italic theme', style: { top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+              { className: 'uppercase italic theme', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
               title
             );
           }
@@ -33259,18 +33257,16 @@ module.exports = React.createClass({
             key: words,
             defaultStyle: {
               opacity: 0,
-              rotation: Math.random() * 10,
-              x: Math.random() * -10
+              x: Math.random() * -15
             },
             style: {
               opacity: spring(1, [80, 20]),
-              rotation: spring(0, [300, 20]),
-              x: spring(0, [200, 20])
+              x: spring(0, [80, 20])
             } },
           function (style) {
             return React.createElement(
               'p',
-              { className: 'italic words', style: { top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+              { className: 'italic words', style: { position: "relative", top: style.x, left: style.y, opacity: style.opacity } },
               words
             );
           }

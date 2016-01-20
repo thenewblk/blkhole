@@ -91,10 +91,10 @@
   flex-direction: column;
   height: 100%;
   .channel_words {
-    display: flex;
+    display: block;
     flex-direction: column;
     justify-content: center;
-    padding: 0 10%;
+    padding: 5% 10% 0;
     flex: 1;
     z-index: 111111;
   }
@@ -120,7 +120,7 @@
   left: 50px;
   right: 50px;
   bottom: 50px;
-  padding: 15px;
+  padding: 25px;
   transition: 0.15s ease-out;
   z-index: 111;
   .channel_name {
@@ -184,7 +184,11 @@
       .view_channel, .channel_icon { background:#333; }
 
     }
+    .channel_words{
+      padding: 0;
+    }
   }
+
   .view_channel {
     padding: 20px;
     text-transform: uppercase;

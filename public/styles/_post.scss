@@ -431,6 +431,12 @@
       }
     }
 
+    .video_play_button {
+      svg {
+        fill: white;
+      }
+    }
+
   }
 
   &.dragger {
