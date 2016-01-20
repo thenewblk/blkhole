@@ -528,6 +528,7 @@ img.full {
     }
     .right {
       flex: 1;
+      overflow: overlay;
     }
   }
   .next_service, .prev_service {

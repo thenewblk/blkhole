@@ -33088,10 +33088,10 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { title: 'We are', words: "an ad agency, creative think tank, and content production studio." };
+    return { title: '', words: "Ad agency, creative think tank, and content production studio" };
   },
   setAgency: function setAgency() {
-    this.setState({ title: "your agency is", video: "agency", words: "We only know one way: All in." });
+    this.setState({ title: 'We are', video: "agency", words: "We only know one way: All in." });
   },
   setHandcrafted: function setHandcrafted() {
     this.setState({ title: "handcrafted is", video: "handcrafted", words: "Our design process often mirrors the spirit and aesthetic of the brands we help build." });
@@ -33103,7 +33103,7 @@ module.exports = React.createClass({
     this.setState({ title: "experiential is", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting." });
   },
   resetVideo: function resetVideo() {
-    this.setState({ title: 'We are', video: null, words: "an ad agency, creative think tank, and content production studio." });
+    this.setState({ title: '', video: null, words: "Ad agency, creative think tank, and content production studio" });
   },
   componenetDidMount: function componenetDidMount() {
     var self = this;
@@ -33346,7 +33346,7 @@ module.exports = React.createClass({
               title
             );
           }
-        ) : null,
+        ) : React.createElement('p', { key: title, className: 'uppercase italic theme blank_title' }),
         React.createElement(
           'h2',
           { className: 'bold uppercase newblk' },

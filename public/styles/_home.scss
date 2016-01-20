@@ -260,6 +260,7 @@ $fiven_left: 26.6vw;
   }
   .theme, .theme span {
     font-size: $diamond_size / 6;
+    min-height: $diamond_size / 6;
   }
   .newblk {
     font-size: $diamond_size / 1.6;
