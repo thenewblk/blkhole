@@ -63,16 +63,16 @@ module.exports = React.createClass({
     } else {
       var path = slugify(self.getPathname());
     }
-    var url = "http://thenewblk.herokuapp.com";
+    var url = "http://thenewblk.com";
     var type = "website";
     var title = "The New BLK";
-    var image = "http://thenewblk.herokuapp.com/images/blk.jpg";
+    var image = "http://thenewblk.com/images/blk.jpg";
     var description = "We are an ad agency, creative think tank, and content production studio.";
 
     if (case_study) {
       type = "article";
       title = case_study.name;
-      image = "http://thenewblk.herokuapp.com" + case_study.content.top_image;
+      image = "http://thenewblk.com" + case_study.content.top_image;
 
       if (self.props.description){
         description = self.props.description;
