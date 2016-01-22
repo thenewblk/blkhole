@@ -263,7 +263,9 @@ $fiven_left: 26.6vw;
     min-height: $diamond_size / 6;
   }
   .newblk {
-    font-size: $diamond_size / 1.6;
+    height: 9vw;
+    margin: 0;
+    margin-right: 6.75vw;
   }
   .words, .words span {
     line-height: 1.3;

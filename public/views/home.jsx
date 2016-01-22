@@ -1,5 +1,6 @@
 var React = require('react');
 var Router = require('react-router');
+var Helmet = require('react-helmet');
 
 var spring = require('react-motion').spring;
 var presets = require('react-motion').presets;
@@ -63,6 +64,7 @@ module.exports = React.createClass({
 
     return (
       <div className="home_page">
+        <Helmet title="The New BLK" />
         <div className="diamond_grid_3">
           <span className="desktop_squares">
             <div className="square"></div>
@@ -213,7 +215,24 @@ module.exports = React.createClass({
               }}
             </Motion>
           : <p key={title} className="uppercase italic theme blank_title"></p> }
-          <h2 className="bold uppercase newblk">The New BLK</h2>
+
+          <Motion
+            defaultStyle={{
+                opacity: 0,
+                rotation: Math.random() * -10,
+                x: Math.random() * 2,
+              }}
+            style={{
+                opacity: spring(1, [80, 20]),
+                rotation: spring(0, [200, 20]),
+                x: spring(0, [80, 20]),
+              }}>
+            {function(style){
+              return (<img className="bold uppercase newblk" src="/images/thenewblk.svg" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} />)
+            }}
+          </Motion>
+
+
 
             { words ?
               <Motion

@@ -33072,6 +33072,7 @@ module.exports = React.createClass({
 
 var React = require('react');
 var Router = require('react-router');
+var Helmet = require('react-helmet');
 
 var spring = require('react-motion').spring;
 var presets = require('react-motion').presets;
@@ -33137,6 +33138,7 @@ module.exports = React.createClass({
     return React.createElement(
       'div',
       { className: 'home_page' },
+      React.createElement(Helmet, { title: 'The New BLK' }),
       React.createElement(
         'div',
         { className: 'diamond_grid_3' },
@@ -33348,9 +33350,21 @@ module.exports = React.createClass({
           }
         ) : React.createElement('p', { key: title, className: 'uppercase italic theme blank_title' }),
         React.createElement(
-          'h2',
-          { className: 'bold uppercase newblk' },
-          'The New BLK'
+          Motion,
+          {
+            defaultStyle: {
+              opacity: 0,
+              rotation: Math.random() * -10,
+              x: Math.random() * 2
+            },
+            style: {
+              opacity: spring(1, [80, 20]),
+              rotation: spring(0, [200, 20]),
+              x: spring(0, [80, 20])
+            } },
+          function (style) {
+            return React.createElement('img', { className: 'bold uppercase newblk', src: '/images/thenewblk.svg', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } });
+          }
         ),
         words ? React.createElement(
           Motion,
@@ -33400,7 +33414,7 @@ module.exports = React.createClass({
   }
 });
 
-},{"../components/sprite.jsx":332,"react":325,"react-motion":116,"react-router":149,"util":5}],343:[function(require,module,exports){
+},{"../components/sprite.jsx":332,"react":325,"react-helmet":15,"react-motion":116,"react-router":149,"util":5}],343:[function(require,module,exports){
 'use strict';
 
 var React = require('react');
