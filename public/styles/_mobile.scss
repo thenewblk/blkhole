@@ -24,9 +24,13 @@ $mobile_fiven_left: 26.6vw;
 @media (max-width: 1000px) {
   .home_page {
     flex-direction: column;
+    display: flex;
     .diamond_grid_3 {
       order: 2;
       margin: 0;
+      width: auto;
+      float: none;
+      flex: 1;
       .square {
         height: $mobile_diamond_size;
         width: $mobile_diamond_size;
@@ -54,6 +58,9 @@ $mobile_fiven_left: 26.6vw;
       margin: 0;
       align-items: center;
       justify-content: center;
+      float: none;
+      flex: 1;
+      width: auto;
     }
     .mobile_squares {
       display: inline;
@@ -61,7 +68,6 @@ $mobile_fiven_left: 26.6vw;
     .desktop_squares {
       display: none;
     }
-
     .newblk {
       height: 6vw;
       margin: 1vw;

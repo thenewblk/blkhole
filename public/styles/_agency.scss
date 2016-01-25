@@ -242,18 +242,21 @@
         align-items: flex-end;
         width: 100%;
         padding: 0;
+
+        .left_label {
+          display: flex;
+          justify-content: flex-end;
+          .sprite_container {
+            margin-right: 50px;
+          }
+        }
+
         .copy {
           flex: 1;
         }
 
         .block_wrapper {
           align-items: center;
-          .sprite_container {
-            display: table;
-            position: relative;
-            margin: auto;
-          }
-
           .headline {
             margin: 0;
             font-size: 40px;
