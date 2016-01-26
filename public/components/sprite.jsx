@@ -1,6 +1,7 @@
 var React = require('react');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
+var VisibilitySensor = require('react-visibility-sensor');
 
 function getFilePathExtension(path) {
 	var filename = path.split('\\').pop().split('/').pop();
@@ -83,40 +84,6 @@ module.exports = React.createClass({
   animate: function(){
     var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
-
-    // interv = this.setInterval(function(){
-    //     if ( self.state.animation == "start") {
-    //     }
-    //
-    //     if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
-    //         console.log(self.state);
-    //         var new_frame = self.state.current_frame + 1;
-    //         var col = (new_frame % self.props.columns) +1;
-    //         var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-    //
-    //         var x = (col - 1) * self.props.frameW * -1;
-    //         var y = (row - 1) * self.props.frameH * -1;
-    //         self.setState( { current_frame: new_frame, x: x, y: y } );
-    //     }
-    //
-    //     if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
-    //         var new_frame = self.state.current_frame - 1;
-    //         var col = (new_frame % self.props.columns) +1;
-    //         var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-    //
-    //         var x = (col - 1) * self.props.frameW * -1;
-    //         var y = (row - 1) * self.props.frameH * -1;
-    //         self.setState( { current_frame: new_frame, x: x, y: y } );
-    //     }
-    //     if ( self.state.animation == "stop") {
-    //       clearInterval(interv);
-    //     }
-    //
-    // }, speed);
-
-
-    // interval = speed; // initial condition
-
 
     self.state.timer.start(function(){
       if ( self.state.animation == "start") {
@@ -257,7 +224,6 @@ module.exports = React.createClass({
 				}
 			} else {
 				if ((getFilePathExtension(image) === "svg")){
-					var VisibilitySensor = require('react-visibility-sensor');
 
 					var onChange = function (isVisible) {
 				    if (isVisible){
@@ -288,11 +254,6 @@ module.exports = React.createClass({
 		      )
 		    }
 			}
-
-		} else {
-				return (
-					<h2>fuck you</h2>
-				)
-			}
-	  }
+		}
+	}
 });
