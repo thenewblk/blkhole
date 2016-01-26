@@ -365,6 +365,9 @@ $mobile_fiven_left: 26.6vw;
       .service_list {
         flex-direction: column;
         padding: 0 15px;
+        .service {
+          cursor: pointer;
+        }
       }
       .service_detail{
         position: fixed;
