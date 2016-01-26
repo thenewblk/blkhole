@@ -354,16 +354,18 @@ module.exports = React.createClass({
         </div>
         <VideoGallery thing={videogallery} blockColor={"black"}/>
         <div className="needle">
-          <h1 className="needle_headline"><div className="block_wrapper">MOVE THE NEEDLE</div></h1>
-          <div className="block">
-            <div className="block_wrapper">
-              <span className="left_label"></span>
-              <span className="content">
-                <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
-              </span>
+          <span className="needle_wrapper">
+            <h1 className="needle_headline"><div className="block_wrapper">MOVE THE NEEDLE</div></h1>
+            <div className="block">
+              <div className="block_wrapper">
+                <span className="left_label"></span>
+                <span className="content">
+                  <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
+                </span>
+              </div>
             </div>
-          </div>
-          <Needles />
+            <Needles />
+          </span>
         </div>
         <div className="services">
           <div className="block">

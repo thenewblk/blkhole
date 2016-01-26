@@ -190,13 +190,14 @@
   margin: 50px 0;
   margin-right: 50px;
   background-color: $black;
-  background:
-    linear-gradient(135deg, transparent 75px, $black 0) top left,
-    linear-gradient(0deg, transparent 0, $black 0) top right,
-    linear-gradient(315deg, transparent 75px, $black 0) bottom right,
-    linear-gradient(0deg, transparent 0, $black 0) bottom left;
-  background-size: 51%!important;
-  background-repeat: no-repeat!important;
+  position: relative;
+  // background:
+  //   linear-gradient(135deg, transparent 75px, $black 0) top left,
+  //   linear-gradient(0deg, transparent 0, $black 0) top right,
+  //   linear-gradient(315deg, transparent 75px, $black 0) bottom right,
+  //   linear-gradient(0deg, transparent 0, $black 0) bottom left;
+  // background-size: 51%!important;
+  // background-repeat: no-repeat!important;
   padding: 100px 7%;
   color: white;
   overflow: hidden;
@@ -357,6 +358,25 @@
         }
       }
     }
+  }
+}
+
+.needle_wrapper {
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    height: 150px;
+    width: 150px;
+    background: $lightgray;
+    transform: rotate(45deg);
+  }
+  &:before {
+    top: -75px;
+    left: -75px;
+  }
+  &:after {
+    bottom: -75px;
+    right: -75px;
   }
 }
 

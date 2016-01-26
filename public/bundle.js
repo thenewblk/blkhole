@@ -31812,33 +31812,37 @@ module.exports = React.createClass({
         'div',
         { className: 'needle' },
         React.createElement(
-          'h1',
-          { className: 'needle_headline' },
+          'span',
+          { className: 'needle_wrapper' },
           React.createElement(
-            'div',
-            { className: 'block_wrapper' },
-            'MOVE THE NEEDLE'
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: 'block' },
-          React.createElement(
-            'div',
-            { className: 'block_wrapper' },
-            React.createElement('span', { className: 'left_label' }),
+            'h1',
+            { className: 'needle_headline' },
             React.createElement(
-              'span',
-              { className: 'content' },
+              'div',
+              { className: 'block_wrapper' },
+              'MOVE THE NEEDLE'
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'block' },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              React.createElement('span', { className: 'left_label' }),
               React.createElement(
-                'p',
-                null,
-                'The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.'
+                'span',
+                { className: 'content' },
+                React.createElement(
+                  'p',
+                  null,
+                  'The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.'
+                )
               )
             )
-          )
-        ),
-        React.createElement(Needles, null)
+          ),
+          React.createElement(Needles, null)
+        )
       ),
       React.createElement(
         'div',
