@@ -79,34 +79,228 @@ $mobile_fiven_left: 26.6vw;
   body{
     background: black;
     padding-left: 0;
+    padding-top: 70px;
   }
-  .navigator, .main {
-    display: none;
+  // .navigator, .main {
+  //   display: none;
+  // }
+  // .mobile_main {
+  //   display: block;
+  //   color: white;
+  //   display: flex;
+  //   flex-direction: column;
+  //   height: 100%;
+  //   .earthlings {
+  //     padding: 30px;
+  //     flex: 1;
+  //     display: flex;
+  //     align-items: center;
+  //   }
+  //   footer.footer {
+  //     a {
+  //       color: white;
+  //
+  //     }
+  //     .f-wrapper {
+  //       flex-direction: column;
+  //       align-items: flex-start;
+  //       .contact, .social, .map {
+  //         padding: 5% 0;
+  //       }
+  //     }
+  //   }
+  // }
+
+  // FOOTER
+
+  footer.footer {
+
+    a {
+      color: white;
+
+    }
+    .f-wrapper {
+      flex-direction: column;
+      align-items: flex-start;
+      .contact, .social, .map {
+        padding: 5% 0;
+      }
+    }
   }
-  .mobile_main {
-    display: block;
-    color: white;
+
+  // MENU
+
+  .navigator {
+    max-width: 100%;
+    height: auto;
+    max-height: 70px;
+    padding: 0;
+    top: 0;
+
+    &:hover {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  // HOMEPAGE
+
+  .home {
+    padding-top: 0;
+    .navigator {
+      opacity: 0;
+      top: -70px;
+      left: 0;
+      &:hover {
+        max-height: 70px;
+      }
+    }
+  }
+
+  // CHANNEL PAGE
+
+  .channel_info {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    order:1;
+    .video-container, .channel_overlay, .channel_button {
+      display: none;
+    }
+    .channel_words {
+      overflow: inherit;
+      padding: 0;
+      display: block;
+      .channel_name, .channel_description {
+        width: 100%;
+      }
+    }
+    .channel_container {
+      display: block;
+    }
+  }
+  .featured_projects {
     display: flex;
     flex-direction: column;
-    height: 100%;
-    .earthlings {
-      padding: 30px;
-      flex: 1;
-      display: flex;
-      align-items: center;
+    .project {
+      width: 100%;
+      height: auto;
+      order: 2;
     }
-    footer.footer {
-      a {
-        color: white;
-
+    &.hide {
+      .channel_info {
+        display: none;
       }
-      .f-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-        .contact, .social, .map {
-          padding: 5% 0;
+    }
+  }
+  .channel {
+    height: auto;
+    .content {
+      height: auto;
+      .featured_projects {
+        height: auto;
+      }
+    }
+  }
+
+  // CASESTUDY
+
+  .case_study {
+    transition: 0.15s ease-out;
+    &.loaded {
+      background: $lightgray;
+    }
+    .top {
+      height: auto;
+      .case_study_name {
+        position: relative;
+        padding: 150px 15px;
+        font-size: 30px;
+        display: block;
+        padding-bottom: 0;
+        margin-bottom: -13px;
+        .isvg {
+          display: none;
         }
       }
     }
+
+    .left_label  {
+      float: none;
+      width: auto;
+    }
+
+    .post {
+      &.block {
+        margin-right: 0px;
+        padding: 50px 30px;
+        .block_wrapper {
+          &:before {
+            top: -100px;
+            left: -100px;
+          }
+          &:after {
+            bottom: -100px;
+            right: -100px;
+          }
+        }
+        .bold {
+          font-size: 40px;
+        }
+        .uppercase {
+          font-size: 22px;
+        }
+
+      }
+
+      &.top_block {
+        .block_wrapper {
+          flex-direction: column;
+          .left_label {
+            float: none;
+            width: 100%;
+            order: 2;
+            padding-right: 0;
+            padding-top: 25px;
+          }
+          .content {
+            height: auto;
+            order: 1;
+          }
+        }
+      }
+
+      &.logo {
+        padding: 50px 25px;
+        img {
+          width: 100%;
+          max-height: 300px;
+        }
+      }
+
+      &.text {
+        margin-right: 0;
+      }
+
+      &.doublewide {
+        flex-direction: column;
+        .image {
+          order: 1;
+          max-width: 100%;
+          img {
+            width: 100%;
+          }
+        }
+        .text {
+          order: 2;
+        }
+      }
+
+    }
+
   }
+
+
 }

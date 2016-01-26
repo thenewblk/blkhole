@@ -31389,11 +31389,6 @@ module.exports = React.createClass({
         'URL: ',
         this.props.url,
         ' - Not Found(404)'
-      ),
-      React.createElement(
-        'h6',
-        null,
-        'I am a Plain vanilla react view'
       )
     );
   }
@@ -32301,10 +32296,7 @@ module.exports = React.createClass({
       };
 
       var block_style = {
-        backgroundColor: self.state.content.block_color,
-        background: "linear-gradient(135deg, transparent 50px, " + self.state.content.block_color + " 0) top left, linear-gradient(0deg, transparent 0, " + self.state.content.block_color + " 0) top right, linear-gradient(315deg, transparent 50px, " + self.state.content.block_color + " 0) bottom right, linear-gradient(0deg, transparent 0, " + self.state.content.block_color + " 0) bottom left",
-        backgroundSize: "51%",
-        backgroundRepeat: "no-repeat"
+        backgroundColor: self.state.content.block_color
       };
 
       var things = self.state.content.content.things.map(function (thing, index) {
