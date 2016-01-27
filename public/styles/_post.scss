@@ -461,6 +461,19 @@
 
   }
 
+  &.mobile_videos {
+    .main_video_wrapper {
+      background-size: cover;
+      background-position: center;
+      align-items: center;
+      color: white;
+      padding: 50px 15px;
+    }
+    .post.videos.single_video {
+      margin-top: 0;
+    }
+  }
+
   &.dragger {
     position: relative;
     min-height: 500px;

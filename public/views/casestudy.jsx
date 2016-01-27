@@ -37,6 +37,10 @@ module.exports = React.createClass({
     return {params: {}, title: ''};
   },
 
+  handleResize: function(e) {
+    this.setState({windowWidth: window.innerWidth});
+  },
+
   getContent: function(){
     var self = this;
     request
@@ -72,7 +76,11 @@ module.exports = React.createClass({
     self.setTimeout(function() { self.getContent(); }, 500);
   },
 
-  componentDidMount: function() {},
+  componentDidMount: function(){
+    var self = this;
+    self.setState({windowWidth: window.innerWidth});
+    window.addEventListener('resize', self.handleResize);
+  },
 
   consoleLog: function(){
     console.log("this.state: " + util.inspect(this.state));

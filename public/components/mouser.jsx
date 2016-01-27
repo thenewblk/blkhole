@@ -7,6 +7,10 @@ var Mouser = module.exports = React.createClass({
     return { over: false, left: 250 };
   },
 
+  handleResize: function(e) {
+    this.setState({windowWidth: window.innerWidth});
+  },
+
   mouseEnter: function () {
     // console.log("mouseOver: " + util.inspect(event));
     this.setState({over: true})
@@ -62,9 +66,10 @@ var Mouser = module.exports = React.createClass({
     }
   },
 
-  componentDidMount: function() {
-    // document.addEventListener('resize', this.onMouseMove);
-    // document.addEventListener('scroll', this.onMouseMove);
+  componentWillReceiveProps: function(nextProps) {
+    var self = this;
+    self.setState({ params: self.getParams(), content: null });
+    self.setTimeout(function() { self.getContent(); }, 500);
   },
 
 
@@ -80,26 +85,39 @@ var Mouser = module.exports = React.createClass({
         left = self.state.left,
         screenX = self.state.screenX,
         screenY = self.state.screenY,
-        over = self.state.over;
+        over = self.state.over,
+        windowWidth = self.state.windowWidth;
+    if (windowWidth >= 500) {
+      return (
+        <div className={ over ? "post mouser" : "post mouser over" }>
+          <div className="block_wrapper">
+            <span className="left_label"></span>
+            <span className="content">
+              <div className="dragger_images">
 
-    return (
-      <div className={ over ? "post mouser" : "post mouser over" }>
-        <div className="block_wrapper">
-          <span className="left_label"></span>
-          <span className="content">
-            <div className="dragger_images">
+                <div className="bottom_image" style={{backgroundImage: "url("+bottom+")"}}></div>
+                <div className="top_image" style={{backgroundImage: "url("+top+")", width: left+"px"}}></div>
+                <div className="mouse_overlay" onMouseEnter={self.mouseEnter} onMouseLeave={self.mouseLeave} ></div>
+              </div>
 
-              <div className="bottom_image" style={{backgroundImage: "url("+bottom+")"}}></div>
-              <div className="top_image" style={{backgroundImage: "url("+top+")", width: left+"px"}}></div>
-              <div className="mouse_overlay" onMouseEnter={self.mouseEnter} onMouseLeave={self.mouseLeave} ></div>
-            </div>
-
-            <span className="handle" style={{top: screenY, left: screenX }}>
-              <Isvg src="/icons/new/slide.svg" />
+              <span className="handle" style={{top: screenY, left: screenX }}>
+                <Isvg src="/icons/new/slide.svg" />
+              </span>
             </span>
-          </span>
+          </div>
         </div>
-      </div>
-    )
+      )
+    } else {
+      return (
+        <span>
+          <div className="post image">
+            <img src={bottom} />
+          </div>
+          <div className="post image">
+            <img src={top} />
+          </div>
+        </span>
+      )
+    }
   }
 })

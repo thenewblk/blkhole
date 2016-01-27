@@ -29965,26 +29965,15 @@ Request.prototype.field = function(name, val){
 
 Request.prototype.attach = function(field, file, filename){
   if (!this._formData) this._formData = new root.FormData();
-  this._formData.append(field, file, filename);
+  this._formData.append(field, file, filename || file.name);
   return this;
 };
 
 /**
- * Send `data`, defaulting the `.type()` to "json" when
+ * Send `data` as the request body, defaulting the `.type()` to "json" when
  * an object is given.
  *
  * Examples:
- *
- *       // querystring
- *       request.get('/search')
- *         .end(callback)
- *
- *       // multiple data "writes"
- *       request.get('/search')
- *         .send({ search: 'query' })
- *         .send({ range: '1..5' })
- *         .send({ order: 'desc' })
- *         .end(callback)
  *
  *       // manual json
  *       request.post('/user')
@@ -30150,6 +30139,7 @@ Request.prototype.end = function(fn){
     if (e.total > 0) {
       e.percent = e.loaded / e.total * 100;
     }
+    e.direction = 'download';
     self.emit('progress', e);
   };
   if (this.hasListeners('progress')) {
@@ -30311,8 +30301,8 @@ function del(url, fn){
   return req;
 };
 
-request.del = del;
-request.delete = del;
+request['del'] = del;
+request['delete'] = del;
 
 /**
  * PATCH `url` with optional `data` and callback `fn(res)`.
@@ -30419,7 +30409,7 @@ function mixin(obj) {
 Emitter.prototype.on =
 Emitter.prototype.addEventListener = function(event, fn){
   this._callbacks = this._callbacks || {};
-  (this._callbacks[event] = this._callbacks[event] || [])
+  (this._callbacks['$' + event] = this._callbacks['$' + event] || [])
     .push(fn);
   return this;
 };
@@ -30435,11 +30425,8 @@ Emitter.prototype.addEventListener = function(event, fn){
  */
 
 Emitter.prototype.once = function(event, fn){
-  var self = this;
-  this._callbacks = this._callbacks || {};
-
   function on() {
-    self.off(event, on);
+    this.off(event, on);
     fn.apply(this, arguments);
   }
 
@@ -30471,12 +30458,12 @@ Emitter.prototype.removeEventListener = function(event, fn){
   }
 
   // specific event
-  var callbacks = this._callbacks[event];
+  var callbacks = this._callbacks['$' + event];
   if (!callbacks) return this;
 
   // remove all handlers
   if (1 == arguments.length) {
-    delete this._callbacks[event];
+    delete this._callbacks['$' + event];
     return this;
   }
 
@@ -30503,7 +30490,7 @@ Emitter.prototype.removeEventListener = function(event, fn){
 Emitter.prototype.emit = function(event){
   this._callbacks = this._callbacks || {};
   var args = [].slice.call(arguments, 1)
-    , callbacks = this._callbacks[event];
+    , callbacks = this._callbacks['$' + event];
 
   if (callbacks) {
     callbacks = callbacks.slice(0);
@@ -30525,7 +30512,7 @@ Emitter.prototype.emit = function(event){
 
 Emitter.prototype.listeners = function(event){
   this._callbacks = this._callbacks || {};
-  return this._callbacks[event] || [];
+  return this._callbacks['$' + event] || [];
 };
 
 /**
@@ -30770,6 +30757,10 @@ var Mouser = module.exports = React.createClass({
     return { over: false, left: 250 };
   },
 
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
   mouseEnter: function mouseEnter() {
     // console.log("mouseOver: " + util.inspect(event));
     this.setState({ over: true });
@@ -30823,9 +30814,12 @@ var Mouser = module.exports = React.createClass({
     }
   },
 
-  componentDidMount: function componentDidMount() {
-    // document.addEventListener('resize', this.onMouseMove);
-    // document.addEventListener('scroll', this.onMouseMove);
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    var self = this;
+    self.setState({ params: self.getParams(), content: null });
+    self.setTimeout(function () {
+      self.getContent();
+    }, 500);
   },
 
   componentDidUnmount: function componentDidUnmount() {
@@ -30840,33 +30834,50 @@ var Mouser = module.exports = React.createClass({
         left = self.state.left,
         screenX = self.state.screenX,
         screenY = self.state.screenY,
-        over = self.state.over;
-
-    return React.createElement(
-      'div',
-      { className: over ? "post mouser" : "post mouser over" },
-      React.createElement(
+        over = self.state.over,
+        windowWidth = self.state.windowWidth;
+    if (windowWidth >= 500) {
+      return React.createElement(
         'div',
-        { className: 'block_wrapper' },
-        React.createElement('span', { className: 'left_label' }),
+        { className: over ? "post mouser" : "post mouser over" },
         React.createElement(
-          'span',
-          { className: 'content' },
-          React.createElement(
-            'div',
-            { className: 'dragger_images' },
-            React.createElement('div', { className: 'bottom_image', style: { backgroundImage: "url(" + bottom + ")" } }),
-            React.createElement('div', { className: 'top_image', style: { backgroundImage: "url(" + top + ")", width: left + "px" } }),
-            React.createElement('div', { className: 'mouse_overlay', onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave })
-          ),
+          'div',
+          { className: 'block_wrapper' },
+          React.createElement('span', { className: 'left_label' }),
           React.createElement(
             'span',
-            { className: 'handle', style: { top: screenY, left: screenX } },
-            React.createElement(Isvg, { src: '/icons/new/slide.svg' })
+            { className: 'content' },
+            React.createElement(
+              'div',
+              { className: 'dragger_images' },
+              React.createElement('div', { className: 'bottom_image', style: { backgroundImage: "url(" + bottom + ")" } }),
+              React.createElement('div', { className: 'top_image', style: { backgroundImage: "url(" + top + ")", width: left + "px" } }),
+              React.createElement('div', { className: 'mouse_overlay', onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave })
+            ),
+            React.createElement(
+              'span',
+              { className: 'handle', style: { top: screenY, left: screenX } },
+              React.createElement(Isvg, { src: '/icons/new/slide.svg' })
+            )
           )
         )
-      )
-    );
+      );
+    } else {
+      return React.createElement(
+        'span',
+        null,
+        React.createElement(
+          'div',
+          { className: 'post image' },
+          React.createElement('img', { src: bottom })
+        ),
+        React.createElement(
+          'div',
+          { className: 'post image' },
+          React.createElement('img', { src: top })
+        )
+      );
+    }
   }
 });
 
@@ -31188,6 +31199,11 @@ var VideoGallery = module.exports = React.createClass({
   getInitialState: function getInitialState() {
     return { currentVideo: "", moreOver: false };
   },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
   setCurrentVideo: function setCurrentVideo(video, type) {
     console.log("setCurrentVideo");
     this.setState({ currentVideo: video, type: type });
@@ -31201,6 +31217,12 @@ var VideoGallery = module.exports = React.createClass({
     this.setState({ moreOver: false });
   },
 
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
+
   render: function render() {
     var self = this,
         thing = self.props.thing,
@@ -31209,7 +31231,8 @@ var VideoGallery = module.exports = React.createClass({
         style = thing.style,
         currentVideo = self.state.currentVideo,
         type = self.state.type,
-        moreOver = self.state.moreOver;
+        moreOver = self.state.moreOver,
+        windowWidth = self.state.windowWidth;
 
     var wrapper_styles = {
       backgroundColor: self.props.blockColor,
@@ -31259,44 +31282,98 @@ var VideoGallery = module.exports = React.createClass({
         );
       });
 
-      return React.createElement(
-        'div',
-        { className: currentVideo ? "post videos video_open " + style : "post videos " + style },
-        currentVideo ? React.createElement(
+      var mobile_videos = thing.videos.map(function (video, index) {
+        var image = video.image,
+            url = video.url,
+            title = video.title,
+            type = video.type,
+            video_files = video.video,
+            series = video.series;
+
+        if (video_files) {
+          var webm = video_files.webm,
+              mp4 = video_files.mp4;
+        }
+
+        var videogallery = {
+          type: "videos",
+          backgroundImage: image,
+          description: title,
+          videos: [{
+            type: type,
+            url: url,
+            title: title,
+            series: series,
+            image: image,
+            video: {
+              webm: webm,
+              mp4: mp4
+            }
+          }]
+        };
+
+        return React.createElement(VideoGallery, { key: index, thing: videogallery, blockColor: self.props.blockColor });
+      });
+
+      if (windowWidth >= 768) {
+        return React.createElement(
           'div',
-          { className: 'iframe-video-container' },
-          type == "vimeo" ? React.createElement('iframe', { src: currentVideo + "&autoplay=1", width: '853', height: '480', frameBorder: '0', webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true }) : null,
-          type == "youtube" ? React.createElement('iframe', { src: currentVideo + "?autoplay=1", frameBorder: '0', width: '560', height: '315' }) : null,
-          moreOver ? React.createElement('div', { className: 'more_overlay' }) : null
-        ) : React.createElement(
-          'div',
-          { className: 'main_video_wrapper', style: wrapper_styles },
+          { className: currentVideo ? "post videos video_open " + style : "post videos " + style },
+          currentVideo ? React.createElement(
+            'div',
+            { className: 'iframe-video-container' },
+            type == "vimeo" ? React.createElement('iframe', { src: currentVideo + "&autoplay=1", width: '853', height: '480', frameBorder: '0', webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true }) : null,
+            type == "youtube" ? React.createElement('iframe', { src: currentVideo + "?autoplay=1", frameBorder: '0', width: '560', height: '315' }) : null,
+            moreOver ? React.createElement('div', { className: 'more_overlay' }) : null
+          ) : React.createElement(
+            'div',
+            { className: 'main_video_wrapper', style: wrapper_styles },
+            React.createElement(
+              'div',
+              { className: 'main_video_container', onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type) },
+              React.createElement(Isvg, { src: '/icons/new/play_1-01.svg', className: 'video_play_button' }),
+              React.createElement(
+                'p',
+                { className: 'video_description' },
+                description
+              )
+            )
+          ),
           React.createElement(
             'div',
-            { className: 'main_video_container', onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type) },
-            React.createElement(Isvg, { src: '/icons/new/play_1-01.svg', className: 'video_play_button' }),
-            React.createElement(
-              'p',
-              { className: 'video_description' },
-              description
-            )
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver },
-          videos
-        ),
-        React.createElement(
-          'span',
-          { className: 'video_more', onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave },
+            { className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver },
+            videos
+          ),
           React.createElement(
             'span',
-            { className: 'video_more_text' },
-            'more'
+            { className: 'video_more', onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave },
+            React.createElement(
+              'span',
+              { className: 'video_more_text' },
+              'more'
+            )
           )
-        )
-      );
+        );
+      } else {
+        return React.createElement(
+          'div',
+          { className: 'post mobile_videos' },
+          React.createElement(
+            'div',
+            { className: 'main_video_wrapper', style: wrapper_styles },
+            React.createElement(
+              'div',
+              { className: 'main_video_container' },
+              React.createElement(
+                'p',
+                { className: 'video_description' },
+                description
+              )
+            )
+          ),
+          mobile_videos
+        );
+      }
     } else if (thing.videos.length == 1) {
       var video = thing.videos[0];
       var image = video.image,
@@ -32239,6 +32316,10 @@ module.exports = React.createClass({
     return { params: {}, title: '' };
   },
 
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
   getContent: function getContent() {
     var self = this;
     request.get('/api/post/' + self.getParams().casestudy).end(function (err, res) {
@@ -32276,7 +32357,11 @@ module.exports = React.createClass({
     }, 500);
   },
 
-  componentDidMount: function componentDidMount() {},
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
 
   consoleLog: function consoleLog() {
     console.log("this.state: " + util.inspect(this.state));
@@ -33085,7 +33170,7 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: null };
+    return { title: '', words: "Ad agency, creative think tank, and content production studio" };
   },
   handleResize: function handleResize(e) {
     this.setState({ windowWidth: window.innerWidth });

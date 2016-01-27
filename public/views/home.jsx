@@ -16,7 +16,7 @@ var util = require('util');
 
 module.exports = React.createClass({
   getInitialState: function(){
-    return {title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: null};
+    return {title: '', words: "Ad agency, creative think tank, and content production studio"};
   },
   handleResize: function(e) {
     this.setState({windowWidth: window.innerWidth});
