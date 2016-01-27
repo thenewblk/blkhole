@@ -428,7 +428,7 @@ $mobile_fiven_left: 26.6vw;
 
 }
 
-@media (max-width: 678px) {
+@media (max-width: 768px) {
   .home {
     .home_page {
       display: block;
@@ -448,6 +448,7 @@ $mobile_fiven_left: 26.6vw;
           padding: 0 15px;
       }
     }
+
     .themes {
       position: relative;
       z-index: 3;
@@ -487,5 +488,13 @@ $mobile_fiven_left: 26.6vw;
 
     }
     .agency { background: transparent;}
+  }
+
+  footer.footer .f-wrapper .social .isvg {
+    margin: 0 10px;
+    svg {
+      width: 60px;
+    }
+
   }
 }
