@@ -33536,7 +33536,8 @@ module.exports = React.createClass({
               'p',
               null,
               'We only know one way: All in.'
-            )
+            ),
+            React.createElement('span', { className: 'theme_overlay' })
           ),
           React.createElement(
             Link,
@@ -33562,7 +33563,8 @@ module.exports = React.createClass({
               'p',
               null,
               'We cultivate brand experiences that are both in-the-moment and long-lasting.'
-            )
+            ),
+            React.createElement('span', { className: 'theme_overlay' })
           ),
           React.createElement(
             Link,
@@ -33588,7 +33590,8 @@ module.exports = React.createClass({
               'p',
               null,
               'Our design process often mirrors the spirit and aesthetic of the brands we help build.'
-            )
+            ),
+            React.createElement('span', { className: 'theme_overlay' })
           )
         ),
         React.createElement('div', { className: 'home_overlay' })

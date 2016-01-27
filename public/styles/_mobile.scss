@@ -310,6 +310,7 @@ $mobile_fiven_left: 26.6vw;
 
     .agency_top {
       height: auto;
+      display: block;
       .theoldgirl {
         padding: 0 0 250px;
         background-position: center bottom;
@@ -392,23 +393,29 @@ $mobile_fiven_left: 26.6vw;
         }
 
         .next_service.here, .prev_service.here {
-          display: block;
-          text-align: center;
+          .service_name {
+            display: none;
+          }
         }
 
         .next_service {
-          float: none;
         }
 
         .service_detail_wrapper {
-          padding: 50px 15px;
+          padding: 0px 15px;
         }
         .area {
           text-align: right;
         }
-        .close .isvg {
-          top: -45px;
-          left: -10px;
+        .close {
+          &:after {
+            background:  transparent;
+            border: none;
+          }
+          .isvg {
+            top: 10px;
+            left: -5px;
+          }
         }
         .name {
           font-size: 40px;
@@ -430,19 +437,23 @@ $mobile_fiven_left: 26.6vw;
 
 @media (max-width: 768px) {
   .home {
+    .navigator_overlay {
+      display: none;
+    }
     .home_page {
       display: block;
       height: auto;
       .wearethenewblkllc {
         padding: 50px 15px;
-        border-bottom: 1px dashed rgba(255,255,255,0.4);
       }
+
       .newblk {
         height: auto;
         width: 100%;
         padding: 15px 0;
         margin: auto;
       }
+
       .words {
           font-size: 18px;
           padding: 0 15px;
@@ -456,16 +467,39 @@ $mobile_fiven_left: 26.6vw;
         display: block;
         color: white;
         padding: 15px;
-        border-bottom: 1px dashed rgba(255,255,255,0.4);
-        transition: 0.15s ease-out;
-        &:hover {
-          background: rgba(255,255,255,0.4);
-        }
+        position: relative;
+        background-size: cover;
+        background-position: center;
         &:last-child {
           border-bottom: none;
         }
         p {
           margin: 0;
+        }
+        &.agency {
+          background-image: url(/images/agency.jpg);
+        }
+        &.handcrafted {
+          background-image: url(/images/handcrafted.jpg);
+        }
+        &.experiential {
+          background-image: url(/images/experiential.jpg);
+        }
+        .theme_overlay {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          top: 0;
+          left: 0;
+          background: black;
+          opacity: 0.2;
+          transition: 0.15s ease-out;
+        }
+        &:hover {
+          .theme_overlay {
+            background: white;
+            opacity: 0.05;
+          }
         }
       }
       .theme_name {
@@ -485,9 +519,23 @@ $mobile_fiven_left: 26.6vw;
             font-size: 40px;
         }
       }
-
+      .theme_name, p {
+        position: relative;
+        z-index: 11;
+      }
     }
-    .agency { background: transparent;}
+    .agency {
+      background: transparent;
+      .agency_top {
+        display: block;
+      }
+    }
+  }
+
+  .agency {
+    .agency_top {
+      display: block;
+    }
   }
 
   footer.footer .f-wrapper .social .isvg {

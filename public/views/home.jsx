@@ -292,6 +292,7 @@ module.exports = React.createClass({
                 <span className="name">Agency</span>
               </h2>
               <p>We only know one way: All in.</p>
+              <span className="theme_overlay"></span>
             </Link>
             <Link className="theme experiential" to="/experiential">
               <h2 className="theme_name">
@@ -306,6 +307,7 @@ module.exports = React.createClass({
                 <span className="name">Experiential</span>
               </h2>
               <p>We cultivate brand experiences that are both in-the-moment and long-lasting.</p>
+              <span className="theme_overlay"></span>
             </Link>
             <Link className="theme handcrafted" to="/handcrafted">
               <h2 className="theme_name">
@@ -320,6 +322,7 @@ module.exports = React.createClass({
                 <span className="name">Handcrafted</span>
               </h2>
               <p>Our design process often mirrors the spirit and aesthetic of the brands we help build.</p>
+              <span className="theme_overlay"></span>
             </Link>
           </div>
           <div className="home_overlay"></div>
