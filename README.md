@@ -1,4 +1,4 @@
-# New BLK Site v2
+# New BLK Site v2 with mobile
 ###### to run
 ```shell
 cd `into_this_dir`
