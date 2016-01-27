@@ -33626,15 +33626,23 @@ module.exports = React.createClass({
   mixins: [Router.State],
 
   getInitialState: function getInitialState() {
-    return { menu: "" };
+    return { menu: false };
+  },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
   },
 
   menuOver: function menuOver() {
-    this.setState({ menu: " menu_over" });
+    this.setState({ menu: true });
   },
 
   menuOut: function menuOut() {
-    this.setState({ menu: "" });
+    this.setState({ menu: false });
+  },
+
+  deploy: function deploy() {
+    this.setState({ menu: !this.state.menu });
   },
 
   googleAnalytics: function googleAnalytics() {
@@ -33649,10 +33657,10 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    this.googleAnalytics();
-
-    // console.log("state: " + util.inspect(this.state));
-    // console.log("props: " + util.inspect(this.props));
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    self.googleAnalytics();
+    window.addEventListener('resize', self.handleResize);
   },
 
   componentWillReceiveProps: function componentWillReceiveProps() {
@@ -33661,7 +33669,8 @@ module.exports = React.createClass({
 
   render: function render() {
     var self = this,
-        menu = self.state.menu,
+        menu_toggle = self.state.menu,
+        menu = "",
         case_study = self.props.content;
 
     if (self.getPathname() == "/") {
@@ -33669,6 +33678,13 @@ module.exports = React.createClass({
     } else {
       var path = slugify(self.getPathname());
     }
+
+    if (menu_toggle) {
+      menu = " menu_over";
+    } else {
+      menu = "";
+    }
+
     var url = "http://thenewblk.com";
     var type = "website";
     var title = "The New BLK";
@@ -33686,6 +33702,7 @@ module.exports = React.createClass({
 
       url = url + self.getPathname();
     }
+    var windowWidth = self.state.windowWidth;
 
     return React.createElement(
       'html',
@@ -33713,7 +33730,7 @@ module.exports = React.createClass({
       React.createElement(
         'body',
         { className: path + menu },
-        React.createElement(Menu, { onMouseOver: self.menuOver, onMouseOut: self.menuOut }),
+        React.createElement(Menu, { onMouseOver: self.menuOver, onMouseOut: self.menuOut, deploy: self.deploy }),
         React.createElement('div', { className: 'navigator_overlay' }),
         React.createElement(
           'div',
@@ -33827,109 +33844,250 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return {};
+    return { open: false };
+  },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
+  toggleOpen: function toggleOpen(e) {
+    this.props.deploy();
+    this.setState({ open: !this.state.open });
+  },
+
+  newblkClick: function newblkClick(e) {
+    if (this.state.open) {
+      this.props.deploy();
+      this.setState({ open: !this.state.open });
+    }
+  },
+
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
   },
 
   render: function render() {
-
-    return React.createElement(
-      'div',
-      { className: 'navigator', onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut },
-      React.createElement(
-        Link,
-        { className: 'new-blk-logo', to: '/' },
-        React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
-      ),
-      React.createElement(
+    var self = this;
+    var windowWidth = self.state.windowWidth;
+    var open = self.state.open,
+        nav = "",
+        deploy = "";
+    if (open) {
+      nav = "open";
+      deploy = "deploy";
+    }
+    if (windowWidth >= 768) {
+      return React.createElement(
         'div',
-        { className: 'items' },
+        { className: 'navigator', onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut },
         React.createElement(
           Link,
-          { className: 'channel_link', to: '/agency' },
-          React.createElement(Sprite, {
-            image: '/icons/agency_icon_sprite-01.svg',
-            columns: 9,
-            frames: 9,
-            duration: .25,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
-          React.createElement(
-            'span',
-            { className: 'name' },
-            'Agency'
-          )
+          { className: 'new-blk-logo', to: '/' },
+          React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
         ),
         React.createElement(
-          Link,
-          { className: 'channel_link lost', to: '/disruption' },
-          React.createElement(Sprite, {
-            image: '/icons/disruption-icon.png',
-            columns: 9,
-            frames: 18,
-            duration: .5,
-            frameW: 50,
-            frameH: 50,
-            loop: true }),
+          'div',
+          { className: 'items' },
           React.createElement(
-            'span',
-            { className: 'name' },
-            'DISRUPTION'
-          )
-        ),
-        React.createElement(
-          Link,
-          { className: 'channel_link', to: '/experiential' },
-          React.createElement(Sprite, {
-            image: '/icons/experiential-sprite-01.svg',
-            columns: 9,
-            frames: 15,
-            duration: .5,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
+            Link,
+            { className: 'channel_link', to: '/agency' },
+            React.createElement(Sprite, {
+              image: '/icons/agency_icon_sprite-01.svg',
+              columns: 9,
+              frames: 9,
+              duration: .25,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Agency'
+            )
+          ),
           React.createElement(
-            'span',
-            { className: 'name' },
-            'Experiential'
-          )
-        ),
-        React.createElement(
-          Link,
-          { className: 'channel_link lost', to: '/superfans' },
-          React.createElement(Sprite, {
-            image: '/icons/superfan-sprite-01.svg',
-            columns: 9,
-            frames: 17,
-            duration: .5,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
+            Link,
+            { className: 'channel_link lost', to: '/disruption' },
+            React.createElement(Sprite, {
+              image: '/icons/disruption-icon.png',
+              columns: 9,
+              frames: 18,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              loop: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'DISRUPTION'
+            )
+          ),
           React.createElement(
-            'span',
-            { className: 'name' },
-            'Superfans'
-          )
-        ),
-        React.createElement(
-          Link,
-          { className: 'channel_link', to: '/handcrafted' },
-          React.createElement(Sprite, {
-            image: '/icons/handcrafted-sprite-01.svg',
-            columns: 8,
-            frames: 16,
-            duration: .4,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
+            Link,
+            { className: 'channel_link', to: '/experiential' },
+            React.createElement(Sprite, {
+              image: '/icons/experiential-sprite-01.svg',
+              columns: 9,
+              frames: 15,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Experiential'
+            )
+          ),
           React.createElement(
-            'span',
-            { className: 'name' },
-            'Handcrafted'
+            Link,
+            { className: 'channel_link lost', to: '/superfans' },
+            React.createElement(Sprite, {
+              image: '/icons/superfan-sprite-01.svg',
+              columns: 9,
+              frames: 17,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Superfans'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/handcrafted' },
+            React.createElement(Sprite, {
+              image: '/icons/handcrafted-sprite-01.svg',
+              columns: 8,
+              frames: 16,
+              duration: .4,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Handcrafted'
+            )
           )
         )
-      )
-    );
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: "navigator " + deploy },
+        React.createElement(
+          Link,
+          { className: 'new-blk-logo', to: '/', onClick: self.newblkClick },
+          React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
+        ),
+        React.createElement(
+          'div',
+          { id: 'nav-icon2', className: nav, onClick: self.toggleOpen },
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null)
+        ),
+        React.createElement(
+          'div',
+          { className: 'items' },
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/agency', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/agency_icon_sprite-01.svg',
+              columns: 9,
+              frames: 9,
+              duration: .25,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Agency'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link lost', to: '/disruption', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/disruption-icon.png',
+              columns: 9,
+              frames: 18,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              loop: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'DISRUPTION'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/experiential', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/experiential-sprite-01.svg',
+              columns: 9,
+              frames: 15,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Experiential'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link lost', to: '/superfans', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/superfan-sprite-01.svg',
+              columns: 9,
+              frames: 17,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Superfans'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/handcrafted', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/handcrafted-sprite-01.svg',
+              columns: 8,
+              frames: 16,
+              duration: .4,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Handcrafted'
+            )
+          )
+        )
+      );
+    }
   }
 });
 

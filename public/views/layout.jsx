@@ -21,15 +21,23 @@ module.exports = React.createClass({
   mixins: [ Router.State ],
 
   getInitialState: function(){
-    return { menu: "" }
+    return { menu: false }
+  },
+
+  handleResize: function(e) {
+    this.setState({windowWidth: window.innerWidth});
   },
 
   menuOver: function(){
-    this.setState({menu: " menu_over"})
+    this.setState({menu: true});
   },
 
   menuOut: function(){
-    this.setState({menu: ""});
+    this.setState({menu: false});
+  },
+
+  deploy: function(){
+    this.setState({menu: !this.state.menu});
   },
 
   googleAnalytics: function(){
@@ -43,10 +51,10 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function(){
-    this.googleAnalytics();
-
-    // console.log("state: " + util.inspect(this.state));
-    // console.log("props: " + util.inspect(this.props));
+    var self = this;
+    self.setState({windowWidth: window.innerWidth});
+    self.googleAnalytics();
+    window.addEventListener('resize', self.handleResize);
   },
 
   componentWillReceiveProps: function(){
@@ -55,7 +63,8 @@ module.exports = React.createClass({
 
   render: function render() {
     var self = this,
-        menu = self.state.menu,
+        menu_toggle = self.state.menu,
+        menu = "",
         case_study = self.props.content;
 
     if (self.getPathname() == "/") {
@@ -63,6 +72,13 @@ module.exports = React.createClass({
     } else {
       var path = slugify(self.getPathname());
     }
+
+    if (menu_toggle) {
+      menu = " menu_over";
+    } else {
+      menu = ""
+    }
+
     var url = "http://thenewblk.com";
     var type = "website";
     var title = "The New BLK";
@@ -80,7 +96,7 @@ module.exports = React.createClass({
 
       url = url + self.getPathname()
     }
-
+    var windowWidth = self.state.windowWidth;
 
 
 
@@ -102,7 +118,7 @@ module.exports = React.createClass({
           <link rel="stylesheet" href="/styles/main.css" />
         </head>
         <body className={path + menu}>
-          <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut}/>
+          <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut} deploy={self.deploy}/>
           <div className="navigator_overlay"></div>
           <div className="main">
             {this.props.children}

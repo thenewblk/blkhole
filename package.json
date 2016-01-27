@@ -31,6 +31,7 @@
     "react-visibility-sensor": "^2.1.0",
     "reactify": "^1.1.0",
     "require-globify": "^1.1.0",
+    "segment-js": "^1.0.1",
     "superagent": "^1.2.0"
   },
   "devDependencies": {

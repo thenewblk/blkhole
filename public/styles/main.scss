@@ -133,7 +133,7 @@ h1,h2,h3,h4,h5,p {
       /* left: -1000%; */
     }
   }
-  &:hover {
+  &.deploy {
 
     max-width: 250px;
     // box-shadow: 0 0 5px #ccc;
@@ -198,6 +198,30 @@ h1,h2,h3,h4,h5,p {
     .diamond_grid_3 {
       display: block;
       margin-left: 8.13173vw;
+    }
+  }
+  .navigator {
+
+    max-width: 250px;
+    // box-shadow: 0 0 5px #ccc;
+
+    .items {
+      .name {
+        display: inline-block;
+        vertical-align: middle;
+        opacity: 1;
+        margin: 0 25px 0 10px;
+        left: inherit;
+      }
+    }
+
+    .newblk_logo {
+      svg {
+        #blk {
+          opacity: 1;
+          transform: translate(0px);
+        }
+      }
     }
   }
 }
