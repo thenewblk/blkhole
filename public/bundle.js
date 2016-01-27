@@ -30757,6 +30757,12 @@ var Mouser = module.exports = React.createClass({
     return { over: false, left: 250 };
   },
 
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
+
   handleResize: function handleResize(e) {
     this.setState({ windowWidth: window.innerWidth });
   },
