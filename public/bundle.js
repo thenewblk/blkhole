@@ -33878,13 +33878,8 @@ module.exports = React.createClass({
   render: function render() {
     var self = this;
     var windowWidth = self.state.windowWidth;
-    var open = self.state.open,
-        nav = "",
-        deploy = "";
-    if (open) {
-      nav = "open";
-      deploy = "deploy";
-    }
+    var open = self.state.open;
+
     if (windowWidth >= 768) {
       return React.createElement(
         'div',
@@ -33987,7 +33982,7 @@ module.exports = React.createClass({
     } else {
       return React.createElement(
         'div',
-        { className: "navigator " + deploy },
+        { className: 'navigator' },
         React.createElement(
           Link,
           { className: 'new-blk-logo', to: '/', onClick: self.newblkClick },
@@ -33995,7 +33990,7 @@ module.exports = React.createClass({
         ),
         React.createElement(
           'div',
-          { id: 'nav-icon2', className: nav, onClick: self.toggleOpen },
+          { id: 'nav-icon2', onClick: self.toggleOpen },
           React.createElement('span', null),
           React.createElement('span', null),
           React.createElement('span', null),

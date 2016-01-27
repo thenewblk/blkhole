@@ -74,10 +74,9 @@ h1,h2,h3,h4,h5,p {
   left: 0;
   top: 0;
   transition: height 0.25s ease-out, width 0.25s ease-out;
-  z-index: 1;
+  transform: translateZ(0);
   opacity: 1;
   overflow: hidden;
-  transform:translate3d(0, 0, 0);
   z-index: 111;
   .newblk_logo {
     margin: 10px;
@@ -99,7 +98,6 @@ h1,h2,h3,h4,h5,p {
     vertical-align: middle;
     position: relative;
     max-width: inherit;
-    transform:translate3d(0, 0, 0);
     transition: 0.15s ease-out;
     &:hover {
       transform: scale(1.15);

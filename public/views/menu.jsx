@@ -36,13 +36,8 @@ module.exports = React.createClass({
   render: function render() {
     var self = this;
     var windowWidth = self.state.windowWidth;
-    var open = self.state.open,
-        nav = "",
-        deploy = "";
-    if (open) {
-      nav = "open";
-      deploy = "deploy"
-    }
+    var open = self.state.open;
+
     if (windowWidth >= 768) {
       return (
           <div className="navigator" onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} >
@@ -108,10 +103,10 @@ module.exports = React.createClass({
       );
     } else {
       return (
-        <div className={"navigator " + deploy}>
+        <div className="navigator">
 
           <Link className="new-blk-logo" to="/" onClick={self.newblkClick}><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
-          <div id="nav-icon2" className={nav} onClick={self.toggleOpen}>
+          <div id="nav-icon2" onClick={self.toggleOpen}>
             <span></span>
             <span></span>
             <span></span>
