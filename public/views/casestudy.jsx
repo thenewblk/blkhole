@@ -83,13 +83,9 @@ module.exports = React.createClass({
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
 
-    React.findDOMNode(this).scrollIntoView();
-
   },
 
-  componentDidUpdate:function() {
-    React.findDOMNode(this).scrollIntoView();
-  },
+
 
   consoleLog: function(){
     console.log("this.state: " + util.inspect(this.state));
