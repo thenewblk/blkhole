@@ -278,6 +278,10 @@ module.exports = React.createClass({
     this.setState({service: null});
   },
 
+  componentDidMount: function(){
+    window.scrollTo(0,0);
+  },
+
   render: function render() {
     var self = this;
     var service = self.state.service,

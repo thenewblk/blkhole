@@ -82,7 +82,7 @@ module.exports = React.createClass({
     var self = this;
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
-
+    window.scrollTo(0,0);
   },
 
 

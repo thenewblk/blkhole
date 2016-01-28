@@ -31776,6 +31776,10 @@ module.exports = React.createClass({
     this.setState({ service: null });
   },
 
+  componentDidMount: function componentDidMount() {
+    window.scrollTo(0, 0);
+  },
+
   render: function render() {
     var self = this;
     var service = self.state.service,
@@ -32373,6 +32377,7 @@ module.exports = React.createClass({
     var self = this;
     self.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', self.handleResize);
+    window.scrollTo(0, 0);
   },
 
   consoleLog: function consoleLog() {
