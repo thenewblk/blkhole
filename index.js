@@ -81,9 +81,7 @@ app.get('/post/:post', function(req, res) {
             content: post
           });
         } else {
-          res.render(req.url, {
-            content: post
-          });
+          res.render('404');
         }
   });
 });

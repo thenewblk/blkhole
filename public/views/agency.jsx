@@ -111,6 +111,17 @@ var services = [
 ];
 
 var Needles = React.createClass({
+
+  handleResize: function(e) {
+    this.setState({windowWidth: window.innerWidth});
+  },
+
+  componentDidMount: function(){
+    var self = this;
+    self.setState({windowWidth: window.innerWidth});
+    window.addEventListener('resize', self.handleResize);
+  },
+
   getInitialState: function(){
     return {
       current_needle: 0,
@@ -180,14 +191,14 @@ var Needles = React.createClass({
   },
   render: function render() {
     var self = this;
-
+    var windowWidth = self.state.windowWidth;
     var current_needle = self.state.current_needle;
     var needles  = self.state.needles.map(function(needle, index){
         return (
           <div className="needle_section block" key={index}>
             <div className="block_wrapper">
               <span className="left_label">
-                <Sprite
+                { (windowWidth > 768) ? <Sprite
                   className="needle_sprite"
                   image={needle.sprite.image}
                   columns={needle.sprite.columns}
@@ -195,7 +206,7 @@ var Needles = React.createClass({
                   duration={needle.sprite.duration}
                   frameW={needle.sprite.frameW}
                   frameH={needle.sprite.frameH}
-                  hover={false} />
+                  hover={false} /> : null }
               </span>
               <div className="copy white_text content" >
                 <h2 className="headline">{needle.headline}</h2>
@@ -265,6 +276,10 @@ module.exports = React.createClass({
 
   closeService: function(){
     this.setState({service: null});
+  },
+
+  componentDidMount: function(){
+    window.scrollTo(0,0);
   },
 
   render: function render() {
@@ -354,16 +369,18 @@ module.exports = React.createClass({
         </div>
         <VideoGallery thing={videogallery} blockColor={"black"}/>
         <div className="needle">
-          <h1 className="needle_headline"><div className="block_wrapper">MOVE THE NEEDLE</div></h1>
-          <div className="block">
-            <div className="block_wrapper">
-              <span className="left_label"></span>
-              <span className="content">
-                <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
-              </span>
+          <span className="needle_wrapper">
+            <h1 className="needle_headline"><div className="block_wrapper">MOVE THE NEEDLE</div></h1>
+            <div className="block">
+              <div className="block_wrapper">
+                <span className="left_label"></span>
+                <span className="content">
+                  <p>The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. And yet, we say it. And, chances are, you say it too. So, let’s say it now.</p>
+                </span>
+              </div>
             </div>
-          </div>
-          <Needles />
+            <Needles />
+          </span>
         </div>
         <div className="services">
           <div className="block">
@@ -384,7 +401,7 @@ module.exports = React.createClass({
                       <p className="area bold">Services <span className="diamond"></span> {service.area}</p>
                       <h1 className="name uppercase">{service.name}</h1>
                     </div>
-                    <div className="right">
+                    <div className="right" key={service.name}>
                       <p className="words">{service.words}</p>
                     </div>
                   </div>

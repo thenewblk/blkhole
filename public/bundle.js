@@ -29374,26 +29374,15 @@ Request.prototype.field = function(name, val){
 
 Request.prototype.attach = function(field, file, filename){
   if (!this._formData) this._formData = new root.FormData();
-  this._formData.append(field, file, filename);
+  this._formData.append(field, file, filename || file.name);
   return this;
 };
 
 /**
- * Send `data`, defaulting the `.type()` to "json" when
+ * Send `data` as the request body, defaulting the `.type()` to "json" when
  * an object is given.
  *
  * Examples:
- *
- *       // querystring
- *       request.get('/search')
- *         .end(callback)
- *
- *       // multiple data "writes"
- *       request.get('/search')
- *         .send({ search: 'query' })
- *         .send({ range: '1..5' })
- *         .send({ order: 'desc' })
- *         .end(callback)
  *
  *       // manual json
  *       request.post('/user')
@@ -30083,7 +30072,15 @@ function formatValue(ctx, value, recurseTimes) {
     if (!isString(ret)) {
       ret = formatValue(ctx, ret, recurseTimes);
     }
+<<<<<<< HEAD
     return ret;
+=======
+    e.direction = 'download';
+    self.emit('progress', e);
+  };
+  if (this.hasListeners('progress')) {
+    xhr.onprogress = handleProgress;
+>>>>>>> mobile
   }
 
   // Primitive types cannot have properties
@@ -30333,10 +30330,15 @@ function isNumber(arg) {
 }
 exports.isNumber = isNumber;
 
+<<<<<<< HEAD
 function isString(arg) {
   return typeof arg === 'string';
 }
 exports.isString = isString;
+=======
+request['del'] = del;
+request['delete'] = del;
+>>>>>>> mobile
 
 function isSymbol(arg) {
   return typeof arg === 'symbol';
@@ -30409,9 +30411,18 @@ function timestamp() {
 }
 
 
+<<<<<<< HEAD
 // log is just a thin wrapper to console.log that prepends a timestamp
 exports.log = function() {
   console.log('%s - %s', timestamp(), exports.format.apply(exports, arguments));
+=======
+Emitter.prototype.on =
+Emitter.prototype.addEventListener = function(event, fn){
+  this._callbacks = this._callbacks || {};
+  (this._callbacks['$' + event] = this._callbacks['$' + event] || [])
+    .push(fn);
+  return this;
+>>>>>>> mobile
 };
 
 
@@ -30430,6 +30441,7 @@ exports.log = function() {
  */
 exports.inherits = require('inherits');
 
+<<<<<<< HEAD
 exports._extend = function(origin, add) {
   // Don't do anything if add isn't an object
   if (!add || !isObject(add)) return origin;
@@ -30438,6 +30450,12 @@ exports._extend = function(origin, add) {
   var i = keys.length;
   while (i--) {
     origin[keys[i]] = add[keys[i]];
+=======
+Emitter.prototype.once = function(event, fn){
+  function on() {
+    this.off(event, on);
+    fn.apply(this, arguments);
+>>>>>>> mobile
   }
   return origin;
 };
@@ -30460,6 +30478,7 @@ function hasOwnProperty(obj, prop) {
 
 'use strict';
 
+<<<<<<< HEAD
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
  * This can be used to log issues in development environments in critical
@@ -30468,6 +30487,17 @@ function hasOwnProperty(obj, prop) {
  */
 
 var warning = function() {};
+=======
+  // specific event
+  var callbacks = this._callbacks['$' + event];
+  if (!callbacks) return this;
+
+  // remove all handlers
+  if (1 == arguments.length) {
+    delete this._callbacks['$' + event];
+    return this;
+  }
+>>>>>>> mobile
 
 if (process.env.NODE_ENV !== 'production') {
   warning = function(condition, format, args) {
@@ -30483,12 +30513,19 @@ if (process.env.NODE_ENV !== 'production') {
       );
     }
 
+<<<<<<< HEAD
     if (format.length < 10 || (/^[s\W]*$/).test(format)) {
       throw new Error(
         'The warning format should be able to uniquely identify this ' +
         'warning. Please, use a more descriptive format than: ' + format
       );
     }
+=======
+Emitter.prototype.emit = function(event){
+  this._callbacks = this._callbacks || {};
+  var args = [].slice.call(arguments, 1)
+    , callbacks = this._callbacks['$' + event];
+>>>>>>> mobile
 
     if (!condition) {
       var argIndex = 0;
@@ -30521,8 +30558,15 @@ module.exports = wrappy
 function wrappy (fn, cb) {
   if (fn && cb) return wrappy(fn)(cb)
 
+<<<<<<< HEAD
   if (typeof fn !== 'function')
     throw new TypeError('need wrapper function')
+=======
+Emitter.prototype.listeners = function(event){
+  this._callbacks = this._callbacks || {};
+  return this._callbacks['$' + event] || [];
+};
+>>>>>>> mobile
 
   Object.keys(fn).forEach(function (k) {
     wrapper[k] = fn[k]
@@ -30770,6 +30814,16 @@ var Mouser = module.exports = React.createClass({
     return { over: false, left: 250 };
   },
 
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
   mouseEnter: function mouseEnter() {
     // console.log("mouseOver: " + util.inspect(event));
     this.setState({ over: true });
@@ -30823,9 +30877,12 @@ var Mouser = module.exports = React.createClass({
     }
   },
 
-  componentDidMount: function componentDidMount() {
-    // document.addEventListener('resize', this.onMouseMove);
-    // document.addEventListener('scroll', this.onMouseMove);
+  componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
+    var self = this;
+    self.setState({ params: self.getParams(), content: null });
+    self.setTimeout(function () {
+      self.getContent();
+    }, 500);
   },
 
   componentDidUnmount: function componentDidUnmount() {
@@ -30840,33 +30897,45 @@ var Mouser = module.exports = React.createClass({
         left = self.state.left,
         screenX = self.state.screenX,
         screenY = self.state.screenY,
-        over = self.state.over;
-
-    return React.createElement(
-      'div',
-      { className: over ? "post mouser" : "post mouser over" },
-      React.createElement(
+        over = self.state.over,
+        windowWidth = self.state.windowWidth;
+    if (windowWidth >= 500) {
+      return React.createElement(
         'div',
-        { className: 'block_wrapper' },
-        React.createElement('span', { className: 'left_label' }),
+        { className: over ? "post mouser" : "post mouser over" },
         React.createElement(
-          'span',
-          { className: 'content' },
-          React.createElement(
-            'div',
-            { className: 'dragger_images' },
-            React.createElement('div', { className: 'bottom_image', style: { backgroundImage: "url(" + bottom + ")" } }),
-            React.createElement('div', { className: 'top_image', style: { backgroundImage: "url(" + top + ")", width: left + "px" } }),
-            React.createElement('div', { className: 'mouse_overlay', onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave })
-          ),
+          'div',
+          { className: 'block_wrapper' },
+          React.createElement('span', { className: 'left_label' }),
           React.createElement(
             'span',
-            { className: 'handle', style: { top: screenY, left: screenX } },
-            React.createElement(Isvg, { src: '/icons/new/slide.svg' })
+            { className: 'content' },
+            React.createElement(
+              'div',
+              { className: 'dragger_images' },
+              React.createElement('div', { className: 'bottom_image', style: { backgroundImage: "url(" + bottom + ")" } }),
+              React.createElement('div', { className: 'top_image', style: { backgroundImage: "url(" + top + ")", width: left + "px" } }),
+              React.createElement('div', { className: 'mouse_overlay', onMouseEnter: self.mouseEnter, onMouseLeave: self.mouseLeave })
+            ),
+            React.createElement(
+              'span',
+              { className: 'handle', style: { top: screenY, left: screenX } },
+              React.createElement(Isvg, { src: '/icons/new/slide.svg' })
+            )
           )
         )
-      )
-    );
+      );
+    } else {
+      return React.createElement(
+        'span',
+        null,
+        React.createElement(
+          'div',
+          { className: 'post image' },
+          React.createElement('img', { src: top })
+        )
+      );
+    }
   }
 });
 
@@ -31150,6 +31219,11 @@ var VideoGallery = module.exports = React.createClass({
   getInitialState: function getInitialState() {
     return { currentVideo: "", moreOver: false };
   },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
   setCurrentVideo: function setCurrentVideo(video, type) {
     console.log("setCurrentVideo");
     this.setState({ currentVideo: video, type: type });
@@ -31163,6 +31237,12 @@ var VideoGallery = module.exports = React.createClass({
     this.setState({ moreOver: false });
   },
 
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
+
   render: function render() {
     var self = this,
         thing = self.props.thing,
@@ -31171,7 +31251,8 @@ var VideoGallery = module.exports = React.createClass({
         style = thing.style,
         currentVideo = self.state.currentVideo,
         type = self.state.type,
-        moreOver = self.state.moreOver;
+        moreOver = self.state.moreOver,
+        windowWidth = self.state.windowWidth;
 
     var wrapper_styles = {
       backgroundColor: self.props.blockColor,
@@ -31221,44 +31302,98 @@ var VideoGallery = module.exports = React.createClass({
         );
       });
 
-      return React.createElement(
-        'div',
-        { className: currentVideo ? "post videos video_open " + style : "post videos " + style },
-        currentVideo ? React.createElement(
+      var mobile_videos = thing.videos.map(function (video, index) {
+        var image = video.image,
+            url = video.url,
+            title = video.title,
+            type = video.type,
+            video_files = video.video,
+            series = video.series;
+
+        if (video_files) {
+          var webm = video_files.webm,
+              mp4 = video_files.mp4;
+        }
+
+        var videogallery = {
+          type: "videos",
+          backgroundImage: image,
+          description: title,
+          videos: [{
+            type: type,
+            url: url,
+            title: title,
+            series: series,
+            image: image,
+            video: {
+              webm: webm,
+              mp4: mp4
+            }
+          }]
+        };
+
+        return React.createElement(VideoGallery, { key: index, thing: videogallery, blockColor: self.props.blockColor });
+      });
+
+      if (windowWidth >= 768) {
+        return React.createElement(
           'div',
-          { className: 'iframe-video-container' },
-          type == "vimeo" ? React.createElement('iframe', { src: currentVideo + "&autoplay=1", width: '853', height: '480', frameBorder: '0', webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true }) : null,
-          type == "youtube" ? React.createElement('iframe', { src: currentVideo + "?autoplay=1", frameBorder: '0', width: '560', height: '315' }) : null,
-          moreOver ? React.createElement('div', { className: 'more_overlay' }) : null
-        ) : React.createElement(
-          'div',
-          { className: 'main_video_wrapper', style: wrapper_styles },
+          { className: currentVideo ? "post videos video_open " + style : "post videos " + style },
+          currentVideo ? React.createElement(
+            'div',
+            { className: 'iframe-video-container' },
+            type == "vimeo" ? React.createElement('iframe', { src: currentVideo + "&autoplay=1", width: '853', height: '480', frameBorder: '0', webkitAllowfullscreen: true, mozAllowfullscreen: true, allowfullscreen: true }) : null,
+            type == "youtube" ? React.createElement('iframe', { src: currentVideo + "?autoplay=1", frameBorder: '0', width: '560', height: '315' }) : null,
+            moreOver ? React.createElement('div', { className: 'more_overlay' }) : null
+          ) : React.createElement(
+            'div',
+            { className: 'main_video_wrapper', style: wrapper_styles },
+            React.createElement(
+              'div',
+              { className: 'main_video_container', onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type) },
+              React.createElement(Isvg, { src: '/icons/new/play_1-01.svg', className: 'video_play_button' }),
+              React.createElement(
+                'p',
+                { className: 'video_description' },
+                description
+              )
+            )
+          ),
           React.createElement(
             'div',
-            { className: 'main_video_container', onClick: self.setCurrentVideo.bind(self, thing.videos[0].url, thing.videos[0].type) },
-            React.createElement(Isvg, { src: '/icons/new/play_1-01.svg', className: 'video_play_button' }),
-            React.createElement(
-              'p',
-              { className: 'video_description' },
-              description
-            )
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver },
-          videos
-        ),
-        React.createElement(
-          'span',
-          { className: 'video_more', onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave },
+            { className: moreOver ? "video_sidebar over" : "video_sidebar", onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave, onMouseOver: self.moreOver },
+            videos
+          ),
           React.createElement(
             'span',
-            { className: 'video_more_text' },
-            'more'
+            { className: 'video_more', onMouseEnter: self.moreOver, onMouseLeave: self.moreLeave },
+            React.createElement(
+              'span',
+              { className: 'video_more_text' },
+              'more'
+            )
           )
-        )
-      );
+        );
+      } else {
+        return React.createElement(
+          'div',
+          { className: 'post mobile_videos' },
+          React.createElement(
+            'div',
+            { className: 'main_video_wrapper', style: wrapper_styles },
+            React.createElement(
+              'div',
+              { className: 'main_video_container' },
+              React.createElement(
+                'p',
+                { className: 'video_description' },
+                description
+              )
+            )
+          ),
+          mobile_videos
+        );
+      }
     } else if (thing.videos.length == 1) {
       var video = thing.videos[0];
       var image = video.image,
@@ -31351,11 +31486,6 @@ module.exports = React.createClass({
         'URL: ',
         this.props.url,
         ' - Not Found(404)'
-      ),
-      React.createElement(
-        'h6',
-        null,
-        'I am a Plain vanilla react view'
       )
     );
   }
@@ -31462,6 +31592,16 @@ var services = [{
 var Needles = React.createClass({
   displayName: 'Needles',
 
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
+
   getInitialState: function getInitialState() {
     return {
       current_needle: 0,
@@ -31527,7 +31667,7 @@ var Needles = React.createClass({
   },
   render: function render() {
     var self = this;
-
+    var windowWidth = self.state.windowWidth;
     var current_needle = self.state.current_needle;
     var needles = self.state.needles.map(function (needle, index) {
       return React.createElement(
@@ -31539,7 +31679,7 @@ var Needles = React.createClass({
           React.createElement(
             'span',
             { className: 'left_label' },
-            React.createElement(Sprite, {
+            windowWidth > 768 ? React.createElement(Sprite, {
               className: 'needle_sprite',
               image: needle.sprite.image,
               columns: needle.sprite.columns,
@@ -31547,7 +31687,7 @@ var Needles = React.createClass({
               duration: needle.sprite.duration,
               frameW: needle.sprite.frameW,
               frameH: needle.sprite.frameH,
-              hover: false })
+              hover: false }) : null
           ),
           React.createElement(
             'div',
@@ -31653,6 +31793,10 @@ module.exports = React.createClass({
 
   closeService: function closeService() {
     this.setState({ service: null });
+  },
+
+  componentDidMount: function componentDidMount() {
+    window.scrollTo(0, 0);
   },
 
   render: function render() {
@@ -31779,33 +31923,37 @@ module.exports = React.createClass({
         'div',
         { className: 'needle' },
         React.createElement(
-          'h1',
-          { className: 'needle_headline' },
+          'span',
+          { className: 'needle_wrapper' },
           React.createElement(
-            'div',
-            { className: 'block_wrapper' },
-            'MOVE THE NEEDLE'
-          )
-        ),
-        React.createElement(
-          'div',
-          { className: 'block' },
-          React.createElement(
-            'div',
-            { className: 'block_wrapper' },
-            React.createElement('span', { className: 'left_label' }),
+            'h1',
+            { className: 'needle_headline' },
             React.createElement(
-              'span',
-              { className: 'content' },
+              'div',
+              { className: 'block_wrapper' },
+              'MOVE THE NEEDLE'
+            )
+          ),
+          React.createElement(
+            'div',
+            { className: 'block' },
+            React.createElement(
+              'div',
+              { className: 'block_wrapper' },
+              React.createElement('span', { className: 'left_label' }),
               React.createElement(
-                'p',
-                null,
-                'The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.'
+                'span',
+                { className: 'content' },
+                React.createElement(
+                  'p',
+                  null,
+                  'The origin of this phrase goes back to analog audio devices and polygraph machines. The needle moves when whatever you’re doing is loud or impactful enough to cause a reaction. Interestingly, the phrase itself triggers its share of reactions. Forbes, for one, singled it out as one of the most annoying examples of business jargon. Can’t say we’d argue with that. \u0003And yet, we say it. And, chances are, you say it too. So, let’s say it now.'
+                )
               )
             )
-          )
-        ),
-        React.createElement(Needles, null)
+          ),
+          React.createElement(Needles, null)
+        )
       ),
       React.createElement(
         'div',
@@ -31870,7 +32018,7 @@ module.exports = React.createClass({
               ),
               React.createElement(
                 'div',
-                { className: 'right' },
+                { className: 'right', key: service.name },
                 React.createElement(
                   'p',
                   { className: 'words' },
@@ -32202,6 +32350,10 @@ module.exports = React.createClass({
     return { params: {}, title: '' };
   },
 
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
   getContent: function getContent() {
     var self = this;
     request.get('/api/post/' + self.getParams().casestudy).end(function (err, res) {
@@ -32233,13 +32385,19 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var self = this;
+
     self.setState({ params: self.getParams(), content: null });
     self.setTimeout(function () {
       self.getContent();
     }, 500);
   },
 
-  componentDidMount: function componentDidMount() {},
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+    window.scrollTo(0, 0);
+  },
 
   consoleLog: function consoleLog() {
     console.log("this.state: " + util.inspect(this.state));
@@ -32263,10 +32421,7 @@ module.exports = React.createClass({
       };
 
       var block_style = {
-        backgroundColor: self.state.content.block_color,
-        background: "linear-gradient(135deg, transparent 50px, " + self.state.content.block_color + " 0) top left, linear-gradient(0deg, transparent 0, " + self.state.content.block_color + " 0) top right, linear-gradient(315deg, transparent 50px, " + self.state.content.block_color + " 0) bottom right, linear-gradient(0deg, transparent 0, " + self.state.content.block_color + " 0) bottom left",
-        backgroundSize: "51%",
-        backgroundRepeat: "no-repeat"
+        backgroundColor: self.state.content.block_color
       };
 
       var things = self.state.content.content.things.map(function (thing, index) {
@@ -33051,7 +33206,10 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { title: '', words: "Ad agency, creative think tank, and content production studio" };
+    return { title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: 901 };
+  },
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
   },
   setAgency: function setAgency() {
     this.setState({ title: 'We are', video: "agency", words: "We only know one way: All in." });
@@ -33068,19 +33226,19 @@ module.exports = React.createClass({
   resetVideo: function resetVideo() {
     this.setState({ title: '', video: null, words: "Ad agency, creative think tank, and content production studio" });
   },
-  componenetDidMount: function componenetDidMount() {
+
+  componentDidMount: function componentDidMount() {
     var self = this;
-    var handcrafted = document.createElement('video');
-    handcrafted.src = "/video/handcrafted.mp4";
-    handcrafted.loadeddata = self.handcraftedLoaded();
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
   },
 
   render: function render() {
     var self = this,
         video = self.state.video,
         words = self.state.words,
-        title = self.state.title;
-
+        title = self.state.title,
+        windowWidth = self.state.windowWidth;
     if (title) {
       var title_styles = title.split('').map(function (index) {
         return { rotation: (Math.random() - 0.5) * 10, x: 0, y: 0, opacity: 0 };
@@ -33096,24 +33254,307 @@ module.exports = React.createClass({
     var example_styles = example.split('').map(function (index) {
       return { rotation: (Math.random() - 0.5) * 4500, x: (Math.random() - 0.5) * 1000, y: (Math.random() - 0.5) * 1000, opacity: 0, scale: 1 };
     });
-
-    return React.createElement(
-      'div',
-      { className: 'home_page' },
-      React.createElement(Helmet, { title: 'The New BLK' }),
-      React.createElement(
+    if (windowWidth > 768) {
+      return React.createElement(
         'div',
-        { className: 'diamond_grid_3' },
+        { className: 'home_page' },
+        React.createElement(Helmet, { title: 'The New BLK' }),
         React.createElement(
-          'span',
-          { className: 'desktop_squares' },
-          React.createElement('div', { className: 'square' }),
+          'div',
+          { className: 'diamond_grid_3' },
+          React.createElement(
+            'span',
+            { className: 'desktop_squares' },
+            React.createElement('div', { className: 'square' }),
+            React.createElement(
+              Link,
+              { className: 'square', to: '/agency', onMouseEnter: self.setAgency, onMouseLeave: self.resetVideo },
+              React.createElement(
+                'span',
+                { className: 'diamond_wrapper' },
+                React.createElement(Sprite, {
+                  image: '/icons/agency_icon_sprite-01.svg',
+                  columns: 9,
+                  frames: 9,
+                  duration: .25,
+                  frameW: 50,
+                  frameH: 50,
+                  hover: true }),
+                React.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Agency'
+                )
+              )
+            ),
+            React.createElement('div', { className: 'square' }),
+            React.createElement(
+              Link,
+              { className: 'square', to: '/experiential', onMouseEnter: self.setExperiential, onMouseLeave: self.resetVideo },
+              React.createElement(
+                'span',
+                { className: 'diamond_wrapper' },
+                React.createElement(Sprite, {
+                  image: '/icons/experiential-sprite-01.svg',
+                  columns: 9,
+                  frames: 15,
+                  duration: .5,
+                  frameW: 50,
+                  frameH: 50,
+                  hover: true }),
+                React.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Experiential'
+                )
+              )
+            ),
+            React.createElement(
+              Link,
+              { className: 'square', to: '/handcrafted', onMouseEnter: self.setHandcrafted, onMouseLeave: self.resetVideo },
+              React.createElement(
+                'span',
+                { className: 'diamond_wrapper' },
+                React.createElement(Sprite, {
+                  image: '/icons/handcrafted-sprite-01.svg',
+                  columns: 8,
+                  frames: 16,
+                  duration: .4,
+                  frameW: 50,
+                  frameH: 50,
+                  hover: true }),
+                React.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Handcrafted'
+                )
+              )
+            ),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' })
+          ),
+          React.createElement(
+            'span',
+            { className: 'mobile_squares' },
+            React.createElement(
+              Link,
+              { className: 'square', to: '/agency', onMouseEnter: self.setAgency, onMouseLeave: self.resetVideo },
+              React.createElement(
+                'span',
+                { className: 'diamond_wrapper' },
+                React.createElement(Sprite, {
+                  image: '/icons/agency_icon_sprite-01.svg',
+                  columns: 9,
+                  frames: 9,
+                  duration: .25,
+                  frameW: 50,
+                  frameH: 50,
+                  hover: true }),
+                React.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Agency'
+                )
+              )
+            ),
+            React.createElement(
+              Link,
+              { className: 'square', to: '/experiential', onMouseEnter: self.setExperiential, onMouseLeave: self.resetVideo },
+              React.createElement(
+                'span',
+                { className: 'diamond_wrapper' },
+                React.createElement(Sprite, {
+                  image: '/icons/experiential-sprite-01.svg',
+                  columns: 9,
+                  frames: 15,
+                  duration: .5,
+                  frameW: 50,
+                  frameH: 50,
+                  hover: true }),
+                React.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Experiential'
+                )
+              )
+            ),
+            React.createElement(
+              Link,
+              { className: 'square', to: '/handcrafted', onMouseEnter: self.setHandcrafted, onMouseLeave: self.resetVideo },
+              React.createElement(
+                'span',
+                { className: 'diamond_wrapper' },
+                React.createElement(Sprite, {
+                  image: '/icons/handcrafted-sprite-01.svg',
+                  columns: 8,
+                  frames: 16,
+                  duration: .4,
+                  frameW: 50,
+                  frameH: 50,
+                  hover: true }),
+                React.createElement(
+                  'span',
+                  { className: 'name' },
+                  'Handcrafted'
+                )
+              )
+            ),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' }),
+            React.createElement('div', { className: 'square' })
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'wearethenewblkllc' },
+          title ? React.createElement(
+            Motion,
+            {
+              key: title,
+              defaultStyle: {
+                opacity: 0,
+                rotation: Math.random() * -10,
+                x: Math.random() * 2
+              },
+              style: {
+                opacity: spring(1, [80, 20]),
+                rotation: spring(0, [200, 20]),
+                x: spring(0, [80, 20])
+              } },
+            function (style) {
+              return React.createElement(
+                'p',
+                { key: title, className: 'uppercase italic theme', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
+                title
+              );
+            }
+          ) : React.createElement('p', { key: title, className: 'uppercase italic theme blank_title' }),
+          React.createElement(
+            Motion,
+            {
+              defaultStyle: {
+                opacity: 0,
+                rotation: Math.random() * -10,
+                x: Math.random() * 2
+              },
+              style: {
+                opacity: spring(1, [80, 20]),
+                rotation: spring(0, [200, 20]),
+                x: spring(0, [80, 20])
+              } },
+            function (style) {
+              return React.createElement('img', { className: 'bold uppercase newblk', src: '/images/thenewblk.svg', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } });
+            }
+          ),
+          words ? React.createElement(
+            Motion,
+            {
+              key: words,
+              defaultStyle: {
+                opacity: 0,
+                x: Math.random() * -15
+              },
+              style: {
+                opacity: spring(1, [80, 20]),
+                x: spring(0, [80, 20])
+              } },
+            function (style) {
+              return React.createElement(
+                'p',
+                { key: words, className: 'italic words', style: { position: "relative", top: style.x, left: style.y, opacity: style.opacity } },
+                words
+              );
+            }
+          ) : null
+        ),
+        React.createElement('div', { className: 'home_overlay' }),
+        React.createElement(
+          'div',
+          { className: "video-container " + video },
+          React.createElement(
+            'video',
+            { className: 'experiential', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+            React.createElement('source', { src: '/video/Experiential.webm', type: 'video/webm' }),
+            React.createElement('source', { src: '/video/experiential.mp4', type: 'video/mp4' })
+          ),
+          React.createElement(
+            'video',
+            { className: 'handcrafted', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+            React.createElement('source', { src: '/video/Handcrafted.webm', type: 'video/webm' }),
+            React.createElement('source', { src: '/video/handcrafted.mp4', type: 'video/mp4' })
+          ),
+          React.createElement(
+            'video',
+            { className: 'agency', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
+            React.createElement('source', { src: '/video/agency_v2.webm', type: 'video/webm' }),
+            React.createElement('source', { src: '/video/agency.mp4', type: 'video/mp4' })
+          )
+        )
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: 'home_page' },
+        React.createElement(Helmet, { title: 'The New BLK' }),
+        React.createElement(
+          'div',
+          { className: 'wearethenewblkllc' },
+          React.createElement('img', { className: 'bold uppercase newblk', src: '/images/thenewblk.svg' }),
+          React.createElement(
+            'p',
+            { className: 'italic words' },
+            'Ad agency, creative think tank, and content production studio'
+          )
+        ),
+        React.createElement(
+          'div',
+          { className: 'themes' },
           React.createElement(
             Link,
-            { className: 'square', to: '/agency', onMouseEnter: self.setAgency, onMouseLeave: self.resetVideo },
+            { className: 'theme agency', to: '/agency' },
             React.createElement(
-              'span',
-              { className: 'diamond_wrapper' },
+              'h2',
+              { className: 'theme_name' },
               React.createElement(Sprite, {
                 image: '/icons/agency_icon_sprite-01.svg',
                 columns: 9,
@@ -33127,15 +33568,20 @@ module.exports = React.createClass({
                 { className: 'name' },
                 'Agency'
               )
-            )
+            ),
+            React.createElement(
+              'p',
+              null,
+              'We only know one way: All in.'
+            ),
+            React.createElement('span', { className: 'theme_overlay' })
           ),
-          React.createElement('div', { className: 'square' }),
           React.createElement(
             Link,
-            { className: 'square', to: '/experiential', onMouseEnter: self.setExperiential, onMouseLeave: self.resetVideo },
+            { className: 'theme experiential', to: '/experiential' },
             React.createElement(
-              'span',
-              { className: 'diamond_wrapper' },
+              'h2',
+              { className: 'theme_name' },
               React.createElement(Sprite, {
                 image: '/icons/experiential-sprite-01.svg',
                 columns: 9,
@@ -33149,14 +33595,20 @@ module.exports = React.createClass({
                 { className: 'name' },
                 'Experiential'
               )
-            )
+            ),
+            React.createElement(
+              'p',
+              null,
+              'We cultivate brand experiences that are both in-the-moment and long-lasting.'
+            ),
+            React.createElement('span', { className: 'theme_overlay' })
           ),
           React.createElement(
             Link,
-            { className: 'square', to: '/handcrafted', onMouseEnter: self.setHandcrafted, onMouseLeave: self.resetVideo },
+            { className: 'theme handcrafted', to: '/handcrafted' },
             React.createElement(
-              'span',
-              { className: 'diamond_wrapper' },
+              'h2',
+              { className: 'theme_name' },
               React.createElement(Sprite, {
                 image: '/icons/handcrafted-sprite-01.svg',
                 columns: 8,
@@ -33170,209 +33622,18 @@ module.exports = React.createClass({
                 { className: 'name' },
                 'Handcrafted'
               )
-            )
-          ),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' })
-        ),
-        React.createElement(
-          'span',
-          { className: 'mobile_squares' },
-          React.createElement(
-            Link,
-            { className: 'square', to: '/agency', onMouseEnter: self.setAgency, onMouseLeave: self.resetVideo },
+            ),
             React.createElement(
-              'span',
-              { className: 'diamond_wrapper' },
-              React.createElement(Sprite, {
-                image: '/icons/agency_icon_sprite-01.svg',
-                columns: 9,
-                frames: 9,
-                duration: .25,
-                frameW: 50,
-                frameH: 50,
-                hover: true }),
-              React.createElement(
-                'span',
-                { className: 'name' },
-                'Agency'
-              )
-            )
-          ),
-          React.createElement(
-            Link,
-            { className: 'square', to: '/experiential', onMouseEnter: self.setExperiential, onMouseLeave: self.resetVideo },
-            React.createElement(
-              'span',
-              { className: 'diamond_wrapper' },
-              React.createElement(Sprite, {
-                image: '/icons/experiential-sprite-01.svg',
-                columns: 9,
-                frames: 15,
-                duration: .5,
-                frameW: 50,
-                frameH: 50,
-                hover: true }),
-              React.createElement(
-                'span',
-                { className: 'name' },
-                'Experiential'
-              )
-            )
-          ),
-          React.createElement(
-            Link,
-            { className: 'square', to: '/handcrafted', onMouseEnter: self.setHandcrafted, onMouseLeave: self.resetVideo },
-            React.createElement(
-              'span',
-              { className: 'diamond_wrapper' },
-              React.createElement(Sprite, {
-                image: '/icons/handcrafted-sprite-01.svg',
-                columns: 8,
-                frames: 16,
-                duration: .4,
-                frameW: 50,
-                frameH: 50,
-                hover: true }),
-              React.createElement(
-                'span',
-                { className: 'name' },
-                'Handcrafted'
-              )
-            )
-          ),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' }),
-          React.createElement('div', { className: 'square' })
-        )
-      ),
-      React.createElement(
-        'div',
-        { className: 'wearethenewblkllc' },
-        title ? React.createElement(
-          Motion,
-          {
-            key: title,
-            defaultStyle: {
-              opacity: 0,
-              rotation: Math.random() * -10,
-              x: Math.random() * 2
-            },
-            style: {
-              opacity: spring(1, [80, 20]),
-              rotation: spring(0, [200, 20]),
-              x: spring(0, [80, 20])
-            } },
-          function (style) {
-            return React.createElement(
               'p',
-              { key: title, className: 'uppercase italic theme', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } },
-              title
-            );
-          }
-        ) : React.createElement('p', { key: title, className: 'uppercase italic theme blank_title' }),
-        React.createElement(
-          Motion,
-          {
-            defaultStyle: {
-              opacity: 0,
-              rotation: Math.random() * -10,
-              x: Math.random() * 2
-            },
-            style: {
-              opacity: spring(1, [80, 20]),
-              rotation: spring(0, [200, 20]),
-              x: spring(0, [80, 20])
-            } },
-          function (style) {
-            return React.createElement('img', { className: 'bold uppercase newblk', src: '/images/thenewblk.svg', style: { position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity } });
-          }
+              null,
+              'Our design process often mirrors the spirit and aesthetic of the brands we help build.'
+            ),
+            React.createElement('span', { className: 'theme_overlay' })
+          )
         ),
-        words ? React.createElement(
-          Motion,
-          {
-            key: words,
-            defaultStyle: {
-              opacity: 0,
-              x: Math.random() * -15
-            },
-            style: {
-              opacity: spring(1, [80, 20]),
-              x: spring(0, [80, 20])
-            } },
-          function (style) {
-            return React.createElement(
-              'p',
-              { key: words, className: 'italic words', style: { position: "relative", top: style.x, left: style.y, opacity: style.opacity } },
-              words
-            );
-          }
-        ) : null
-      ),
-      React.createElement('div', { className: 'home_overlay' }),
-      React.createElement(
-        'div',
-        { className: "video-container " + video },
-        React.createElement(
-          'video',
-          { className: 'experiential', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
-          React.createElement('source', { src: '/video/Experiential.webm', type: 'video/webm' }),
-          React.createElement('source', { src: '/video/experiential.mp4', type: 'video/mp4' })
-        ),
-        React.createElement(
-          'video',
-          { className: 'handcrafted', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
-          React.createElement('source', { src: '/video/Handcrafted.webm', type: 'video/webm' }),
-          React.createElement('source', { src: '/video/handcrafted.mp4', type: 'video/mp4' })
-        ),
-        React.createElement(
-          'video',
-          { className: 'agency', poster: '/images/transparent.png', autoPlay: true, muted: 'muted', loop: true },
-          React.createElement('source', { src: '/video/agency_v2.webm', type: 'video/webm' }),
-          React.createElement('source', { src: '/video/agency.mp4', type: 'video/mp4' })
-        )
-      )
-    );
+        React.createElement('div', { className: 'home_overlay' })
+      );
+    }
   }
 });
 
@@ -33402,15 +33663,23 @@ module.exports = React.createClass({
   mixins: [Router.State],
 
   getInitialState: function getInitialState() {
-    return { menu: "" };
+    return { menu: false };
+  },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
   },
 
   menuOver: function menuOver() {
-    this.setState({ menu: " menu_over" });
+    this.setState({ menu: true });
   },
 
   menuOut: function menuOut() {
-    this.setState({ menu: "" });
+    this.setState({ menu: false });
+  },
+
+  deploy: function deploy() {
+    this.setState({ menu: !this.state.menu });
   },
 
   googleAnalytics: function googleAnalytics() {
@@ -33425,10 +33694,10 @@ module.exports = React.createClass({
   },
 
   componentDidMount: function componentDidMount() {
-    this.googleAnalytics();
-
-    // console.log("state: " + util.inspect(this.state));
-    // console.log("props: " + util.inspect(this.props));
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    self.googleAnalytics();
+    window.addEventListener('resize', self.handleResize);
   },
 
   componentWillReceiveProps: function componentWillReceiveProps() {
@@ -33437,7 +33706,8 @@ module.exports = React.createClass({
 
   render: function render() {
     var self = this,
-        menu = self.state.menu,
+        menu_toggle = self.state.menu,
+        menu = "",
         case_study = self.props.content;
 
     if (self.getPathname() == "/") {
@@ -33445,6 +33715,13 @@ module.exports = React.createClass({
     } else {
       var path = slugify(self.getPathname());
     }
+
+    if (menu_toggle) {
+      menu = " menu_over";
+    } else {
+      menu = "";
+    }
+
     var url = "http://thenewblk.com";
     var type = "website";
     var title = "The New BLK";
@@ -33462,6 +33739,7 @@ module.exports = React.createClass({
 
       url = url + self.getPathname();
     }
+    var windowWidth = self.state.windowWidth;
 
     return React.createElement(
       'html',
@@ -33489,7 +33767,7 @@ module.exports = React.createClass({
       React.createElement(
         'body',
         { className: path + menu },
-        React.createElement(Menu, { onMouseOver: self.menuOver, onMouseOut: self.menuOut }),
+        React.createElement(Menu, { onMouseOver: self.menuOver, onMouseOut: self.menuOut, deploy: self.deploy }),
         React.createElement('div', { className: 'navigator_overlay' }),
         React.createElement(
           'div',
@@ -33603,109 +33881,245 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return {};
+    return { open: false };
+  },
+
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
+  toggleOpen: function toggleOpen(e) {
+    this.props.deploy();
+    this.setState({ open: !this.state.open });
+  },
+
+  newblkClick: function newblkClick(e) {
+    if (this.state.open) {
+      this.props.deploy();
+      this.setState({ open: !this.state.open });
+    }
+  },
+
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
   },
 
   render: function render() {
+    var self = this;
+    var windowWidth = self.state.windowWidth;
+    var open = self.state.open;
 
-    return React.createElement(
-      'div',
-      { className: 'navigator', onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut },
-      React.createElement(
-        Link,
-        { className: 'new-blk-logo', to: '/' },
-        React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
-      ),
-      React.createElement(
+    if (windowWidth >= 900) {
+      return React.createElement(
         'div',
-        { className: 'items' },
+        { className: 'navigator', onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut },
         React.createElement(
           Link,
-          { className: 'channel_link', to: '/agency' },
-          React.createElement(Sprite, {
-            image: '/icons/agency_icon_sprite-01.svg',
-            columns: 9,
-            frames: 9,
-            duration: .25,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
-          React.createElement(
-            'span',
-            { className: 'name' },
-            'Agency'
-          )
+          { className: 'new-blk-logo', to: '/' },
+          React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
         ),
         React.createElement(
-          Link,
-          { className: 'channel_link lost', to: '/disruption' },
-          React.createElement(Sprite, {
-            image: '/icons/disruption-icon.png',
-            columns: 9,
-            frames: 18,
-            duration: .5,
-            frameW: 50,
-            frameH: 50,
-            loop: true }),
+          'div',
+          { className: 'items' },
           React.createElement(
-            'span',
-            { className: 'name' },
-            'DISRUPTION'
-          )
-        ),
-        React.createElement(
-          Link,
-          { className: 'channel_link', to: '/experiential' },
-          React.createElement(Sprite, {
-            image: '/icons/experiential-sprite-01.svg',
-            columns: 9,
-            frames: 15,
-            duration: .5,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
+            Link,
+            { className: 'channel_link', to: '/agency' },
+            React.createElement(Sprite, {
+              image: '/icons/agency_icon_sprite-01.svg',
+              columns: 9,
+              frames: 9,
+              duration: .25,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Agency'
+            )
+          ),
           React.createElement(
-            'span',
-            { className: 'name' },
-            'Experiential'
-          )
-        ),
-        React.createElement(
-          Link,
-          { className: 'channel_link lost', to: '/superfans' },
-          React.createElement(Sprite, {
-            image: '/icons/superfan-sprite-01.svg',
-            columns: 9,
-            frames: 17,
-            duration: .5,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
+            Link,
+            { className: 'channel_link lost', to: '/disruption' },
+            React.createElement(Sprite, {
+              image: '/icons/disruption-icon.png',
+              columns: 9,
+              frames: 18,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              loop: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'DISRUPTION'
+            )
+          ),
           React.createElement(
-            'span',
-            { className: 'name' },
-            'Superfans'
-          )
-        ),
-        React.createElement(
-          Link,
-          { className: 'channel_link', to: '/handcrafted' },
-          React.createElement(Sprite, {
-            image: '/icons/handcrafted-sprite-01.svg',
-            columns: 8,
-            frames: 16,
-            duration: .4,
-            frameW: 50,
-            frameH: 50,
-            hover: true }),
+            Link,
+            { className: 'channel_link', to: '/experiential' },
+            React.createElement(Sprite, {
+              image: '/icons/experiential-sprite-01.svg',
+              columns: 9,
+              frames: 15,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Experiential'
+            )
+          ),
           React.createElement(
-            'span',
-            { className: 'name' },
-            'Handcrafted'
+            Link,
+            { className: 'channel_link lost', to: '/superfans' },
+            React.createElement(Sprite, {
+              image: '/icons/superfan-sprite-01.svg',
+              columns: 9,
+              frames: 17,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Superfans'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/handcrafted' },
+            React.createElement(Sprite, {
+              image: '/icons/handcrafted-sprite-01.svg',
+              columns: 8,
+              frames: 16,
+              duration: .4,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Handcrafted'
+            )
           )
         )
-      )
-    );
+      );
+    } else {
+      return React.createElement(
+        'div',
+        { className: 'navigator' },
+        React.createElement(
+          Link,
+          { className: 'new-blk-logo', to: '/', onClick: self.newblkClick },
+          React.createElement(Isvg, { uniquifyIDs: false, className: 'newblk_logo', src: '/images/blk_logo.svg' })
+        ),
+        React.createElement(
+          'div',
+          { id: 'navicon', onClick: self.toggleOpen },
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null),
+          React.createElement('span', null)
+        ),
+        React.createElement(
+          'div',
+          { className: 'items' },
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/agency', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/agency_icon_sprite-01.svg',
+              columns: 9,
+              frames: 9,
+              duration: .25,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Agency'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link lost', to: '/disruption', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/disruption-icon.png',
+              columns: 9,
+              frames: 18,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              loop: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'DISRUPTION'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/experiential', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/experiential-sprite-01.svg',
+              columns: 9,
+              frames: 15,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Experiential'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link lost', to: '/superfans', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/superfan-sprite-01.svg',
+              columns: 9,
+              frames: 17,
+              duration: .5,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Superfans'
+            )
+          ),
+          React.createElement(
+            Link,
+            { className: 'channel_link', to: '/handcrafted', onClick: self.toggleOpen },
+            React.createElement(Sprite, {
+              image: '/icons/handcrafted-sprite-01.svg',
+              columns: 8,
+              frames: 16,
+              duration: .4,
+              frameW: 50,
+              frameH: 50,
+              hover: true }),
+            React.createElement(
+              'span',
+              { className: 'name' },
+              'Handcrafted'
+            )
+          )
+        )
+      );
+    }
   }
 });
 

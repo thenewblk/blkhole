@@ -91,6 +91,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  z-index: 113;
+  position: relative;
+
   .channel_words {
     display: flex;
     flex-direction: column;
