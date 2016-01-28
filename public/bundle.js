@@ -32368,12 +32368,6 @@ module.exports = React.createClass({
     var self = this;
     self.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', self.handleResize);
-
-    React.findDOMNode(this).scrollIntoView();
-  },
-
-  componentDidUpdate: function componentDidUpdate() {
-    React.findDOMNode(this).scrollIntoView();
   },
 
   consoleLog: function consoleLog() {
