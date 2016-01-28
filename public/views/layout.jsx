@@ -59,6 +59,10 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(){
     window.ga('send', 'pageview', {'page': this.getPathname()});
+    console.log("page: " +  this.getPathname());
+    if (window.scrollY) {
+      window.scroll(0, 0);  // reset the scroll position to the top left of the document.
+    }
   },
 
   render: function render() {

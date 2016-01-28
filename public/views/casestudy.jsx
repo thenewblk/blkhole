@@ -86,7 +86,6 @@ module.exports = React.createClass({
   },
 
 
-
   consoleLog: function(){
     console.log("this.state: " + util.inspect(this.state));
     console.log("this.props: " + util.inspect(this.props));
