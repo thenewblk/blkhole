@@ -117,9 +117,6 @@ var Mouser = module.exports = React.createClass({
       return (
         <span>
           <div className="post image">
-            <img src={bottom} />
-          </div>
-          <div className="post image">
             <img src={top} />
           </div>
         </span>

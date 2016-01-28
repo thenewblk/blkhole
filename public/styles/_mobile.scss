@@ -173,22 +173,22 @@ $mobile_fiven_left: 26.6vw;
       }
     }
     #navicon {
-      width: 30px;
-      height: 20px;
+      width: 70px;
+      height: 70px;
       position: absolute;
       top: 0;
       right: 0;
-      margin: 25px;
+      padding: 25px;
       cursor: pointer;
       z-index: 1;
       span {
         display: block;
         position: absolute;
         height: 3px;
-        width: 50%;
+        width: 15px;
         background: black;
         opacity: 1;
-        transition: .25s ease-in-out;
+        transition: .15s ease-out;
       }
 
       span:nth-child(1){
@@ -422,6 +422,7 @@ $mobile_fiven_left: 26.6vw;
 
       &.doublewide {
         flex-direction: column;
+        display: block;
         .image {
           order: 1;
           max-width: 100%;
@@ -624,13 +625,13 @@ $mobile_fiven_left: 26.6vw;
           top: 0;
           left: 0;
           background: black;
-          opacity: 0.2;
+          opacity: 0.4;
           transition: 0.15s ease-out;
         }
         &:hover {
           .theme_overlay {
-            background: white;
-            opacity: 0.05;
+            background: black;
+            opacity: 0.5;
           }
         }
       }

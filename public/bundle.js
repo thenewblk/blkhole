@@ -30875,11 +30875,6 @@ var Mouser = module.exports = React.createClass({
         React.createElement(
           'div',
           { className: 'post image' },
-          React.createElement('img', { src: bottom })
-        ),
-        React.createElement(
-          'div',
-          { className: 'post image' },
           React.createElement('img', { src: top })
         )
       );
@@ -33177,7 +33172,7 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { title: '', words: "Ad agency, creative think tank, and content production studio" };
+    return { title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: 0 };
   },
   handleResize: function handleResize(e) {
     this.setState({ windowWidth: window.innerWidth });
