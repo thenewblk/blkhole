@@ -33172,7 +33172,7 @@ module.exports = React.createClass({
   displayName: 'exports',
 
   getInitialState: function getInitialState() {
-    return { title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: 0 };
+    return { title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: 901 };
   },
   handleResize: function handleResize(e) {
     this.setState({ windowWidth: window.innerWidth });
@@ -33192,6 +33192,7 @@ module.exports = React.createClass({
   resetVideo: function resetVideo() {
     this.setState({ title: '', video: null, words: "Ad agency, creative think tank, and content production studio" });
   },
+
   componentDidMount: function componentDidMount() {
     var self = this;
     self.setState({ windowWidth: window.innerWidth });

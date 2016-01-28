@@ -16,7 +16,7 @@ var util = require('util');
 
 module.exports = React.createClass({
   getInitialState: function(){
-    return {title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: 0};
+    return {title: '', words: "Ad agency, creative think tank, and content production studio", windowWidth: 901};
   },
   handleResize: function(e) {
     this.setState({windowWidth: window.innerWidth});
@@ -36,6 +36,7 @@ module.exports = React.createClass({
   resetVideo: function(){
     this.setState({title: '', video: null, words: "Ad agency, creative think tank, and content production studio"})
   },
+
   componentDidMount: function(){
     var self = this;
     self.setState({windowWidth: window.innerWidth});
