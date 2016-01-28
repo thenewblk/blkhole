@@ -111,6 +111,17 @@ var services = [
 ];
 
 var Needles = React.createClass({
+
+  handleResize: function(e) {
+    this.setState({windowWidth: window.innerWidth});
+  },
+
+  componentDidMount: function(){
+    var self = this;
+    self.setState({windowWidth: window.innerWidth});
+    window.addEventListener('resize', self.handleResize);
+  },
+
   getInitialState: function(){
     return {
       current_needle: 0,
@@ -180,14 +191,14 @@ var Needles = React.createClass({
   },
   render: function render() {
     var self = this;
-
+    var windowWidth = self.state.windowWidth;
     var current_needle = self.state.current_needle;
     var needles  = self.state.needles.map(function(needle, index){
         return (
           <div className="needle_section block" key={index}>
             <div className="block_wrapper">
               <span className="left_label">
-                <Sprite
+                { (windowWidth > 768) ? <Sprite
                   className="needle_sprite"
                   image={needle.sprite.image}
                   columns={needle.sprite.columns}
@@ -195,7 +206,7 @@ var Needles = React.createClass({
                   duration={needle.sprite.duration}
                   frameW={needle.sprite.frameW}
                   frameH={needle.sprite.frameH}
-                  hover={false} />
+                  hover={false} /> : null }
               </span>
               <div className="copy white_text content" >
                 <h2 className="headline">{needle.headline}</h2>

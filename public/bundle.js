@@ -31573,6 +31573,16 @@ var services = [{
 var Needles = React.createClass({
   displayName: 'Needles',
 
+  handleResize: function handleResize(e) {
+    this.setState({ windowWidth: window.innerWidth });
+  },
+
+  componentDidMount: function componentDidMount() {
+    var self = this;
+    self.setState({ windowWidth: window.innerWidth });
+    window.addEventListener('resize', self.handleResize);
+  },
+
   getInitialState: function getInitialState() {
     return {
       current_needle: 0,
@@ -31638,7 +31648,7 @@ var Needles = React.createClass({
   },
   render: function render() {
     var self = this;
-
+    var windowWidth = self.state.windowWidth;
     var current_needle = self.state.current_needle;
     var needles = self.state.needles.map(function (needle, index) {
       return React.createElement(
@@ -31650,7 +31660,7 @@ var Needles = React.createClass({
           React.createElement(
             'span',
             { className: 'left_label' },
-            React.createElement(Sprite, {
+            windowWidth > 768 ? React.createElement(Sprite, {
               className: 'needle_sprite',
               image: needle.sprite.image,
               columns: needle.sprite.columns,
@@ -31658,7 +31668,7 @@ var Needles = React.createClass({
               duration: needle.sprite.duration,
               frameW: needle.sprite.frameW,
               frameH: needle.sprite.frameH,
-              hover: false })
+              hover: false }) : null
           ),
           React.createElement(
             'div',

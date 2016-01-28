@@ -505,6 +505,18 @@ $mobile_fiven_left: 26.6vw;
         padding: 0 15px;
         .service {
           cursor: pointer;
+          position: relative;
+          background: black;
+          color: white;
+          padding: 15px;
+          font-weight: bold;
+          transition: 0.15s ease-out;
+          &:hover {
+            background: #333;
+          }
+          &:before {
+            display: none;
+          }
         }
       }
       .service_detail{
