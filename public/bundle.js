@@ -33880,7 +33880,7 @@ module.exports = React.createClass({
     var windowWidth = self.state.windowWidth;
     var open = self.state.open;
 
-    if (windowWidth >= 768) {
+    if (windowWidth >= 900) {
       return React.createElement(
         'div',
         { className: 'navigator', onMouseOver: this.props.onMouseOver, onMouseOut: this.props.onMouseOut },

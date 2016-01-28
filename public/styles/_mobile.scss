@@ -75,6 +75,12 @@ $mobile_fiven_left: 26.6vw;
 
   }
 }
+@media (min-width: 901px) {
+  .navigator {
+    transition: height 0.25s ease-out, width 0.25s ease-out;
+  }
+}
+
 @media (max-width: 900px) {
   body{
     background: black;
@@ -133,19 +139,26 @@ $mobile_fiven_left: 26.6vw;
   // MENU
   .navigator {
     max-width: 100%;
-    height: auto;
+    height: 70px;
     max-height: 70px;
     padding: 0;
     top: 0;
-
-    &.deploy {
-      max-width: 100%;
-      max-height: 100%;
+    transition: none;
+    overflow: initial;
+    .items {
+      background: white;
+      padding-top: 50px;
+      opacity: 0;
+      transform:translateY(-200%);
+      transition: 0.15s ease-out;
     }
-  }
 
-  .navigator {
-
+    .new-blk-logo {
+      .newblk_logo {
+        position: relative;
+        z-index: 1;
+      }
+    }
     #nav-icon2 {
       width: 30px;
       height: 20px;
@@ -154,7 +167,7 @@ $mobile_fiven_left: 26.6vw;
       right: 0;
       margin: 25px;
       cursor: pointer;
-
+      z-index: 1;
       span {
         display: block;
         position: absolute;
@@ -208,10 +221,12 @@ $mobile_fiven_left: 26.6vw;
   .menu_over {
     .navigator {
       max-width: 100%;
-      height: auto;
-      max-height: 100%;;
       padding: 0;
       top: 0;
+      .items {
+        opacity: 1;
+        transform:translateY(-61px);
+      }
       #nav-icon2 {
           // span:nth-child(1),span:nth-child(6) {
           //   transform: rotate(45deg);

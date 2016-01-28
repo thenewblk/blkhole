@@ -23,8 +23,8 @@ body {
   height: 100%;
   padding-left: 70px;
   background: $lightgray;
-  transition: 0.15s ease-out;
   word-break: break-word;
+  overflow: overlay;
 }
 
 * {
@@ -73,8 +73,6 @@ h1,h2,h3,h4,h5,p {
   padding: 10px 0;
   left: 0;
   top: 0;
-  transition: height 0.25s ease-out, width 0.25s ease-out;
-  transform: translateZ(0);
   opacity: 1;
   overflow: hidden;
   z-index: 111;
@@ -84,9 +82,9 @@ h1,h2,h3,h4,h5,p {
     svg {
       fill: $black;
       #blk {
-        transition: 0.15s ease-out;
+        transition: 0.15s ease-out all;
         opacity: 0;
-        transform: translate(200px);
+        transform: translateX(200px);
       }
     }
   }
@@ -131,38 +129,16 @@ h1,h2,h3,h4,h5,p {
       /* left: -1000%; */
     }
   }
-  &.deploy {
-
-    max-width: 250px;
-    // box-shadow: 0 0 5px #ccc;
-
-    .items {
-      .name {
-        display: inline-block;
-        vertical-align: middle;
-        opacity: 1;
-        margin: 0 25px 0 10px;
-        left: inherit;
-      }
-    }
-
-    .newblk_logo {
-      svg {
-        #blk {
-          opacity: 1;
-          transform: translate(0px);
-        }
-      }
-    }
-  }
-
 }
 
 .navigator_overlay {
   opacity: 0;
-  transition: 0.15s ease-out;
+  z-index: -1;
+  transition: 0.15s ease-out opacity;
   position:fixed;
-
+  height: 100%;
+  width: 100%;
+  background: $black;
   .diamond_grid_3 {
     width: 50vw;
     transition: 0.5s ease-out;
@@ -187,10 +163,6 @@ h1,h2,h3,h4,h5,p {
     filter: contrast(6) grayscale(1) blur(5px);
   }
   .navigator_overlay {
-    position: fixed;
-    width: 100%;
-    background: $black;
-    height: 100%;
     opacity: 0.5;
     z-index: 110;
     .diamond_grid_3 {
@@ -217,7 +189,7 @@ h1,h2,h3,h4,h5,p {
       svg {
         #blk {
           opacity: 1;
-          transform: translate(0px);
+          transform: translateX(0px);
         }
       }
     }

@@ -38,7 +38,7 @@ module.exports = React.createClass({
     var windowWidth = self.state.windowWidth;
     var open = self.state.open;
 
-    if (windowWidth >= 768) {
+    if (windowWidth >= 900) {
       return (
           <div className="navigator" onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} >
             <Link className="new-blk-logo" to="/"><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
@@ -104,16 +104,15 @@ module.exports = React.createClass({
     } else {
       return (
         <div className="navigator">
-
-          <Link className="new-blk-logo" to="/" onClick={self.newblkClick}><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
-          <div id="nav-icon2" onClick={self.toggleOpen}>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+            <Link className="new-blk-logo" to="/" onClick={self.newblkClick}><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
+            <div id="nav-icon2" onClick={self.toggleOpen}>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
 
           <div className="items">
             <Link className="channel_link" to="/agency" onClick={self.toggleOpen}>
