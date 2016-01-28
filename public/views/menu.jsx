@@ -105,7 +105,7 @@ module.exports = React.createClass({
       return (
         <div className="navigator">
             <Link className="new-blk-logo" to="/" onClick={self.newblkClick}><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
-            <div id="nav-icon2" onClick={self.toggleOpen}>
+            <div id="navicon" onClick={self.toggleOpen}>
               <span></span>
               <span></span>
               <span></span>
@@ -113,7 +113,6 @@ module.exports = React.createClass({
               <span></span>
               <span></span>
             </div>
-
           <div className="items">
             <Link className="channel_link" to="/agency" onClick={self.toggleOpen}>
               <Sprite

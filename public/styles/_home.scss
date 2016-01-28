@@ -226,10 +226,11 @@ $fiven_left: 26.6vw;
   overflow: hidden;
 }
 
-.home {
+.home, .menu_over.home {
   padding-left: 0;
   .navigator {
-    transform: translate(-70px);
+    max-width: 70px;
+    transform: translateX(-70px);
   }
   .main {
     filter: blur(0px) contrast(1) !important;

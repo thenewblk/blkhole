@@ -33997,7 +33997,7 @@ module.exports = React.createClass({
         ),
         React.createElement(
           'div',
-          { id: 'nav-icon2', onClick: self.toggleOpen },
+          { id: 'navicon', onClick: self.toggleOpen },
           React.createElement('span', null),
           React.createElement('span', null),
           React.createElement('span', null),
