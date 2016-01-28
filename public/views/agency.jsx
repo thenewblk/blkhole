@@ -386,7 +386,7 @@ module.exports = React.createClass({
                       <p className="area bold">Services <span className="diamond"></span> {service.area}</p>
                       <h1 className="name uppercase">{service.name}</h1>
                     </div>
-                    <div className="right">
+                    <div className="right" key={service.name}>
                       <p className="words">{service.words}</p>
                     </div>
                   </div>

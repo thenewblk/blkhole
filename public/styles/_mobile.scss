@@ -142,9 +142,9 @@ $mobile_fiven_left: 26.6vw;
     height: 70px;
     max-height: 70px;
     padding: 0;
-    top: 0;
-    transition: none;
-    overflow: initial;
+    transform:translateY(0);
+    transition: .15s ease-out transform;
+    overflow: hidden;
     .items {
       background: white;
       padding-top: 50px;
@@ -178,17 +178,6 @@ $mobile_fiven_left: 26.6vw;
         transition: .25s ease-in-out;
       }
 
-
-      // span:nth-child(even) {
-      //   transform: translateX(50%);
-      //   // border-radius: 0 9px 9px 0;
-      // }
-      //
-      // span:nth-child(odd) {
-      //   transform: translateX(0);
-      //   // border-radius: 9px 0 0 9px;
-      // }
-
       span:nth-child(1){
         transform: translateY(0);
       }
@@ -197,11 +186,12 @@ $mobile_fiven_left: 26.6vw;
       }
 
       span:nth-child(3) {
-        transform: translateY(8px);
+        transform: translateX(-7px) translateY(8px);
+        width: 20px;
       }
       span:nth-child(4) {
-        transform: translateX(50%) translateY(8px);
-        // top: 8px;
+        transform: translateX(10px) translateY(8px);
+        width: 20px;
       }
 
       span:nth-child(5) {
@@ -209,7 +199,6 @@ $mobile_fiven_left: 26.6vw;
       }
       span:nth-child(6) {
         transform: translateX(50%) translateY(16px);
-        // top: 16px;
       }
     }
   }
@@ -222,7 +211,7 @@ $mobile_fiven_left: 26.6vw;
     .navigator {
       max-width: 100%;
       padding: 0;
-      top: 0;
+      overflow: initial;
       .items {
         opacity: 1;
         transform:translateY(-61px);
@@ -279,8 +268,7 @@ $mobile_fiven_left: 26.6vw;
   .home {
     padding-top: 0;
     .navigator {
-      opacity: 0;
-      top: -70px;
+      transform: translateY(-70px);
       left: 0;
       &:hover {
         max-width: 100%;

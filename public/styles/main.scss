@@ -75,6 +75,7 @@ h1,h2,h3,h4,h5,p {
   top: 0;
   opacity: 1;
   overflow: hidden;
+  transition: 0.15s ease-out transform;
   z-index: 111;
   .newblk_logo {
     margin: 10px;

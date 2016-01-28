@@ -72,14 +72,23 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     var self = this;
+
     self.setState({ params: self.getParams(), content: null });
     self.setTimeout(function() { self.getContent(); }, 500);
+
   },
 
   componentDidMount: function(){
     var self = this;
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
+
+    React.findDOMNode(this).scrollIntoView();
+
+  },
+
+  componentDidUpdate:function() {
+    React.findDOMNode(this).scrollIntoView();
   },
 
   consoleLog: function(){

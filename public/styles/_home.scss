@@ -229,12 +229,7 @@ $fiven_left: 26.6vw;
 .home {
   padding-left: 0;
   .navigator {
-    opacity: 0;
-    left: -70px;
-    &:hover {
-      max-width: 70px;
-
-    }
+    transform: translate(-70px);
   }
   .main {
     filter: blur(0px) contrast(1) !important;

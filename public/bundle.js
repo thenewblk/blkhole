@@ -31990,7 +31990,7 @@ module.exports = React.createClass({
               ),
               React.createElement(
                 'div',
-                { className: 'right' },
+                { className: 'right', key: service.name },
                 React.createElement(
                   'p',
                   { className: 'words' },
@@ -32357,6 +32357,7 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function componentWillReceiveProps(nextProps) {
     var self = this;
+
     self.setState({ params: self.getParams(), content: null });
     self.setTimeout(function () {
       self.getContent();
@@ -32367,6 +32368,12 @@ module.exports = React.createClass({
     var self = this;
     self.setState({ windowWidth: window.innerWidth });
     window.addEventListener('resize', self.handleResize);
+
+    React.findDOMNode(this).scrollIntoView();
+  },
+
+  componentDidUpdate: function componentDidUpdate() {
+    React.findDOMNode(this).scrollIntoView();
   },
 
   consoleLog: function consoleLog() {

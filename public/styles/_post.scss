@@ -450,6 +450,7 @@
       transform: rotate(45deg);
       .video_more_text {
         transform: rotate(-45deg);
+        word-break: normal;
       }
     }
 
