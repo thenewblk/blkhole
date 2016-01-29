@@ -15,6 +15,8 @@ var jshint = require('gulp-jshint'),
   reactify = require('reactify'),
 	globify = require('require-globify'),
   source = require('vinyl-source-stream'),
+	buffer = require('vinyl-buffer'),
+	uglify = require('gulp-uglify'),
 	autoprefixer = require('gulp-autoprefixer');
 
 var babelify = require("babelify");
@@ -43,6 +45,8 @@ gulp.task('react', function() {
 				.transform([globify])
         .bundle()
         .pipe(source('bundle.js'))
+				.pipe(buffer())
+				.pipe(uglify())
         .pipe(gulp.dest('public/'));
 });
 

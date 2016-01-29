@@ -20,7 +20,7 @@ var routes = module.exports = (
       <Route path='/agency' handler={Agency} />
       <Route path='/sprite-test' handler={SpriteTest} />
       <Route path=':channel' handler={Channel} />
-      <Route path='/post/:casestudy' handler={CaseStudy} key={"Thing!" } />
+      <Route path='/post/:casestudy' handler={CaseStudy} />
       <DefaultRoute handler={Home} />
       <NotFoundRoute handler={NotFound} />
     </Route>

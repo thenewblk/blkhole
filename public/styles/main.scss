@@ -13,7 +13,6 @@ a {
 }
 
 html {
-  height: 100%;
   margin: 0;
 }
 
@@ -218,6 +217,16 @@ h1,h2,h3,h4,h5,p {
 
 .lost {
   display: none!important;
+}
+
+.scrollTop {
+  position: fixed;
+  background: white;
+  right: 50px;
+  bottom: 100px;
+  z-index: 1111111;
+  padding: 15px;
+  cursor: pointer;
 }
 
 @import 'channel';

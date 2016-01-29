@@ -38,12 +38,8 @@ Procfile
 .git.bfg-report
 ​*/video/*​
 
-/public/css/main.css
-/public/js/index.js
-
 dump.rdp
 
 .DS_Store
-/public/bundle.js
 
 database_notes.txt

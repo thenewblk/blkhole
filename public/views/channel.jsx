@@ -51,7 +51,9 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(nextProps) {
     var self = this;
-    self.getContent();
+    if ( nextProps != self.props ){
+      self.getContent();
+    }
   },
 
   consoleLog: function(){
@@ -123,12 +125,12 @@ module.exports = React.createClass({
 
       var formatted_description = self.state.content.descriptions.map(function(copy, index){
         return (
-          <p className="decription_copy">{copy}</p>
+          <p key={index} className="decription_copy">{copy}</p>
         )
       });
 
       return (
-        <div className="channel">
+        <div className="channel" key="channel">
           { no_title ? null : <Helmet title={title + " | The New BLK"} /> }
             <div className="content">
               <div className={project_view}>
