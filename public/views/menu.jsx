@@ -33,6 +33,11 @@ module.exports = React.createClass({
     window.addEventListener('resize', self.handleResize);
   },
 
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
+  },
+
   render: function render() {
     var self = this;
     var windowWidth = self.state.windowWidth;

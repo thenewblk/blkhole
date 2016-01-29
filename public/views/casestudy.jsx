@@ -41,6 +41,11 @@ module.exports = React.createClass({
     this.setState({windowWidth: window.innerWidth});
   },
 
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
+  },
+
   getContent: function(){
     var self = this;
     request

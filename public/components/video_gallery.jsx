@@ -29,6 +29,11 @@ var VideoGallery = module.exports = React.createClass({
     window.addEventListener('resize', self.handleResize);
   },
 
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
+  },
+
   render: function render() {
     var self = this,
     thing = self.props.thing,

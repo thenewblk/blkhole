@@ -41,6 +41,11 @@ module.exports = React.createClass({
     window.addEventListener('resize', self.handleResize);
   },
 
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
+  },
+
   render: function render() {
     var self = this,
         video = self.state.video,
@@ -65,7 +70,7 @@ module.exports = React.createClass({
     if (windowWidth) {
       if (windowWidth > 768){
         return (
-          <div className="home_page">
+          <div className="home_page" key="homepage">
             <Helmet title="The New BLK" />
             <div className="diamond_grid_3">
               <span className="desktop_squares">
@@ -272,7 +277,7 @@ module.exports = React.createClass({
         );
       } else {
         return (
-          <div className="home_page">
+          <div className="home_page" key="homepage">
             <Helmet title="The New BLK" />
             <div className="wearethenewblkllc">
               <img className="bold uppercase newblk" src="/images/thenewblk.svg" />
@@ -331,7 +336,7 @@ module.exports = React.createClass({
       }
     } else {
       return (
-        <div className="home_page">
+        <div className="home_page" key="homepage">
           <Helmet title="The New BLK" />
           <Loader />
         </div>

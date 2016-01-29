@@ -13,6 +13,12 @@ var Mouser = module.exports = React.createClass({
     window.addEventListener('resize', self.handleResize);
   },
 
+
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
+  },
+
   handleResize: function(e) {
     this.setState({windowWidth: window.innerWidth});
   },

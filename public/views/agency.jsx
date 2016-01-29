@@ -122,6 +122,11 @@ var Needles = React.createClass({
     window.addEventListener('resize', self.handleResize);
   },
 
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
+  },
+
   getInitialState: function(){
     return {
       current_needle: 0,

@@ -58,6 +58,7 @@ module.exports = React.createClass({
     self.setState({windowWidth: window.innerWidth});
     self.googleAnalytics();
     window.addEventListener('resize', self.handleResize);
+
     var ScrollMagic = require('scrollmagic');
     var TweenMax = require('../components/tweenmax.js');
     require('../components/scrollTo.js');
@@ -74,9 +75,10 @@ module.exports = React.createClass({
 
     });
 
-    // controller.scrollTo(0);
+    controller.scrollTo(0);
+
     self.setState({controller: controller})
-    self.state.controller.scrollTo(0);
+
   },
 
   componentWillReceiveProps: function(){
@@ -94,8 +96,9 @@ module.exports = React.createClass({
     var self = this;
     var props = (prevProps != this.props);
     // console.log("componentDidUpdate props: "+props);
-    if (props) {
+    if (props && self.isMounted()) {
       // alert("scrollto");
+
       self.state.controller.scrollTo(0);
       // self.setTimeout(function() {
       //   // alert("componentDidUpdate scrollTop");
@@ -104,6 +107,11 @@ module.exports = React.createClass({
       // this.state.controller.scrollTo(0);
       // this.setState({scroll: true})
     }
+  },
+
+  componentWillUnmount: function(){
+    var self = this;
+    window.removeEventListener('resize', self.handleResize);
   },
 
   scrollIt: function(){
@@ -176,7 +184,6 @@ module.exports = React.createClass({
           <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut} deploy={self.deploy}/>
           <div className="navigator_overlay"></div>
           <div className="main">
-            {  }
             {this.props.children}
             <Footer />
           </div>
