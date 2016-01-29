@@ -76,6 +76,7 @@ module.exports = React.createClass({
 
     // controller.scrollTo(0);
     self.setState({controller: controller})
+    self.state.controller.scrollTo(0);
   },
 
   componentWillReceiveProps: function(){
