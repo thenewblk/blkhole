@@ -45,7 +45,7 @@ module.exports = React.createClass({
 
     if (windowWidth >= 900) {
       return (
-          <div className="navigator" onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} >
+          <div className="navigator" key="navigator" onMouseOver={this.props.onMouseOver} onMouseOut={this.props.onMouseOut} >
             <Link className="new-blk-logo" to="/"><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
             <div className="items">
               <Link className="channel_link" to="/agency">
@@ -108,7 +108,7 @@ module.exports = React.createClass({
       );
     } else {
       return (
-        <div className="navigator">
+        <div className="navigator" key="navigator">
             <Link className="new-blk-logo" to="/" onClick={self.newblkClick}><Isvg uniquifyIDs={false} className="newblk_logo" src="/images/blk_logo.svg" /></Link>
             <div id="navicon" onClick={self.toggleOpen}>
               <span></span>
