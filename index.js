@@ -1,9 +1,15 @@
 // make `.jsx` file requirable by node
-require('node-jsx').install();
+
+require('babel-register')({
+  presets: ['es2015', 'react']
+});
 
 var path = require('path');
+var join = path.join;
 var express = require('express');
-var renderer = require('react-engine');
+
+var ReactEngine = require('react-engine');
+
 var port     = process.env.PORT || 3000;
 // session with `express-session`
 var session  = require('express-session');
@@ -19,8 +25,18 @@ mongoose.connect(configDB.url);
 var app = express();
 
 // create the view engine with `react-engine`
-var engine = renderer.server.create({
-  reactRoutes: path.join(__dirname + '/public/routes.jsx')
+// var engine = renderer.server.create({
+//   reactRoutes: path.join(__dirname + '/public/routes.jsx')
+// });
+var routes = require('./public/routes.jsx');
+
+
+var engine = ReactEngine.server.create({
+  routes: routes,
+  routesFilePath: join(__dirname, '/public/routes.jsx'),
+  performanceCollector: function(stats) {
+    console.log(stats);
+  }
 });
 
 // set the engine
@@ -33,7 +49,8 @@ app.set('views', __dirname + '/public/views');
 app.set('view engine', 'jsx');
 
 // finally, set the custom view
-app.set('view', renderer.expressView);
+// app.set('view', renderer.expressView);
+app.set('view', ReactEngine.expressView);
 
 //expose public folder as static assets
 app.use(express.static(__dirname + '/public'));

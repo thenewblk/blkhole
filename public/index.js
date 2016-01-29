@@ -1,15 +1,17 @@
 var Routes = require('./routes.jsx');
-var Client = require('react-engine/lib/client');
-var Router = require('react-router');
-// Include all view files. Browerify doesn't do
-// this automatically as it can only operate on
-// static require statements.
-require('./views/**/*.jsx', {glob: true});
+
+var createHistory = require('history/lib/createBrowserHistory');
+var useScroll = require('scroll-behavior/lib/useScrollToTop');
+
+var history = useScroll(createHistory)()
+
+// import the react-engine's client side booter
+var ReactEngineClient = require('react-engine/lib/client');
 
 // boot options
 var options = {
   routes: Routes,
-  scrollBehavior: Router.ScrollToTopBehavior,
+  history: history,
   // supply a function that can be called
   // to resolve the file that was rendered.
   viewResolver: function(viewName) {
@@ -18,5 +20,8 @@ var options = {
 };
 
 document.addEventListener('DOMContentLoaded', function onLoad() {
-  Client.boot(options);
+  // boot the app when the DOM is ready
+  ReactEngineClient.boot(options, function onBoot(data, history) {
+    // console.log("fuck you");
+  });
 });

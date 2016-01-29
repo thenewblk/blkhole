@@ -1,10 +1,10 @@
 var React = require('react');
-var Router = require('react-router');
-var Route = Router.Route;
-var DefaultRoute = Router.DefaultRoute;
-var NotFoundRoute = Router.NotFoundRoute;
+var reactRouter = require('react-router');
+var Router = reactRouter.Router;
+var Route = reactRouter.Route;
+var IndexRoute = reactRouter.IndexRoute;
 
-var App = require('./views/app.jsx'),
+var App = require('./views/layout.jsx'),
     Home = require('./views/home.jsx'),
     Login = require('./views/login.jsx'),
     Channel = require('./views/channel.jsx'),
@@ -15,13 +15,14 @@ var App = require('./views/app.jsx'),
 var NotFound = require('./views/404.jsx');
 
 var routes = module.exports = (
-    <Route path="/" handler={App}>
-      <Route name='login' handler={Login} />
-      <Route path='/agency' handler={Agency} />
-      <Route path='/sprite-test' handler={SpriteTest} />
-      <Route path=':channel' handler={Channel} />
-      <Route path='/post/:casestudy' handler={CaseStudy} />
-      <DefaultRoute handler={Home} />
-      <NotFoundRoute handler={NotFound} />
+  <Router >
+    <Route path="/" component={App}>
+      <IndexRoute component={Home} />
+      <Route name='login' component={Login} />
+      <Route path='/agency' component={Agency} />
+      <Route path='/sprite-test' component={SpriteTest} />
+      <Route path=':channel' component={Channel} />
+      <Route path='/post/:casestudy' component={CaseStudy} />
     </Route>
+  </Router>
 );

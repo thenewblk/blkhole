@@ -11,6 +11,11 @@ var util = require('util');
 
 module.exports = React.createClass({
   mixins: [ Router.State ],
+
+  contextTypes: {
+    location: React.PropTypes.object
+  },
+
   getInitialState: function(){
     return {params: {}, title: ''};
   },
@@ -22,12 +27,14 @@ module.exports = React.createClass({
 
   getContent: function(){
     var self = this;
-    var channel = self.props.channel || self.getParams().channel;
+    var channel = self.props.channel || self.props.params.channel;
     request
       .get('/api/channel/'+channel)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name, view_description: self.props.view_description });
+          if (self.isMounted()) {
+            self.setState({content: res.body, title: res.body.name, view_description: self.props.view_description });
+          }
         }
       });
   },
@@ -38,18 +45,18 @@ module.exports = React.createClass({
 
   componentDidMount: function() {
     var self = this;
-    self.setState({ params: self.getParams(), view_description: self.props.view_description });
+    self.setState({ params: this.props.params, view_description: self.props.view_description });
     self.getContent();
     // if (self.props.content && self.props.content.type == "channel"){
     //   self.setState({content: self.props.content, title: self.props.content.name});
     //   self.getContent();
     // }
-    // else if (self.getParams().channel){
+    // else if (self.props.params.channel){
     //   self.getContent();
     // }
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentDidUpdate: function(nextProps) {
     var self = this;
     if ( nextProps != self.props ){
       self.getContent();

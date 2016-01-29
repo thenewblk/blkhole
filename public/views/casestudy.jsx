@@ -44,10 +44,12 @@ module.exports = React.createClass({
   getContent: function(){
     var self = this;
     request
-      .get('/api/post/'+self.getParams().casestudy)
+      .get('/api/post/'+self.props.params.casestudy)
       .end(function(err, res){
         if (res) {
-          self.setState({content: res.body, title: res.body.name });
+          if (self.isMounted()) {
+            self.setState({content: res.body, title: res.body.name });
+          }
         }
       });
   },
@@ -58,24 +60,26 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var self = this;
-    self.setState({ params: self.getParams(), content: null });
+    self.setState({ params: self.props.params, content: null });
 
     // if (self.props.content && self.props.content.type == "case-study"){
     //   self.getContent();
     //   // self.setState({content: self.props.content, title: self.props.content.name});
     // }
-    // else if (self.getParams().casestudy){
+    // else if (self.props.params.casestudy){
     //   self.getContent();
     // }
     self.setTimeout(function() { self.getContent(); }, 500);
   },
 
-  componentWillReceiveProps: function(nextProps) {
+  componentDidUpdate: function(nextProps) {
     var self = this;
 
-    self.setState({ params: self.getParams(), content: null });
-    self.setTimeout(function() { self.getContent(); }, 500);
-
+    var self = this;
+    if ( nextProps != self.props ){
+      self.setState({ params: self.props.params, content: null });
+      self.setTimeout(function() { self.getContent(); }, 500);
+    }
   },
 
   componentDidMount: function(){
@@ -271,9 +275,9 @@ module.exports = React.createClass({
     }
     if (content){
       return (
-        <div className="case_study loaded" key={casestudy}>
+        <div className="case_study loaded" key="casestudy">
           <Helmet title={title + " | The New BLK"} />
-          <div className="main_content loaded" key={casestudy}>
+          <div className="main_content loaded" key="casestudy">
             <div className="top" style={top_image}>
               <span className="case_study_name"><Isvg src="/icons/new/down-01.svg" /><h1 className="heading">{name}</h1></span>
             </div>
@@ -290,8 +294,8 @@ module.exports = React.createClass({
       )
     } else {
       return (
-        <div className="case_study loading" key={casestudy}>
-          <div className="main_content loading" key={casestudy}></div>
+        <div className="case_study loading" key="casestudy">
+          <div className="main_content loading" key="casestudy"></div>
           <Loader />
         </div>
       )

@@ -1,5 +1,5 @@
 var React = require('react');
-var Router = require('react-router');
+var Router = require('react-router').Router;
 var Menu = require('./menu.jsx');
 var Footer = require('./footer.jsx');
 
@@ -19,6 +19,9 @@ function slugify(text) {
 
 module.exports = React.createClass({
   mixins: [ Router.State, TimerMixin ],
+  contextTypes: {
+    location: React.PropTypes.object
+  },
 
   getInitialState: function(){
     return { menu: false }
@@ -47,7 +50,7 @@ module.exports = React.createClass({
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     window.ga('create', 'UA-72655037-1', 'auto');
-    window.ga('send', 'pageview', {'page': this.getPathname()});
+    window.ga('send', 'pageview', {'page': this.context.location.pathname});
   },
 
   componentDidMount: function(){
@@ -55,29 +58,29 @@ module.exports = React.createClass({
     self.setState({windowWidth: window.innerWidth});
     self.googleAnalytics();
     window.addEventListener('resize', self.handleResize);
-    // var ScrollMagic = require('scrollmagic');
-    // var TweenMax = require('../components/tweenmax.js');
-    // require('../components/scrollTo.js');
-    //
-    // var controller = new ScrollMagic.Controller();
-    // controller.scrollTo(function(target) {
-    //   TweenMax.to(window, 1, {
-    //     scrollTo : {
-    //       y : target, // scroll position of the target along y axis
-    //       autoKill : true // allows user to kill scroll action smoothly
-    //     },
-    //     ease : Cubic.easeInOut
-    //   });
-    //
-    // });
-    //
-    // // controller.scrollTo(0);
-    // self.setState({controller: controller})
+    var ScrollMagic = require('scrollmagic');
+    var TweenMax = require('../components/tweenmax.js');
+    require('../components/scrollTo.js');
+
+    var controller = new ScrollMagic.Controller();
+    controller.scrollTo(function(target) {
+      TweenMax.to(window, 1, {
+        scrollTo : {
+          y : target, // scroll position of the target along y axis
+          autoKill : true // allows user to kill scroll action smoothly
+        },
+        ease : Cubic.easeInOut
+      });
+
+    });
+
+    // controller.scrollTo(0);
+    self.setState({controller: controller})
   },
 
   componentWillReceiveProps: function(){
     var self = this;
-    window.ga('send', 'pageview', {'page': this.getPathname()});
+    window.ga('send', 'pageview', {'page': this.context.location.pathname});
   },
 
   scrollTop: function(){
@@ -88,18 +91,18 @@ module.exports = React.createClass({
 
   componentDidUpdate: function(prevProps, prevState){
     var self = this;
-    // var props = (prevProps != this.props);
+    var props = (prevProps != this.props);
     // console.log("componentDidUpdate props: "+props);
-    // if (props) {
-    //   // alert("scrollto");
-    //
-    //   self.setTimeout(function() {
-    //     // alert("componentDidUpdate scrollTop");
-    //     self.state.controller.scrollTo(0);
-    //   }, 1000);
-    //   // this.state.controller.scrollTo(0);
-    //   // this.setState({scroll: true})
-    // }
+    if (props) {
+      // alert("scrollto");
+      self.state.controller.scrollTo(0);
+      // self.setTimeout(function() {
+      //   // alert("componentDidUpdate scrollTop");
+      //   self.state.controller.scrollTo(0);
+      // }, 1000);
+      // this.state.controller.scrollTo(0);
+      // this.setState({scroll: true})
+    }
   },
 
   scrollIt: function(){
@@ -120,10 +123,10 @@ module.exports = React.createClass({
         menu = "",
         case_study = self.props.content;
 
-    if (self.getPathname() == "/") {
+    if (this.context.location.pathname == "/") {
       var path = "home";
     } else {
-      var path = slugify(self.getPathname());
+      var path = slugify(this.context.location.pathname);
     }
 
     if (menu_toggle) {
@@ -147,7 +150,7 @@ module.exports = React.createClass({
         description = self.props.description;
       }
 
-      url = url + self.getPathname()
+      url = url + this.context.location.pathname
     }
     var windowWidth = self.state.windowWidth;
 
@@ -172,6 +175,7 @@ module.exports = React.createClass({
           <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut} deploy={self.deploy}/>
           <div className="navigator_overlay"></div>
           <div className="main">
+            {  }
             {this.props.children}
             <Footer />
           </div>
@@ -179,8 +183,8 @@ module.exports = React.createClass({
             <h3 className="earthlings">Greetings earthlings, our mobile ship is currently under construction. Please visit our mother ship on your desktop computing machine.</h3>
             <Footer />
           </div>
+          <script src='/bundle.js'></script>
         </body>
-        <script src='/bundle.js'></script>
       </html>
     );
   }
