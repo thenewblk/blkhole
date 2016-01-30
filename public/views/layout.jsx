@@ -83,7 +83,7 @@ module.exports = React.createClass({
 
   componentWillReceiveProps: function(){
     var self = this;
-    window.ga('send', 'pageview', {'page': this.context.location.pathname});
+    // window.ga('send', 'pageview', {'page': this.context.location.pathname});
   },
 
   scrollTop: function(){
@@ -98,7 +98,7 @@ module.exports = React.createClass({
     // console.log("componentDidUpdate props: "+props);
     if (props && self.isMounted()) {
       // alert("scrollto");
-
+      window.ga('send', 'pageview', {'page': this.context.location.pathname});
       self.state.controller.scrollTo(0);
       // self.setTimeout(function() {
       //   // alert("componentDidUpdate scrollTop");
