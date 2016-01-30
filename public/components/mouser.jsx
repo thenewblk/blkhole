@@ -39,16 +39,6 @@ var Mouser = module.exports = React.createClass({
         screenX = event.offsetX ,
         clientX = event.clientX ,
         screenY = event.offsetY;
-
-
-        // console.log("window_width: " + window_width);
-        // console.log("screenX: " + screenX);
-        // console.log("clientX: " + clientX);
-        // console.log("screenY: " + screenY);
-        // console.log("margin_diff: " + margin_diff);
-        // console.log("inner_left: " + inner_left);
-        // console.log("left: " + left);
-
     this.setState({left: (500 - screenX), screenX: screenX, screenY: (screenY)});
 
   },
@@ -59,36 +49,16 @@ var Mouser = module.exports = React.createClass({
     e.preventDefault()
   },
 
-  // componentDidMount: function () {
-  //   console.log("componentDidMount");
-  //   document.addEventListener('mousemove', this.onMouseMove)
-  // },
 
   componentDidUpdate: function (props, state) {
     if (this.state.over) {
       document.addEventListener('mousemove', this.onMouseMove);
-      // document.addEventListener('resize', this.onMouseMove);
-      // document.addEventListener('scroll', this.onMouseMove);
       document.addEventListener('mouseup', this.onMouseUp);
     } else if (!this.state.over) {
       document.removeEventListener('mousemove', this.onMouseMove);
-      // document.removeEventListener('resize', this.onMouseMove);
-      // document.removeEventListener('scroll', this.onMouseMove);
       document.removeEventListener('mouseup', this.onMouseUp);
     }
   },
-
-  // componentWillReceiveProps: function(nextProps) {
-  //   var self = this;
-  //   self.setState({ params: self.getParams(), content: null });
-  //   self.setTimeout(function() { self.getContent(); }, 500);
-  // },
-
-
-  // componentDidUnmount: function() {
-  //   // document.removeEventListener('resize', this.onMouseMove);
-  //   // document.removeEventListener('scroll', this.onMouseMove);
-  // },
 
   render: function render() {
     var self = this;

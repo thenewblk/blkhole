@@ -5,7 +5,6 @@ var Footer = require('./footer.jsx');
 
 var util = require('util');
 var TimerMixin = require('react-timer-mixin');
-// var GoogleAnalytics = require('react-g-analytics');
 
 function slugify(text) {
   return text.toString().toLowerCase()
@@ -67,8 +66,8 @@ module.exports = React.createClass({
     controller.scrollTo(function(target) {
       TweenMax.to(window, 1, {
         scrollTo : {
-          y : target, // scroll position of the target along y axis
-          autoKill : true // allows user to kill scroll action smoothly
+          y : target,
+          autoKill : true
         },
         ease : Cubic.easeInOut
       });
@@ -81,11 +80,6 @@ module.exports = React.createClass({
 
   },
 
-  componentWillReceiveProps: function(){
-    var self = this;
-    // window.ga('send', 'pageview', {'page': this.context.location.pathname});
-  },
-
   scrollTop: function(){
     var self = this;
     console.log("scrollTop");
@@ -95,17 +89,9 @@ module.exports = React.createClass({
   componentDidUpdate: function(prevProps, prevState){
     var self = this;
     var props = (prevProps != this.props);
-    // console.log("componentDidUpdate props: "+props);
     if (props && self.isMounted()) {
-      // alert("scrollto");
       window.ga('send', 'pageview', {'page': this.context.location.pathname});
       self.state.controller.scrollTo(0);
-      // self.setTimeout(function() {
-      //   // alert("componentDidUpdate scrollTop");
-      //   self.state.controller.scrollTo(0);
-      // }, 1000);
-      // this.state.controller.scrollTo(0);
-      // this.setState({scroll: true})
     }
   },
 
@@ -119,11 +105,6 @@ module.exports = React.createClass({
     this.state.controller.scrollTo(0);
     this.setState({scroll: false});
   },
-
-  // componentDidUpdate: function(){
-  //   var self = this;
-  //   self.state.controller.scrollTo(0);
-  // },
 
   render: function render() {
     var self = this,
