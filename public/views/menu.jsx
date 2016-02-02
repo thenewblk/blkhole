@@ -1,7 +1,7 @@
 var React = require('react');
 var Router = require('react-router');
 
-var Sprite = require('../components/sprite.jsx');
+var Sprite = require('react-spritesheet-animations');
 var Link = Router.Link;
 
 var Isvg = require('react-inlinesvg');

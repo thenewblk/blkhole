@@ -4,7 +4,7 @@ var Helmet = require('react-helmet');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 
-var Sprite = require('../components/sprite.jsx');
+var Sprite = require('react-spritesheet-animations');
 var VideoGallery = require("../components/video_gallery.jsx");
 // var Waypoint = require('react-waypoint');
 
