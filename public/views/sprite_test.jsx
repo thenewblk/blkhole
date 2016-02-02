@@ -1,6 +1,5 @@
 var React = require('react');
 var Sprite = require('../components/sprite.jsx');
-var Loader = require('../components/loader.jsx');
 
 var util = require('util');
 
@@ -30,7 +29,7 @@ module.exports = React.createClass({
       hover: false,
       loop: true
     };
-  },
+  }, 
 
   handleColumns: function(event) {
     this.setState({columns: event.target.value});

@@ -203,7 +203,7 @@ var Needles = React.createClass({
           <div className="needle_section block" key={index}>
             <div className="block_wrapper">
               <span className="left_label">
-                { (windowWidth > 768) ? <Sprite
+                <Sprite
                   className="needle_sprite"
                   image={needle.sprite.image}
                   columns={needle.sprite.columns}
@@ -211,7 +211,7 @@ var Needles = React.createClass({
                   duration={needle.sprite.duration}
                   frameW={needle.sprite.frameW}
                   frameH={needle.sprite.frameH}
-                  hover={false} /> : null }
+                  hover={false} />
               </span>
               <div className="copy white_text content" >
                 <h2 className="headline">{needle.headline}</h2>

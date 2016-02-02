@@ -2,6 +2,7 @@ var React = require('react');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 var VisibilitySensor = require('react-visibility-sensor');
+var TimerMixin = require('react-timer-mixin');
 
 function getFilePathExtension(path) {
 	var filename = path.split('\\').pop().split('/').pop();
@@ -9,6 +10,7 @@ function getFilePathExtension(path) {
 }
 
 module.exports = React.createClass({
+	mixins: [TimerMixin],
   getInitialState: function() {
     return { animation: "start", current_frame: 0, x: 0, y: 0, interval: {}, timer: {} }
   },
@@ -18,51 +20,53 @@ module.exports = React.createClass({
 	},
 
 	componentWillMount: function(){
-		var timer = {
-		    running: false,
-		    iv: 5000,
-		    timeout: false,
-		    cb : function(){},
-		    start : function(cb,iv){
-		        var elm = this;
-		        clearInterval(this.timeout);
-		        this.running = true;
-		        if(cb) this.cb = cb;
-		        if(iv) this.iv = iv;
-		        this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
-		    },
-		    execute : function(e){
-		        if(!e.running) return false;
-		        e.cb();
-		        e.start();
-		    },
-		    stop : function(){
-		        this.running = false;
-		    },
-		    set_interval : function(iv){
-		        clearInterval(this.timeout);
-		        this.start(false, iv);
-		    }
-		};
-		this.setState({timer: timer})
+		// var timer = {
+		//     running: false,
+		//     iv: 5000,
+		//     timeout: false,
+		//     cb : function(){},
+		//     start : function(cb,iv){
+		//         var elm = this;
+		//         clearInterval(this.timeout);
+		//         this.running = true;
+		//         if(cb) this.cb = cb;
+		//         if(iv) this.iv = iv;
+		//         this.timeout = setTimeout(function(){elm.execute(elm)}, this.iv);
+		//     },
+		//     execute : function(e){
+		//         if(!e.running) return false;
+		//         e.cb();
+		//         e.start();
+		//     },
+		//     stop : function(){
+		//         this.running = false;
+		//     },
+		//     set_interval : function(iv){
+		//         clearInterval(this.timeout);
+		//         this.start(false, iv);
+		//     }
+		// };
+		//
+		// this.setState({timer: timer})
 	},
 
   componentDidMount: function(){
-    this.animate();
+		var self = this;
+    self.animate();
   },
 
   componentWillUnmount: function(){
-		this.state.timer.stop();
     this.setState({animation: "stop"});
   },
 
   enter: function()	{
-    this.setState({animation: "forward"});
-
+		var self = this;
+    self.setState({animation: "forward"});
 	},
 
   out: function()	{
-    this.setState({animation: "reverse"});
+		var self = this;
+    self.setState({animation: "reverse"});
 	},
 
 	enterLoop: function()	{
@@ -82,15 +86,17 @@ module.exports = React.createClass({
 	},
 
   animate: function(){
-    var self = this;
+		var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
 
-    self.state.timer.start(function(){
+    self.setTimeout(function(){
+
+			self.requestAnimationFrame(self.animate);
+
       if ( self.state.animation == "start") {
       }
 
       if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
-
           var new_frame = self.state.current_frame + 1;
           var col = (new_frame % self.props.columns) + 1;
           var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
@@ -143,8 +149,11 @@ module.exports = React.createClass({
 			}
 
 
+
     } , speed );
-  },
+
+
+	},
 
   render: function() {
     var self = this;
@@ -163,8 +172,8 @@ module.exports = React.createClass({
     }
 
     var style = {
-      transform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
-      WebkitTransform: "translate3d(" + self.state.x + "px, " + self.state.y + "px, 0px)",
+      transform: "translateX(" + self.state.x + "px) translateY(" + self.state.y + "px)",
+      WebkitTransform: "translateX(" + self.state.x + "px) translateY(" + self.state.y + "px)",
       width: width,
       height: height,
       position: "absolute"
@@ -174,9 +183,6 @@ module.exports = React.createClass({
       height: self.props.frameH + "px",
       width: self.props.frameW + "px",
     };
-    if (self.props.duration && self.props.frames) {
-      self.animate();
-    }
 
 
 		if (image){
@@ -184,7 +190,6 @@ module.exports = React.createClass({
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
 		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
-
 		          <span className="svg_icon_wrapper" style={ style } >
 		            <Isvg src={image} className="isvg">
 		              Here's some optional content for browsers that don't support XHR or inline
