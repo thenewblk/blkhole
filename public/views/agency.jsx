@@ -4,12 +4,9 @@ var Helmet = require('react-helmet');
 var util = require('util');
 var Isvg = require('react-inlinesvg');
 
-var Sprite = require('react-spritesheet-animations');
+var Sprite = require('../components/sprite.jsx');
 var VideoGallery = require("../components/video_gallery.jsx");
 // var Waypoint = require('react-waypoint');
-
-var ScrollBlocker = require('react-scroll-components/ScrollBlocker');
-var ScrollListenerMixin = require('react-scroll-components/ScrollListenerMixin');
 
 var services = [
   {
@@ -349,7 +346,7 @@ module.exports = React.createClass({
 
 
     return (
-      <div className="agency">
+      <div className="agency" key="agency">
         <Helmet title="Agency | The New BLK" />
         <div className="agency_top">
           <div className="top_copy">

@@ -10,7 +10,7 @@ var StaggeredMotion = require('react-motion').StaggeredMotion;
 var TransitionMotion = require('react-motion').TransitionMotion;
 
 
-var Sprite = require('react-spritesheet-animations');
+var Sprite = require('../components/sprite.jsx');
 
 var Link = Router.Link;
 

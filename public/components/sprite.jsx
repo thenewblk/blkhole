@@ -85,6 +85,15 @@ module.exports = React.createClass({
 		this.setState({animation: "stoploop"});
 	},
 
+	onVisible: function (isVisible) {
+		var self = this;
+		if (isVisible){
+			self.play();
+		} else {
+			self.reset();
+		};
+	},
+
   animate: function(){
 		var self = this;
     var speed = ( 1000 * self.props.duration ) / self.props.frames;
@@ -189,7 +198,7 @@ module.exports = React.createClass({
 			if (hover){
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
-		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
+		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} key={image} >
 		          <span className="svg_icon_wrapper" style={ style } >
 		            <Isvg src={image} className="isvg">
 		              Here's some optional content for browsers that don't support XHR or inline
@@ -209,7 +218,7 @@ module.exports = React.createClass({
 			} else if (loop){
 				if ((getFilePathExtension(image) === "svg")){
 					return (
-						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
+						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} key={image} >
 
 							<span className="svg_icon_wrapper loop" style={ style } >
 								<Isvg src={image} className="isvg">
@@ -230,16 +239,8 @@ module.exports = React.createClass({
 			} else {
 				if ((getFilePathExtension(image) === "svg")){
 
-					var onChange = function (isVisible) {
-				    if (isVisible){
-							self.play();
-						} else {
-							self.reset();
-						};
-				  };
-
 		      return (
-						<VisibilitySensor onChange={onChange}>
+						<VisibilitySensor onChange={self.onVisible} key={image}>
 			        <span className={className} style={size}>
 			          <span className="svg_icon_wrapper play" style={ style } >
 			            <Isvg src={image} className="isvg">
@@ -254,7 +255,7 @@ module.exports = React.createClass({
 		    } else {
 		      return (
 		        <span className={className} style={size} >
-		          <img src={image} width={width} height={ height } style={ style } />
+		          <img src={image} width={width} height={ height } style={ style } key={image} />
 		        </span>
 		      )
 		    }
