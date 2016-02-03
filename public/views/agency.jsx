@@ -173,7 +173,7 @@ var Needles = React.createClass({
     var needles = self.state.needles;
     if (current_needle < (needles.length -1)) {
       self.setState({current_needle: current_needle + 1})
-    }
+    } 
   },
   prevNeedle: function(){
     var self = this;

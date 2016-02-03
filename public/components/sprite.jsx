@@ -57,6 +57,7 @@ module.exports = React.createClass({
 
   componentWillUnmount: function(){
     this.setState({animation: "stop"});
+		this.cancelAnimationFrame();
   },
 
   enter: function()	{
@@ -94,72 +95,72 @@ module.exports = React.createClass({
 		};
 	},
 
+	animation: function(){
+		var self = this;
+
+		self.requestAnimationFrame(self.animate);
+
+		if ( self.state.animation == "start") {
+		}
+
+		if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
+				var new_frame = self.state.current_frame + 1;
+				var col = (new_frame % self.props.columns) + 1;
+				var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+
+				var x = (col - 1) * self.props.frameW * -1;
+				var y = (row - 1) * self.props.frameH * -1;
+				self.setState( { current_frame: new_frame, x: x, y: y } );
+		}
+
+		if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
+				var new_frame = self.state.current_frame - 1;
+				var col = (new_frame % self.props.columns) + 1;
+				var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+
+				var x = (col - 1) * self.props.frameW * -1;
+				var y = (row - 1) * self.props.frameH * -1;
+				self.setState( { current_frame: new_frame, x: x, y: y } );
+		}
+
+		if (( self.state.animation == "startloop")) {
+			if (self.state.current_frame == self.props.frames - 1 ) {
+				self.setState( { current_frame: 0, x: 0, y: 0 } );
+			} else {
+				var new_frame = self.state.current_frame + 1;
+				var col = (new_frame % self.props.columns) + 1;
+				var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+
+				var x = (col - 1) * self.props.frameW * -1;
+				var y = (row - 1) * self.props.frameH * -1;
+				self.setState( { current_frame: new_frame, x: x, y: y } );
+			}
+		}
+
+		if ((self.state.animation == "play") ) {
+			if (self.state.current_frame == self.props.frames - 1 ) {
+				self.setState( { animation: "start" } );
+			} else {
+				var new_frame = self.state.current_frame + 1;
+				var col = (new_frame % self.props.columns) + 1;
+				var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
+
+				var x = (col - 1) * self.props.frameW * -1;
+				var y = (row - 1) * self.props.frameH * -1;
+				self.setState( { current_frame: new_frame, x: x, y: y } );
+			}
+		}
+
+		if (( self.state.animation == "stoploop")) {
+			self.setState( { current_frame: 0, x: 0, y: 0 } );
+		}
+	},
+
   animate: function(){
 		var self = this;
-    var speed = ( 1000 * self.props.duration ) / self.props.frames;
+    var speed = Math.floor( ( 1000 * self.props.duration ) / self.props.frames);
 
-    self.setTimeout(function(){
-
-			self.requestAnimationFrame(self.animate);
-
-      if ( self.state.animation == "start") {
-      }
-
-      if (( self.state.animation == "forward") && (self.state.current_frame != self.props.frames - 1 ) ) {
-          var new_frame = self.state.current_frame + 1;
-          var col = (new_frame % self.props.columns) + 1;
-          var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-
-          var x = (col - 1) * self.props.frameW * -1;
-          var y = (row - 1) * self.props.frameH * -1;
-          self.setState( { current_frame: new_frame, x: x, y: y } );
-      }
-
-      if ( (self.state.animation == "reverse")  && (self.state.current_frame != 0) ) {
-          var new_frame = self.state.current_frame - 1;
-          var col = (new_frame % self.props.columns) + 1;
-          var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-
-          var x = (col - 1) * self.props.frameW * -1;
-          var y = (row - 1) * self.props.frameH * -1;
-          self.setState( { current_frame: new_frame, x: x, y: y } );
-      }
-
-			if (( self.state.animation == "startloop")) {
-				if (self.state.current_frame == self.props.frames - 1 ) {
-					self.setState( { current_frame: 0, x: 0, y: 0 } );
-				} else {
-					var new_frame = self.state.current_frame + 1;
-					var col = (new_frame % self.props.columns) + 1;
-					var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-
-					var x = (col - 1) * self.props.frameW * -1;
-					var y = (row - 1) * self.props.frameH * -1;
-					self.setState( { current_frame: new_frame, x: x, y: y } );
-				}
-			}
-
-			if ((self.state.animation == "play") ) {
-				if (self.state.current_frame == self.props.frames - 1 ) {
-					self.setState( { animation: "start" } );
-				} else {
-					var new_frame = self.state.current_frame + 1;
-					var col = (new_frame % self.props.columns) + 1;
-					var row = Math.floor( ( new_frame ) / self.props.columns ) + 1;
-
-					var x = (col - 1) * self.props.frameW * -1;
-					var y = (row - 1) * self.props.frameH * -1;
-					self.setState( { current_frame: new_frame, x: x, y: y } );
-				}
-      }
-
-			if (( self.state.animation == "stoploop")) {
-				self.setState( { current_frame: 0, x: 0, y: 0 } );
-			}
-
-
-
-    } , speed );
+    self.setTimeout(self.animation, speed );
 
 
 	},
@@ -199,19 +200,15 @@ module.exports = React.createClass({
 				if ((getFilePathExtension(image) === "svg")){
 		      return (
 		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} key={image} >
-		          <span className="svg_icon_wrapper" style={ style } >
-		            <Isvg src={image} className="isvg">
-		              Here's some optional content for browsers that don't support XHR or inline
-		              SVGs. You can use other React components here too. Here, I'll show you.
-
-		            </Isvg>
+		          <span className="svg_icon_wrapper" style={style} key={image}>
+		            <Isvg src={image} className="isvg" key={image}></Isvg>
 		          </span>
 		        </span>
 		      )
 		    } else {
 		      return (
-		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} >
-		          <img src={image} width={width} height={ height } style={ style } />
+		        <span onMouseEnter={self.enter} onMouseLeave={self.out} className={className} style={size} key={image} >
+		          <img src={image} width={width} height={height} style={style} key={image} />
 		        </span>
 		      )
 		    }
@@ -219,20 +216,15 @@ module.exports = React.createClass({
 				if ((getFilePathExtension(image) === "svg")){
 					return (
 						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} key={image} >
-
-							<span className="svg_icon_wrapper loop" style={ style } >
-								<Isvg src={image} className="isvg">
-									Here's some optional content for browsers that don't support XHR or inline
-									SVGs. You can use other React components here too. Here, I'll show you.
-
-								</Isvg>
+							<span className="svg_icon_wrapper loop" style={style} key={image} >
+								<Isvg src={image} className="isvg" key={image}></Isvg>
 							</span>
 						</span>
 					)
 				} else {
 					return (
-						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} >
-							<img src={image} width={width} height={ height } style={ style } />
+						<span onMouseEnter={self.enterLoop} onMouseLeave={self.out} className={className} style={size} key={image} >
+							<img src={image} width={width} height={height} style={style} key={image} />
 						</span>
 					)
 				}
@@ -241,21 +233,17 @@ module.exports = React.createClass({
 
 		      return (
 						<VisibilitySensor onChange={self.onVisible} key={image}>
-			        <span className={className} style={size}>
-			          <span className="svg_icon_wrapper play" style={ style } >
-			            <Isvg src={image} className="isvg">
-			              Here's some optional content for browsers that don't support XHR or inline
-			              SVGs. You can use other React components here too. Here, I'll show you.
-
-			            </Isvg>
+			        <span className={className} style={size} >
+			          <span className="svg_icon_wrapper play" style={style} key={image} >
+			            <Isvg src={image} className="isvg" key={image}></Isvg>
 			          </span>
 			        </span>
 						</VisibilitySensor>
 		      )
 		    } else {
 		      return (
-		        <span className={className} style={size} >
-		          <img src={image} width={width} height={ height } style={ style } key={image} />
+		        <span className={className} style={size} key={image}>
+		          <img src={image} width={width} height={height } style={ style } key={image} />
 		        </span>
 		      )
 		    }

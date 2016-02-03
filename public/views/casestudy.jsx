@@ -65,7 +65,7 @@ module.exports = React.createClass({
 
   componentWillMount: function() {
     var self = this;
-    self.setState({ params: self.props.params, content: null });
+    // self.setState({ params: self.props.params, content: null });
 
     // if (self.props.content && self.props.content.type == "case-study"){
     //   self.getContent();
@@ -74,21 +74,20 @@ module.exports = React.createClass({
     // else if (self.props.params.casestudy){
     //   self.getContent();
     // }
-    self.setTimeout(function() { self.getContent(); }, 500);
   },
 
   componentDidUpdate: function(nextProps) {
     var self = this;
 
-    var self = this;
-    if ( nextProps != self.props ){
-      self.setState({ params: self.props.params, content: null });
-      self.setTimeout(function() { self.getContent(); }, 500);
+    if ( nextProps.params.casestudy != self.props.params.casestudy ){
+      self.setState({ content: null });
+      self.getContent();
     }
   },
 
   componentDidMount: function(){
     var self = this;
+    self.getContent();
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
 
@@ -109,7 +108,7 @@ module.exports = React.createClass({
     var self = this;
     var title = self.state.title;
     var content = self.state.content;
-    var casestudy = self.state.params.casestudy;
+    var casestudy = self.props.params.casestudy;
     if  (content) {
       var name = self.state.content.name;
       var project_tags = self.state.content.project_tags;
