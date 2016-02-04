@@ -196,8 +196,8 @@ h1,h2,h3,h4,h5,p {
 
 .sprite_container {
   overflow: hidden;
-  display: table;
   position: relative;
+  display: block;
   img {
     max-width: inherit;
   }

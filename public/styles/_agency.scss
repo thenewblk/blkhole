@@ -245,10 +245,14 @@
         padding: 0;
 
         .left_label {
-          display: flex;
+          width: auto;
+          float: none;
+          flex: 0 33%;
+          padding: 0 30px;
           justify-content: flex-end;
+          display: flex;
+          
           .sprite_container {
-            margin-right: 50px;
           }
         }
 
