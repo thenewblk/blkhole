@@ -173,7 +173,7 @@ var Needles = React.createClass({
     var needles = self.state.needles;
     if (current_needle < (needles.length -1)) {
       self.setState({current_needle: current_needle + 1})
-    } 
+    }
   },
   prevNeedle: function(){
     var self = this;
@@ -200,6 +200,7 @@ var Needles = React.createClass({
           <div className="needle_section block" key={index}>
             <div className="block_wrapper">
               <span className="left_label">
+                { (windowWidth > 768) ?
                 <Sprite
                   className="needle_sprite"
                   image={needle.sprite.image}
@@ -208,7 +209,7 @@ var Needles = React.createClass({
                   duration={needle.sprite.duration}
                   frameW={needle.sprite.frameW}
                   frameH={needle.sprite.frameH}
-                  hover={false} />
+                  hover={false} /> : null }
               </span>
               <div className="copy white_text content" >
                 <h2 className="headline">{needle.headline}</h2>
