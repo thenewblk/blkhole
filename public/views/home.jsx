@@ -1,4 +1,6 @@
 var React = require('react');
+var ReactDOM = require("react-dom");
+
 var Router = require('react-router');
 var Helmet = require('react-helmet');
 var Loader = require('../components/loader.jsx');
@@ -15,13 +17,41 @@ var Sprite = require('../components/sprite.jsx');
 var Link = Router.Link;
 
 var util = require('util');
+var videos = [
+  {
+    name: "experiential",
+    media: [
+      "/video/Experiential.webm",
+      "/video/experiential.mp4"
+    ]
+  },
+  {
+    name: "handcrafted",
+    media: [
+      "/video/Handcrafted.webm",
+      "/video/handcrafted.mp4"
+    ]
+  },
+  {
+    name: "agency",
+    media: [
+      "/video/agency_v2.webm",
+      "/video/agency.mp4"
+    ]
+  }
+];
 
 module.exports = React.createClass({
   getInitialState: function(){
-    return {title: '', words: "Ad agency, creative think tank, and content production studio"};
+    return {title: '', words: "Ad agency, creative think tank, and content production studio", video_count: 0, image_loaded: false, videos_loaded: false};
   },
   handleResize: function(e) {
-    this.setState({windowWidth: window.innerWidth});
+    var self = this;
+    self
+    self.setState({windowWidth: window.innerWidth});
+    if ((window.innerWidth > 768) && (!self.state.videos_loaded)){
+      self.preLoadStuff(window.innerWidth);
+    }
   },
   setAgency: function(){
     this.setState({title: 'We are', video: "agency", words: "We only know one way: All in."})
@@ -36,10 +66,90 @@ module.exports = React.createClass({
     this.setState({title: '', video: null, words: "Ad agency, creative think tank, and content production studio"})
   },
 
+  pickSource: function(media){
+    var vid = document.createElement('video');
+
+    var maybes = media.filter(function(media){
+      var ext = media.split('.').slice(-1)[0].toUpperCase();
+      return (vid.canPlayType('video/'+ext) === 'maybe');
+    });
+
+    var probablies = media.filter(function(media){
+      var ext = media.split('.').slice(-1)[0].toUpperCase();
+      return (vid.canPlayType('video/'+ext) === 'probably');
+    });
+
+    var source = '';
+
+    if (maybes.length > 0) { source = maybes[0]; }
+    if (probablies.length > 0) { source = probablies[0]; }
+    source = (source === '')? '' : source;
+    return source;
+  },
+
   componentDidMount: function(){
     var self = this;
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
+
+    var tmp_image = new Image();
+    tmp_image.onload = self.onLoadImage;
+    tmp_image.src = "/images/blk.jpg";
+
+    self.preLoadStuff(window.innerWidth);
+  },
+
+  // componentDidUpdate: function(prevProps, prevState){
+  //   var self = this;
+  //   var props = (prevProps != self.props);
+  //   if (props && self.isMounted()) {
+  //     self.preLoadStuff();
+  //   }
+  // },
+
+  preLoadStuff: function(width){
+    var self = this;
+
+    if (width > 768){
+      for (var i = 0; i < 3 ; i++) {
+        var video = videos[i];
+        var vid = document.createElement('video');
+        vid.src = self.pickSource(video.media);
+        vid.load();
+        vid.oncanplaythrough = self.onLoadVideo;
+      }
+    }
+  },
+
+  onLoadImage: function() {
+    var self = this;
+    self.setState({image_loaded: true});
+  },
+
+  onLoadVideo: function() {
+    var self = this;
+    var tmp_pre_count = self.state.video_count;
+
+    tmp_pre_count++;
+
+    if (self.state.windowWidth > 768){
+      var preload_count = 3;
+    } else {
+      var preload_count = 0;
+    }
+
+
+    if (tmp_pre_count == preload_count) {
+      self.setState({video_count: tmp_pre_count, videos_loaded: true});
+
+
+
+    } else {
+
+      var percent_loaded = (tmp_pre_count / preload_count ) * 100;
+      self.setState({video_count: tmp_pre_count});
+    }
+
   },
 
   componentWillUnmount: function(){
@@ -52,11 +162,14 @@ module.exports = React.createClass({
         video = self.state.video,
         words = self.state.words,
         title = self.state.title,
-        windowWidth = self.state.windowWidth;
+        windowWidth = self.state.windowWidth,
+        image_loaded = self.state.image_loaded,
+        videos_loaded = self.state.videos_loaded;
+
     if (title){
       var title_styles = title.split('').map(function(index){
-        return ({rotation: (Math.random() - 0.5) * 10, x: 0, y: 0, opacity: 0})
-      })
+        return ({rotation: (Math.random() - 0.5) * 10, x: 0, y: 0, opacity: 0});
+      });
     }
 
     if (words){
@@ -68,146 +181,175 @@ module.exports = React.createClass({
     var example_styles = example.split('').map(function(index){
       return ({rotation: (Math.random() - 0.5) * 4500 , x: (Math.random() - 0.5) * 1000 , y: (Math.random() - 0.5) * 1000, opacity: 0, scale: 1})
     })
-    if (windowWidth) {
-      if (windowWidth > 768){
-        return (
-          <div className="home_page" key="homepage">
-            <Helmet title="The New BLK" />
-            <div className="diamond_grid_3">
-              <span className="desktop_squares">
-                <div className="square"></div>
-                <Link className="square" to="/agency" onMouseEnter={self.setAgency} onMouseLeave={self.resetVideo}>
-                  <span className="diamond_wrapper">
-                    <Sprite
-                      image="/icons/agency_icon_sprite-01.svg"
-                      columns={9}
-                      frames={9}
-                      duration={.25}
-                      frameW={50}
-                      frameH={50}
-                      hover={true} />
-                    <span className="name">Agency</span>
-                  </span>
-                </Link>
-                <div className="square"></div>
-                <Link className="square" to="/experiential" onMouseEnter={self.setExperiential} onMouseLeave={self.resetVideo} >
-                  <span className="diamond_wrapper">
-                    <Sprite
-                      image="/icons/experiential-sprite-01.svg"
-                      columns={9}
-                      frames={15}
-                      duration={.5}
-                      frameW={50}
-                      frameH={50}
-                      hover={true} />
-                    <span className="name">Experiential</span>
-                  </span>
-                </Link>
-                <Link className="square" to="/handcrafted" onMouseEnter={self.setHandcrafted} onMouseLeave={self.resetVideo} >
-                  <span className="diamond_wrapper">
-                    <Sprite
-                      image="/icons/handcrafted-sprite-01.svg"
-                      columns={8}
-                      frames={16}
-                      duration={.4}
-                      frameW={50}
-                      frameH={50}
-                      hover={true} />
-                    <span className="name">Handcrafted</span>
-                  </span>
-                </Link>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-              </span>
-              <span className="mobile_squares">
-                <Link className="square" to="/agency" onMouseEnter={self.setAgency} onMouseLeave={self.resetVideo}>
-                  <span className="diamond_wrapper">
-                    <Sprite
-                      image="/icons/agency_icon_sprite-01.svg"
-                      columns={9}
-                      frames={9}
-                      duration={.25}
-                      frameW={50}
-                      frameH={50}
-                      hover={true} />
-                    <span className="name">Agency</span>
-                  </span>
-                </Link>
-                <Link className="square" to="/experiential" onMouseEnter={self.setExperiential} onMouseLeave={self.resetVideo} >
-                  <span className="diamond_wrapper">
-                    <Sprite
-                      image="/icons/experiential-sprite-01.svg"
-                      columns={9}
-                      frames={15}
-                      duration={.5}
-                      frameW={50}
-                      frameH={50}
-                      hover={true} />
-                    <span className="name">Experiential</span>
-                  </span>
-                </Link>
-                <Link className="square" to="/handcrafted" onMouseEnter={self.setHandcrafted} onMouseLeave={self.resetVideo} >
-                  <span className="diamond_wrapper">
-                    <Sprite
-                      image="/icons/handcrafted-sprite-01.svg"
-                      columns={8}
-                      frames={16}
-                      duration={.4}
-                      frameW={50}
-                      frameH={50}
-                      hover={true} />
-                    <span className="name">Handcrafted</span>
-                  </span>
-                </Link>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-                <div className="square"></div>
-              </span>
-            </div>
-            <div className="wearethenewblkllc">
-              { title ?
+
+
+
+
+
+    if (windowWidth && image_loaded) {
+
+      if ((windowWidth > 768)) {
+        if (videos_loaded) {
+
+          var experiential_src = self.pickSource(videos[0].media);
+          var handcrafted_src = self.pickSource(videos[1].media);
+          var agency_src = self.pickSource(videos[2].media);
+
+          return (
+            <div className="home_page" key="homepage">
+              <Helmet title="The New BLK" />
+              <div className="diamond_grid_3">
+                <span className="desktop_squares">
+                  <div className="square"></div>
+                  <Link className="square" to="/agency" onMouseEnter={self.setAgency} onMouseLeave={self.resetVideo}>
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/agency_icon_sprite-01.svg"
+                        columns={9}
+                        frames={9}
+                        duration={.25}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Agency</span>
+                    </span>
+                  </Link>
+                  <div className="square"></div>
+                  <Link className="square" to="/experiential" onMouseEnter={self.setExperiential} onMouseLeave={self.resetVideo} >
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/experiential-sprite-01.svg"
+                        columns={9}
+                        frames={15}
+                        duration={.5}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Experiential</span>
+                    </span>
+                  </Link>
+                  <Link className="square" to="/handcrafted" onMouseEnter={self.setHandcrafted} onMouseLeave={self.resetVideo} >
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/handcrafted-sprite-01.svg"
+                        columns={8}
+                        frames={16}
+                        duration={.4}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Handcrafted</span>
+                    </span>
+                  </Link>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                </span>
+                <span className="mobile_squares">
+                  <Link className="square" to="/agency" onMouseEnter={self.setAgency} onMouseLeave={self.resetVideo}>
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/agency_icon_sprite-01.svg"
+                        columns={9}
+                        frames={9}
+                        duration={.25}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Agency</span>
+                    </span>
+                  </Link>
+                  <Link className="square" to="/experiential" onMouseEnter={self.setExperiential} onMouseLeave={self.resetVideo} >
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/experiential-sprite-01.svg"
+                        columns={9}
+                        frames={15}
+                        duration={.5}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Experiential</span>
+                    </span>
+                  </Link>
+                  <Link className="square" to="/handcrafted" onMouseEnter={self.setHandcrafted} onMouseLeave={self.resetVideo} >
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/handcrafted-sprite-01.svg"
+                        columns={8}
+                        frames={16}
+                        duration={.4}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Handcrafted</span>
+                    </span>
+                  </Link>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                  <div className="square"></div>
+                </span>
+              </div>
+              <div className="wearethenewblkllc">
+                { title ?
+                  <Motion
+                    key={title}
+                    defaultStyle={{
+                        opacity: 0,
+                        rotation: Math.random() * -10,
+                        x: Math.random() * 2,
+                      }}
+                    style={{
+                        opacity: spring(1, [80, 20]),
+                        rotation: spring(0, [200, 20]),
+                        x: spring(0, [80, 20]),
+                      }}>
+                    {function(style){
+                      return (<p key={title} className="uppercase italic theme" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
+                    }}
+                  </Motion>
+                : <p key={title} className="uppercase italic theme blank_title"></p> }
+
                 <Motion
-                  key={title}
                   defaultStyle={{
                       opacity: 0,
                       rotation: Math.random() * -10,
@@ -219,63 +361,45 @@ module.exports = React.createClass({
                       x: spring(0, [80, 20]),
                     }}>
                   {function(style){
-                    return (<p key={title} className="uppercase italic theme" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{title}</p>)
+                    return (<img className="bold uppercase newblk" src="/images/thenewblk.svg" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} />)
                   }}
                 </Motion>
-              : <p key={title} className="uppercase italic theme blank_title"></p> }
-
-              <Motion
-                defaultStyle={{
-                    opacity: 0,
-                    rotation: Math.random() * -10,
-                    x: Math.random() * 2,
-                  }}
-                style={{
-                    opacity: spring(1, [80, 20]),
-                    rotation: spring(0, [200, 20]),
-                    x: spring(0, [80, 20]),
-                  }}>
-                {function(style){
-                  return (<img className="bold uppercase newblk" src="/images/thenewblk.svg" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} />)
-                }}
-              </Motion>
 
 
 
-                { words ?
-                  <Motion
-                    key={words}
-                    defaultStyle={{
-                        opacity: 0,
-                        x: Math.random() * -15,
+                  { words ?
+                    <Motion
+                      key={words}
+                      defaultStyle={{
+                          opacity: 0,
+                          x: Math.random() * -15,
+                        }}
+                      style={{
+                          opacity: spring(1, [80, 20]),
+                          x: spring(0, [80, 20]),
+                        }}>
+                      {function(style){
+                        return (<p key={words} className="italic words" style={{position: "relative", top: style.x, left: style.y, opacity: style.opacity}}>{words}</p>)
                       }}
-                    style={{
-                        opacity: spring(1, [80, 20]),
-                        x: spring(0, [80, 20]),
-                      }}>
-                    {function(style){
-                      return (<p key={words} className="italic words" style={{position: "relative", top: style.x, left: style.y, opacity: style.opacity}}>{words}</p>)
-                    }}
-                  </Motion>
-                : null }
+                    </Motion>
+                  : null }
+              </div>
+              <div className="home_overlay"></div>
+              <div className={"video-container " + video}>
+                <video ref="experiential_video" className="experiential" poster="/images/transparent.png" autoPlay muted="muted" loop src={experiential_src}></video>
+                <video ref="handcrafted_video" className="handcrafted" poster="/images/transparent.png" autoPlay muted="muted" loop src={handcrafted_src}></video>
+                <video ref="agency_video" className="agency" poster="/images/transparent.png" autoPlay muted="muted" loop src={agency_src}> </video>
+              </div>
             </div>
-            <div className="home_overlay"></div>
-            <div className={"video-container " + video}>
-              <video  className="experiential" poster="/images/transparent.png" autoPlay muted="muted" loop>
-                <source src="/video/Experiential.webm" type="video/webm" />
-                <source src="/video/experiential.mp4" type="video/mp4" />
-              </video>
-              <video className="handcrafted" poster="/images/transparent.png" autoPlay muted="muted" loop>
-                <source src="/video/Handcrafted.webm" type="video/webm" />
-                <source src="/video/handcrafted.mp4" type="video/mp4" />
-              </video>
-              <video className="agency" poster="/images/transparent.png" autoPlay muted="muted" loop>
-                <source src="/video/agency_v2.webm" type="video/webm" />
-                <source src="/video/agency.mp4" type="video/mp4" />
-              </video>
+          );
+        } else {
+          return (
+            <div className="home_page" key="homepage">
+              <Helmet title="The New BLK" />
+              <Loader />
             </div>
-          </div>
-        );
+          )
+        }
       } else {
         return (
           <div className="home_page" key="homepage">
