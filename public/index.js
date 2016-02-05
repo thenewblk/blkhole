@@ -11,7 +11,6 @@ var ReactEngineClient = require('react-engine/lib/client');
 // boot options
 var options = {
   routes: Routes,
-  history: history,
   // supply a function that can be called
   // to resolve the file that was rendered.
   viewResolver: function(viewName) {

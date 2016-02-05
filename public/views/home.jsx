@@ -83,6 +83,7 @@ module.exports = React.createClass({
     if (maybes.length > 0) { source = maybes[0]; }
     if (probablies.length > 0) { source = probablies[0]; }
     source = (source === '')? '' : source;
+    console.log("pickSource: " + source);
     return source;
   },
 
@@ -114,8 +115,8 @@ module.exports = React.createClass({
         var video = videos[i];
         var vid = document.createElement('video');
         vid.src = self.pickSource(video.media);
-        vid.oncanplaythrough = self.onLoadVideo;
         vid.load();
+        vid.oncanplaythrough = self.onLoadVideo;
       }
     }
   },
