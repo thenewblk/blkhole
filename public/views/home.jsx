@@ -43,14 +43,22 @@ var videos = [
 
 module.exports = React.createClass({
   getInitialState: function(){
-    return {title: '', words: "Ad agency, creative think tank, and content production studio", video_count: 0, image_loaded: false, videos_loaded: false};
+    return {
+      title: '',
+      words: "Ad agency, creative think tank, and content production studio",
+      load_images: [
+				"/images/blk.jpg",
+        "/images/experiential.jpg",
+        "/images/handcrafted.jpg",
+        "/images/agency.jpg"
+			],
+      pre_count: 0,
+			percent_loaded: 0,
+    };
   },
   handleResize: function(e) {
     var self = this;
     self.setState({windowWidth: window.innerWidth});
-    if ((window.innerWidth > 768) && (!self.state.videos_loaded)){
-      self.preLoadStuff(window.innerWidth);
-    }
   },
   setAgency: function(){
     this.setState({title: 'We are', video: "agency", words: "We only know one way: All in."})
@@ -65,38 +73,36 @@ module.exports = React.createClass({
     this.setState({title: '', video: null, words: "Ad agency, creative think tank, and content production studio"})
   },
 
-  pickSource: function(media){
-    var vid = document.createElement('video');
-
-    var maybes = media.filter(function(media){
-      var ext = media.split('.').slice(-1)[0].toUpperCase();
-      return (vid.canPlayType('video/'+ext) === 'maybe');
-    });
-
-    var probablies = media.filter(function(media){
-      var ext = media.split('.').slice(-1)[0].toUpperCase();
-      return (vid.canPlayType('video/'+ext) === 'probably');
-    });
-
-    var source = '';
-
-    if (maybes.length > 0) { source = maybes[0]; }
-    if (probablies.length > 0) { source = probablies[0]; }
-    source = (source === '')? '' : source;
-    console.log("pickSource: " + source);
-    return source;
-  },
 
   componentDidMount: function(){
     var self = this;
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
 
-    var tmp_image = new Image();
-    tmp_image.onload = self.onLoadImage;
-    tmp_image.src = "/images/blk.jpg";
+    var load_images = self.state.load_images;
+    for (var i in load_images) {
+      var tmp_image = new Image();
+      tmp_image.onload = self.onLoad;
+      tmp_image.src = load_images[i];
+    }
+  },
 
-    self.preLoadStuff(window.innerWidth);
+  onLoad: function() {
+    var self = this;
+    var tmp_pre_count = self.state.pre_count;
+    tmp_pre_count++;
+
+    if (tmp_pre_count == self.state.load_images.length) {
+
+      self.setState({pre_count: tmp_pre_count, percent_loaded: 100, loaded: true});
+
+    } else {
+
+      var percent_loaded = (tmp_pre_count / self.state.load_images.length ) * 100;
+      self.setState({pre_count: tmp_pre_count, percent_loaded: percent_loaded});
+
+    }
+
   },
 
   // componentDidUpdate: function(prevProps, prevState){
@@ -107,49 +113,49 @@ module.exports = React.createClass({
   //   }
   // },
 
-  preLoadStuff: function(width){
-    var self = this;
+  // preLoadStuff: function(width){
+  //   var self = this;
+  //
+  //   if (width > 768){
+  //     for (var i = 0; i < 3 ; i++) {
+  //       var video = videos[i];
+  //       var vid = document.createElement('video');
+  //       vid.src = self.pickSource(video.media);
+  //       vid.load();
+  //       vid.oncanplaythrough = self.onLoadVideo;
+  //     }
+  //   }
+  // },
+  //
+  // onLoadImage: function() {
+  //   var self = this;
+  //   self.setState({image_loaded: true});
+  // },
 
-    if (width > 768){
-      for (var i = 0; i < 3 ; i++) {
-        var video = videos[i];
-        var vid = document.createElement('video');
-        vid.src = self.pickSource(video.media);
-        vid.load();
-        vid.oncanplaythrough = self.onLoadVideo;
-      }
-    }
-  },
-
-  onLoadImage: function() {
-    var self = this;
-    self.setState({image_loaded: true});
-  },
-
-  onLoadVideo: function() {
-    var self = this;
-    var tmp_pre_count = self.state.video_count;
-
-    tmp_pre_count++;
-
-    if (self.state.windowWidth > 768){
-      var preload_count = 3;
-    } else {
-      var preload_count = 0;
-    }
-
-    if (self.isMounted()){
-      if (tmp_pre_count == preload_count) {
-        self.setState({video_count: tmp_pre_count, videos_loaded: true});
-
-      } else {
-
-        var percent_loaded = (tmp_pre_count / preload_count ) * 100;
-        self.setState({video_count: tmp_pre_count});
-      }
-    }
-
-  },
+  // onLoadVideo: function() {
+  //   var self = this;
+  //   var tmp_pre_count = self.state.video_count;
+  //
+  //   tmp_pre_count++;
+  //
+  //   if (self.state.windowWidth > 768){
+  //     var preload_count = 3;
+  //   } else {
+  //     var preload_count = 0;
+  //   }
+  //
+  //   if (self.isMounted()){
+  //     if (tmp_pre_count == preload_count) {
+  //       self.setState({video_count: tmp_pre_count, videos_loaded: true});
+  //
+  //     } else {
+  //
+  //       var percent_loaded = (tmp_pre_count / preload_count ) * 100;
+  //       self.setState({video_count: tmp_pre_count});
+  //     }
+  //   }
+  //
+  // },
 
   componentWillUnmount: function(){
     var self = this;
@@ -162,8 +168,7 @@ module.exports = React.createClass({
         words = self.state.words,
         title = self.state.title,
         windowWidth = self.state.windowWidth,
-        image_loaded = self.state.image_loaded,
-        videos_loaded = self.state.videos_loaded;
+        loaded = self.state.loaded;
 
     if (title){
       var title_styles = title.split('').map(function(index){
@@ -185,14 +190,13 @@ module.exports = React.createClass({
 
 
 
-    if (windowWidth && image_loaded) {
+    if (windowWidth && loaded) {
 
       if ((windowWidth > 768)) {
-        if (videos_loaded) {
 
-          var experiential_src = self.pickSource(videos[0].media);
-          var handcrafted_src = self.pickSource(videos[1].media);
-          var agency_src = self.pickSource(videos[2].media);
+          // var experiential_src = self.pickSource(videos[0].media);
+          // var handcrafted_src = self.pickSource(videos[1].media);
+          // var agency_src = self.pickSource(videos[2].media);
 
           return (
             <div className="home_page" key="homepage">
@@ -385,20 +389,21 @@ module.exports = React.createClass({
               </div>
               <div className="home_overlay"></div>
               <div className={"video-container " + video}>
-                <video ref="experiential_video" className="experiential" poster="/images/transparent.png" autoPlay muted="muted" loop src={experiential_src}></video>
-                <video ref="handcrafted_video" className="handcrafted" poster="/images/transparent.png" autoPlay muted="muted" loop src={handcrafted_src}></video>
-                <video ref="agency_video" className="agency" poster="/images/transparent.png" autoPlay muted="muted" loop src={agency_src}> </video>
+                <video  className="experiential" poster="/images/experiential.jpg" autoPlay muted="muted" loop>
+                   <source src="/video/Experiential.webm" type="video/webm" />
+                   <source src="/video/experiential.mp4" type="video/mp4" />
+                 </video>
+                 <video className="handcrafted" poster="/images/handcrafted.jpg" autoPlay muted="muted" loop>
+                   <source src="/video/Handcrafted.webm" type="video/webm" />
+                   <source src="/video/handcrafted.mp4" type="video/mp4" />
+                 </video>
+                 <video className="agency" poster="/images/agency.jpg" autoPlay muted="muted" loop>
+                   <source src="/video/agency_v2.webm" type="video/webm" />
+                   <source src="/video/agency.mp4" type="video/mp4" />
+                 </video>
               </div>
             </div>
           );
-        } else {
-          return (
-            <div className="home_page" key="homepage">
-              <Helmet title="The New BLK" />
-              <Loader />
-            </div>
-          )
-        }
       } else {
         return (
           <div className="home_page" key="homepage">
