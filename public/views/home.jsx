@@ -405,7 +405,22 @@ module.exports = React.createClass({
           <div className="home_page" key="homepage">
             <Helmet title="The New BLK" />
             <div className="wearethenewblkllc">
-              <img className="bold uppercase newblk" src="/images/thenewblk.svg" />
+              <Motion
+                defaultStyle={{
+                    opacity: 0,
+                    rotation: Math.random() * -10,
+                    x: Math.random() * 2,
+                  }}
+                style={{
+                    opacity: spring(1, [80, 20]),
+                    rotation: spring(0, [200, 20]),
+                    x: spring(0, [80, 20]),
+                  }}>
+                {function(style){
+                  return (<img className="bold uppercase newblk" src="/images/thenewblk.svg" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}} />)
+                }}
+              </Motion>
+
               <p className="italic words">Ad agency, creative think tank, and content production studio</p>
             </div>
             <div className="themes">
