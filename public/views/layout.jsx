@@ -88,7 +88,7 @@ module.exports = React.createClass({
 
   componentDidUpdate: function(prevProps, prevState){
     var self = this;
-    var props = (prevProps != this.props);
+    var props = (prevProps != self.props);
     if (props && self.isMounted()) {
       window.ga('send', 'pageview', {'page': this.context.location.pathname});
       self.state.controller.scrollTo(0);
@@ -166,10 +166,6 @@ module.exports = React.createClass({
           <div className="navigator_overlay"></div>
           <div className="main">
             {this.props.children}
-            <Footer />
-          </div>
-          <div className="mobile_main">
-            <h3 className="earthlings">Greetings earthlings, our mobile ship is currently under construction. Please visit our mother ship on your desktop computing machine.</h3>
             <Footer />
           </div>
           <script src='/bundle.js'></script>

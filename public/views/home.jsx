@@ -47,7 +47,6 @@ module.exports = React.createClass({
   },
   handleResize: function(e) {
     var self = this;
-    self
     self.setState({windowWidth: window.innerWidth});
     if ((window.innerWidth > 768) && (!self.state.videos_loaded)){
       self.preLoadStuff(window.innerWidth);
@@ -115,8 +114,8 @@ module.exports = React.createClass({
         var video = videos[i];
         var vid = document.createElement('video');
         vid.src = self.pickSource(video.media);
-        vid.load();
         vid.oncanplaythrough = self.onLoadVideo;
+        vid.load();
       }
     }
   },
@@ -138,16 +137,15 @@ module.exports = React.createClass({
       var preload_count = 0;
     }
 
+    if (self.isMounted()){
+      if (tmp_pre_count == preload_count) {
+        self.setState({video_count: tmp_pre_count, videos_loaded: true});
 
-    if (tmp_pre_count == preload_count) {
-      self.setState({video_count: tmp_pre_count, videos_loaded: true});
+      } else {
 
-
-
-    } else {
-
-      var percent_loaded = (tmp_pre_count / preload_count ) * 100;
-      self.setState({video_count: tmp_pre_count});
+        var percent_loaded = (tmp_pre_count / preload_count ) * 100;
+        self.setState({video_count: tmp_pre_count});
+      }
     }
 
   },

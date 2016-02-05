@@ -16,17 +16,6 @@ var Mouser = require("../components/mouser.jsx");
 var Dragger = require("../components/dragger.jsx");
 var VideoGallery = require("../components/video_gallery.jsx");
 
-var SetIntervalMixin = {
-  componentWillMount: function() {
-    this.intervals = [];
-  },
-  setInterval: function() {
-    this.intervals.push(setInterval.apply(null, arguments));
-  },
-  componentWillUnmount: function() {
-    this.intervals.forEach(clearInterval);
-  }
-};
 
 var TimerMixin = require('react-timer-mixin');
 
@@ -74,7 +63,7 @@ module.exports = React.createClass({
     // else if (self.props.params.casestudy){
     //   self.getContent();
     // }
-    self.setTimeout(function() { self.getContent(); }, 500);
+    self.getContent();
   },
 
   componentDidUpdate: function(nextProps) {
@@ -83,7 +72,7 @@ module.exports = React.createClass({
     var self = this;
     if ( nextProps != self.props ){
       self.setState({ params: self.props.params, content: null });
-      self.setTimeout(function() { self.getContent(); }, 500);
+      self.getContent();
     }
   },
 
