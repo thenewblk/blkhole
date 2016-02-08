@@ -34,7 +34,7 @@ gulp.task('sass', function() {
     return gulp.src('public/styles/*.scss')
         .pipe(sass({outputStyle: 'compressed'}))
 				.pipe(autoprefixer())
-				.pipe(rename(manifest["main.css"]))
+				.pipe(rename(manifest["main.scss"]))
         .pipe(gulp.dest('public/styles'));
 });
 
@@ -49,14 +49,14 @@ gulp.task('react', function() {
 				.transform(babelify, {presets: ["es2015", "react"]})
 				.transform([globify])
         .bundle()
-        .pipe(source( manifest["bundle.js"] ))
+        .pipe(source( manifest["index.js"] ))
 				.pipe(buffer())
 				.pipe(uglify())
         .pipe(gulp.dest('public/'));
 });
 
 gulp.task('rev', function() {
-	gulp.src('public/bundle.js')
+	gulp.src('public/index.js')
 		.pipe(rev())
 		.pipe(rev.manifest({
 			base: '.',
@@ -64,7 +64,7 @@ gulp.task('rev', function() {
 		}))
 		.pipe(gulp.dest('.'));
 
-	gulp.src('public/styles/main.css')
+	gulp.src('public/styles/main.scss')
 		.pipe(rev())
 		.pipe(rev.manifest({
 			base: '.',

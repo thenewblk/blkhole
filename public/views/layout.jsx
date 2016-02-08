@@ -151,8 +151,8 @@ module.exports = React.createClass({
     }
     var windowWidth = self.state.windowWidth;
 
-    var bundle = manifest["bundle.js"];
-    var main = manifest["main.css"];
+    var bundle = "/" + manifest["index.js"];
+    var main = manifest["main.scss"];
 
     return (
       <html>

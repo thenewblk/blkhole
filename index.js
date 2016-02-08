@@ -7,7 +7,6 @@ require('babel-register')({
 var path = require('path');
 var join = path.join;
 var express = require('express');
-var rev = require('express-rev');
 
 var ReactEngine = require('react-engine');
 
@@ -39,10 +38,6 @@ var engine = ReactEngine.server.create({
     console.log(stats);
   }
 });
-
-app.use(rev({
-  manifest: './rev-manifest.json',
-}));
 
 // set the engine
 app.engine('.jsx', engine);
