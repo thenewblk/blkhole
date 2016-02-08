@@ -20,7 +20,8 @@ var jshint = require('gulp-jshint'),
 	autoprefixer = require('gulp-autoprefixer');
 
 var babelify = require("babelify");
-
+var rev = require('gulp-rev');
+var manifest = require("./rev-manifest.json")
 // Lint Task
 // gulp.task('lint', function() {
 //     return gulp.src('public/javascripts/*.js')
@@ -33,6 +34,7 @@ gulp.task('sass', function() {
     return gulp.src('public/styles/*.scss')
         .pipe(sass({outputStyle: 'compressed'}))
 				.pipe(autoprefixer())
+				.pipe(rename(manifest["main.css"]))
         .pipe(gulp.dest('public/styles'));
 });
 
@@ -40,14 +42,37 @@ gulp.task('sass', function() {
 gulp.task('react', function() {
     // Browserify/bundle the JS.
 		// browserify -t reactify -t require-globify public/index.js -o public/bundle.js
+
+		// var manifest = gulp.src("./rev-manifest.json");
+
     browserify('./public/index.js')
 				.transform(babelify, {presets: ["es2015", "react"]})
 				.transform([globify])
         .bundle()
-        .pipe(source('bundle.js'))
+        .pipe(source( manifest["bundle.js"] ))
 				.pipe(buffer())
 				.pipe(uglify())
         .pipe(gulp.dest('public/'));
+});
+
+gulp.task('rev', function() {
+	gulp.src('public/bundle.js')
+		.pipe(rev())
+		.pipe(rev.manifest({
+			base: '.',
+			merge: true
+		}))
+		.pipe(gulp.dest('.'));
+
+	gulp.src('public/styles/main.css')
+		.pipe(rev())
+		.pipe(rev.manifest({
+			base: '.',
+			merge: true
+		}))
+		.pipe(gulp.dest('.'));
+
+	return gulp.src("");
 });
 
 // Concatenate & Minify JS

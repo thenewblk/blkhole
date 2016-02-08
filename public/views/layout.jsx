@@ -6,6 +6,9 @@ var Footer = require('./footer.jsx');
 var util = require('util');
 var TimerMixin = require('react-timer-mixin');
 
+var manifest = require("../../rev-manifest.json");
+// var rev = require('express-rev')({ manifest: '../../rev-manifest.json' });
+
 function slugify(text) {
   return text.toString().toLowerCase()
     .replace(/\s+/g, '-')           // Replace spaces with -
@@ -78,6 +81,10 @@ module.exports = React.createClass({
 
     self.setState({controller: controller})
 
+    // console.log("rev(main.css): " + rev("main.css"))
+
+    // var bundle = manifest["bundle.js"];
+    // console.log("bundle: " + bundle);
   },
 
   scrollTop: function(){
@@ -144,6 +151,9 @@ module.exports = React.createClass({
     }
     var windowWidth = self.state.windowWidth;
 
+    var bundle = manifest["bundle.js"];
+    var main = manifest["main.css"];
+
     return (
       <html>
         <head>
@@ -159,7 +169,7 @@ module.exports = React.createClass({
           <title>The New BLK</title>
           <link rel="icon" href="/images/favicon.png" />
           <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css" />
-          <link rel="stylesheet" href="/styles/main.css" />
+          <link rel="stylesheet" href={"/styles/" + main} />
         </head>
         <body className={path + menu}>
           <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut} deploy={self.deploy}/>
@@ -168,7 +178,7 @@ module.exports = React.createClass({
             {this.props.children}
             <Footer />
           </div>
-          <script src='/bundle.js'></script>
+          <script src={bundle}></script>
         </body>
       </html>
     );
