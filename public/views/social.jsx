@@ -343,7 +343,7 @@ module.exports = React.createClass({
             </a>
 
 
-            <a href="#" target="_blank"  className="social_buttons mail_button"  onMouseEnter={self.setMail}>
+            <a href="http://eepurl.com/bSNEPz" target="_blank"  className="social_buttons mail_button"  onMouseEnter={self.setMail}>
               <i className="fa fa-newspaper-o"></i>
               <span className="name">Subscribe</span>
             </a>
