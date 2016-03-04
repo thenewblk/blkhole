@@ -65,6 +65,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 
+require('./routes/api/social')(app, passport);
 require('./routes/api/channel')(app, passport);
 require('./routes/api/client')(app, passport);
 require('./routes/api/project')(app, passport);

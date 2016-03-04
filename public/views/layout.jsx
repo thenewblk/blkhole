@@ -3,6 +3,8 @@ var Router = require('react-router').Router;
 var Menu = require('./menu.jsx');
 var Footer = require('./footer.jsx');
 
+var Social = require('./social.jsx');
+
 var util = require('util');
 var TimerMixin = require('react-timer-mixin');
 
@@ -170,13 +172,14 @@ module.exports = React.createClass({
           <link rel="icon" href="/images/favicon.png" />
           <link type="text/css" rel="stylesheet" href="http://fast.fonts.net/cssapi/24c40778-95c9-421b-9400-9cdd9eefcbaa.css" />
           <link rel="stylesheet" href={"/styles/" + main} />
+          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" />
         </head>
         <body className={path + menu}>
           <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut} deploy={self.deploy}/>
           <div className="navigator_overlay"></div>
           <div className="main">
             {this.props.children}
-            <Footer />
+            <Social />
           </div>
           <script src={bundle}></script>
         </body>

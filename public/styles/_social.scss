@@ -1,0 +1,257 @@
+.social_wrapper {
+  color: white;
+  transition: 0.15s ease-out;
+  padding-top: 50px;
+  position: relative;
+  overflow: hidden;
+  .background_overlay{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: black;
+    z-index: 1;
+  }
+  &.facebook_container {
+    .background_textures {
+      background: black;
+      display: block;
+    }
+
+    .background_overlay {
+      background: #3b5998;
+      opacity: 0.8;
+    }
+    .facebook_button{
+      &:after {
+        height: 60px;
+        width: 60px;
+        transition: 0.15s ease-out;
+        transform: rotate(45deg);
+        border: 2px solid transparent;
+        left: -10px;
+        top: -14px;
+      }
+
+      .name {
+        opacity: 1;
+        text-indent: 0px;
+        z-index: 1;
+        transition: 0.15s ease-in-out;
+      }
+    }
+  }
+  &.twitter_container {
+    .background_textures {
+      background: black;
+      display: block;
+    }
+
+    .background_overlay {
+      background: #00aced;
+      opacity: 0.8;
+    }
+    .twitter_button{
+      &:after {
+        height: 60px;
+        width: 60px;
+        transition: 0.15s ease-out;
+        transform: rotate(45deg);
+        border: 2px solid transparent;
+        left: -10px;
+        top: -14px;
+      }
+
+      .name {
+        opacity: 1;
+        text-indent: 0px;
+        z-index: 1;
+        transition: 0.15s ease-in-out;
+      }
+    }
+  }
+  &.instagram_container {
+    .background_overlay {
+      background: #125688;
+      opacity: 0.7;
+    }
+    .background_textures {
+      background: #125688;
+    }
+    .instagram_button{
+      &:after {
+        height: 60px;
+        width: 60px;
+        transition: 0.15s ease-out;
+        transform: rotate(45deg);
+        border: 2px solid transparent;
+        left: -10px;
+        top: -14px;
+      }
+
+      .name {
+        opacity: 1;
+        text-indent: 0px;
+        z-index: 1;
+        transition: 0.15s ease-in-out;
+      }
+    }
+  }
+  &.medium_container {
+    .background_overlay, .background_textures {
+      background: #00ab6b;
+    }
+    .medium_button{
+      &:after {
+        height: 60px;
+        width: 60px;
+        transition: 0.15s ease-out;
+        transform: rotate(45deg);
+        border: 2px solid transparent;
+        left: -10px;
+        top: -14px;
+      }
+
+      .name {
+        opacity: 1;
+        text-indent: 0px;
+        z-index: 1;
+        transition: 0.15s ease-in-out;
+      }
+    }
+  }
+  &.mail_container {
+    .background_overlay, .background_textures {
+      background: white;
+    }
+    color: black;
+    .social_buttons {
+      color: black;
+      &:after {
+        border: 2px solid black;
+      }
+    }
+    .mail_button{
+      &:after {
+        height: 60px;
+        width: 60px;
+        transition: 0.15s ease-out;
+        transform: rotate(45deg);
+        border: 2px solid transparent;
+        left: -10px;
+        top: -14px;
+      }
+
+      .name {
+        opacity: 1;
+        text-indent: 0px;
+        z-index: 1;
+        transition: 0.15s ease-in-out;
+      }
+    }
+    footer.footer, footer.footer a, footer.footer .f-wrapper .map a  {
+      color: black;
+      &:hover:before {
+        background: black;
+      }
+    }
+
+  }
+  .description {
+    text-align: center;
+    p {
+      display: inline-block;
+    }
+
+  }
+  .social_grid {
+    text-align: center;
+    position: relative;;
+    padding: 30px 15px;
+    width: 100%;
+  }
+
+  footer.footer {
+    background: transparent;
+  }
+
+  .social_buttons {
+    display: inline-block;
+    position: relative;
+    padding: 0px 5px;
+    margin: 10px;
+    color: white;
+    min-width: 40px;
+    min-height: 40px;
+    transition: 0.15s ease-out;
+    &:after {
+      content: "";
+      position: absolute;
+      height: 40px;
+      width: 40px;
+      transition: 0.15s ease-out;
+      transform: rotate(45deg);
+      border: 2px solid white;
+      left: -2px;
+      top: -4px;
+      z-index: 0;
+    }
+
+    .name {
+      display: inline-block;
+      opacity: 0;
+      transition: 0.15s ease-in-out;
+      white-space: nowrap;
+      text-indent: -125px;
+      z-index: -1;
+      margin: 0;
+      padding: 0;
+      position: relative;
+    }
+
+    .fa {
+      padding: 0 5px;
+    }
+  }
+  .background_textures {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    display: flex;
+    flex-wrap: wrap;
+    .instagrams {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .instagram_image {
+      height: 15vw;
+      min-width: 150px;
+      min-height: 150px;
+      background-size: cover;
+      background-position: center;
+      flex: 1 15vw;
+    }
+    .tweets {
+      display: block;
+      line-height: 0px;
+      transform: rotate(-5deg);
+      top: -45px;
+      position: absolute;
+      width: 105%;
+      opacity: 1;
+    }
+    .tweet_text {
+      color: white;
+      font-size: 15px;
+      margin: 0;
+      padding: 0;
+      display: inline;
+      font-family: monospace;
+      span {
+        font-family: monospace;
+      }
+    }
+  }
+}

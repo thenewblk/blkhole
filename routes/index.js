@@ -48,6 +48,23 @@ module.exports = function(app, passport) {
 		res.send(req.user);
 	});
 
+	app.get('/twitter', function(req, res) {
+		var params = {screen_name: 'thenewblk'};
+		client.get('statuses/user_timeline', params, function(error, tweets, response){
+			if (!error) {
+				res.json(tweets);
+			}
+		});
+	});
+
+	app.get('/instagram', function(req, res) {
+		Instagram.user_media_recent('2284936891',  function(error, medias, pagination, remaining, limit) {
+			if (!error) {
+				res.json(medias);
+			}
+		});
+	});
+
 	app.get('*', function(req, res) {
 	  res.render('index', { title: 'Hello World', user: req.user });
 	});

@@ -224,6 +224,7 @@ $fiven_left: 26.6vw;
   background-position: center;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
 .home, .menu_over.home {
@@ -277,7 +278,7 @@ $fiven_left: 26.6vw;
 
 .home_overlay {
   height: 100%;
-  position: fixed;
+  position: absolute;
   overflow: hidden;
   top: 0;
   left: 0;
@@ -289,7 +290,7 @@ $fiven_left: 26.6vw;
 
 .video-container {
     height: 100%;
-    position: fixed;
+    position: absolute;
     overflow: hidden;
     top: 0;
     left: 0;
