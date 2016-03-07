@@ -41,9 +41,9 @@ var Tweet = React.createClass({
   render: function(){
     var self = this;
     var content = self.props.content;
-
+    var style = self.props.style;
     return (
-      <p className="tweet_text"> <i className="fa fa-twitter"></i> {content.text}</p>
+      <p className="tweet_text" style={style}> <i className="fa fa-twitter"></i> {content.text}</p>
     )
   }
 });
@@ -52,9 +52,10 @@ var Facebook = React.createClass({
   render: function(){
     var self = this;
     var content = self.props.content;
+    var style = self.props.style;
 
     return (
-      <p className="tweet_text"> <i className="fa fa-facebook"></i> {content.message}</p>
+      <p className="tweet_text" style={style}> <i className="fa fa-facebook"></i> {content.message}</p>
     )
   }
 });
@@ -76,6 +77,7 @@ module.exports = React.createClass({
       tweets: [],
       instagrams: [],
       facebooks: [],
+      envelopes: [],
       total_instagrams: "",
       status_count: "",
       total_fans: ""
@@ -202,6 +204,21 @@ module.exports = React.createClass({
       }.bind(self));
   },
 
+  loadEnvelopes: function(){
+    var self = this;
+    request
+      .get('/envelopes')
+      .end(function(err, res) {
+        if (res.ok) {
+          var envelopes = res.body;
+          self.setState({ envelopes: envelopes});
+
+        } else {
+          console.log('Oh no! error ' + res.text);
+        }
+      }.bind(self));
+  },
+
 
 
   componentDidMount: function(){
@@ -222,6 +239,7 @@ module.exports = React.createClass({
     self.loadInstagramUser();
     self.loadFacebookFeed();
     self.loadFacebookUser();
+    self.loadEnvelopes();
   },
 
   onLoad: function() {
@@ -287,13 +305,38 @@ module.exports = React.createClass({
       )
     });
 
+    var envelopes = self.state.envelopes.map(function(instagram, index){
+      return (
+        <Motion
+          key={index}
+          defaultStyle={{
+              opacity: 0,
+              rotation: (Math.random() - 0.5)  * -1,
+              x: (Math.random() - 0.5) * 2000,
+              y: (Math.random() - 0.5) * 2000
+            }}
+          style={{
+              opacity: spring(1, [80, 20]),
+              rotation: spring(0, [200, 20]),
+              x: spring(0, [80, 20]),
+              y: spring(0, [80, 20]),
+            }}>
+          {function(style){
+            return (
+              <Instagram content={instagram} style={{ transform: "translateY("+style.y+"px) translateX("+style.x+"px)"}} />
+            )
+          }}
+        </Motion>
+      )
+    });
+
 
     var tweets = self.state.tweets.map(function(tweet, index){
-      return <Tweet content={tweet} key={index} />
+      return ( <Tweet content={tweet} key={index} /> )
     });
 
     var facebooks = self.state.facebooks.map(function(facebook, index){
-      return <Facebook content={facebook} key={index} />
+      return ( <Facebook content={facebook} key={index} /> );
     });
 
     // if (description){
@@ -329,17 +372,17 @@ module.exports = React.createClass({
 
             <a href="http://facebook.com/newblk" target="_blank" className="social_buttons facebook_button" onMouseEnter={self.setFacebook}>
               <i className="fa fa-facebook"></i>
-              <span className="name">{total_fans + " Fans"}</span>
+              <span className="name">{total_fans.toLocaleString() + " Fans"}</span>
             </a>
 
             <a href="http://twitter.com/thenewblk" target="_blank"  className="social_buttons twitter_button" onMouseEnter={self.setTwitter}>
               <i className="fa fa-twitter"></i>
-              <span className="name">{status_count + " Tweets"}</span>
+              <span className="name">{status_count.toLocaleString() + " Tweets"}</span>
             </a>
 
             <a href="http://instagram.com/blkstagram" target="_blank"  className="social_buttons instagram_button"  onMouseEnter={self.setInstagram}>
               <i className="fa fa-instagram"></i>
-              <span className="name">{total_instagrams + " Photos"}</span>
+              <span className="name">{total_instagrams.toLocaleString() + " Photos"}</span>
             </a>
 
 
@@ -372,7 +415,8 @@ module.exports = React.createClass({
                 )
               }}
             </Motion>
-            : null }
+          : null }
+
           {social == 'twitter' ?
 
             <Motion
@@ -391,10 +435,6 @@ module.exports = React.createClass({
                   <div className="tweets" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{tweets}</div> )
               }}
             </Motion>
-
-
-
-
           : null }
 
           {social == 'facebook' ?
@@ -415,11 +455,29 @@ module.exports = React.createClass({
                   <div className="tweets" style={{position: "relative", top: style.x, transform: "rotate(" + style.rotation + "deg)", left: style.y, opacity: style.opacity}}>{facebooks}</div> )
               }}
             </Motion>
-
-
-
-
           : null }
+
+          {social == 'mail' ?
+            <Motion
+              defaultStyle={{
+                  opacity: 0,
+                  rotation: (Math.random() - 0.5)  * -1,
+                  x: Math.random() * 5
+                }}
+              style={{
+                  opacity: spring(0.4, [80, 20]),
+                  rotation: spring((Math.random()- 0.5)  * 10, [200, 20]),
+                  x: spring(-45, [80, 20]),
+                }}>
+              {function(instagram_style){
+                return (
+                  <div className="instagrams" style={{position: "relative", top: instagram_style.x, transform: "rotate(" + instagram_style.rotation + "deg)", left: instagram_style.y, opacity: instagram_style.opacity}}>
+                    {envelopes}
+                  </div>
+                )
+              }}
+            </Motion>
+            : null }
         </div>
 
 

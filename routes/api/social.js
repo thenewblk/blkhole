@@ -54,6 +54,14 @@ module.exports = function(app, passport) {
     });
   });
 
+  app.get('/envelopes', function(req, res) {
+    Instagram.user_media_recent('6412892', function(error, medias, pagination, remaining, limit) {
+      if (!error) {
+        res.json(medias);
+      }
+    });
+  });
+
   app.get('/facebook', function(req, res) {
     graph.get("124969474212539/feed", function(err, result) {
       res.json(result);

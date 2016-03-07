@@ -4,6 +4,7 @@
   padding-top: 50px;
   position: relative;
   overflow: hidden;
+
   .background_overlay{
     position: absolute;
     height: 100%;
@@ -11,6 +12,7 @@
     background: black;
     z-index: 1;
   }
+
   &.facebook_container {
     .background_textures {
       background: black;
@@ -40,6 +42,7 @@
       }
     }
   }
+
   &.twitter_container {
     .background_textures {
       background: black;
@@ -69,6 +72,7 @@
       }
     }
   }
+
   &.instagram_container {
     .background_overlay {
       background: #125688;
@@ -96,6 +100,7 @@
       }
     }
   }
+
   &.medium_container {
     .background_overlay, .background_textures {
       background: #00ab6b;
@@ -119,13 +124,20 @@
       }
     }
   }
+
   &.mail_container {
     .background_overlay, .background_textures {
       background: white;
     }
+    .background_overlay {
+      opacity: 0.7;
+    }
     color: black;
     .social_buttons {
       color: black;
+      &:before {
+        background: #000;
+      }
       &:after {
         border: 2px solid black;
       }
@@ -156,6 +168,7 @@
     }
 
   }
+
   .description {
     text-align: center;
     p {
@@ -163,6 +176,7 @@
     }
 
   }
+
   .social_grid {
     text-align: center;
     position: relative;;
@@ -195,6 +209,23 @@
       top: -4px;
       z-index: 0;
     }
+    &:before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 2px;
+      background: #fff;
+      position: absolute;
+      bottom: 0;
+      transition: width .3s;
+    }
+
+    &:hover {
+      &:before {
+        width: 100%;
+        //transition: width .3s;
+      }
+    }
 
     .name {
       display: inline-block;
@@ -212,6 +243,7 @@
       padding: 0 5px;
     }
   }
+
   .background_textures {
     position: absolute;
     height: 100%;
