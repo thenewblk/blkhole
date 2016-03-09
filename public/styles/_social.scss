@@ -160,13 +160,14 @@
         transition: 0.15s ease-in-out;
       }
     }
-    footer.footer, footer.footer a, footer.footer .f-wrapper .map a  {
-      color: black;
-      &:hover:before {
-        background: black;
+    footer.footer, footer.footer a, footer.footer .f-wrapper .map {
+      a  {
+        color: black;
+        &:hover:before {
+          background: black;
+        }
       }
     }
-
   }
 
   .description {

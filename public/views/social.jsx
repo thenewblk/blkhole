@@ -89,11 +89,11 @@ module.exports = React.createClass({
   },
 
   setFacebook: function(){
-    this.setState({description: "Facebook is our driver's license - yes we're here on the internet.", social: "facebook"})
+    this.setState({description: "AN EXTENSION OF THE DAILY OFFICE BANTER", social: "facebook"})
   },
 
   setTwitter: function(){
-    this.setState({description: "Twitter's been identical to our Facebook. We're working on that.", social: "twitter"})
+    this.setState({description: "SIMILAR TO WHAT WE DO ON FACEBOOK, WITH MORE ONE TO ONE DIALOGUE", social: "twitter"})
   },
 
   setMedium: function(){
@@ -101,16 +101,16 @@ module.exports = React.createClass({
   },
 
   setInstagram: function(){
-    this.setState({description: "We snap B&W shots of our work on blkstagram.", social: "instagram", fact: "23 Photos"})
+    this.setState({description: "SLICE OF LIFE SNAPSHOTS IN BLK & WHITE", social: "instagram", fact: "23 Photos"})
   },
 
 
   setMail: function(){
-    this.setState({description: "We send out a newsletter with awesome stuff in it. Try it out", social: "mail", fact: "5 Newsletters so far" })
+    this.setState({description: "GET OUR TAKE ON IDEAS, CREATIVITY & EMERGING TRENDS", social: "mail", fact: "5 Newsletters so far" })
   },
 
   resetSocial: function(){
-    this.setState({description: "We Do Social Things. Here's how.", social: null, fact: null})
+    this.setState({description: "Let's Get Social.", social: null, fact: null})
   },
 
   loadTweets: function(){

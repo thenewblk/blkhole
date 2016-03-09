@@ -18,6 +18,9 @@ footer.footer {
       display: flex;
       justify-content: center;
     }
+    .map {
+      span {line-height: 1;}
+    }
     .contact {
       flex-direction: column;
       p {
