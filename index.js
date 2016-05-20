@@ -117,15 +117,12 @@ app.get('/login', function(req, res) {
   });
 });
 
-
 app.use(function(req, res) {
   res.render('404', {
     title: 'React Engine Express Sample App',
     url: req.url
   });
 });
-
-
 
 var server = app.listen(port, function() {
 

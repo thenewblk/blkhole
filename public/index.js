@@ -1,9 +1,8 @@
 var Routes = require('./routes.jsx');
 
 var createHistory = require('history/lib/createBrowserHistory');
-var useScroll = require('scroll-behavior/lib/useScrollToTop');
 
-var history = useScroll(createHistory)()
+var history = createHistory;
 
 // import the react-engine's client side booter
 var ReactEngineClient = require('react-engine/lib/client');

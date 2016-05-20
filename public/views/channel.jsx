@@ -140,7 +140,7 @@ module.exports = React.createClass({
         <div className="channel" key="channel">
           { no_title ? null : <Helmet title={title + " | The New BLK"} /> }
             <div className="content">
-              <div className={project_view}>
+              <div className={project_view + " p_" +projects.length}>
                 {projects.reverse()}
                 <div className="channel_info">
                   <div className="channel_container">

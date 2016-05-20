@@ -59,12 +59,12 @@ module.exports = React.createClass({
                   hover={true} />
                 <span className="name">Agency</span>
               </Link>
-              <Link className="channel_link lost" to="/disruption" >
+              <Link className="channel_link" to="/disruption" >
                 <Sprite
-                  image="/icons/disruption-icon.png"
+                  image="/icons/disruption-icon.svg"
                   columns={9}
-                  frames={18}
-                  duration={.5}
+                  frames={12}
+                  duration={.3}
                   frameW={50}
                   frameH={50}
                   loop={true} />
@@ -130,12 +130,12 @@ module.exports = React.createClass({
                 hover={true} />
               <span className="name">Agency</span>
             </Link>
-            <Link className="channel_link lost" to="/disruption" onClick={self.toggleOpen} >
+            <Link className="channel_link" to="/disruption" onClick={self.toggleOpen} >
               <Sprite
-                image="/icons/disruption-icon.png"
+                image="/icons/disruption-icon.svg"
                 columns={9}
-                frames={18}
-                duration={.5}
+                frames={12}
+                duration={.3}
                 frameW={50}
                 frameH={50}
                 loop={true} />

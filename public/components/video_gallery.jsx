@@ -124,7 +124,7 @@ var VideoGallery = module.exports = React.createClass({
           <div className={currentVideo ? "post videos video_open " + style : "post videos " + style }>
             {currentVideo ?
               <div className="iframe-video-container">
-                {type == "vimeo" ? <iframe src={currentVideo+"&autoplay=1"}  width="853" height="480" frameBorder="0" webkitAllowfullscreen mozAllowfullscreen allowfullscreen></iframe> : null }
+                {type == "vimeo" ? <iframe src={currentVideo+"&autoplay=1"}  width="853" height="480" frameBorder="0" webkitAllowfullscreen mozAllowfullscreen allowFullScreen></iframe> : null }
                 {type == "youtube" ? <iframe src={currentVideo+"?autoplay=1"} frameBorder="0" width="560" height="315"></iframe> : null }
 
 
@@ -176,7 +176,7 @@ var VideoGallery = module.exports = React.createClass({
           <div className={currentVideo ? "post videos video_open single_video " + style : "post videos single_video " + style }>
             {currentVideo ?
               <div className="iframe-video-container">
-                {type == "vimeo" ? <iframe src={currentVideo+"&autoplay=1"}  width="853" height="480" frameBorder="0" webkitAllowfullscreen mozAllowfullscreen allowfullscreen></iframe> : null }
+                {type == "vimeo" ? <iframe src={currentVideo+"&autoplay=1"}  width="853" height="480" frameBorder="0" webkitAllowfullscreen mozAllowfullscreen allowFullScreen></iframe> : null }
                 {type == "youtube" ? <iframe src={currentVideo+"?autoplay=1"} frameBorder="0" width="560" height="315"></iframe> : null }
               </div>
             :

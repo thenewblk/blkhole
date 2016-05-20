@@ -23,7 +23,7 @@ var TimerMixin = require('react-timer-mixin');
 module.exports = React.createClass({
   mixins: [ Router.State, TimerMixin ],
   getInitialState: function(){
-    return {params: {}, title: ''};
+    return {params: {}, title: '', content: null};
   },
 
   handleResize: function(e) {
@@ -36,6 +36,7 @@ module.exports = React.createClass({
   },
 
   getContent: function(){
+    console.log("getContent");
     var self = this;
     request
       .get('/api/post/'+self.props.params.casestudy)
@@ -48,10 +49,6 @@ module.exports = React.createClass({
       });
   },
 
-  // componentWillMount: function() {
-  //   var self = this;
-  // },
-
   componentWillMount: function() {
     var self = this;
     self.setState({ params: self.props.params, content: null });
@@ -63,7 +60,8 @@ module.exports = React.createClass({
     // else if (self.props.params.casestudy){
     //   self.getContent();
     // }
-    self.getContent();
+    // console.log("componentWillMount");
+    // self.getContent();
   },
 
   componentDidUpdate: function(nextProps) {
@@ -80,10 +78,9 @@ module.exports = React.createClass({
     var self = this;
     self.setState({windowWidth: window.innerWidth});
     window.addEventListener('resize', self.handleResize);
-
+    self.getContent();
     // self.setState({controller: controller});
   },
-
 
   consoleLog: function(){
     console.log("this.state: " + util.inspect(this.state));
@@ -99,9 +96,10 @@ module.exports = React.createClass({
     var title = self.state.title;
     var content = self.state.content;
     var casestudy = self.state.params.casestudy;
-    if  (content) {
+    if (content != null) {
       var name = self.state.content.name;
       var project_tags = self.state.content.project_tags;
+
       var top_image = {
         backgroundImage: 'url(' + self.state.content.content.top_image + ')'
       }

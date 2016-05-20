@@ -69,6 +69,10 @@ module.exports = React.createClass({
   setExperiential: function(){
     this.setState({title: "experiential is", video: "experiential", words: "We cultivate brand experiences that are both in-the-moment and long-lasting."})
   },
+  setDisruption: function(){
+    this.setState({title: "disruption is", video: "disruption", words: "From the outright rabble rousers to the understated visionaries."})
+  },
+
   resetVideo: function(){
     this.setState({title: '', video: null, words: "Ad agency, creative think tank, and content production studio"})
   },
@@ -245,7 +249,19 @@ module.exports = React.createClass({
                     </span>
                   </Link>
                   <div className="square"></div>
-                  <div className="square"></div>
+                  <Link className="square" to="/disruption" onMouseEnter={self.setDisruption} onMouseLeave={self.resetVideo} >
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/disruption-icon.svg"
+                        columns={9}
+                        frames={12}
+                        duration={.3}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Disruption</span>
+                    </span>
+                  </Link>
                   <div className="square"></div>
                   <div className="square"></div>
                   <div className="square"></div>
@@ -322,7 +338,19 @@ module.exports = React.createClass({
                       <span className="name">Handcrafted</span>
                     </span>
                   </Link>
-                  <div className="square"></div>
+                  <Link className="square" to="/disruption" onMouseEnter={self.setDisruption} onMouseLeave={self.resetVideo} >
+                    <span className="diamond_wrapper">
+                      <Sprite
+                        image="/icons/disruption-icon.svg"
+                        columns={9}
+                        frames={18}
+                        duration={.5}
+                        frameW={50}
+                        frameH={50}
+                        hover={true} />
+                      <span className="name">Disruption</span>
+                    </span>
+                  </Link>
                   <div className="square"></div>
                   <div className="square"></div>
                   <div className="square"></div>
@@ -401,6 +429,10 @@ module.exports = React.createClass({
                    <source src="/video/agency_v2.webm" type="video/webm" />
                    <source src="/video/agency.mp4" type="video/mp4" />
                  </video>
+                 <video className="disruption" poster="/images/disruption.jpg" autoPlay muted="muted" loop>
+                   <source src="/video/Disruption.webm" type="video/webm" />
+                   <source src="/video/Disruption.mp4" type="video/mp4" />
+                 </video>
               </div>
             </div>
           );
@@ -471,6 +503,21 @@ module.exports = React.createClass({
                   <span className="name">Handcrafted</span>
                 </h2>
                 <p>Our design process often mirrors the spirit and aesthetic of the brands we help build.</p>
+                <span className="theme_overlay"></span>
+              </Link>
+              <Link className="theme disruption" to="/disruption" >
+                <h2 className="theme_name">
+                  <Sprite
+                    image="/icons/disruption-icon.svg"
+                    columns={9}
+                    frames={18}
+                    duration={.5}
+                    frameW={50}
+                    frameH={50}
+                    hover={true} />
+                  <span className="name">Disruption</span>
+                </h2>
+                <p>From the outright rabble rousers to the understated visionaries.</p>
                 <span className="theme_overlay"></span>
               </Link>
             </div>

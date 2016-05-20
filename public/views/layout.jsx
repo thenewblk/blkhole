@@ -177,6 +177,9 @@ module.exports = React.createClass({
         <body className={path + menu}>
           <Menu onMouseOver={self.menuOver} onMouseOut={self.menuOut} deploy={self.deploy}/>
           <div className="navigator_overlay"></div>
+            <div id="awwwards" className="honorable white right">
+              <a href="http://www.awwwards.com/sites/the-new-blk" target="_blank">Awwwards</a>
+            </div>
           <div className="main">
             {this.props.children}
             <Social />

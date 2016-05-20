@@ -63,7 +63,7 @@ var Facebook = React.createClass({
 module.exports = React.createClass({
   getInitialState: function(){
     return {
-      description: "We Do Social Things. Here's how.",
+      description: "Let's Get Social.",
       load_images: [
 				"/images/blk.jpg",
         "/images/experiential.jpg",
@@ -456,30 +456,12 @@ module.exports = React.createClass({
               }}
             </Motion>
           : null }
-
-          {social == 'mail' ?
-            <Motion
-              defaultStyle={{
-                  opacity: 0,
-                  rotation: (Math.random() - 0.5)  * -1,
-                  x: Math.random() * 5
-                }}
-              style={{
-                  opacity: spring(0.4, [80, 20]),
-                  rotation: spring((Math.random()- 0.5)  * 10, [200, 20]),
-                  x: spring(-45, [80, 20]),
-                }}>
-              {function(instagram_style){
-                return (
-                  <div className="instagrams" style={{position: "relative", top: instagram_style.x, transform: "rotate(" + instagram_style.rotation + "deg)", left: instagram_style.y, opacity: instagram_style.opacity}}>
-                    {envelopes}
-                  </div>
-                )
-              }}
-            </Motion>
-            : null }
+          <div className={social == 'mail' ? "footer-video video-container show" : "footer-video video-container" }>
+            <video className="skateboard" poster="/images/experiential.jpg" autoPlay muted="muted" loop>
+               <source src="/video/skateboard_wide.webm" type="video/webm" />
+             </video>
+          </div>
         </div>
-
 
         <Footer />
 
