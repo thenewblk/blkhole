@@ -351,13 +351,17 @@ module.exports = React.createClass({
         <Helmet title="Agency | The New BLK" />
         <div className="agency_top">
           <div className="top_copy">
-            <h1 className="subheader_top"><div className="block_wrapper">WE BUILD POWERFUL EXPERIENCES</div></h1>
+            <h1 className="subheader_top"><div className="block_wrapper">MAKE GOOD THINGS HAPPEN.</div></h1>
           </div>
           <div className="theoldgirl">
             <div className="block">
               <div className="block_wrapper">
                 <span className="left_label bold">Story</span>
-                <span className="content">Founded in 2010 and headquartered in downtown Omaha, we work with some of the most innovative local, regional, national, and global brands. Together, we define and refine the brand experience, from story, messaging, and look and feel to ongoing engagement. We believe that our four core service areas–Branding, Content, Experiential, and Digital–are essential building blocks for a brand with a purpose, a vision, and a great story to tell.</span>
+                <span className="content">
+                  <p>Since we launched the company in July of 2010, our mission has been to bring meaningful ideas to life for clients doing good things.</p>
+                  <p>Headquartered in downtown Omaha, we work with local, regional, national, and global brands in telling their stories, connecting with the digital consumer, and moving people to action. Our model is based on staying nimble. In a broad sense, it’s about keeping ahead of the curve on technology and the cultural zeitgeist and interpreting the brand story within that context. In a narrower sense, it’s about developing a clear, strategic roadmap with measurable objectives for every campaign, and then adapting and optimizing as the market responds.</p>
+                  <p>Our creative approach is to cut through the noise and find the simple, concrete, credible core, the key insights to fuel the narrative. The narrative is the glue that ties all of the marketing touchpoints together and that answers “the so what and who cares?” question in a way that leaves no doubt. Because more than anything, the story has to connect with people on a genuine, emotional level. Simply put, you have to earn that. The belly laugh, the lump in the throat, the hell yeah. You earn that by staying true – to the story, the characters, the little details and the big picture, the essence of what makes the brand special.</p>
+                </span>
               </div>
             </div>
             <div className="border-wrap">
@@ -459,8 +463,8 @@ module.exports = React.createClass({
             <div className="block_wrapper">
               <span className="left_label bold">Clients</span>
               <span className="content">
-                <p className="uppercase italic">OUR CLIENTS TEND TO STAND </p>
-                <h3 className="bold">FOR SOMETHING BIGGER.</h3>
+                <p className="uppercase italic">EVERY CLIENT </p>
+                <h3 className="bold">IS A CAUSE</h3>
               </span>
             </div>
             <div className="border-wrap">
@@ -475,8 +479,8 @@ module.exports = React.createClass({
             <div className="block_wrapper">
               <span className="left_label"></span>
               <span className="content">
-                <p>No matter what they’re selling, it’s about bucking conventional wisdom, disrupting the status quo, and solving old problems in new ways to get better results.</p>
-                <p>We focus on verticals that fit the lifestyle of our core Millennial audience, including: music & entertainment, sports, food & beverage, technology, apparel, higher education, and cause marketing. But, finding the right fit goes beyond industry and even audience. More than anything, it’s cultural.</p>
+                <p>No matter what they’re selling, our clients stand for something bigger: bucking conventional wisdom, disrupting the status quo, and solving problems in innovative new ways to get better results. These brands challenge the public to rethink ideas and issues that affect their lives. They listen, engage, and participate in their brand conversation. They adapt, respond, and stake out bold positions that others follow. They don’t just have mission statements; they <i>are on a mission.</i></p>
+                <p>Likewise, we treat brand storytelling for this kind of client as a form of cause marketing. It’s about winning over new fans, rallying the troops, and turning existing fans into superfans.</p>
               </span>
             </div>
           </div>
@@ -492,7 +496,7 @@ module.exports = React.createClass({
             <div className="block_wrapper">
               <span className="left_label bold">Audience</span>
               <span className="content">
-                <h3 className="uppercase">OUR PRIMARY AUDIENCE IS MILLENNIALS, WITH HEAVY CROSSOVER INTO GENERATION X.</h3>
+                <h3 className="uppercase">THE DIGITAL CONSUMER</h3>
               </span>
             </div>
             <div className="upper border-wrap">

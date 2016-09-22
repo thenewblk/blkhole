@@ -457,7 +457,7 @@ module.exports = React.createClass({
                 }}
               </Motion>
 
-              <p className="italic words">Ad agency, creative think tank, and content production studio</p>
+              <p className="italic words">Ad agency, creative think tank, and content production studio ( <Link to="/agency">More</Link> )</p>
             </div>
             <div className="themes">
               <Link className="theme agency" to="/agency">

@@ -16,7 +16,7 @@ var session  = require('express-session');
 
 // authentication with `passport`
 var passport = require('passport');
-
+ 
 // create the database with `mongoosee`
 var mongoose = require('mongoose');
 var configDB = require('./config/database.js');
